@@ -1,5 +1,0 @@
-1. If you remember nothing else from this book, remember . . . what? Extra credit for not peeking.
-2. For each of the 13 reasons why architecture is important articulated in this chapter, take the contrarian position: Propose a set of circumstances under which architecture is not necessary to achieve the result indicated. Justify your position. (Try to come up with different circumstances for each of the 13 reasons.)
-3. This chapter argues that architecture brings a number of tangible benefits. How would you measure the benefits, on a particular project, of each of the 13 points?
-4. Suppose you want to introduce architecture centric practices to your organization. Your management is open to the idea but wants to know the ROI for doing so. How would you respond?
- 5. Prioritize the list of 13 reasons in this chapter according to some criteria that are meaningful to you. Justify your answer. Or, if you could choose only two or three of the reasons to promote the use of architecture in a project, which would you choose and why?
