@@ -1,0 +1,32 @@
+name: Run ESLint on Push and Pull Requests
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+    
+jobs:
+  build:
+    name: Run ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 18.17.0
+      - name: Install dependencies for the frontend
+        run: npm install
+        working-directory: src/client
+      - name: Install dependencies for the frontend
+        run: npm install
+        working-directory: src/server/workspace
+      - name: Run Frontend Linters
+        run: npm run lint
+        working-directory: src/client
+      - name: Run Backend Linters
+        run: npm run lint
+        working-directory: src/client
