@@ -51,13 +51,13 @@ is revolutionising education by making learning more immersive and engaging.
 
 ### Team Members And Their Roles
 
-| Name           | Profile Picture                                                    | Role              |
-| -------------- | ------------------------------------------------------------------ | ----------------- |
-| Joshua Wereley | ![Joshua](./profile-pictures/joshua-profile-picture.jpeg =250x250) | Project Manager   |
-| Ashley Kapaso  | ![Ashley](./profile-pictures/ashley-profile-picture.jpeg =250x250) | Architect         |
-| Eugene Mpande  | ![Eugene](./profile-pictures/eugene-profile-picture.jpeg =250x250) | DevOps Engineer   |
-| Lunga Ndlovu   | ![Lunga](./profile-pictures/lunga-profile-picture.jpeg =250x250)   | Frontend Engineer |
-| Ayanda Juqu    | ![Ayanda](./profile-pictures/ayanda-profile-picture.jpeg =250x250) | Backend Engineer  |
+| Name           | Profile Picture                                                                                                    | Role              | Socials                                                                                                                                                                                           |
+| -------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Joshua Wereley | <img src="./profile-pictures/joshua-profile-picture.jpeg" alt="Joshua's Profile Picture" width="110" height="110"> | Project Manager   | <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=github" alt="GitHub"></a> <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn"></a> |
+| Ashley Kapaso  | <img src="./profile-pictures/ashley-profile-picture.jpeg" alt="Ashley's Profile Picture" width="110" height="110"> | Architect         | <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=github" alt="GitHub"></a> <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn"></a> |
+| Eugene Mpande  | <img src="./profile-pictures/eugene-profile-picture.jpeg" alt="Eugene's Profile Picture" width="110" height="110"> | DevOps Engineer   | <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=github" alt="GitHub"></a> <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn"></a> |
+| Lunga Ndlovu   | <img src="./profile-pictures/lunga-profile-picture.jpeg" alt="Lunga's Profile Picture" width="110" height="110">   | Frontend Engineer | <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=github" alt="GitHub"></a> <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn"></a> |
+| Ayanda Juqu    | <img src="./profile-pictures/ayanda-profile-picture.jpeg" alt="Ayanda's Profile Picture" width="110" height="110"> | Backend Engineer  | <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=github" alt="GitHub"></a> <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn"></a> |
 
 ### Contact
 
