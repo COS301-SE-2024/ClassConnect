@@ -37,12 +37,28 @@ is revolutionising education by making learning more immersive and engaging.
 - [Demo 1 Slides](#)
 - [Demo 1 Video](#)
 
+### Technologies
+
+<p align="center">
+    <a href="https://skillicons.dev">
+        <img src="https://skillicons.dev/icons?i=blender,bun,cypress,fastapi,figma,gcp,jest,mongodb,nextjs,svelte,threejs,vercel&perline=6" />
+    </a>
+</p>
+
+### Project Management
+
+[Project Board](#)
+
 ### Team Members And Their Roles
 
-| Name           | Profile Picture                                           | Role              |
-| -------------- | --------------------------------------------------------- | ----------------- |
-| Joshua Wereley | ![Joshua](./profile-pictures/joshua-profile-picture.jpeg) | Project Manager   |
-| Ashley Kapaso  | ![Ashley](./profile-pictures/ashley-profile-picture.jpeg) | Architect         |
-| Eugene Mpande  | ![Eugene](./profile-pictures/eugene-profile-picture.jpeg) | DevOps Engineer   |
-| Lunga Ndlovu   | ![Lunga](./profile-pictures/lunga-profile-picture.jpeg)   | Frontend Engineer |
-| Ayanda Juqu    | ![Ayanda](./profile-pictures/ayanda-profile-picture.jpeg) | Backend Engineer  |
+| Name           | Profile Picture                                                    | Role              |
+| -------------- | ------------------------------------------------------------------ | ----------------- |
+| Joshua Wereley | ![Joshua](./profile-pictures/joshua-profile-picture.jpeg =250x250) | Project Manager   |
+| Ashley Kapaso  | ![Ashley](./profile-pictures/ashley-profile-picture.jpeg =250x250) | Architect         |
+| Eugene Mpande  | ![Eugene](./profile-pictures/eugene-profile-picture.jpeg =250x250) | DevOps Engineer   |
+| Lunga Ndlovu   | ![Lunga](./profile-pictures/lunga-profile-picture.jpeg =250x250)   | Frontend Engineer |
+| Ayanda Juqu    | ![Ayanda](./profile-pictures/ayanda-profile-picture.jpeg =250x250) | Backend Engineer  |
+
+### Contact
+
+Team Email: <phantomworks.capstone@gmail.com>
