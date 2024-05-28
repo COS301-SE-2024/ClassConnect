@@ -1,4 +1,4 @@
-# ClassConnect
+# Phantom Works - ClassConnect
 
 ### Description of ClassConnect
 
@@ -9,3 +9,13 @@ enabling students to interact with 3D models that correspond to their study mate
 This interactive approach not only fosters a deeper understanding of the subject matter
 but also ensures that the learning experience is memorable. In essence, ClassConnect
 is revolutionising education by making learning more immersive and engaging.
+
+### Team Members And Their Roles
+
+| Name           | Profile Picture                                           | Role              |
+| -------------- | --------------------------------------------------------- | ----------------- |
+| Joshua Wereley | ![Joshua](./profile-pictures/joshua-profile-picture.jpeg) | Project Manager   |
+| Ashley Kapaso  | ![Ashley](./profile-pictures/ashley-profile-picture.jpeg) | Architect         |
+| Eugene Mpande  | ![Eugene](./profile-pictures/eugene-profile-picture.jpeg) | DevOps Engineer   |
+| Lunga Ndlovu   | ![Lunga](./profile-pictures/lunga-profile-picture.jpeg)   | Frontend Engineer |
+| Ayanda Juqu    | ![Ayanda](./profile-pictures/ayanda-profile-picture.jpeg) | Backend Engineer  |
