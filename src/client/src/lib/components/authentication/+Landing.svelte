@@ -1,6 +1,6 @@
 <script>
 	import { spring } from 'svelte/motion';
-	import AuroraBackground from '$lib/components/Utils/+AuroraBackground.svelte';
+	import AuroraBackground from '$lib/components/utils/+AuroraBackground.svelte';
 
 	let opacity = spring(0);
 	let y = spring(40);

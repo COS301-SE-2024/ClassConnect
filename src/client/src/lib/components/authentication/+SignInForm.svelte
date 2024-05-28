@@ -8,30 +8,27 @@
 
 <div class="m2 flex h-screen items-center justify-center">
 	<div class="rounded-xl bg-white bg-opacity-80 p-2">
-		<h1 class="roboto text-center text-3xl font-bold">Get Started Now</h1>
+        <div class="text-center p-2">
+            <h1 class="roboto text-center text-3xl font-bold">
+                Welcome Back 👋
+            </h1>
+            <p class="">
+                Today is a new day. It's your day. You shape it. 
+            </p>
+        </div>
 
 		<form>
-			<Label for="first_name" class="mb-2 mt-2">Name</Label>
-			<Input type="text" id="name" placeholder="John" size="md" required />
-
 			<Label for="email" class="mb-2 mt-2">Email</Label>
-			<Input type="email" id="email" placeholder="john.doe@company.com" required />
+			<Input type="email" id="email" class="mb-2 mt-2" placeholder="john.doe@company.com" required />
 
 			<Label for="password" class="mb-2 mt-2">Password</Label>
-			<Input type="password" id="password" placeholder="•••••••••" required />
-
-			<Label for="confirm_password" class="mb-2 mt-2">Confirm password</Label>
-			<Input type="password" id="confirm_password" placeholder="•••••••••" required />
-
-			<Checkbox class="p-2" id="terms" name="terms" required>
-				I agree to the &nbsp;<A href="#" class="text-blue-600">terms and conditions</A>
-			</Checkbox>
+			<Input type="password" id="password" class="mb-2 mt-2" placeholder="•••••••••" required />
 
 			<Button
 				type="submit"
 				class="w-full"
 			>
-				Sign Up
+				Sign In
 			</Button>
 		</form>
 
@@ -45,19 +42,19 @@
 			<div class="flex items-center">
 				<Button class="m-2 border-[1px] border-gray-700 bg-white text-black hover:bg-gray-100">
 					<img alt="Apple Logo" class="me-2 h-5 w-5" src={Apple} />
-					Sign Up with Apple
+					Sign In with Apple
 				</Button>
 				<Button class="m-2 border-[1px] border-gray-700 bg-white text-black hover:bg-gray-100">
 					<img alt="Google Logo" class="me-2 h-5 w-5" src={Google} />
-					Sign Up with Google
+					Sign In with Google
 				</Button>
 			</div>
 
 			<div class="text-center">
 				<p>
 					Already have an account?{' '}
-					<A href="/signin" class="text-blue-600">
-						Sign In
+					<A href="/signup" class="text-blue-600">
+						Sign Up
 					</A>
 				</p>
 			</div>
