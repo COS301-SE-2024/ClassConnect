@@ -1,8 +1,9 @@
-<script lang="ts">
-	import LeftSideImage from '$lib/components/authentication/+LeftSideImage.svelte';
-	import SignUpForm from '$lib/components/authentication/+SignUpForm.svelte';
+<script>
+	import { spring } from 'svelte/motion';
 	import AuroraBackground from '$lib/components/utils/+AuroraBackground.svelte';
-	let name = 'World';
+	import LeftSideImage from '$lib/components/authentication/+LeftSideImage.svelte';
+	import SignInForm from '$lib/components/authentication/+SignInForm.svelte';
+
 </script>
 
 <AuroraBackground>
@@ -10,7 +11,7 @@
 
 	<div class="flex">
 		<div class="w-1/2">
-			<SignUpForm />
+			<SignInForm />
 		</div>
 		<div class="w-1/2">
 			<LeftSideImage />
