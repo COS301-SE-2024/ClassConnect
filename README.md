@@ -1,5 +1,10 @@
 # Phantom Works - ClassConnect
 
+![Coverage](#)
+![Build](#)
+![Lint](#)
+![Test](#)
+
 ### Description of ClassConnect
 
 ClassConnect is an innovative educational platform that blends the traditional learning
@@ -9,6 +14,28 @@ enabling students to interact with 3D models that correspond to their study mate
 This interactive approach not only fosters a deeper understanding of the subject matter
 but also ensures that the learning experience is memorable. In essence, ClassConnect
 is revolutionising education by making learning more immersive and engaging.
+
+### Documentation
+
+#### Main Documentation
+
+- [SRS Documentation](#)
+- [Software Architectures](#)
+
+#### Extra Documentation
+
+- [Coding Standards](#)
+- [Testing Policy](#)
+- [Development Diagram](#)
+- [Installation Manual](#)
+- [User Manuals](#)
+
+### Demos
+
+#### Demo 1
+
+- [Demo 1 Slides](#)
+- [Demo 1 Video](#)
 
 ### Team Members And Their Roles
 
