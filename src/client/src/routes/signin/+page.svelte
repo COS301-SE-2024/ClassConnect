@@ -5,9 +5,7 @@
 	let name = 'World';
 </script>
 
-<AuroraBackground>
-	<main>
-
+<main>
 	<div class="flex">
 		<div class="w-1/2">
 			<SignInForm />
@@ -16,6 +14,4 @@
 			<LeftSideImage />
 		</div>
 	</div>
-
-	</main>
-</AuroraBackground>
+</main>

@@ -5,17 +5,13 @@
 	let name = 'World';
 </script>
 
-<AuroraBackground>
-	<main>
-
+<main>
 	<div class="flex">
-		<div class="w-1/2">
+		<div class="w-1/2" style="z-index: 1;">
 			<SignUpForm />
-		</div>
-		<div class="w-1/2">
+		  </div>
+		  <div class="w-1/2" style="z-index: 1;">
 			<LeftSideImage />
-		</div>
+		  </div>
 	</div>
-
-	</main>
-</AuroraBackground>
+</main>
