@@ -12,10 +12,6 @@ export class CreateUserDto {
   lastName: string;
 
   @IsNotEmpty()
-  @IsString()
-  nickname: string;
-
-  @IsNotEmpty()
   //@IsUUID()
   employeeID: number;
 
@@ -29,4 +25,8 @@ export class CreateUserDto {
 
   @IsStrongPassword()
   password: string;
+
+  organizations?: string[];
+  workspaces?: string[];
+  image?: string;
 }

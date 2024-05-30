@@ -16,8 +16,8 @@ export class User{
     nickname: string;
 
 
-    @Prop({unique: true, required: true})
-    employeeID: number;
+    @Prop({required: false})
+    image: string;
 
     @Prop({unique: true, required: true})
     email: string;
@@ -27,6 +27,13 @@ export class User{
 
     @Prop({required: true})
     password: string;
+
+    @Prop({ default: [] })
+    organizations: string[];
+  
+    @Prop({ default: [] })
+    workspaces: string[];
+  
 } 
 
 export const UserSchema=SchemaFactory.createForClass(User);
