@@ -20,4 +20,14 @@ describe("Authentication Test", () => {
 
     cy.contains("Registration successful").should("exist");
   });
+
+  it("should login with registered user", () => {
+    cy.visit("/login");
+    cy.get('input[name="email"]').type(user.email);
+    cy.get('input[name="password"]').type(user.password);
+    cy.get('button[type="submit"]').click();
+
+    cy.contains("Login successful").should("exist");
+    cy.url().should("inlcude", "/dashboard");
+  });
 });
