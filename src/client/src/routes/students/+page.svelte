@@ -1,6 +1,6 @@
 <script lang="ts">
 	import SideBar from '$lib/components/utils/+SideBar.svelte';
-	import Lecturers from '$lib/components/admin/+Lectures.svelte';
+	import Students from '$lib/components/admin/+Students.svelte';
 </script>
 
 <main>
@@ -9,7 +9,7 @@
 			<SideBar />
 		</div>
 		<div class="w-[80%]">
-			<Lecturers />
+			<Students />
 		</div>
 	</div>
 </main>

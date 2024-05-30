@@ -7,6 +7,7 @@
   import Lecturers from '$lib/images/lecturer.svg'
   import Student from '$lib/images/students.svg'
   import Settings from '$lib/images/gear.svg'
+  import Users from '$lib/images/users.svg'
 
   const user = {
     name: 'Eugene',
@@ -44,6 +45,11 @@
       icon: Student,
       name: 'Students',
       href: '/students',
+    },
+    {
+      icon: Users,
+      name: 'Admins',
+      href: '/admins',
     },
     {
       icon: Settings,
