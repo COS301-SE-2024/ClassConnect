@@ -30,4 +30,12 @@ describe("Administrator Creates Organisation", () => {
     cy.url().should("include", "/dashboard");
     cy.contains("Welcome, Admin");
   });
+
+  it("should navigate to the create organization page", () => {
+    cy.visit("/dashboard");
+    cy.contains("Create Organization").click();
+
+    cy.url().should("include", "/create-organization");
+    cy.contains("Create A New Organization");
+  });
 });
