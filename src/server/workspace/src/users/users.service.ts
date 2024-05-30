@@ -33,4 +33,13 @@ export class UsersService {
     }
     return updatedUser;
   }
+
+  //delete user
+  async deleteUser(id: string): Promise<User> {
+    const deletedUser = await this.userModel.findByIdAndDelete(id);
+    if (!deletedUser) {
+      console.log("Unable to delete user");
+    }
+    return deletedUser;
+  }
 }
