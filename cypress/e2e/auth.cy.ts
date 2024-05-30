@@ -30,4 +30,13 @@ describe("Authentication Test", () => {
     cy.contains("Login successful").should("exist");
     cy.url().should("inlcude", "/dashboard");
   });
+
+  it("should login with wrong credentials", () => {
+    cy.visit("/login");
+    cy.get('input[name="email"]').type(user.email);
+    cy.get('input[name="password"]').type("wrongpassword");
+    cy.get('button[type="submit"]').click();
+
+    cy.contains("Invalid credentials").should("exist");
+  });
 });
