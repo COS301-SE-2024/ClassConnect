@@ -17,13 +17,13 @@
             </p>
         </div>
 
-		<form>
+		<form method="POST" action="/signin">
 			<Label for="email" class="mb-2 mt-2">Email</Label>
-			<Input type="email" id="email" class="mb-2 mt-2" placeholder="john.doe@company.com" required />
-
+			<Input type="email" id="email" name="email" class="mb-2 mt-2" placeholder="john.doe@company.com" required />
+		
 			<Label for="password" class="mb-2 mt-2">Password</Label>
-			<Input type="password" id="password" class="mb-2 mt-2" placeholder="•••••••••" required />
-
+			<Input type="password" id="password" name="password" class="mb-2 mt-2" placeholder="•••••••••" required />
+		
 			<Button
 				type="submit"
 				class="w-full"
