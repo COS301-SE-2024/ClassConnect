@@ -48,7 +48,7 @@
     ]
 </script>
 
-<section class="container px-4 mx-auto">
+<section class="container">
     <div class="flex items-center gap-x-3">
         <h2 class="text-lg font-medium text-gray-800 dark:text-white">Teaching Staff members</h2>
 
