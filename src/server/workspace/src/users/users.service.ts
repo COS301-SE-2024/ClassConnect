@@ -5,11 +5,13 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from '../schemas/User.schema';
 import { CreateUserDto } from './dto/createUser.dto';
 import * as bcrypt from 'bcrypt';
+import { UpdateUserDto } from './dto/updateUser.dto';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
+  //create user
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const { password, ...userData } = createUserDto;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -21,5 +23,14 @@ export class UsersService {
 
   async findOne(email: string): Promise<User | undefined> {
     return this.userModel.findOne({ email }).exec();
+  }
+
+  //update user
+  async updateUser(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const updatedUser = await this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true }).exec();
+    if (!updatedUser) {
+      console.log("User not found");
+    }
+    return updatedUser;
   }
 }
