@@ -20,4 +20,14 @@ describe("Administrator Creates Organisation", () => {
       window.localStorage.setItem("authToken", response.body.token);
     });
   });
+
+  it("should log in as administrator", () => {
+    cy.test("/login");
+    cy.get('input[name="email"]').type(adminCredentials.email);
+    cy.get('input[name="password"]').type(adminCredentials.password);
+    cy.get('button[type="submit"]').click();
+
+    cy.url().should("include", "/dashboard");
+    cy.contains("Welcome, Admin");
+  });
 });
