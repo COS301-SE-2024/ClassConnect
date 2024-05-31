@@ -1,6 +1,6 @@
 # Phantom Works - ClassConnect
 
-[![ESLint](https://github.com/COS301-SE-2024/MiniProject12/actions/workflows/lint.yml/badge.svg)](https://github.com/COS301-SE-2024/ClassConnect/actions/workflows/linter.yml)
+[![ESLint](https://github.com/COS301-SE-2024/ClassConnect/actions/workflows/linter.yml/badge.svg)](https://github.com/COS301-SE-2024/ClassConnect/actions/workflows/linter.yml)
 
 [![Build Status](https://img.shields.io/badge/Build_Status-GitHub_Actions-brightgreen)](https://github.com/COS301-SE-2024/ClassConnect/actions/workflows/linter.yml)
 
