@@ -1,39 +1,55 @@
 <script lang="ts">
-    import { Timeline, TimelineItem } from 'flowbite-svelte';
+    import { Timeline, TimelineItem, Button } from 'flowbite-svelte';
     import { CalendarWeekSolid } from 'flowbite-svelte-icons';
-    
+    import { ArrowRightOutline } from 'flowbite-svelte-icons';
     const activities = [
-        {
-            title: 'Attend COS 301 meeting',
-            date: 'May 13th, 2024',
-        },
-        {
-            title: 'Attend COS 344 marking session',
-            date: 'June 7th, 2024',
-        },
-        {
-            title: 'Attend Graduation ceremony',
-            date: 'December 2nd, 2024',
-        }
-    ]
+    {
+        title: 'Budget Planning Meeting',
+        date: '15 Oct',
+        activity: 'Attend and contribute to the annual budget planning meeting to allocate resources for the upcoming academic year.'
+    },
+    {
+        title: 'Faculty Evaluation',
+        date: '18 Oct',
+        activity: 'Conduct evaluations for tenured and non-tenured faculty members, reviewing their performance and providing feedback.'
+    },
+    {
+        title: 'Student Affairs Committee',
+        date: '20 Oct',
+        activity: 'Participate in the Student Affairs Committee meeting to discuss and address student concerns and initiatives.'
+    },
+    {
+        title: 'Campus Safety Review',
+        date: '22 Oct',
+        activity: 'Review campus safety protocols and emergency procedures with the safety department to ensure the well-being of students and staff.'
+    },
+    {
+        title: 'Strategic Planning Workshop',
+        date: '25 Oct',
+        activity: 'Engage in a strategic planning workshop to set long-term goals and objectives for the university’s growth and development.'
+    },
+    {
+        title: 'Alumni Networking Event',
+        date: '30 Oct',
+        activity: 'Host an alumni networking event to strengthen relationships with former students and encourage their involvement in university activities.'
+    }
+];
+
 </script>
 
-<div>
-    <h1 class="roboto p-2">Activities</h1>
-      
-    <Timeline order="vertical">
-    {#each activities as activity}
-    
-    <TimelineItem title={activity.title} date={activity.title}>
-        <svelte:fragment slot="icon">
-        <span class="flex absolute -start-3 justify-center items-center w-6 h-6 bg-primary-200 rounded-full ring-8 ring-white dark:ring-gray-900 dark:bg-primary-900">
-            <CalendarWeekSolid class="w-4 h-4 text-primary-600 dark:text-primary-400" />
-        </span>
-        </svelte:fragment>
-    </TimelineItem>
-    {/each}
-
+<div class="w-full">
+    <div class="text-center">
+        <h1 class="text-4xl font-semibold text-gray-800 capitalize lg:text-3xl dark:text-white">
+            Activities
+        </h1>
+    </div>
+    <Timeline>
+        {#each activities as activity}
+        <TimelineItem title={activity.title} date={activity.date}>
+            <p class="text-base font-normal text-gray-500 dark:text-gray-400">{activity.activity}</p>
+        </TimelineItem>
+        {/each}
     </Timeline>
-    
+
 </div>
 
