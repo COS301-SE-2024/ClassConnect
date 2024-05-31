@@ -1,4 +1,4 @@
-name: Run ESLint on Push and Pull Requests
+name: Run Backend Tests
 on:
   push:
     branches:
