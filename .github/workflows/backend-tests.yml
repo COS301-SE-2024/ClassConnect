@@ -1,4 +1,4 @@
-name: Run ESLint on Push and Pull Requests
+name: Run Backend Tests
 on:
   push:
     branches:
@@ -20,16 +20,14 @@ jobs:
           node-version: 18.17.0
       - uses: oven-sh/setup-bun@v1
         with:
-          bun-version: latest
-      - name: Install dependencies for the frontend
-        run: bun install
-        working-directory: src/client
+            bun-version: latest
       - name: Install dependencies for the backend
         run: bun install
         working-directory: src/server/workspace
-      - name: Run Frontend Linters
-        run: bun run lint
-        working-directory: src/client
-      - name: Run Backend Linters
-        run: bun run lint
+      - name: Run Backend Tests
+        run: bun run test
         working-directory: src/server/workspace
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
