@@ -1,9 +1,17 @@
 # Phantom Works - ClassConnect
 
-![Coverage](#)
-![Build](#)
-![Lint](#)
-![Test](#)
+[![ESLint](https://github.com/COS301-SE-2024/MiniProject12/actions/workflows/lint.yml/badge.svg)](https://github.com/COS301-SE-2024/ClassConnect/actions/workflows/linter.yml)
+
+[![Build Status](https://img.shields.io/badge/Build_Status-GitHub_Actions-brightgreen)](https://github.com/COS301-SE-2024/ClassConnect/actions/workflows/linter.yml)
+
+[![Issue Tracking](https://img.shields.io/badge/Issue_Tracking-GitHub_Issues-yellow)](https://github.com/COS301-SE-2024/ClassConnect/issues)
+
+[![Code Coverage](https://img.shields.io/badge/Code_Coverage-Coveralls-blue)](link_to_coveralls)
+
+[![Monitoring](https://img.shields.io/badge/Monitoring-NodePing%2C%20PingPong%2C%20Security_Headers%2C%20Uptime_Robot-lightgrey)](link_to_monitoring)
+
+[![Requirements Status](https://img.shields.io/badge/Requirements-requires.io-orange)](link_to_requires_io)
+
 
 ### Description of ClassConnect
 
