@@ -7,7 +7,7 @@ import { OrganisationModule } from './organisation/organisation.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/nest'), // Update this with your MongoDB connection string
+    MongooseModule.forRoot('mongodb://localhost/cc'),
     UserModule,
     OrganisationModule,
     WorkspaceModule,
