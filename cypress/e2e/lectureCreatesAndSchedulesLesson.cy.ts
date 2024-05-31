@@ -49,4 +49,13 @@ describe("Lecture creates and schedules lessons", () => {
     cy.contains("Lesson created successfully").should("exist");
     cy.url().should("include", "/lessons");
   });
+
+  it("should list the newly created lesson", () => {
+    cy.visit("/lessons");
+
+    // Verify that the new lesson is listed
+    cy.contains(lessonData.title).should("exist");
+    cy.contains(lessonData.description).should("exist");
+    cy.contains("Scheduled on " + lessonData.schedule).should("exist");
+  });
 });
