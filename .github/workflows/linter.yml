@@ -1,0 +1,35 @@
+name: Run ESLint on Push and Pull Requests
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+    
+jobs:
+  build:
+    name: Run ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 18.17.0
+      - uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+      - name: Install dependencies for the frontend
+        run: bun install
+        working-directory: src/client
+      - name: Install dependencies for the backend
+        run: bun install
+        working-directory: src/server/workspace
+      - name: Run Frontend Linters
+        run: bun run lint
+        working-directory: src/client
+      - name: Run Backend Linters
+        run: bun run lint
+        working-directory: src/server/workspace
