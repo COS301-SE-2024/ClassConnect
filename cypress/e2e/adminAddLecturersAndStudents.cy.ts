@@ -62,4 +62,18 @@ describe("Administrator Adds Lecturers and Students", () => {
     cy.contains("Lecturer added successfully").should("exist");
     cy.contains(lecturerData.name).should("exist");
   });
+
+  it("should add a student to an organization", () => {
+    cy.visit("/organizations");
+    cy.contains(organizationData.name).click();
+    cy.contains("Add Student").click();
+
+    cy.get('input[name="email"]').type(studentData.email);
+    cy.get('input[name="name"]').type(studentData.name);
+    cy.get('input[name="password"]').type(studentData.password);
+    cy.get('button[type="submit"]').click();
+
+    cy.contains("Student added successfully").should("exist");
+    cy.contains(studentData.name).should("exist");
+  });
 });
