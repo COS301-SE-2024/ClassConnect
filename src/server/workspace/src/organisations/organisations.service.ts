@@ -2,7 +2,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Organisation, OrganisationDocument } from '../schemas/Organisation.schema';
+import { Organisation, OrganisationDocument } from '../schemas/organisation.schema';
 import { CreateOrganisationDto } from './dto/createOrganisation.dto';
 import { UpdateOrganisationDto } from './dto/updateOrganisation.dto';
 //import { UpdateOrganisationDto } from './dto/update-organisation.dto';

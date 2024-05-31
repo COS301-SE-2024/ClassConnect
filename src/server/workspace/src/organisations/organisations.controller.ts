@@ -3,7 +3,7 @@ import { Controller, Get, Post, Body, Param, Put, Delete, UseGuards } from '@nes
 import { OrganisationsService } from './organisations.service';
 import { CreateOrganisationDto } from './dto/createOrganisation.dto';
 import { UpdateOrganisationDto } from './dto/updateOrganisation.dto';
-import { Organisation } from '../schemas/Organisation.schema';
+import { Organisation } from '../schemas/organisation.schema';
 //  import { RolesGuard } from '../auth/roles.guard'; 
 //  import { Roles } from '../auth/roles.decorator'; 
 
