@@ -24,7 +24,7 @@ export class User extends Document {
   @Prop({ required: true, enum: ['admin', 'lecturer', 'student'] })
   role: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'Organization', required: true })
+  @Prop({ type: Types.ObjectId, ref: 'Organization'})
   organization: Types.ObjectId;
 
   @Prop({ type: [{ type: Types.ObjectId, ref: 'Workspace' }] })

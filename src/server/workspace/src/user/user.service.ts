@@ -88,7 +88,9 @@ export class UserService {
   }
 
   private hashEmail(email: string): string {
-    return crypto.createHash('sha256').update(email).digest('hex');
+    const emailHash = crypto.createHash('sha256').update(email).digest('hex');
+    const numericHash = emailHash.replace(/\D/g, '');
+    return numericHash;
   }
 
   private async hashPassword(password: string): Promise<string> {
