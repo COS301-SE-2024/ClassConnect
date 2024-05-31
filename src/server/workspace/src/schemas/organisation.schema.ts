@@ -11,12 +11,6 @@ export class Organisation extends Document {
 
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   createdBy: Types.ObjectId;
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
-  users: Types.ObjectId[];
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'Workspace' }] })
-  workspaces: Types.ObjectId[];
 }
 
 export const OrganisationSchema = SchemaFactory.createForClass(Organisation);
