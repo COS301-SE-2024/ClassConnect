@@ -39,15 +39,7 @@
             <span>{announcement.date}</span>
           </time>
         </div>
-      
-        <div class="hidden sm:block sm:basis-56">
-          <img
-            alt=""
-            src={announcement.image}
-            class="aspect-square h-full w-full object-cover"
-          />
-        </div>
-      
+              
         <div class="flex flex-1 flex-col justify-between">
           <div class="border-s border-gray-900/10 p-4 sm:border-l-transparent sm:p-6">
             <a href="#">
