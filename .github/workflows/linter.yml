@@ -25,11 +25,11 @@ jobs:
         run: bun install
         working-directory: src/client
       - name: Install dependencies for the backend
-        run: npm install
+        run: bun install
         working-directory: src/server/workspace
       - name: Run Frontend Linters
         run: bun run lint
         working-directory: src/client
       - name: Run Backend Linters
-        run: npm run lint
+        run: bun run lint
         working-directory: src/server/workspace
