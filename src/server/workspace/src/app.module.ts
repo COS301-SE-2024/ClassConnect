@@ -1,24 +1,16 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule} from '@nestjs/mongoose';
-import { UsersModule } from './users/users.modules';
-import { AuthModule } from './auth/auth.module';
-import { OrganisationsModule } from './organisations/organisations.module'
-// import { APP_GUARD } from '@nestjs/core';
-// import { RolesGuard } from './auth/roles.guard';
+import { MongooseModule } from '@nestjs/mongoose';
 
+import { UserModule } from './user/user.module';
+import { WorkspaceModule } from './workspace/workspace.module';
+import { OrganisationModule } from './organisation/organisation.module';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://127.0.0.1/cassconnectdb?ssl=false'),
-    UsersModule,
-    AuthModule,
-    OrganisationsModule,
-  ],
-  controllers: [],
-  providers: [
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: RolesGuard,
-    // },
+  imports: [
+    MongooseModule.forRoot('mongodb://localhost/nest'), // Update this with your MongoDB connection string
+    UserModule,
+    OrganisationModule,
+    WorkspaceModule,
   ],
 })
 export class AppModule {}

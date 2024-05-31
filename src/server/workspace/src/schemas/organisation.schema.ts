@@ -2,7 +2,7 @@ import { Document, Types } from 'mongoose';
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 
 @Schema({ timestamps: true })
-export class Organization extends Document {
+export class Organisation extends Document {
   @Prop({ required: true })
   name: string;
 
@@ -19,4 +19,4 @@ export class Organization extends Document {
   workspaces: Types.ObjectId[];
 }
 
-export const OrganizationSchema = SchemaFactory.createForClass(Organization);
+export const OrganisationSchema = SchemaFactory.createForClass(Organisation);
