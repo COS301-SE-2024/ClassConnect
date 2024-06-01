@@ -1,9 +1,8 @@
-import * as bcrypt from 'bcrypt';
-import * as crypto from 'crypto';
-import { Model, Types } from 'mongoose';
+import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
+import { Utility } from '../utils/utility';
 import { User } from '../schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 
@@ -12,12 +11,12 @@ export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const username = this.generateUsername(
+    const username = Utility.generateUsername(
       createUserDto.role,
       createUserDto.email,
     );
 
-    const hashedPassword = await this.hashPassword(createUserDto.password);
+    const hashedPassword = await Utility.hashPassword(createUserDto.password);
 
     const newUser = new this.userModel({
       ...createUserDto,
@@ -48,12 +47,20 @@ export class UserService {
     return user;
   }
 
+  async findMany(filter: Partial<CreateUserDto>): Promise<User[]> {
+    const users = await this.userModel.find(filter).exec();
+
+    return users;
+  }
+
   async updateUser(
     id: string,
     updateUserDto: Partial<CreateUserDto>,
   ): Promise<User> {
     if (updateUserDto.password) {
-      updateUserDto.password = await this.hashPassword(updateUserDto.password);
+      updateUserDto.password = await Utility.hashPassword(
+        updateUserDto.password,
+      );
     }
 
     const updatedUser = await this.userModel
@@ -75,58 +82,5 @@ export class UserService {
     }
 
     return { message: 'User deleted successfully.' };
-  }
-
-  async addToWorkspace(
-    userId: string,
-    workspaceId: Types.ObjectId,
-  ): Promise<User> {
-    const user = await this.findById(userId);
-
-    user.workspaces.push(workspaceId);
-
-    return user.save();
-  }
-
-  async addToOrganisation(
-    userId: string,
-    organisationId: Types.ObjectId,
-  ): Promise<User> {
-    const user = await this.findById(userId);
-
-    user.organisation = organisationId;
-    
-    return user.save();
-  }
-
-  private generateUsername(role: string, email: string): string {
-    const rolePrefix = this.getRolePrefix(role);
-    const year = new Date().getFullYear().toString().slice(-2);
-    const emailHash = this.hashEmail(email).slice(0, 7);
-    return `${rolePrefix}${year}${emailHash}`;
-  }
-
-  private getRolePrefix(role: string): string {
-    switch (role) {
-      case 'admin':
-        return 'a';
-      case 'lecturer':
-        return 'e';
-      case 'student':
-        return 's';
-      default:
-        throw new Error('Invalid role');
-    }
-  }
-
-  private hashEmail(email: string): string {
-    const emailHash = crypto.createHash('sha256').update(email).digest('hex');
-    const numericHash = emailHash.replace(/\D/g, '');
-    return numericHash;
-  }
-
-  private async hashPassword(password: string): Promise<string> {
-    const salt = await bcrypt.genSalt();
-    return bcrypt.hash(password, salt);
   }
 }

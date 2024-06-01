@@ -12,7 +12,7 @@ export class Workspace extends Document {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   owner: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: 'Organization', required: true })
+  @Prop({ type: Types.ObjectId, ref: 'Organisation', required: true })
   organisation: Types.ObjectId;
 }
 
