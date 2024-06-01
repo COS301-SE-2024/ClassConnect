@@ -11,6 +11,7 @@
 	function storeAccessToken(token: string,id: string): void {
 		localStorage.setItem('accessToken', token);
 		localStorage.setItem('userID', id);
+		console.log("This is the ID", id);
 	}
 
 	// Function to handle form submission

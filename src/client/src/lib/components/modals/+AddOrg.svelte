@@ -38,7 +38,8 @@
 
 		// Create a FormData object from the form
 		const formData = new FormData(event.target);
-
+		const userID = localStorage.getItem('userID') || 'non-existent';
+		formData.append('organisationID', userID);
 		// Send a request to your server-side action
 		const response = await fetch('/organisation?/create', {
 			method: 'POST',
@@ -48,10 +49,11 @@
 		// If the request was successful, store the org id in local storage
 		if (response.ok) {
 			const res = await response.json();
-			const dataString = JSON.parse(res.data); // This will parse the outer array
-			const dataObject = JSON.parse(dataString[0]); // This will parse the inner object
-			storeOrgID(dataObject.body.organisationID);
-			updateOrgName();
+			console.log(res);
+			// const dataString = JSON.parse(res.data); // This will parse the outer array
+			// const dataObject = JSON.parse(dataString[0]); // This will parse the inner object
+			// storeOrgID(dataObject.body.organisationID);
+			// updateOrgName();
 		}
 	}
 </script>

@@ -1,5 +1,5 @@
 /** @type {import('./$types').Actions} */
-
+import axios from 'axios';
 // Mock edit details function
 async function editDetails(org_name, image_file, orgID) {
 	if (org_name) {
@@ -13,17 +13,19 @@ async function editDetails(org_name, image_file, orgID) {
 	}
 }
 
-async function createOrg(org_name, image_file) {
-	if (org_name) {
-		console.log(org_name);
-	}
-	if (image_file) {
-		console.log(image_file.name);
-	}
+async function createOrg(org_name, userID, image_file) {
+	
+	try {
+		const response = await axios.post('http://localhost:3000/organizations', {
+			org_name,
+			userID,
+			image_file
+		});
 
-	return {
-		organisationID: '12345678910'
-	};
+		return response.data;
+	} catch (error) {
+		throw new Error('Create Org failed');
+	}
 }
 
 async function getOrgDetails(orgId) {
@@ -68,28 +70,18 @@ export const actions = {
 	create: async ({ request }) => {
 		const formData = await request.formData();
 		const orgName = formData.get('org_name');
-		const imageFile = formData.get('image');
-
+		const imageFile = 'https://www.edarabia.com/wp-content/uploads/2013/08/university-of-pretoria-logo-south-africa.jpg';
+		const userID = formData.get('userID');
 		console.log('Organisation Name: ', orgName);
+		console.log('createdBy', userID);
 
-		if (imageFile instanceof File) {
-			console.log('Received file');
-			console.log('File name: ', imageFile.name);
-			console.log('File type: ', imageFile.type);
-			console.log('File size: ', imageFile.size);
-		} else {
-			console.log('No file received');
-		}
+		const res = await createOrg(orgName,userID, imageFile);
 
-		const res = await createOrg(orgName, imageFile);
-
-		console.log(res);
+		//console.log(res);
 
 		return JSON.stringify({
 			success: true,
-			body: {
-				organisationID: res.organisationID
-			}
+			body: res,
 		});
 	},
 	getOrganisationDetails: async ({ request }) => {
