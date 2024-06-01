@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--neutral-bg-color: #f7f7f7;
+	--white: #ffffff;
+	--black: #000000;
+	--link_color: #284cdc;
+	--system_nav: #178f65;
+	--selected_item: #0e674d;
+	--presence: #20a271;
+	--notifications: #20a271;
+	--primary: #178f65;
+	--secondary: #20a271;
+}
+
+.neutral-background {
+	background-color: var(--netral-bg-color);
+}
+
+.roboto {
+	font-family: 'Roboto', sans-serif;
+}
