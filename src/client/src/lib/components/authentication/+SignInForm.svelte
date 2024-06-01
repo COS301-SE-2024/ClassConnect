@@ -1,39 +1,44 @@
-<script>
+<script lang="ts">
 	import Apple from '$lib/images/apple.svg';
 	import Google from '$lib/images/google.svg';
 	import { goto } from '$app/navigation';
 	import { Input, Label, Button, A } from 'flowbite-svelte';
+	import {signIn } from '../../../services/auth';
+
 	import '@fontsource/roboto';
 
 	// Function to store the access token in local storage
-	function storeAccessToken(token) {
+	function storeAccessToken(token: string): void {
 		localStorage.setItem('accessToken', token);
 	}
 
 	// Function to handle form submission
-	async function handleSubmit(event) {
+	async function handleSubmit(event: SubmitEvent): Promise<void> {
 		// Prevent the default form submission behavior
 		event.preventDefault();
 
 		// Create a FormData object from the form
-		const formData = new FormData(event.target);
+		const formData = new FormData(event.target as HTMLFormElement);
+
+		const username = formData.get('username')?.toString() ?? '';
+		const password= formData.get('password')?.toString() ?? '';
 
 		// Send a request to your server-side action
-		const response = await fetch('/signin', {
-			method: 'POST',
-			body: formData
-		});
+		try {
+			const response = await signIn(username,  password);
 
-		// If the request was successful, store the access token in local storage
-		if (response.ok) {
-			const res = await response.json();
-			const data = JSON.parse(res.data);
-			const accessToken = data[2];
-			storeAccessToken(accessToken);
-			goto('/');
-		} else {
-			goto('/signin');
+			console.log('Response:', response);
+
+			if (response && response.accessToken) {
+				storeAccessToken(response.accessToken);
+				goto('/');
+			}
+		} catch (error) {
+			console.error('Sign-ip error:', error);
+			alert('Sign-in failed');
 		}
+
+		
 	}
 </script>
 
