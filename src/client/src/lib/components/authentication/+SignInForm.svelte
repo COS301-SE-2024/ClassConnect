@@ -45,13 +45,13 @@
 		</div>
 
 		<form on:submit={handleSubmit}>
-			<Label for="email" class="mb-2 mt-2">Email</Label>
+			<Label for="username" class="mb-2 mt-2">Username</Label>
 			<Input
-				type="email"
-				id="email"
-				name="email"
+				type="text"
+				id="username"
+				name="username"
 				class="mb-2 mt-2"
-				placeholder="john.doe@company.com"
+				placeholder="Your username..."
 				required
 			/>
 
