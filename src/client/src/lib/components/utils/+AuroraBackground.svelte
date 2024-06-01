@@ -7,12 +7,7 @@
 </script>
 
 <main>
-	<div
-		class={cn(
-			'transition-bg  bg-zinc-50 text-slate-950 dark:bg-zinc-900',
-			className
-		)}
-	>
+	<div class={cn('transition-bg  bg-zinc-50 text-slate-950 dark:bg-zinc-900', className)}>
 		<div class="absolute inset-0 overflow-hidden">
 			<div
 				class={cn(
