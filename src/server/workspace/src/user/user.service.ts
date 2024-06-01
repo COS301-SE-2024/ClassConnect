@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
@@ -44,7 +44,7 @@ export class UserService {
     if (!user) {
       throw new NotFoundException(`User with username ${username} not found`);
     }
-    
+
     return user;
   }
 
@@ -75,6 +75,28 @@ export class UserService {
     }
 
     return { message: 'User deleted successfully.' };
+  }
+
+  async addToWorkspace(
+    userId: string,
+    workspaceId: Types.ObjectId,
+  ): Promise<User> {
+    const user = await this.findById(userId);
+
+    user.workspaces.push(workspaceId);
+
+    return user.save();
+  }
+
+  async addToOrganisation(
+    userId: string,
+    organisationId: Types.ObjectId,
+  ): Promise<User> {
+    const user = await this.findById(userId);
+
+    user.organisation = organisationId;
+    
+    return user.save();
   }
 
   private generateUsername(role: string, email: string): string {

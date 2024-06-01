@@ -13,10 +13,7 @@ export class Workspace extends Document {
   owner: Types.ObjectId;
 
   @Prop({ type: Types.ObjectId, ref: 'Organization', required: true })
-  organization: Types.ObjectId;
-
-  @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
-  users: Types.ObjectId[];
+  organisation: Types.ObjectId;
 }
 
 export const WorkspaceSchema = SchemaFactory.createForClass(Workspace);
