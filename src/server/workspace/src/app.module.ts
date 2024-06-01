@@ -13,7 +13,7 @@ import { OrganisationModule } from './organisation/organisation.module';
     UserModule,
     WorkspaceModule,
     OrganisationModule,
-    ConfigModule.forRoot({envFilePath: ['.env'],}),
+    ConfigModule.forRoot({ envFilePath: ['.env'] }),
     MongooseModule.forRoot('mongodb://localhost/cc'),
   ],
 })

@@ -7,7 +7,7 @@ export class CreateWorkspaceDto {
 
   @IsString()
   @IsNotEmpty()
-  organizationId: string;
+  organisation: string;
 
   @IsString()
   @IsNotEmpty()

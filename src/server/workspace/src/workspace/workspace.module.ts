@@ -7,10 +7,12 @@ import { Workspace, WorkspaceSchema } from '../schemas/workspace.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Workspace.name, schema: WorkspaceSchema }])
+    MongooseModule.forFeature([
+      { name: Workspace.name, schema: WorkspaceSchema },
+    ]),
   ],
   providers: [WorkspaceService],
   controllers: [WorkspaceController],
-  exports: [WorkspaceService]
+  exports: [WorkspaceService],
 })
 export class WorkspaceModule {}
