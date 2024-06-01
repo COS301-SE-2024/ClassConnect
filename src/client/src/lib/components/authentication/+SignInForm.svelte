@@ -8,8 +8,9 @@
 	import '@fontsource/roboto';
 
 	// Function to store the access token in local storage
-	function storeAccessToken(token: string): void {
+	function storeAccessToken(token: string,id: string): void {
 		localStorage.setItem('accessToken', token);
+		localStorage.setItem('userID', id);
 	}
 
 	// Function to handle form submission
@@ -30,7 +31,7 @@
 			console.log('Response:', response);
 
 			if (response && response.accessToken) {
-				storeAccessToken(response.accessToken);
+				storeAccessToken(response.accessToken, response.sub);
 				goto('/');
 			}
 		} catch (error) {
