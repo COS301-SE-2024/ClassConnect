@@ -47,7 +47,7 @@
 
 			<div class="flex flex-1 flex-col justify-between">
 				<div class="border-s border-gray-900/10 p-4 sm:border-l-transparent sm:p-6">
-					<a href="#">
+					<a href="/">
 						<h3 class="font-bold uppercase text-gray-900">
 							{announcement.heading}
 						</h3>
@@ -60,7 +60,7 @@
 
 				<div class="sm:flex sm:items-end sm:justify-end">
 					<a
-						href="#"
+						href="/"
 						class="block bg-green-400 px-5 py-3 text-center text-xs font-bold uppercase text-gray-900 transition hover:bg-yellow-400"
 					>
 						Read Full Announcement

@@ -1,8 +1,5 @@
 <script lang="ts">
-	import SideBar from '$lib/components/utils/+SideBar.svelte';
-	import Profile from '$lib/components/admin/+Profile.svelte';
-	import adjustments from '$lib/images/adjustments.svg';
-	import { Tabs, TabItem, Button } from 'flowbite-svelte';
+	import { Button } from 'flowbite-svelte';
 	const user = {
 		name: 'Eugene',
 		email: 'eugene.mpande@tuks.co.za',

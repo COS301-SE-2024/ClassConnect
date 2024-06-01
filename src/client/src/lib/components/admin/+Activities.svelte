@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { Timeline, TimelineItem, Button } from 'flowbite-svelte';
-	import { CalendarWeekSolid } from 'flowbite-svelte-icons';
-	import { ArrowRightOutline } from 'flowbite-svelte-icons';
+	import { Timeline, TimelineItem } from 'flowbite-svelte';
+
 	const activities = [
 		{
 			title: 'Budget Planning Meeting',

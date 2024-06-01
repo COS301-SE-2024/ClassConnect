@@ -2,6 +2,8 @@
 
 // Mock sign-in function
 async function signIn(email, password) {
+	console.log(email);
+	console.log(password);
 	// In a real application, you would send these credentials to your server
 	// and get an access token in response. Here we're just generating a mock token.
 	const mockToken = 'mocktoken12345678910';

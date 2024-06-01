@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Tabs, TabItem, Button } from 'flowbite-svelte';
+	import { Button } from 'flowbite-svelte';
 	const admins = [
 		{
 			name: 'Katlego Tau',
@@ -48,7 +48,7 @@
 
 <section class="container mx-auto my-2 px-4">
 	<div class="flex items-center overflow-x-auto whitespace-nowrap py-4">
-		<a href="#" class="text-gray-600 dark:text-gray-200">
+		<a href="/" class="text-gray-600 dark:text-gray-200">
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				class="h-5 w-5"

@@ -1,9 +1,8 @@
 <script>
-	import { Heading, Span } from 'flowbite-svelte';
 	import Apple from '$lib/images/apple.svg';
 	import Google from '$lib/images/google.svg';
 	import { goto } from '$app/navigation';
-	import { Input, Label, ButtonGroup, Button, Checkbox, A } from 'flowbite-svelte';
+	import { Input, Label, Button, A } from 'flowbite-svelte';
 	import '@fontsource/roboto';
 
 	// Function to store the access token in local storage

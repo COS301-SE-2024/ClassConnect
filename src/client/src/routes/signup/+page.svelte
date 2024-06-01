@@ -1,8 +1,6 @@
 <script lang="ts">
 	import LeftSideImage from '$lib/components/authentication/+LeftSideImage.svelte';
 	import SignUpForm from '$lib/components/authentication/+SignUpForm.svelte';
-	import AuroraBackground from '$lib/components/utils/+AuroraBackground.svelte';
-	let name = 'World';
 </script>
 
 <main>

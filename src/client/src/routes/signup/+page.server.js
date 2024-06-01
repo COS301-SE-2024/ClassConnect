@@ -1,6 +1,11 @@
 /** @type {import('./$types').Actions} */
 // Mock sign-in function
 async function signUp(name, email, password, org_name, image_file) {
+	console.log(name);
+	console.log(email);
+	console.log(password);
+	console.log(org_name);
+	console.log(image_file.name);
 	// In a real application, you would send these credentials to your server
 	// and get an access token in response. Here we're just generating a mock token.
 	const mockToken = 'mocktoken12345678910';
