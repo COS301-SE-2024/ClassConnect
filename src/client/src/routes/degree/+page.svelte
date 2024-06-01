@@ -1,9 +1,9 @@
 <script lang="ts">
 	import SideBar from "$lib/components/utils/+SideBar.svelte"
-	import { Navbar, Input } from 'flowbite-svelte';
+	import Workspaces from "$lib/components/admin/+Workspaces.svelte";
+	import { Navbar, Button, Input } from 'flowbite-svelte';
 	import { SearchOutline, BellOutline, EnvelopeOutline, UserCircleOutline } from "flowbite-svelte-icons";
-	import  {degrees}  from "./degrees";
-	import Degrees from "$lib/components/admin/+Degrees.svelte";
+	import  {workspaces}  from "./workspaces";
   </script>
 
 
@@ -36,10 +36,12 @@
 
 	  <!-- The div below contains all the information that is below the navbar -->
 	  <div class="mt-4">
-		<div class="flex justify-center">
-			<h1 class="text-3xl font-bold mb-2">Degree Dashboard</h1>
+		<h1 class="text-3xl font-bold mb-2">University of Pretoria</h1>
+		<h2 class="text-xl font-semibold mb-4">Computer Science</h2>
+		<div class="flex justify-end mt-6">
+		  <Button color="green">Add Workspace</Button>
 		</div>
-		<Degrees {degrees} />
+		<Workspaces {workspaces} />
 	  </div>
 	</div>
   </main>
