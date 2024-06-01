@@ -1,112 +1,121 @@
 <script lang="ts">
-	import { Button } from 'flowbite-svelte';
+	import { onMount } from 'svelte';
 	import EditOrg from '$lib/components/modals/+EditOrg.svelte';
-	const organisation = {
-		organisationname: 'University of Pretoria',
-		module: [
-			{
-				name: 'Operating Systems',
-				code: 'CSOS101',
-				description:
-					'Introduction to operating systems, covering topics such as process management, memory management, and file systems.'
+	import AddOrg from '$lib/components/modals/+AddOrg.svelte';
+	import RemoveOrg from '$lib/components/modals/+RemoveOrg.svelte';
+	import { organisationName } from '$lib/stores/store';
+
+	let org_exists: boolean = false;
+
+	async function getOrgName() {
+		const formData = new URLSearchParams();
+		const orgID = localStorage.getItem('organisationID') || 'non-existent';
+		formData.append('organisationID', orgID);
+
+		const response = await fetch('/organisation?/getOrganisationDetails', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded'
 			},
-			{
-				name: 'Database Management Systems',
-				code: 'CSDB202',
-				description:
-					'Study of database models, relational databases, SQL, and database design and implementation.'
-			},
-			{
-				name: 'Network Security',
-				code: 'CSNS303',
-				description:
-					'Fundamentals of network security, including encryption, firewalls, intrusion detection, and secure protocols.'
-			},
-			{
-				name: 'Software Engineering',
-				code: 'CSSE404',
-				description:
-					'Principles of software engineering, including software development life cycle, methodologies, and project management.'
-			},
-			{
-				name: 'Artificial Intelligence',
-				code: 'CSAI505',
-				description:
-					'Introduction to artificial intelligence concepts, including machine learning, neural networks, and natural language processing.'
-			},
-			{
-				name: 'Cloud Computing',
-				code: 'CSCC606',
-				description:
-					'Overview of cloud computing technologies, cloud service models, and deployment strategies.'
-			},
-			{
-				name: 'Cybersecurity',
-				code: 'CSCY707',
-				description:
-					'Comprehensive study of cybersecurity principles, risk management, and techniques to protect information systems.'
-			},
-			{
-				name: 'Data Structures and Algorithms',
-				code: 'CSDA808',
-				description:
-					'In-depth analysis of data structures and algorithms, including their design, implementation, and complexity analysis.'
+			body: formData
+		});
+
+		if (response.ok) {
+			const res = await response.json();
+			const dataString = JSON.parse(res.data); // This will parse the outer array
+			const dataObject = JSON.parse(dataString[0]); // This will parse the inner object
+			organisationName.set(dataObject.body.organisationName);
+		}
+	}
+
+	function checkOrganisationID() {
+		if (typeof window !== 'undefined') {
+			const organisationID = localStorage.getItem('organisationID');
+			org_exists = organisationID !== null;
+			if (org_exists === true) {
+				getOrgName();
 			}
-		]
-	};
-	
+		}
+	}
+
+	// Call the function when the component is initialized
+	onMount(checkOrganisationID);
+
+	// Reactive statement that watches for changes in organisationName
+	$: {
+		organisationName.subscribe(() => {
+			checkOrganisationID();
+		});
+	}
 </script>
 
-<section class="container mx-auto px-4">
+{#if org_exists}
+	<section class="container mx-auto px-4">
+		<div class="sm:flex sm:items-center sm:justify-between">
+			<div>
+				<div class="flex items-center gap-x-3">
+					<h2 class="text-lg font-medium text-gray-800 dark:text-white">Organisation</h2>
+				</div>
+			</div>
+
+			<div class="mt-4 flex items-center gap-x-3">
+				<RemoveOrg />
+				<EditOrg />
+			</div>
+		</div>
+
+		<div class="mt-6 flex flex-col">
+			<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+				<div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
+					<div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+						<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+							<thead class="bg-gray-50 dark:bg-gray-800">
+								<tr>
+									<th
+										scope="col"
+										class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
+									>
+										<button class="flex items-center gap-x-3 focus:outline-none"> Feild </button>
+									</th>
+
+									<th
+										scope="col"
+										class="px-12 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
+									>
+										Value
+									</th>
+								</tr>
+							</thead>
+							<tbody
+								class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900"
+							>
+								<tr>
+									<td class="whitespace-nowrap px-4 py-4 text-sm font-medium">
+										<div>
+											<h2 class="font-medium text-gray-800 dark:text-white">Orgnisation Name</h2>
+										</div>
+									</td>
+									<td class="whitespace-nowrap px-12 py-4 text-sm font-medium">
+										{$organisationName}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{:else}
 	<div class="sm:flex sm:items-center sm:justify-between">
 		<div>
 			<div class="flex items-center gap-x-3">
-				<h2 class="text-lg font-medium text-gray-800 dark:text-white">Organisation</h2>
+				<h2 class="text-lg font-medium text-gray-800 dark:text-white">{$organisationName}</h2>
 			</div>
 		</div>
 
 		<div class="mt-4 flex items-center gap-x-3">
-			<EditOrg />
+			<AddOrg />
 		</div>
 	</div>
-
-	<div class="mt-6 flex flex-col">
-		<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-			<div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-				<div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-					<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-						<thead class="bg-gray-50 dark:bg-gray-800">
-							<tr>
-								<th
-									scope="col"
-									class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
-								>
-									<button class="flex items-center gap-x-3 focus:outline-none"> Feild </button>
-								</th>
-
-								<th
-									scope="col"
-									class="px-12 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
-								>
-									Value
-								</th>
-							</tr>
-						</thead>
-						<tbody class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900">
-							<tr>
-								<td class="whitespace-nowrap px-4 py-4 text-sm font-medium">
-									<div>
-										<h2 class="font-medium text-gray-800 dark:text-white">Orgnisation Name</h2>
-									</div>
-								</td>
-								<td class="whitespace-nowrap px-12 py-4 text-sm font-medium">
-									{organisation.organisationname}
-								</td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
+{/if}

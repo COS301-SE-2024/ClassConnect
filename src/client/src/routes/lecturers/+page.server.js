@@ -1,36 +1,71 @@
 /** @type {import('./$types').Actions} */
 
-// Mock edit details function
-async function editDetails(org_name, image_file) {
-    if(org_name){
-        console.log(org_name);
-    }
-    if(image_file){
-        console.log(image_file.name);
-    }
+// Mock add, edit, and delete functions
+async function addDetails(name, email, role) {
+	console.log(name);
+	console.log(email);
+	console.log(role);
+}
+
+async function editDetails(name, email, role) {
+	console.log(name);
+	console.log(email);
+	console.log(role);
+}
+
+async function deleteDetails(name, email, role) {
+	console.log(name);
+	console.log(email);
+	console.log(role);
 }
 
 export const actions = {
 	default: async ({ request }) => {
 		const formData = await request.formData();
-		const orgName = formData.get('org_name');
-		const imageFile = formData.get('image');
+		const name = formData.get('org_name');
+		const email = formData.get('email');
+		const role = formData.get('role');
 
-		console.log('Organisation Name: ', orgName);
+		console.log(name);
+		console.log(email);
+		console.log(role);
 
-		if (imageFile instanceof File) {
-			console.log('Received file');
-			console.log('File name: ', imageFile.name);
-			console.log('File type: ', imageFile.type);
-			console.log('File size: ', imageFile.size);
-		} else {
-			console.log('No file received');
-		}
-
-	    await editDetails(orgName, imageFile);
+		addDetails(name, email, role);
 
 		return {
 			status: 200
-        };
+		};
+	},
+	edit: async ({ request }) => {
+		const formData = await request.formData();
+		const name = formData.get('org_name');
+		const email = formData.get('email');
+		const role = formData.get('role');
+
+		console.log(name);
+		console.log(email);
+		console.log(role);
+
+		editDetails(name, email, role);
+
+		return {
+			status: 200
+		};
+	},
+	delete: async ({ request }) => {
+		const formData = await request.formData();
+		const name = formData.get('org_name');
+		const email = formData.get('email');
+		const role = formData.get('role');
+
+		console.log(name);
+		console.log(email);
+		console.log(role);
+
+		deleteDetails(name, email, role);
+
+		return {
+			status: 200
+		};
 	}
 };
