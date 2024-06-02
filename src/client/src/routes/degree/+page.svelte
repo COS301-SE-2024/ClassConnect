@@ -36,8 +36,8 @@
 
 	  <!-- The div below contains all the information that is below the navbar -->
 	  <div class="mt-4">
-		<h1 class="text-3xl font-bold mb-2">University of Pretoria</h1>
-		<h2 class="text-xl font-semibold mb-4">Computer Science</h2>
+		<h1 class="text-3xl font-bold mb-2 dark:text-slate-400">University of Pretoria</h1>
+		<h2 class="text-xl font-semibold mb-4 dark:text-slate-400">Computer Science</h2>
 		<div class="flex justify-end mt-6">
 		  <Button color="green">Add Workspace</Button>
 		</div>
