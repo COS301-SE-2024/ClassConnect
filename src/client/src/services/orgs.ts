@@ -44,7 +44,7 @@ export async function getOrganization(id: string): Promise<any> {
 //delete org DELETE
 export async function deleteOrganization(id: string): Promise<string> {
     try {
-        const response = await axios.delete(`http://localhost:3000/organizations/${id}`);
+        const response = await axios.delete(`http://localhost:3000/organisations/${id}`);
         return response.data.message; 
     } catch (error) {
         throw new Error('Delete Org failed'); 
