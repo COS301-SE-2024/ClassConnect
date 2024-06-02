@@ -29,7 +29,7 @@
 
 <Modal bind:open={formModal} size="xs" autoclose={false} class="w-full">
 	<form class="flex flex-col space-y-6" on:submit={handleSubmit}>
-		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Edit Lecturer</h3>
+		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Edit Admin</h3>
 
 		<Label for="name" class="mb-2 mt-2 space-y-2">Name</Label>
 		<Input
@@ -51,16 +51,16 @@
 			required
 		/>
 
-		<Label for="email" class="mb-2 mt-2 space-y-2">Role</Label>
+		<Label for="email" class="mb-2 mt-2 space-y-2">Department</Label>
 		<Input
 			type="text"
-			id="role"
-			name="role"
-			placeholder="Lecturer"
+			id="department"
+			name="department"
+			placeholder="Arts"
 			size="md"
 			required
 		/>
 
-		<Button type="submit" class="w-full1">Edit Lecturer</Button>
+		<Button type="submit" class="w-full1">Edit Admin</Button>
 	</form>
 </Modal>
