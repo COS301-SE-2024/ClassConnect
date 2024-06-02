@@ -14,7 +14,7 @@ export async function getUser(id: string): Promise<any> {
 
 export async function getUsers(filter: {}): Promise<any> {
 	try {
-		const response = await axios.get(`http://localhost:3000/users`, filter);
+		const response = await axios.get(`http://localhost:3000/users?${new URLSearchParams(filter)}`);
 		return response.data;
 	} catch (error) {
 		throw new Error('Get Users failed');

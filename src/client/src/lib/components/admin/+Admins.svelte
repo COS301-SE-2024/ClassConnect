@@ -150,7 +150,7 @@
 									>
 									<td class="whitespace-nowrap px-4 py-4 text-sm">
 										<div class="flex items-center gap-x-6">
-											<Remove bind:adminID={admin._id} />
+											<Remove bind:id={admin._id} />
 											<EditAdmin bind:adminID={admin._id}/>
 										</div>
 									</td>

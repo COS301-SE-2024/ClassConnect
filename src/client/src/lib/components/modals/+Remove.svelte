@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let adminID = '';
+	export let id = '';
 
 	import { Button, Modal } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
@@ -11,7 +11,7 @@
 		event.preventDefault();
 
 		try {
-			await deleteUser(adminID);
+			await deleteUser(id);
 		} catch (error) {
 			console.error('Create User Error:', error);
 		}
