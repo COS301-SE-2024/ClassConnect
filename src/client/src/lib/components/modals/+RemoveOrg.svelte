@@ -3,21 +3,25 @@
 	import { Button, Modal } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
 	import { deleteOrganization } from '../../../services/orgs';
+	import { organisationName } from '$lib/stores/store';
 	let popupModal = false;
 
 	async function handleRemove() {
-    const orgID = localStorage.getItem('organisationID') || 'non-existent';
+		const orgID = localStorage.getItem('organisationID') || 'non-existent';
 
-    try {
-        const message = await deleteOrganization(orgID);
-        
-        console.log(message); 
-        //goto('/signup'); 
-    } catch (error) {
-        console.error('Delete organization error:', error);
-       
-    }
-}
+		try {
+			const message = await deleteOrganization(orgID);
+
+			console.log(message);
+
+			localStorage.removeItem('organisationID');
+
+			organisationName.set('');
+			goto('/organisation');
+		} catch (error) {
+			console.error('Delete organization error:', error);
+		}
+	}
 </script>
 
 <Button on:click={() => (popupModal = true)}>Remove</Button>

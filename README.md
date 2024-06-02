@@ -55,7 +55,7 @@ is revolutionising education by making learning more immersive and engaging.
 
 ### Project Management
 
-[Project Board](#)
+[Project Board](https://github.com/orgs/COS301-SE-2024/projects/80)
 
 ### Team Members And Their Roles
 

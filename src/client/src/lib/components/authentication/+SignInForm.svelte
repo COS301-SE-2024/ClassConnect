@@ -3,17 +3,17 @@
 	import Google from '$lib/images/google.svg';
 	import { goto } from '$app/navigation';
 	import { Input, Label, Button, A } from 'flowbite-svelte';
-	import {signIn } from '../../../services/auth';
+	import { signIn } from '../../../services/auth';
 
 	import '@fontsource/roboto';
 
 	// Function to store the access token in local storage
-	function storeAccessToken(token: string,id: string): void {
+	function storeAccessToken(token: string, id: string): void {
 		localStorage.setItem('accessToken', token);
 		localStorage.setItem('userID', id);
-		console.log("This is the ID", id);
+		console.log('This is the ID', id);
 
-		console.log("User ID stored:", localStorage.getItem('userID'))
+		console.log('User ID stored:', localStorage.getItem('userID'));
 	}
 
 	// Function to handle form submission
@@ -25,11 +25,11 @@
 		const formData = new FormData(event.target as HTMLFormElement);
 
 		const username = formData.get('username')?.toString() ?? '';
-		const password= formData.get('password')?.toString() ?? '';
+		const password = formData.get('password')?.toString() ?? '';
 
 		// Send a request to your server-side action
 		try {
-			const response = await signIn(username,  password);
+			const response = await signIn(username, password);
 
 			console.log('Response:', response);
 
@@ -41,8 +41,6 @@
 			console.error('Sign-ip error:', error);
 			alert('Sign-in failed');
 		}
-
-		
 	}
 </script>
 

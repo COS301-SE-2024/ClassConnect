@@ -2,40 +2,33 @@
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 	import { organisationName } from '$lib/stores/store';
 	import { updateOrganization } from '../../../services/orgs';
-	import { getOrganization } from '../../../services/orgs';
 
 	let formModal = false;
-	
+
 	// Function to handle form submission
 	async function handleSubmit(event: SubmitEvent) {
-        console.log('update is being handled');
-        event.preventDefault();
+		console.log('update is being handled');
+		event.preventDefault();
 
-        const formData = new FormData(event.target as HTMLFormElement);
-        const name = formData.get('org_name')?.toString() ?? '';
-        console.log("This is the name parameter:", name)
-        const image = 'https://example.com/images/university_updated.jpg';
-        const id = localStorage.getItem('organisationID') || 'non-existent';
-        try {
-            const response = await updateOrganization(id, name, image);
+		const formData = new FormData(event.target as HTMLFormElement);
+		const name = formData.get('org_name')?.toString() ?? '';
+		console.log('This is the name parameter:', name);
+		const image = 'https://example.com/images/university_updated.jpg';
+		const id = localStorage.getItem('organisationID') || 'non-existent';
+		try {
+			const response = await updateOrganization(id, name, image);
 
-            console.log('Response:', response);
+			console.log('Response:', response);
 
-            if (response) {
-                organisationName.set(response.name);
-                //goto('/');
-            }
-        } catch (error) {
-            console.error('update org error:', error);
-            alert('Update failed');
-        }
+			if (response) {
+				organisationName.set(response.name);
+				//goto('/');
+			}
+		} catch (error) {
+			console.error('update org error:', error);
+			alert('Update failed');
+		}
 	}
-
-	
-
-	// $: if (formModal) {
-	// 	loadOrganizationDetails();
-	// }
 </script>
 
 <Button on:click={() => (formModal = true)}>
@@ -65,7 +58,6 @@
 			type="text"
 			id="org_name"
 			name="org_name"
-			
 			placeholder="Example University"
 			size="md"
 			required
