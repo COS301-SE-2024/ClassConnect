@@ -1,51 +1,23 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { admins } from '../../stores/store';
+	import { getUsers } from '../../../services/users';
 	import AddAdmin from '$lib/components/modals/+AddAdmin.svelte';
 	import EditAdmin from '$lib/components/modals/+EditAdmin.svelte';
 	import Remove from '$lib/components/modals/+Remove.svelte';
-	const admins = [
-		{
-			name: 'Katlego Tau',
-			adminID: 'a21241605',
-			status: 'Active',
-			department: 'Humanities',
-			email: 'katlego.tau@demo.co.za'
-		},
-		{
-			name: 'Bongiwe Dlamini',
-			adminID: 'p13220819',
-			status: 'Active',
-			department: 'Law',
-			email: 'bongiwe.dlamini@demo.co.za'
-		},
-		{
-			name: 'Hein Venter',
-			adminID: 'u21240407',
-			status: 'Active',
-			department: 'Arts',
-			email: 'hein.venter@demo.co.za'
-		},
-		{
-			name: 'Ayanda Dlamini',
-			adminID: 'u22231821',
-			status: 'Active',
-			department: 'Infomation Technology',
-			email: 'ayanda.dlamini@demo.co.za'
-		},
-		{
-			name: 'Lesedi Mogale',
-			adminID: 'e21221302',
-			status: 'Active',
-			department: 'Engineering',
-			email: 'lesedi.mogale@demo.co.za'
-		},
-		{
-			name: 'Ayanda Juqu',
-			adminID: 'e22242314',
-			status: 'Active',
-			department: 'Health Sciences',
-			email: 'ayanda.juqu@demo.co.za'
-		}
-	];
+
+	async function loadAdmins() {
+		const users = await getUsers({ role: 'admin' });
+		admins.set(users);
+	}
+
+	onMount(loadAdmins);
+
+	$: {
+		admins.subscribe(() => {
+			loadAdmins();
+		});
+	}
 </script>
 
 <section class="container mx-auto my-2 px-4">
@@ -74,7 +46,7 @@
 
 				<span
 					class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
-					>{admins.length} {' '} lecturers</span
+					>{$admins.length} {' '} lecturers</span
 				>
 			</div>
 		</div>
@@ -100,7 +72,7 @@
 			<input
 				type="text"
 				placeholder="Search"
-				class="block w-full rounded-lg border border-gray-200 bg-white py-1.5 pl-11 pr-5 text-gray-700 placeholder-gray-400/70 focus:border-green-400 focus:outline-none focus:ring focus:ring-green-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-green-300 md:w-80 rtl:pl-5 rtl:pr-11"
+				class="block w-full rounded-lg border border-gray-200 bg-white py-1.5 pl-11 pr-5 text-gray-700 placeholder-gray-400/70 focus:border-green-400 focus:outline-none focus:ring focus:ring-green-300 focus:ring-opacity-40 md:w-80 rtl:pl-5 rtl:pr-11 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-green-300"
 			/>
 		</div>
 
@@ -112,13 +84,13 @@
 	<div class="mt-6 flex flex-col">
 		<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 			<div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-				<div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
+				<div class="overflow-hidden border border-gray-200 md:rounded-lg dark:border-gray-700">
 					<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
 						<thead class="bg-gray-50 dark:bg-gray-800">
 							<tr>
 								<th
 									scope="col"
-									class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
+									class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 rtl:text-right dark:text-gray-400"
 								>
 									<div class="flex items-center gap-x-3">
 										<span>Name</span>
@@ -127,7 +99,7 @@
 
 								<th
 									scope="col"
-									class="px-12 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
+									class="px-12 py-3.5 text-left text-sm font-normal text-gray-500 rtl:text-right dark:text-gray-400"
 								>
 									<button class="flex items-center gap-x-2">
 										<span>Status</span>
@@ -136,31 +108,7 @@
 
 								<th
 									scope="col"
-									class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
-								>
-									<button class="flex items-center gap-x-2">
-										<span>Department</span>
-
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke-width="2"
-											stroke="currentColor"
-											class="h-4 w-4"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"
-											/>
-										</svg>
-									</button>
-								</th>
-
-								<th
-									scope="col"
-									class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
+									class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 rtl:text-right dark:text-gray-400"
 									>Email address</th
 								>
 
@@ -170,20 +118,19 @@
 							</tr>
 						</thead>
 						<tbody class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900">
-							{#each admins as admin}
+							{#each $admins as admin}
 								<tr>
 									<td class="whitespace-nowrap px-4 py-4 text-sm font-medium text-gray-700">
 										<div class="inline-flex items-center gap-x-3">
 											<div class="flex items-center gap-x-2">
-												<img
-													class="h-10 w-10 rounded-full object-cover"
-													src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
-													alt=""
-												/>
+												<img class="h-10 w-10 rounded-full object-cover" src={admin.image} alt="" />
 												<div>
-													<h2 class="font-medium text-gray-800 dark:text-white">{admin.name}</h2>
+													<h2 class="font-medium text-gray-800 dark:text-white">
+														{admin.name}
+														{admin.surname}
+													</h2>
 													<p class="text-sm font-normal text-gray-600 dark:text-gray-400">
-														{admin.adminID}
+														{admin.username}
 													</p>
 												</div>
 											</div>
@@ -195,19 +142,16 @@
 										>
 											<span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
 
-											<h2 class="text-sm font-normal text-emerald-500">{admin.status}</h2>
+											<h2 class="text-sm font-normal text-emerald-500">Online</h2>
 										</div>
 									</td>
-									<td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500 dark:text-gray-300"
-										>{admin.department}</td
-									>
 									<td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500 dark:text-gray-300"
 										>{admin.email}</td
 									>
 									<td class="whitespace-nowrap px-4 py-4 text-sm">
 										<div class="flex items-center gap-x-6">
-											<Remove />
-											<EditAdmin />
+											<Remove bind:adminID={admin._id} />
+											<EditAdmin bind:adminID={admin._id}/>
 										</div>
 									</td>
 								</tr>

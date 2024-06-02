@@ -1,11 +1,25 @@
-<script>
+<script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
+	import { createUser } from '../../../services/users';
 
 	let formModal = false;
 
-	// Function to handle form submission
-	async function handleSubmit(event) {
+	async function handleSubmit(event: Event) {
 		event.preventDefault();
+
+		const formData = new FormData(event.target as HTMLFormElement);
+
+		const name = formData.get('name')?.toString() ?? '';
+		const surname = formData.get('surname')?.toString() ?? '';
+		const email = formData.get('email')?.toString() ?? '';
+
+		try {
+			await createUser(name, surname, email, 'admin');
+		} catch (error) {
+			console.error('Create User Error:', error);
+		}
+
+		formModal = false;
 	}
 </script>
 
@@ -32,13 +46,13 @@
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add New Admin</h3>
 
 		<Label for="name" class="mb-2 mt-2 space-y-2">Name</Label>
-		<Input type="text" id="name" name="name" placeholder="Example University" size="md" required />
+		<Input type="text" id="name" name="name" placeholder="John" size="md" required />
+
+		<Label for="surname" class="mb-2 mt-2 space-y-2">Surname</Label>
+		<Input type="text" id="surname" name="surname" placeholder="Doe" size="md" required />
 
 		<Label for="email" class="mb-2 mt-2 space-y-2">Email</Label>
 		<Input type="text" id="email" name="email" placeholder="email@example.com" size="md" required />
-
-		<Label for="email" class="mb-2 mt-2 space-y-2">Department</Label>
-		<Input type="text" id="department" name="department" placeholder="Arts" size="md" required />
 
 		<Button type="submit" class="w-full1">Add Admin</Button>
 	</form>
