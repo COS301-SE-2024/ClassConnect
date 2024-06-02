@@ -102,12 +102,18 @@ describe('UserService', () => {
         mockUser({ _id: 'id2', email: 'test@example.com' }),
       ];
 
-      jest.spyOn(model, 'find').mockReturnValue({
-        exec: jest.fn().mockResolvedValue(users),
-      } as any);
+      const execMock = jest.fn().mockResolvedValue(users);
+      const findMock = jest.fn().mockReturnValue({
+        sort: jest.fn().mockReturnValue({ exec: execMock }),
+      });
+
+      jest.spyOn(service['userModel'], 'find').mockImplementation(findMock);
 
       const result = await service.findMany(filter);
       expect(result).toEqual(users);
+
+      expect(findMock).toHaveBeenCalledWith(filter);
+      expect(execMock).toHaveBeenCalled();
     });
   });
 
