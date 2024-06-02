@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Button } from 'flowbite-svelte';
 	import AddLecturer from '$lib/components/modals/+AddLecturer.svelte';
 	import EditLecturer from '$lib/components/modals/+EditLecturer.svelte';
+	import Remove from '$lib/components/modals/+Remove.svelte';
 	const lecturers = [
 		{
 			name: 'Azola Lukhozi',
@@ -207,6 +207,7 @@
 									>
 									<td class="whitespace-nowrap px-4 py-4 text-sm">
 										<div class="flex items-center gap-x-6">
+											<Remove />
 											<EditLecturer />
 										</div>
 									</td>

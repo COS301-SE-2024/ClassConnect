@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Button } from 'flowbite-svelte';
 	import AddAdmin from '$lib/components/modals/+AddAdmin.svelte';
 	import EditAdmin from '$lib/components/modals/+EditAdmin.svelte';
+	import Remove from '$lib/components/modals/+Remove.svelte';
 	const admins = [
 		{
 			name: 'Katlego Tau',
@@ -206,7 +206,8 @@
 									>
 									<td class="whitespace-nowrap px-4 py-4 text-sm">
 										<div class="flex items-center gap-x-6">
-											<EditAdmin/>
+											<Remove />
+											<EditAdmin />
 										</div>
 									</td>
 								</tr>
