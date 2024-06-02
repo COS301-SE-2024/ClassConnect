@@ -2,7 +2,6 @@
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 	import { organisationName } from '$lib/stores/store';
 	import { updateOrganization } from '../../../services/orgs';
-	import { getOrganization } from '../../../services/orgs';
 
 	let formModal = false;
 
@@ -30,10 +29,6 @@
 			alert('Update failed');
 		}
 	}
-
-	// $: if (formModal) {
-	// 	loadOrganizationDetails();
-	// }
 </script>
 
 <Button on:click={() => (formModal = true)}>

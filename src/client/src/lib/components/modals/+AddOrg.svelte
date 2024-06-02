@@ -3,30 +3,7 @@
 	import { organisationName } from '$lib/stores/store';
 	import { organizations } from '../../../services/orgs';
 
-	import { goto } from '$app/navigation';
-	//import { organizations } from '../../../services/orgs'
 	let formModal = false;
-
-	// async function updateOrgName() {
-	// 	const formData = new URLSearchParams();
-	// 	const orgID = localStorage.getItem('organisationID') || 'non-existent';
-	// 	formData.append('organisationID', orgID);
-
-	// 	const response = await fetch('/organisation?/getOrganisationDetails', {
-	// 		method: 'POST',
-	// 		headers: {
-	// 			'Content-Type': 'application/x-www-form-urlencoded'
-	// 		},
-	// 		body: formData
-	// 	});
-
-	// 	if (response.ok) {
-	// 		const res = await response.json();
-	// 		const dataString = JSON.parse(res.data); // This will parse the outer array
-	// 		const dataObject = JSON.parse(dataString[0]); // This will parse the inner object
-	// 		organisationName.set(dataObject.body.organisationName);
-	// 	}
-	// }
 
 	// Function to store the access token in local storage
 	function storeOrgID(id: string): void {
