@@ -1,57 +1,42 @@
-<script>
+<script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 	import { organisationName } from '$lib/stores/store';
+	import { organizations } from '../../../services/orgs';
 
 	let formModal = false;
 
-	async function updateOrgName() {
-		const formData = new URLSearchParams();
-		const orgID = localStorage.getItem('organisationID') || 'non-existent';
-		formData.append('organisationID', orgID);
-
-		const response = await fetch('/organisation?/getOrganisationDetails', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			body: formData
-		});
-
-		if (response.ok) {
-			const res = await response.json();
-			const dataString = JSON.parse(res.data); // This will parse the outer array
-			const dataObject = JSON.parse(dataString[0]); // This will parse the inner object
-			organisationName.set(dataObject.body.organisationName);
-		}
-	}
-
 	// Function to store the access token in local storage
-	function storeOrgID(id) {
+	function storeOrgID(id: string): void {
 		localStorage.setItem('organisationID', id);
+		console.log('organasation ID', id);
 	}
 
 	// Function to handle form submission
-	async function handleSubmit(event) {
+	async function handleSubmit(event: SubmitEvent) {
 		console.log('add is being handled');
 		// Prevent the default form submission behavior
 		event.preventDefault();
 
 		// Create a FormData object from the form
-		const formData = new FormData(event.target);
+		const formData = new FormData(event.target as HTMLFormElement);
+		const name = formData.get('org_name')?.toString() ?? '';
+		console.log('This is the name parameter:', name);
+		const userID = localStorage.getItem('userID') || 'non-existent';
+		const image =
+			'https://www.edarabia.com/wp-content/uploads/2013/08/university-of-pretoria-logo-south-africa.jpg';
+		//console.log("User ID Add Org:", userID);
+		try {
+			const response = await organizations(name, userID, image);
 
-		// Send a request to your server-side action
-		const response = await fetch('/organisation?/create', {
-			method: 'POST',
-			body: formData
-		});
+			console.log('Response:', response);
 
-		// If the request was successful, store the org id in local storage
-		if (response.ok) {
-			const res = await response.json();
-			const dataString = JSON.parse(res.data); // This will parse the outer array
-			const dataObject = JSON.parse(dataString[0]); // This will parse the inner object
-			storeOrgID(dataObject.body.organisationID);
-			updateOrgName();
+			if (response) {
+				storeOrgID(response._id);
+				organisationName.set(response.name);
+			}
+		} catch (error) {
+			console.error('create org  error:', error);
+			alert('Create failed');
 		}
 	}
 </script>
@@ -91,6 +76,6 @@
 		<Label for="upload_image" class="mb-2 mt-2 space-y-2">Upload image:</Label>
 		<Input type="file" id="image" name="image" />
 
-		<Button type="submit" class="w-full1">Create Account</Button>
+		<Button type="submit" class="w-full1">Create Organisation</Button>
 	</form>
 </Modal>

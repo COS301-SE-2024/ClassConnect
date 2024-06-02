@@ -6,6 +6,7 @@ import {
   Delete,
   Param,
   Body,
+  Query,
 } from '@nestjs/common';
 
 import { UserService } from './user.service';
@@ -26,8 +27,8 @@ export class UserController {
   }
 
   @Get()
-  async getUsers(@Body() filter: Partial<CreateUserDto>) {
-    return await this.userService.findMany(filter);
+  async getUsers(@Query() query: Partial<CreateUserDto>) {
+    return await this.userService.findMany({...query});
   }
 
   @Put(':id')

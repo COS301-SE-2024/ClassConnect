@@ -42,6 +42,7 @@
 	"type": "module",
 	"dependencies": {
 		"@threlte/core": "^7.3.0",
+		"axios": "^1.7.2",
 		"clsx": "^2.1.1",
 		"tailwind-merge": "^2.3.0",
 		"three": "^0.165.0"

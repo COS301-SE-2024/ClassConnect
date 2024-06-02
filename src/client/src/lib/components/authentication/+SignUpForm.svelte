@@ -1,38 +1,46 @@
-<script>
+<script lang="ts">
+	import '@fontsource/roboto';
+	import { goto } from '$app/navigation';
 	import Apple from '$lib/images/apple.svg';
 	import Google from '$lib/images/google.svg';
-	import { goto } from '$app/navigation';
 	import { Input, Label, Button, Checkbox, A } from 'flowbite-svelte';
-	import '@fontsource/roboto';
 
-	// Function to store the access token in local storage
-	function storeAccessToken(token) {
+	import { signUp } from '../../../services/auth';
+
+	function storeAccessToken(token: string): void {
 		localStorage.setItem('accessToken', token);
 	}
 
-	// Function to handle form submission
-	async function handleSubmit(event) {
-		// Prevent the default form submission behavior
+	async function handleSubmit(event: SubmitEvent): Promise<void> {
 		event.preventDefault();
 
-		// Create a FormData object from the form
-		const formData = new FormData(event.target);
+		const formData = new FormData(event.target as HTMLFormElement);
 
-		// Send a request to your server-side action
-		const response = await fetch('/signup', {
-			method: 'POST',
-			body: formData
-		});
+		const name = formData.get('name')?.toString() ?? '';
+		const surname = formData.get('surname')?.toString() ?? '';
+		const email = formData.get('email')?.toString() ?? '';
+		const password = formData.get('password')?.toString() ?? '';
+		const confirmPassword = formData.get('confirm_password')?.toString() ?? '';
+		const image = formData.get('image')?.toString() ?? '';
 
-		// If the request was successful, store the access token in local storage
-		if (response.ok) {
-			const res = await response.json();
-			const data = JSON.parse(res.data);
-			const accessToken = data[2];
-			storeAccessToken(accessToken);
-			goto('/');
-		} else {
-			goto('/signup');
+		if (password !== confirmPassword) {
+			alert('Passwords do not match');
+			return;
+		}
+
+		//creates user but does not redirect to home page
+		try {
+			const response = await signUp(name, surname, email, image, password);
+
+			console.log('Response:', response);
+
+			if (response && response.accessToken) {
+				storeAccessToken(response.accessToken);
+				goto('/');
+			}
+		} catch (error) {
+			console.error('Sign-up error:', error);
+			alert('Sign-up failed');
 		}
 	}
 </script>
@@ -44,6 +52,9 @@
 		<form on:submit={handleSubmit} enctype="multipart/form-data">
 			<Label for="name" class="mb-2 mt-2">Name</Label>
 			<Input type="text" id="name" name="name" placeholder="John" size="md" required />
+
+			<Label for="surname" class="mb-2 mt-2">Surname</Label>
+			<Input type="text" id="surname" name="surname" placeholder="Doe" size="md" required />
 
 			<Label for="email" class="mb-2 mt-2">Email</Label>
 			<Input type="email" id="email" name="email" placeholder="john.doe@company.com" required />
@@ -60,18 +71,8 @@
 				required
 			/>
 
-			<Label for="org_name" class="mb-2 mt-2">Organisation Name</Label>
-			<Input
-				type="text"
-				id="org_name"
-				name="org_name"
-				placeholder="Example University"
-				size="md"
-				required
-			/>
-
-			<Label for="upload_image" class="mb-2 mt-2">Upload image:</Label>
-			<Input type="file" id="image" name="image" required />
+			<Label for="upload_image" class="mb-2 mt-2">Upload profile photo:</Label>
+			<Input type="text" id="image" name="image" required />
 
 			<Checkbox class="p-2" id="terms" name="terms" required>
 				I agree to the &nbsp;<A href="#" class="text-blue-600">terms and conditions</A>

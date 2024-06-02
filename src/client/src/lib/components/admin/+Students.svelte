@@ -1,51 +1,23 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { students } from '../../stores/store';
+	import { getUsers } from '../../../services/users';
 	import AddStudent from '$lib/components/modals/+AddStudent.svelte';
 	import EditStudent from '$lib/components/modals/+EditStudent.svelte';
 	import Remove from '$lib/components/modals/+Remove.svelte';
-	const students = [
-		{
-			name: 'Azola Lukhozi',
-			studentID: 'p21241605',
-			status: 'Active',
-			studies: 'Postgraduate',
-			email: 'azola.lukhozi@demo.co.za'
-		},
-		{
-			name: 'Dave Ka',
-			studentID: 'p13220819',
-			status: 'Active',
-			studies: 'Postgraduate',
-			email: 'dave.ka@demo.co.za'
-		},
-		{
-			name: 'Bukhosi Mpande',
-			studentID: 'u21240407',
-			status: 'Active',
-			studies: 'Undergraduate',
-			email: 'bukhosi.mpande@demo.co.za'
-		},
-		{
-			name: 'Ayanda Dlamini',
-			studentID: 'u22231821',
-			status: 'Active',
-			studies: 'Undergraduate',
-			email: 'ayanda.dlamini@demo.co.za'
-		},
-		{
-			name: 'Ashley Kapaso',
-			studentID: 'e21221302',
-			status: 'Active',
-			studies: 'Undergraduate',
-			email: 'ashley.kapaso@demo.co.za'
-		},
-		{
-			name: 'Ayanda Juqu',
-			studentID: 'e22242314',
-			status: 'Active',
-			studies: 'Undergraduate',
-			email: 'ayanda.juqu@demo.co.za'
-		}
-	];
+
+	async function loadStudents() {
+		const users = await getUsers({ role: 'student' });
+		students.set(users);
+	}
+
+	onMount(loadStudents);
+
+	$: {
+		students.subscribe(() => {
+			loadStudents();
+		});
+	}
 </script>
 
 <section class="container mx-auto my-2 px-4">
@@ -74,7 +46,7 @@
 
 				<span
 					class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
-					>{students.length} {' '} lecturers</span
+					>{$students.length} {' '} students</span
 				>
 			</div>
 		</div>
@@ -137,30 +109,6 @@
 								<th
 									scope="col"
 									class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
-								>
-									<button class="flex items-center gap-x-2">
-										<span>Studies</span>
-
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											fill="none"
-											viewBox="0 0 24 24"
-											stroke-width="2"
-											stroke="currentColor"
-											class="h-4 w-4"
-										>
-											<path
-												stroke-linecap="round"
-												stroke-linejoin="round"
-												d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"
-											/>
-										</svg>
-									</button>
-								</th>
-
-								<th
-									scope="col"
-									class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
 									>Email address</th
 								>
 
@@ -170,20 +118,23 @@
 							</tr>
 						</thead>
 						<tbody class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900">
-							{#each students as student}
+							{#each $students as student}
 								<tr>
 									<td class="whitespace-nowrap px-4 py-4 text-sm font-medium text-gray-700">
 										<div class="inline-flex items-center gap-x-3">
 											<div class="flex items-center gap-x-2">
 												<img
 													class="h-10 w-10 rounded-full object-cover"
-													src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=880&q=80"
+													src={student.image}
 													alt=""
 												/>
 												<div>
-													<h2 class="font-medium text-gray-800 dark:text-white">{student.name}</h2>
+													<h2 class="font-medium text-gray-800 dark:text-white">
+														{student.name}
+														{student.surname}
+													</h2>
 													<p class="text-sm font-normal text-gray-600 dark:text-gray-400">
-														{student.studentID}
+														{student.username}
 													</p>
 												</div>
 											</div>
@@ -195,19 +146,16 @@
 										>
 											<span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
 
-											<h2 class="text-sm font-normal text-emerald-500">{student.status}</h2>
+											<h2 class="text-sm font-normal text-emerald-500">Online</h2>
 										</div>
 									</td>
-									<td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500 dark:text-gray-300"
-										>{student.studies}</td
-									>
 									<td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500 dark:text-gray-300"
 										>{student.email}</td
 									>
 									<td class="whitespace-nowrap px-4 py-4 text-sm">
 										<div class="flex items-center gap-x-6">
-											<Remove />
-											<EditStudent />
+											<Remove bind:id={student._id} />
+											<EditStudent bind:studentID={student._id} />
 										</div>
 									</td>
 								</tr>

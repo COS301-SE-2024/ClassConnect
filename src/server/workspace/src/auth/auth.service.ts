@@ -14,7 +14,7 @@ export class AuthService {
     private userService: UserService,
   ) {}
 
-  async validateUser({ username, password }: SignInDto): Promise<string> {
+  async validateUser({ username, password }: SignInDto): Promise<any> {
     const findUser = await this.userService.findByUsername(username);
 
     if (findUser && (await bcrypt.compare(password, findUser.password))) {
@@ -22,8 +22,14 @@ export class AuthService {
         sub: findUser._id,
         role: findUser.role,
         username: findUser.username,
+        accessToken: this.jwtService.sign({
+          sub: findUser._id,
+          role: findUser.role,
+          username: findUser.username,
+        }),
       };
-      return this.jwtService.sign(user);
+      
+      return user;
     } else {
       return null;
     }
