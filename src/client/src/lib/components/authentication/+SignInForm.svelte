@@ -12,6 +12,8 @@
 		localStorage.setItem('accessToken', token);
 		localStorage.setItem('userID', id);
 		console.log("This is the ID", id);
+
+		console.log("User ID stored:", localStorage.getItem('userID'))
 	}
 
 	// Function to handle form submission

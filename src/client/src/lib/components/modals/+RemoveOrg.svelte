@@ -2,25 +2,22 @@
 	import { goto } from '$app/navigation';
 	import { Button, Modal } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
+	import { deleteOrganization } from '../../../services/orgs';
 	let popupModal = false;
 
 	async function handleRemove() {
-		const formData = new URLSearchParams();
-		const orgID = localStorage.getItem('organisationID') || 'non-existent';
-		formData.append('organisationID', orgID);
+    const orgID = localStorage.getItem('organisationID') || 'non-existent';
 
-		const response = await fetch('/organisation?/remove', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			body: formData
-		});
-
-		if (response.ok) {
-			goto('/signup');
-		}
-	}
+    try {
+        const message = await deleteOrganization(orgID);
+        
+        console.log(message); 
+        //goto('/signup'); 
+    } catch (error) {
+        console.error('Delete organization error:', error);
+       
+    }
+}
 </script>
 
 <Button on:click={() => (popupModal = true)}>Remove</Button>

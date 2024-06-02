@@ -4,36 +4,31 @@
 	import AddOrg from '$lib/components/modals/+AddOrg.svelte';
 	import RemoveOrg from '$lib/components/modals/+RemoveOrg.svelte';
 	import { organisationName } from '$lib/stores/store';
+	import { getOrganization } from '../../../services/orgs';
 
 	let org_exists: boolean = false;
 
-	async function getOrgName() {
-		const formData = new URLSearchParams();
-		const orgID = localStorage.getItem('organisationID') || 'non-existent';
-		formData.append('organisationID', orgID);
+	
 
-		const response = await fetch('/organisation?/getOrganisationDetails', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			body: formData
-		});
+	async function loadOrganizationDetails() {
+        const id = localStorage.getItem('organisationID') || 'non-existent';
+        try {
+            const response = await getOrganization(id);
+            console.log('Get Org Response:', response);
+            organisationName.set(response.name);
 
-		if (response.ok) {
-			const res = await response.json();
-			const dataString = JSON.parse(res.data); // This will parse the outer array
-			const dataObject = JSON.parse(dataString[0]); // This will parse the inner object
-			organisationName.set(dataObject.body.organisationName);
-		}
-	}
+        } catch (error) {
+            console.error('get org error:', error);
+            alert('Failed to load organization details');
+        }
+    }
 
 	function checkOrganisationID() {
 		if (typeof window !== 'undefined') {
 			const organisationID = localStorage.getItem('organisationID');
 			org_exists = organisationID !== null;
 			if (org_exists === true) {
-				getOrgName();
+				loadOrganizationDetails();
 			}
 		}
 	}
