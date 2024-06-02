@@ -2,7 +2,7 @@
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 	import { organisationName } from '$lib/stores/store';
 	import { organizations } from '../../../services/orgs';
-	
+
 	import { goto } from '$app/navigation';
 	//import { organizations } from '../../../services/orgs'
 	let formModal = false;
@@ -29,7 +29,7 @@
 	// }
 
 	// Function to store the access token in local storage
-	function storeOrgID(id: string) :void {
+	function storeOrgID(id: string): void {
 		localStorage.setItem('organisationID', id);
 		console.log('organasation ID', id);
 	}
@@ -43,27 +43,25 @@
 		// Create a FormData object from the form
 		const formData = new FormData(event.target as HTMLFormElement);
 		const name = formData.get('org_name')?.toString() ?? '';
-		console.log("This is the name parameter:", name )
+		console.log('This is the name parameter:', name);
 		const userID = localStorage.getItem('userID') || 'non-existent';
-		const image = 'https://www.edarabia.com/wp-content/uploads/2013/08/university-of-pretoria-logo-south-africa.jpg';
+		const image =
+			'https://www.edarabia.com/wp-content/uploads/2013/08/university-of-pretoria-logo-south-africa.jpg';
 		//console.log("User ID Add Org:", userID);
 		try {
-			const response = await organizations(name,  userID, image);
+			const response = await organizations(name, userID, image);
 
 			console.log('Response:', response);
 
-			if (response ) {
-				
-				storeOrgID( response._id);
+			if (response) {
+				storeOrgID(response._id);
 				organisationName.set(response.name);
-				
 			}
 		} catch (error) {
 			console.error('create org  error:', error);
 			alert('Create failed');
-		}	
+		}
 	}
-
 </script>
 
 <Button on:click={() => (formModal = true)} class="mx-2">

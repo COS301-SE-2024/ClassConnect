@@ -73,7 +73,7 @@
 			<input
 				type="text"
 				placeholder="Search"
-				class="block w-full rounded-lg border border-gray-200 bg-white py-1.5 pl-11 pr-5 text-gray-700 placeholder-gray-400/70 focus:border-green-400 focus:outline-none focus:ring focus:ring-green-300 focus:ring-opacity-40 md:w-80 rtl:pl-5 rtl:pr-11 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-green-300"
+				class="block w-full rounded-lg border border-gray-200 bg-white py-1.5 pl-11 pr-5 text-gray-700 placeholder-gray-400/70 focus:border-green-400 focus:outline-none focus:ring focus:ring-green-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-green-300 md:w-80 rtl:pl-5 rtl:pr-11"
 			/>
 		</div>
 
@@ -85,13 +85,13 @@
 	<div class="mt-6 flex flex-col">
 		<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
 			<div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-				<div class="overflow-hidden border border-gray-200 md:rounded-lg dark:border-gray-700">
+				<div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
 					<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
 						<thead class="bg-gray-50 dark:bg-gray-800">
 							<tr>
 								<th
 									scope="col"
-									class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 rtl:text-right dark:text-gray-400"
+									class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
 								>
 									<div class="flex items-center gap-x-3">
 										<span>Name</span>
@@ -100,7 +100,7 @@
 
 								<th
 									scope="col"
-									class="px-12 py-3.5 text-left text-sm font-normal text-gray-500 rtl:text-right dark:text-gray-400"
+									class="px-12 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
 								>
 									<button class="flex items-center gap-x-2">
 										<span>Status</span>
@@ -109,7 +109,7 @@
 
 								<th
 									scope="col"
-									class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 rtl:text-right dark:text-gray-400"
+									class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
 									>Email address</th
 								>
 

@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	export let adminID = '';
 
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
@@ -18,7 +18,7 @@
 		const newInfo = {
 			name: name || undefined,
 			surname: surname || undefined,
-			email: email || undefined,
+			email: email || undefined
 		};
 
 		try {

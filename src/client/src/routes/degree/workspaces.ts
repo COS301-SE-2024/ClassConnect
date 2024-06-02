@@ -7,24 +7,24 @@ import COS332Logo from '$lib/images/COS332_logo.png';
 //The information is stored as an array of  JSON objects
 //Each workspace has a title, a description and an image.
 export const workspaces = [
-  {
-    title: 'COS 333',
-    description: 'Programming languages',
-    image: COS333Logo,
-  },
-  {
-    title: 'COS 314',
-    description: 'Artificial Intelligence',
-    image: COS314Logo,
-  },
-  {
-    title: 'COS 344',
-    description: 'Computer Graphics',
-    image: COS344Logo,
-  },
-  {
-    title: 'COS 332',
-    description: 'Networking',
-    image: COS332Logo,
-  }
+	{
+		title: 'COS 333',
+		description: 'Programming languages',
+		image: COS333Logo
+	},
+	{
+		title: 'COS 314',
+		description: 'Artificial Intelligence',
+		image: COS314Logo
+	},
+	{
+		title: 'COS 344',
+		description: 'Computer Graphics',
+		image: COS344Logo
+	},
+	{
+		title: 'COS 332',
+		description: 'Networking',
+		image: COS332Logo
+	}
 ];

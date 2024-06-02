@@ -8,20 +8,17 @@
 
 	let org_exists: boolean = false;
 
-	
-
 	async function loadOrganizationDetails() {
-        const id = localStorage.getItem('organisationID') || 'non-existent';
-        try {
-            const response = await getOrganization(id);
-            console.log('Get Org Response:', response);
-            organisationName.set(response.name);
-
-        } catch (error) {
-            console.error('get org error:', error);
-            alert('Failed to load organization details');
-        }
-    }
+		const id = localStorage.getItem('organisationID') || 'non-existent';
+		try {
+			const response = await getOrganization(id);
+			console.log('Get Org Response:', response);
+			organisationName.set(response.name);
+		} catch (error) {
+			console.error('get org error:', error);
+			alert('Failed to load organization details');
+		}
+	}
 
 	function checkOrganisationID() {
 		if (typeof window !== 'undefined') {
