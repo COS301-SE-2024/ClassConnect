@@ -1,26 +1,22 @@
-<script>
-	import { goto } from '$app/navigation';
+<script lang="ts">
+	export let id = '';
+
 	import { Button, Modal } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
+	import { deleteUser } from '../../../services/users';
 	import Bin from '$lib/images/bin.svg';
 	let popupModal = false;
 
-	async function handleRemove() {
-		const formData = new URLSearchParams();
-		const orgID = localStorage.getItem('organisationID') || 'non-existent';
-		formData.append('organisationID', orgID);
+	async function handleRemove(event: Event) {
+		event.preventDefault();
 
-		const response = await fetch('/organisation?/remove', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			body: formData
-		});
-
-		if (response.ok) {
-			goto('/signup');
+		try {
+			await deleteUser(id);
+		} catch (error) {
+			console.error('Create User Error:', error);
 		}
+
+		popupModal = false;
 	}
 </script>
 
