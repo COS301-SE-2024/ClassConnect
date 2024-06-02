@@ -85,7 +85,7 @@
 					class="mt-5 flex transform items-center rounded-lg px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800"
 					{href}
 				>
-					<img class="h-5 w-5" src={icon} alt={name} />
+					<img class="h-5 w-5 dark:text-gray-300" src={icon} alt={name} />
 					<span class="mx-4 font-medium">{name}</span>
 				</a>
 			{/each}
