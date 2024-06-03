@@ -34,11 +34,11 @@
 		</h1>
 	</div>
 	{#each announcements as announcement}
-		<article class="flex bg-lightBgColor dark:bg-gray-800 py-2 transition hover:shadow-xl">
+		<article class="flex bg-lightBgColor py-2 transition hover:shadow-xl dark:bg-gray-800">
 			<div class="rotate-180 p-2 [writing-mode:_vertical-lr] dark:text-gray-300">
 				<time
 					datetime="2022-10-10"
-					class="flex items-center justify-between gap-4 text-xs font-bold uppercase text-gray-900   dark:text-gray-300" 
+					class="flex items-center justify-between gap-4 text-xs font-bold uppercase text-gray-900 dark:text-gray-300"
 				>
 					<span class="w-px flex-1 bg-gray-900/10 dark:bg-gray-400"></span>
 					<span>{announcement.date}</span>
