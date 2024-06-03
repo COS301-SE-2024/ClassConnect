@@ -84,10 +84,10 @@
 								<tr>
 									<td class="whitespace-nowrap px-4 py-4 text-sm font-medium">
 										<div>
-											<h2 class="font-medium text-gray-800 dark:text-white">Orgnisation Name</h2>
+											<h2 class="font-medium text-gray-800 dark:text-gray-300">Orgnisation Name</h2>
 										</div>
 									</td>
-									<td class="whitespace-nowrap px-12 py-4 text-sm font-medium">
+									<td class="whitespace-nowrap px-12 py-4 text-sm font-medium dark:text-gray-300">
 										{$organisationName}
 									</td>
 								</tr>
