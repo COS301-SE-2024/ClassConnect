@@ -27,33 +27,33 @@
 	];
 </script>
 
-<div class="bg-lightBgColor">
+<div class="bg-lightBgColor dark:bg-gray-800">
 	<div class="text-center">
 		<h1 class="text-4xl font-semibold capitalize text-gray-800 dark:text-white lg:text-3xl">
 			Announcements
 		</h1>
 	</div>
 	{#each announcements as announcement}
-		<article class="flex bg-lightBgColor py-2 transition hover:shadow-xl">
-			<div class="rotate-180 p-2 [writing-mode:_vertical-lr]">
+		<article class="flex bg-lightBgColor py-2 transition hover:shadow-xl dark:bg-gray-800">
+			<div class="rotate-180 p-2 [writing-mode:_vertical-lr] dark:text-gray-300">
 				<time
 					datetime="2022-10-10"
-					class="flex items-center justify-between gap-4 text-xs font-bold uppercase text-gray-900"
+					class="flex items-center justify-between gap-4 text-xs font-bold uppercase text-gray-900 dark:text-gray-300"
 				>
-					<span class="w-px flex-1 bg-gray-900/10"></span>
+					<span class="w-px flex-1 bg-gray-900/10 dark:bg-gray-400"></span>
 					<span>{announcement.date}</span>
 				</time>
 			</div>
 
-			<div class="flex flex-1 flex-col justify-between">
+			<div class="flex flex-1 flex-col justify-between dark:bg-gray-800">
 				<div class="border-s border-gray-900/10 p-4 sm:border-l-transparent sm:p-6">
 					<a href="/">
-						<h3 class="font-bold uppercase text-gray-900">
+						<h3 class="font-bold uppercase text-gray-900 dark:text-gray-300">
 							{announcement.heading}
 						</h3>
 					</a>
 
-					<p class="mt-2 line-clamp-3 text-sm/relaxed text-gray-700">
+					<p class="mt-2 line-clamp-3 text-sm/relaxed text-gray-700 dark:text-gray-300">
 						{announcement.announcement}
 					</p>
 				</div>

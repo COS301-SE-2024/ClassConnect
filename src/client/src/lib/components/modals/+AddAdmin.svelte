@@ -16,7 +16,7 @@
 
 		try {
 			await createUser(name, surname, email, 'admin');
-			admChange.set('new val')
+			admChange.set('new val');
 		} catch (error) {
 			console.error('Create User Error:', error);
 		}

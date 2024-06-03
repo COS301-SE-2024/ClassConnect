@@ -8,7 +8,7 @@
 		<div>
 			<SideBar />
 		</div>
-		<div class=" w-full bg-lightBgColor">
+		<div class=" w-full bg-lightBgColor dark:bg-gray-700">
 			<Organisation />
 		</div>
 	</div>
