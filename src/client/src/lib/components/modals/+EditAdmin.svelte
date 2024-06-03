@@ -3,6 +3,7 @@
 
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 	import { updateUser } from '../../../services/users';
+	import { admChange } from '../../stores/store';
 
 	let formModal = false;
 
@@ -24,6 +25,7 @@
 		try {
 			await updateUser(adminID, newInfo);
 			console.log('User updated');
+			admChange.set('new');
 		} catch (error) {
 			console.error('Create User Error:', error);
 		}

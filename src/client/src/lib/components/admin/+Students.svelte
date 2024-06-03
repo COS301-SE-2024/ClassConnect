@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { students } from '../../stores/store';
+	import { students, stuChange } from '../../stores/store';
 	import { getUsers } from '../../../services/users';
 	import AddStudent from '$lib/components/modals/+AddStudent.svelte';
 	import EditStudent from '$lib/components/modals/+EditStudent.svelte';
@@ -14,7 +14,7 @@
 	onMount(loadStudents);
 
 	$: {
-		students.subscribe(() => {
+		stuChange.subscribe(() => {
 			loadStudents();
 		});
 	}

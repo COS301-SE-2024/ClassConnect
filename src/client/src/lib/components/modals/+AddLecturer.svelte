@@ -2,6 +2,7 @@
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 	import { createUser } from '../../../services/users';
 	import { lecturers } from '../../stores/store';
+	import { lecChange } from '../../stores/store';
 
 	let formModal = false;
 
@@ -17,6 +18,7 @@
 		try {
 			const lecturer = await createUser(name, surname, email, 'lecturer');
 			lecturers.update((users) => [...users, lecturer]);
+			lecChange.set('new val');
 		} catch (error) {
 			console.error('Create User Error:', error);
 		}
