@@ -1,0 +1,36 @@
+name: Run Frontend Tests
+on:
+    push:
+      branches:
+        - main
+        - develop
+    pull_request:
+      branches:
+        - main
+        - develop
+    
+jobs:
+  build:
+    name: Frontend tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 18.17.0
+      - uses: oven-sh/setup-bun@v1
+        with:
+            bun-version: latest
+      - name: Install dependencies for the frontend
+        run: bun install
+        working-directory: src/client
+      - name: Boot frontend
+        run: bash boot.sh
+        working-directory: scripts
+      - name: Run Frontend Tests
+        run: npm run cy:run-ct
+        working-directory: src/client
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

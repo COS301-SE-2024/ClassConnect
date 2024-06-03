@@ -1,59 +1,49 @@
-<script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+<script lang="ts">
+	import SideBar from '$lib/components/utils/+SideBar.svelte';
+	import { Navbar, Input } from 'flowbite-svelte';
+	import {
+		SearchOutline,
+		BellOutline,
+		EnvelopeOutline,
+		UserCircleOutline
+	} from 'flowbite-svelte-icons';
+	import { degrees } from './degrees';
+	import Degrees from '$lib/components/admin/+Degrees.svelte';
 </script>
 
-<svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
-</svelte:head>
+<main class="flex h-screen">
+	<!-- The div below contains the sidebar -->
+	<div class="w-64">
+		<SideBar />
+	</div>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
+	<!-- The div below contains all the information to the right of the sidebar such as the workspaces and navbar -->
+	<div class="flex-1 p-4">
+		<Navbar let:NavContainer color="light">
+			<NavContainer class="rounded-lg border bg-white px-5 py-2 dark:bg-gray-600">
+				<div class="flex flex-1 justify-center">
+					<div class="relative hidden w-full max-w-md md:block">
+						<div class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
+							<SearchOutline class="h-4 w-4" />
+						</div>
 
-		to your new<br />SvelteKit app
-	</h1>
+						<Input id="search-navbar" class="ps-10" placeholder="Search..." />
+					</div>
+				</div>
+				<div class="flex space-x-4">
+					<BellOutline class="h-6 w-6" />
+					<EnvelopeOutline class="h-6 w-6" />
+					<UserCircleOutline class="h-6 w-6" />
+				</div>
+			</NavContainer>
+		</Navbar>
 
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-</section>
-
-<style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
-
-	h1 {
-		width: 100%;
-	}
-
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
-	}
-
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
-	}
-</style>
+		<!-- The div below contains all the information that is below the navbar -->
+		<div class="mt-4">
+			<div class="flex justify-center">
+				<h1 class="mb-2 text-3xl font-bold">Degree Dashboard</h1>
+			</div>
+			<Degrees {degrees} />
+		</div>
+	</div>
+</main>
