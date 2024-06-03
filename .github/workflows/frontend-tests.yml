@@ -1,6 +1,13 @@
-name: Run Backend Tests
+name: Run Frontend Tests
 on:
-  push:
+    push:
+      branches:
+        - main
+        - develop
+    pull_request:
+      branches:
+        - main
+        - develop
     
 jobs:
   build:
