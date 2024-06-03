@@ -7,8 +7,12 @@
 	import Remove from '$lib/components/modals/+Remove.svelte';
 
 	async function loadStudents() {
-		const users = await getUsers({ role: 'student' });
-		students.set(users);
+		try {
+			const users = await getUsers({ role: 'student' });
+			students.set(users);
+		} catch (error) {
+			students.set([]);
+		}
 	}
 
 	onMount(loadStudents);

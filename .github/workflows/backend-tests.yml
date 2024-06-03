@@ -11,7 +11,7 @@ on:
     
 jobs:
   build:
-    name: Run ESLint
+    name: Run Backend tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
