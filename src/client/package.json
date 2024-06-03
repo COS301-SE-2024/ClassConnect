@@ -8,7 +8,9 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "cy:open-ct": "cypress open --component",
+    "cy:run-ct": "cypress run --component"
   },
   "devDependencies": {
     "@fontsource/fira-mono": "^4.5.10",

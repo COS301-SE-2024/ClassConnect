@@ -6,6 +6,9 @@ export default defineConfig({
       framework: "svelte",
       bundler: "vite",
     },
+    typescript: {
+      configFile: "./tsconfig.json"
+    }
   },
 
   e2e: {
