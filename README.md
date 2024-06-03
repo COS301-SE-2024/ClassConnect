@@ -28,6 +28,7 @@ is revolutionising education by making learning more immersive and engaging.
 #### Main Documentation
 
 - [SRS Documentation](https://drive.google.com/file/d/1wYVm633sFN6IBOVznN6bsqExY96VErcM/view?usp=sharing)
+- [Services Contract](https://drive.google.com/file/d/1WEbWfYYVXaN96uxKSO9148U9itmog2K2/view?usp=sharing)
 
 
 ### Demos
