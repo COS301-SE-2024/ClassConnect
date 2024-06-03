@@ -41,7 +41,7 @@
 	];
 </script>
 
-<div class="w-full">
+<div class="w-full dark:bg-gray-800">
 	<div class="text-center">
 		<h1 class="text-4xl font-semibold capitalize text-gray-800 dark:text-white lg:text-3xl">
 			Activities

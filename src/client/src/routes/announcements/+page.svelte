@@ -8,7 +8,7 @@
 		<div>
 			<SideBar />
 		</div>
-		<div class=" bg-lightBgColor">
+		<div class=" bg-lightBgColor dark:bg-gray-800">
 			<Announcements />
 		</div>
 	</div>

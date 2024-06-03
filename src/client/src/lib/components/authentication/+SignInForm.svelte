@@ -52,7 +52,7 @@
 		</div>
 
 		<form on:submit={handleSubmit}>
-			<Label for="username" class="mb-2 mt-2">Username</Label>
+			<Label for="username" class="mb-2 mt-2 dark:text-gray-800">Username</Label>
 			<Input
 				type="text"
 				id="username"
@@ -62,7 +62,7 @@
 				required
 			/>
 
-			<Label for="password" class="mb-2 mt-2">Password</Label>
+			<Label for="password" class="mb-2 mt-2 dark:text-gray-800">Password</Label>
 			<Input
 				type="password"
 				id="password"

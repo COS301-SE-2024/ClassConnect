@@ -50,19 +50,19 @@
 		<h1 class="roboto text-center text-3xl font-bold">Get Started Now</h1>
 
 		<form on:submit={handleSubmit} enctype="multipart/form-data">
-			<Label for="name" class="mb-2 mt-2">Name</Label>
+			<Label for="name" class="mb-2 mt-2 dark:text-gray-800">Name</Label>
 			<Input type="text" id="name" name="name" placeholder="John" size="md" required />
 
-			<Label for="surname" class="mb-2 mt-2">Surname</Label>
+			<Label for="surname" class="mb-2 mt-2 dark:text-gray-800">Surname</Label>
 			<Input type="text" id="surname" name="surname" placeholder="Doe" size="md" required />
 
-			<Label for="email" class="mb-2 mt-2">Email</Label>
+			<Label for="email" class="mb-2 mt-2 dark:text-gray-800">Email</Label>
 			<Input type="email" id="email" name="email" placeholder="john.doe@company.com" required />
 
-			<Label for="password" class="mb-2 mt-2">Password</Label>
+			<Label for="password" class="mb-2 mt-2 dark:text-gray-800">Password</Label>
 			<Input type="password" id="password" name="password" placeholder="•••••••••" required />
 
-			<Label for="confirm_password" class="mb-2 mt-2">Confirm password</Label>
+			<Label for="confirm_password" class="mb-2 mt-2 dark:text-gray-800">Confirm password</Label>
 			<Input
 				type="password"
 				id="confirm_password"
@@ -71,10 +71,10 @@
 				required
 			/>
 
-			<Label for="upload_image" class="mb-2 mt-2">Upload profile photo:</Label>
+			<Label for="upload_image" class="mb-2 mt-2 dark:text-gray-800">Upload profile photo:</Label>
 			<Input type="text" id="image" name="image" required />
 
-			<Checkbox class="p-2" id="terms" name="terms" required>
+			<Checkbox class="p-2 dark:text-gray-800" id="terms" name="terms" required>
 				I agree to the &nbsp;<A href="#" class="text-blue-600">terms and conditions</A>
 			</Checkbox>
 

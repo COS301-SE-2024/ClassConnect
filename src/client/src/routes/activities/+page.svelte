@@ -8,7 +8,7 @@
 		<div>
 			<SideBar />
 		</div>
-		<div class="w-full bg-lightBgColor px-4">
+		<div class="w-full bg-lightBgColor px-4 dark:bg-gray-800">
 			<Activities />
 		</div>
 	</div>

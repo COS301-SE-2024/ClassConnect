@@ -67,7 +67,7 @@
 										scope="col"
 										class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
 									>
-										<button class="flex items-center gap-x-3 focus:outline-none"> Feild </button>
+										<button class="flex items-center gap-x-3 focus:outline-none"> Field </button>
 									</th>
 
 									<th
@@ -84,10 +84,10 @@
 								<tr>
 									<td class="whitespace-nowrap px-4 py-4 text-sm font-medium">
 										<div>
-											<h2 class="font-medium text-gray-800 dark:text-white">Orgnisation Name</h2>
+											<h2 class="font-medium text-gray-800 dark:text-gray-300">Orgnisation Name</h2>
 										</div>
 									</td>
-									<td class="whitespace-nowrap px-12 py-4 text-sm font-medium">
+									<td class="whitespace-nowrap px-12 py-4 text-sm font-medium dark:text-gray-300">
 										{$organisationName}
 									</td>
 								</tr>
