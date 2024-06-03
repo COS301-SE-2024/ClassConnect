@@ -12,6 +12,7 @@
 
 [![Requirements Status](https://img.shields.io/badge/Requirements-requires.io-orange)](link_to_requires_io)
 
+<!-- This for the demo -->
 
 ### Description of ClassConnect
 
