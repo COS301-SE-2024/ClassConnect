@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 	import { createUser } from '../../../services/users';
+	import { admChange } from '../../stores/store';
 
 	let formModal = false;
 
@@ -15,6 +16,7 @@
 
 		try {
 			await createUser(name, surname, email, 'admin');
+			admChange.set('new val');
 		} catch (error) {
 			console.error('Create User Error:', error);
 		}

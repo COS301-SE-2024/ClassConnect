@@ -4,6 +4,7 @@
 	import { Button, Modal } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
 	import { deleteUser } from '../../../services/users';
+	import { lecChange, stuChange, admChange } from '../../stores/store';
 	import Bin from '$lib/images/bin.svg';
 	let popupModal = false;
 
@@ -12,6 +13,9 @@
 
 		try {
 			await deleteUser(id);
+			lecChange.set('new val');
+			stuChange.set('new val');
+			admChange.set('new val');
 		} catch (error) {
 			console.error('Create User Error:', error);
 		}

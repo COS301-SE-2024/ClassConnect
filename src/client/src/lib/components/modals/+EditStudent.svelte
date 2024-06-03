@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 	import { updateUser } from '../../../services/users';
+	import { stuChange } from '../../stores/store';
 
 	export let studentID = '';
 
@@ -23,6 +24,7 @@
 
 		try {
 			await updateUser(studentID, newInfo);
+			stuChange.set('new');
 		} catch (error) {
 			console.error('Create User Error:', error);
 		}
