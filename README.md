@@ -27,23 +27,16 @@ is revolutionising education by making learning more immersive and engaging.
 
 #### Main Documentation
 
-- [SRS Documentation](#)
-- [Software Architectures](#)
+- [SRS Documentation](https://drive.google.com/file/d/1wYVm633sFN6IBOVznN6bsqExY96VErcM/view?usp=sharing)
+- [Services Contract](https://drive.google.com/file/d/1WEbWfYYVXaN96uxKSO9148U9itmog2K2/view?usp=sharing)
 
-#### Extra Documentation
-
-- [Coding Standards](#)
-- [Testing Policy](#)
-- [Development Diagram](#)
-- [Installation Manual](#)
-- [User Manuals](#)
 
 ### Demos
 
 #### Demo 1
 
-- [Demo 1 Slides](#)
-- [Demo 1 Video](#)
+- [Demo 1 Slides](https://docs.google.com/presentation/d/1L8ZY2dsLOlN_DjLjXGGN0u27xAqYxq00/edit?usp=sharing&ouid=106314516968758648353&rtpof=true&sd=true)
+- [Demo 1 Video](https://drive.google.com/file/d/1AJAgftIAKCBaGVa4KQGHvoX01R3dvBUb/view?usp=sharing)
 
 ### Technologies
 
@@ -55,7 +48,7 @@ is revolutionising education by making learning more immersive and engaging.
 
 ### Project Management
 
-[Project Board](#)
+[Project Board](https://github.com/orgs/COS301-SE-2024/projects/80)
 
 ### Team Members And Their Roles
 
