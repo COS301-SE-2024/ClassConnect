@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { admins } from '../../stores/store';
 	import { getUsers } from '../../../services/users';
+	import { admChange } from '../../stores/store';
 	import AddAdmin from '$lib/components/modals/+AddAdmin.svelte';
 	import EditAdmin from '$lib/components/modals/+EditAdmin.svelte';
 	import Remove from '$lib/components/modals/+Remove.svelte';
@@ -14,7 +15,7 @@
 	onMount(loadAdmins);
 
 	$: {
-		admins.subscribe(() => {
+		admChange.subscribe(() => {
 			loadAdmins();
 		});
 	}

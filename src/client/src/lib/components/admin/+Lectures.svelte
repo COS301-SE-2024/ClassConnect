@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { lecturers } from '../../stores/store';
+	import { lecChange } from '../../stores/store';
 	import { getUsers } from '../../../services/users';
 	import AddLecturer from '$lib/components/modals/+AddLecturer.svelte';
 	import EditLecturer from '$lib/components/modals/+EditLecturer.svelte';
@@ -14,7 +15,7 @@
 	onMount(loadLecturers);
 
 	$: {
-		lecturers.subscribe(() => {
+		lecChange.subscribe(() => {
 			loadLecturers();
 		});
 	}
