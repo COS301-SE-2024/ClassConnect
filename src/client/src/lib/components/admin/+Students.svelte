@@ -7,10 +7,10 @@
 	import Remove from '$lib/components/modals/+Remove.svelte';
 
 	async function loadStudents() {
-		try{
+		try {
 			const users = await getUsers({ role: 'student' });
 			students.set(users);
-		}catch(error){
+		} catch (error) {
 			students.set([]);
 		}
 	}

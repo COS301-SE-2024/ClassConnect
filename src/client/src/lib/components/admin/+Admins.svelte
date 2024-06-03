@@ -8,10 +8,10 @@
 	import Remove from '$lib/components/modals/+Remove.svelte';
 
 	async function loadAdmins() {
-		try{
+		try {
 			const users = await getUsers({ role: 'admin' });
 			admins.set(users);
-		}catch(error){
+		} catch (error) {
 			admins.set([]);
 		}
 	}
