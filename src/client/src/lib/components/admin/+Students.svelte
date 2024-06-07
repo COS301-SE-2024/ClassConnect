@@ -1,11 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { students, stuChange } from '../../stores/store';
+	import { students, stuChange } from '$lib/stores/store';
 	import { getUsers } from '../../../services/users';
 	import AddStudent from '$lib/components/modals/+AddStudent.svelte';
 	import EditStudent from '$lib/components/modals/+EditStudent.svelte';
 	import Remove from '$lib/components/modals/+Remove.svelte';
-	import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Avatar, Breadcrumb, BreadcrumbItem } from 'flowbite-svelte';
+	import { Table, TableBody, TableBodyCell, 
+	TableBodyRow, TableHead, TableHeadCell, 
+	Avatar, Breadcrumb, BreadcrumbItem,
+	Input, Button} from 'flowbite-svelte';
+	import { SearchOutline } from 'flowbite-svelte-icons';
 	
 	async function loadStudents() {
 		try {
@@ -48,7 +52,14 @@
 			</div>
 		</div>
 
-		<div class="mt-4 flex items-center gap-x-3">
+		<div class="relative mb-4 flex items-center md:mt-0">
+			<Input id="search" placeholder="Search" size="lg">
+				<SearchOutline slot="left" class="w-6 h-6 text-gray-500 dark:text-gray-400" />
+				<Button slot="right" size="sm" type="submit">Search</Button>
+			</Input>
+		</div>
+
+		<div class="mb-4 flex items-center gap-x-3">
 			<AddStudent />
 		</div>
 	</div>
