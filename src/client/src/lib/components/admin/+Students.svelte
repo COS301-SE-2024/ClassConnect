@@ -5,12 +5,21 @@
 	import AddStudent from '$lib/components/modals/+AddStudent.svelte';
 	import EditStudent from '$lib/components/modals/+EditStudent.svelte';
 	import Remove from '$lib/components/modals/+Remove.svelte';
-	import { Table, TableBody, TableBodyCell, 
-	TableBodyRow, TableHead, TableHeadCell, 
-	Avatar, Breadcrumb, BreadcrumbItem,
-	Input, Button} from 'flowbite-svelte';
+	import {
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell,
+		Avatar,
+		Breadcrumb,
+		BreadcrumbItem,
+		Input,
+		Button
+	} from 'flowbite-svelte';
 	import { SearchOutline } from 'flowbite-svelte-icons';
-	
+
 	async function loadStudents() {
 		try {
 			const users = await getUsers({ role: 'student' });
@@ -20,8 +29,7 @@
 		}
 	}
 
-	let headers = ["Name", "Student Number", "Email address", "Edit"];
-	
+	let headers = ['Name', 'Student Number', 'Email address', 'Edit'];
 
 	onMount(loadStudents);
 
@@ -54,7 +62,7 @@
 
 		<div class="relative mb-4 flex items-center md:mt-0">
 			<Input id="search" placeholder="Search" size="lg">
-				<SearchOutline slot="left" class="w-6 h-6 text-gray-500 dark:text-gray-400" />
+				<SearchOutline slot="left" class="h-6 w-6 text-gray-500 dark:text-gray-400" />
 				<Button slot="right" size="sm" type="submit">Search</Button>
 			</Input>
 		</div>
@@ -63,38 +71,40 @@
 			<AddStudent />
 		</div>
 	</div>
-	  
+
 	<Table class="my-2">
 		<TableHead>
-			{#each headers as header, index}
-			<TableHeadCell>{header}</TableHeadCell>
+			{#each headers as header}
+				<TableHeadCell>{header}</TableHeadCell>
 			{/each}
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
 			{#each $students as student}
-			<TableBodyRow>
-				<TableBodyCell class="inline-flex items-center gap-x-3">
-					<div class="flex items-center gap-x-2">
-						<Avatar src={student.image} />
-					<div>
-						<p class="text-lg text-gray-800 dark:text-white">
-							{student.name} {student.surname}
-						</p>
-					</div>
-				</TableBodyCell>
-				<TableBodyCell>
-					{student.username}
-				</TableBodyCell>
-				<TableBodyCell>
-					{student.email}
-				</TableBodyCell>
-				<TableBodyCell>
-					<div class="flex items-center gap-x-6">
-						<Remove id={student._id} />
-						<EditStudent studentID={student._id} />
-					</div>
-				</TableBodyCell>
-			</TableBodyRow>
+				<TableBodyRow>
+					<TableBodyCell class="inline-flex items-center gap-x-3">
+						<div class="flex items-center gap-x-2">
+							<Avatar src={student.image} />
+							<div>
+								<p class="text-lg text-gray-800 dark:text-white">
+									{student.name}
+									{student.surname}
+								</p>
+							</div>
+						</div></TableBodyCell
+					>
+					<TableBodyCell>
+						{student.username}
+					</TableBodyCell>
+					<TableBodyCell>
+						{student.email}
+					</TableBodyCell>
+					<TableBodyCell>
+						<div class="flex items-center gap-x-6">
+							<Remove id={student._id} />
+							<EditStudent studentID={student._id} />
+						</div>
+					</TableBodyCell>
+				</TableBodyRow>
 			{/each}
 		</TableBody>
 	</Table>
