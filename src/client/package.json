@@ -10,7 +10,10 @@
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "cy:open-ct": "cypress open --component",
-    "cy:run-ct": "cypress run --e2e"
+    "cy:run-ct": "cypress run --e2e",
+		"test": "vitest run",
+		"test:ui": "vitest --ui",
+		"test:watch": "vitest"
   },
   "devDependencies": {
     "@cypress/code-coverage": "^3.12.39",
@@ -19,11 +22,14 @@
     "@neoconfetti/svelte": "^1.0.0",
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/kit": "^2.0.0",
-    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.1.1",
     "@tailwindcss/typography": "^0.5.10",
+		"@testing-library/jest-dom": "^6.4.5",
+		"@testing-library/svelte": "^5.1.0",
     "@types/eslint": "^8.56.0",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",
+		"@vitest/ui": "^1.6.0",
     "autoprefixer": "^10.4.16",
     "cypress": "^13.10.0",
     "cypress-svelte-unit-test": "^3.3.4",
@@ -34,6 +40,7 @@
     "flowbite-svelte": "^0.46.1",
     "flowbite-svelte-icons": "^1.6.1",
     "istanbul-lib-coverage": "^3.2.2",
+		"jsdom": "^24.1.0",
     "nyc": "^15.1.0",
     "postcss": "^8.4.33",
     "prettier": "^3.1.1",
@@ -44,7 +51,8 @@
     "tailwindcss": "^3.4.1",
     "tslib": "^2.4.1",
     "typescript": "^5.0.0",
-    "vite": "^5.0.3"
+    "vite": "^5.0.3",
+		"vitest": "^1.6.0"
   },
   "type": "module",
   "dependencies": {
