@@ -4,8 +4,8 @@
 	import { Button, Modal } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
 	import { deleteUser } from '../../../services/users';
+	import IconTrash from '@tabler/icons-svelte/IconTrash.svelte';
 	import { lecChange, stuChange, admChange } from '../../stores/store';
-	import Bin from '$lib/images/bin.svg';
 	let popupModal = false;
 
 	async function handleRemove(event: Event) {
@@ -26,9 +26,9 @@
 
 <button
 	on:click={() => (popupModal = true)}
-	class="text-gray-500 transition-colors duration-200 hover:text-green-500 focus:outline-none dark:text-gray-300 dark:hover:text-green-500"
+	class="transition-colors duration-200 hover:text-green-500 focus:outline-none dark:text-gray-300 dark:hover:text-green-500"
 >
-	<img src={Bin} alt="Bin" class="mx-2 h-5 w-5" />
+	<IconTrash stroke={2} />
 </button>
 
 <Modal bind:open={popupModal} size="xs" autoclose>
