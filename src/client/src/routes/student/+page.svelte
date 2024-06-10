@@ -1,15 +1,17 @@
 <script lang="ts">
-	import LeftSideImage from '$lib/components/authentication/+LeftSideImage.svelte';
-	import SignUpForm from '$lib/components/authentication/+SignUpForm.svelte';
+	import StudentSideBar from '$lib/components/utils/+StudentSideBar.svelte';
+	import TopBar from '$lib/components/utils/+TopBar.svelte';
 </script>
 
 <main>
 	<div class="flex">
-		<div class="w-1/2" style="z-index: 1;">
-			<SignUpForm />
-		</div>
-		<div class="w-1/2" style="z-index: 1;">
-			<LeftSideImage />
+		<StudentSideBar />
+		<div class="flex-1">
+			<TopBar />
+			<div class="p-4">
+				<h1 class="text-2xl font-bold">Student Page</h1>
+				<p>This is the student page</p>
+			</div>
 		</div>
 	</div>
 </main>
