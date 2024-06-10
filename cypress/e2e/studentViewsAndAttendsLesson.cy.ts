@@ -51,4 +51,14 @@ describe("Student views and attends lessons", () => {
     cy.url().should("include", "/lessons/schedule");
     cy.contains(lessonData.title).should("exist");
   });
+
+  it("should join a scheduled lesson", () => {
+    cy.visit("/lessons/schedule");
+    cy.contains(lessonData.title).click();
+    cy.contains("Join Lesson").click();
+
+    // Verify navigation to the lesson
+    cy.url().should("include", `/lessons/${lessonData.title}`);
+    cy.contains("Joining lesson").should("exist");
+  });
 });
