@@ -61,4 +61,36 @@ describe("Student views and attends lessons", () => {
     cy.url().should("include", `/lessons/${lessonData.title}`);
     cy.contains("Joining lesson").should("exist");
   });
+
+  it("should display 3D environment and learning materials in real-time", () => {
+    cy.visit(`/lessons/${lessonData.title}`);
+
+    // Verify the presence of 3D environment
+    cy.get(".3d-environment").should("exist");
+
+    // Verify the presence of learning materials
+    cy.contains("Learning Materials").should("exist");
+  });
+
+  it("should interact with the 3D environment and verify interactions", () => {
+    cy.visit(`/lessons/${lessonData.title}`);
+
+    // Assuming there are buttons or controls for 3D interactions
+    cy.get("button.rotate-3d").click();
+    cy.get("button.zoom-3d").click();
+
+    // Verify interactions - these verifications would depend on your specific implementation
+    cy.get(".3d-environment")
+      .should("have.attr", "data-rotation", "90") // Example check for rotation
+      .should("have.attr", "data-zoom", "1.5"); // Example check for zoom level
+
+    // Interact with the 3D environment
+    cy.get(".3d-environment")
+      .trigger("mousedown", { which: 1, pageX: 600, pageY: 100 })
+      .trigger("mousemove", { which: 1, pageX: 800, pageY: 200 })
+      .trigger("mouseup");
+
+    // Verify the interaction effect (e.g., movement, rotation)
+    cy.get(".3d-environment").should("have.attr", "data-interaction", "true"); // Example check for interaction
+  });
 });
