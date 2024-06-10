@@ -79,4 +79,17 @@ describe("Lecturer manipulates and annotates 3D environment", () => {
     // Verify that the annotation was added
     cy.contains("This is a test annotation.").should("exist");
   });
+
+  it("should verify that transformations and annotations are displayed correctly", () => {
+    cy.visit(`/lessons/${lessonData.title}`);
+
+    // Verify transformations
+    cy.get(".3d-model")
+      .should("have.attr", "data-rotation", "90") // Example check for rotation
+      .should("have.attr", "data-scale", "1.5") // Example check for scaling
+      .should("have.attr", "data-transform", "translate(10px, 20px)"); // Example check for transform
+
+    // Verify annotations
+    cy.contains("This is a test annotation.").should("exist");
+  });
 });
