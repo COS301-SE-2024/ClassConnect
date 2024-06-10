@@ -77,4 +77,12 @@ describe("Lecturer adds 3D models to lessons", () => {
     cy.contains("3D Model added successfully").should("exist");
     cy.url().should("include", "/lessons");
   });
+
+  it("should list the newly added 3D model in the lesson", () => {
+    cy.visit("/lessons");
+    cy.contains(lessonData.title).click();
+
+    // Verify that the new 3D model is listed under the lesson
+    cy.contains(modelData.name).should("exist");
+  });
 });
