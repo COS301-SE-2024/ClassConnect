@@ -50,4 +50,19 @@ describe("Lecturer manipulates and annotates 3D environment", () => {
     cy.url().should("include", "/lessons");
     cy.contains(lessonData.title).click();
   });
+
+  it("should perform transformations on 3D models", () => {
+    cy.visit(`/lessons/${lessonData.title}`);
+
+    // Assuming there are buttons or controls for 3D transformations
+    cy.get("button.rotate-model").click();
+    cy.get("button.scale-model").click();
+    cy.get("button.transform-model").click();
+
+    // Verify transformations - these verifications would depend on your specific implementation
+    cy.get(".3d-model")
+      .should("have.attr", "data-rotation", "90") // Example check for rotation
+      .should("have.attr", "data-scale", "1.5") // Example check for scaling
+      .should("have.attr", "data-transform", "translate(10px, 20px)"); // Example check for transform
+  });
 });
