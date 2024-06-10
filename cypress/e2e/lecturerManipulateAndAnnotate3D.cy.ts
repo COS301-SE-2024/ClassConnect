@@ -65,4 +65,18 @@ describe("Lecturer manipulates and annotates 3D environment", () => {
       .should("have.attr", "data-scale", "1.5") // Example check for scaling
       .should("have.attr", "data-transform", "translate(10px, 20px)"); // Example check for transform
   });
+
+  it("should add annotations to the 3D environment", () => {
+    cy.visit(`/lessons/${lessonData.title}`);
+
+    // Assuming there is a button to add annotations
+    cy.get("button.add-annotation").click();
+
+    // Fill out the annotation form
+    cy.get('textarea[name="annotation"]').type("This is a test annotation.");
+    cy.get('button[type="submit"]').click();
+
+    // Verify that the annotation was added
+    cy.contains("This is a test annotation.").should("exist");
+  });
 });
