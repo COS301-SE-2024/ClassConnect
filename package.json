@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@types/jest": "^29.5.12",
     "cypress": "^13.10.0",
     "typescript": "^5.4.5"
   }

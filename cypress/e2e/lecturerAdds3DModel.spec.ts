@@ -36,6 +36,17 @@ describe("Lecturer adds 3D models to lessons", () => {
     });
   });
 
+  it("should log in as lecturer", () => {
+    cy.visit("/login");
+    cy.get('input[name="email"]').type(lecturerCredentials.email);
+    cy.get('input[name="password"]').type(lecturerCredentials.password);
+    cy.get('button[type="submit"]').click();
+
+    // Verify successful login
+    cy.url().should("include", "/dashboard");
+    cy.contains("Welcome, John");
+  });
+
   it("should navigate to the lesson management page", () => {
     cy.visit("/dashboard");
     cy.contains("Manage Lessons").click();
@@ -53,5 +64,17 @@ describe("Lecturer adds 3D models to lessons", () => {
     // Verify navigation
     cy.url().should("include", "/add-3d-model");
     cy.contains("Add a New 3D Model");
+  });
+
+  it("should fill out and submit the add 3D model form", () => {
+    cy.visit("/add-3d-model");
+
+    cy.get('input[name="name"]').type(modelData.name);
+    cy.get('input[name="url"]').type(modelData.url);
+    cy.get('button[type="submit"]').click();
+
+    // Verify that the 3D model was added successfully
+    cy.contains("3D Model added successfully").should("exist");
+    cy.url().should("include", "/lessons");
   });
 });
