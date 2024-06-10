@@ -31,4 +31,24 @@ describe("Student views and attends lessons", () => {
       window.localStorage.setItem("authToken", response.body.token);
     });
   });
+
+  it("should log in as student", () => {
+    cy.visit("/login");
+    cy.get('input[name="email"]').type(studentCredentials.email);
+    cy.get('input[name="password"]').type(studentCredentials.password);
+    cy.get('button[type="submit"]').click();
+
+    // Verify successful login
+    cy.url().should("include", "/dashboard");
+    cy.contains("Welcome, Jane");
+  });
+
+  it("should navigate to the lesson schedule page", () => {
+    cy.visit("/dashboard");
+    cy.contains("Scheduled Lessons").click();
+
+    // Verify navigation
+    cy.url().should("include", "/lessons/schedule");
+    cy.contains(lessonData.title).should("exist");
+  });
 });
