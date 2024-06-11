@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { lessons } from '$lib/stores/store';
-	import { SearchOutline } from 'flowbite-svelte-icons';
 	import {
 		Table,
 		TableBody,
@@ -11,7 +9,6 @@
 		TableHeadCell,
 		Breadcrumb,
 		BreadcrumbItem,
-		Input,
 		Button
 	} from 'flowbite-svelte';
 
