@@ -29,4 +29,10 @@ export class MaterialService {
       .findByIdAndUpdate(id, updateMaterialDto, { new: true })
       .exec();
   }
+
+  async delete(id: string): Promise<{ message: string }> {
+    await this.materialModel.findByIdAndDelete(id).exec();
+    return { message: 'Learning Material deleted successfully.' };
+  }
+
 }
