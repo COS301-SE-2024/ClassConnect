@@ -4,7 +4,7 @@
 </script>
 
 <div class="app bg-lightBgColor dark:bg-gray-700">
-	<DarkMode />
+	<!-- <DarkMode /> -->
 	<main>
 		<slot />
 	</main>

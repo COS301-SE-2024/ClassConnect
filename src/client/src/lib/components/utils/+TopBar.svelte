@@ -4,7 +4,7 @@
 		Breadcrumb,
 		BreadcrumbItem,
 		NavLi,
-		NavUl,
+		DarkMode,
 		NavHamburger,
 		Avatar,
 		Dropdown,
@@ -16,13 +16,25 @@
 
 <Navbar>
 	<Breadcrumb aria-label="Default breadcrumb example">
-		<BreadcrumbItem href="/" home>Home</BreadcrumbItem>
-		<BreadcrumbItem href="/">Projects</BreadcrumbItem>
-		<BreadcrumbItem>Flowbite Svelte</BreadcrumbItem>
+		<BreadcrumbItem href="/student" home>Home</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="flex items-center md:order-2">
-		<Avatar id="avatar-menu" src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg" />
-		<NavHamburger class1="w-full md:flex md:w-auto md:order-1" />
+		<DarkMode 
+			class="text-gray-500 dark:text-gray-600 border dark:border-gray-800 mx-2" 
+		/>
+		<Avatar 
+			id="avatar-menu" 
+			src="https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg"
+			class="mx-2"
+		 />
+		<div class="mx-2">
+			<div class="text-lg font-bold">
+				Eugene Mpande
+			</div>
+			<div class="text-lg font-semibold">
+				u21573558
+			</div>
+		</div>
 	</div>
 	<Dropdown placement="bottom" triggeredBy="#avatar-menu">
 		<DropdownHeader>
@@ -35,11 +47,5 @@
 		<DropdownDivider />
 		<DropdownItem>Sign out</DropdownItem>
 	</Dropdown>
-	<NavUl>
-		<NavLi href="/" active={true}>Home</NavLi>
-		<NavLi href="/about">About</NavLi>
-		<NavLi href="/docs/components/navbar">Navbar</NavLi>
-		<NavLi href="/pricing">Pricing</NavLi>
-		<NavLi href="/contact">Contact</NavLi>
-	</NavUl>
+
 </Navbar>
