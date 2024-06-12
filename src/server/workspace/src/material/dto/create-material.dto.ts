@@ -6,7 +6,7 @@ export class CreateMaterialDto{
     //this is the type 
     //either 3d model orpdf
     @IsNotEmpty()
-    @isBoolean()
+    //@isBoolean(true)
     type: boolean;
 
     //this is the workspace  id

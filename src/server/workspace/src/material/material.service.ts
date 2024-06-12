@@ -5,6 +5,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Material } from '../schemas/material.schema';
+
+import { CreateMaterialDto } from './dto/create-material.dto';
+import { UpdateMaterialDto } from './dto/update-material.dto';
 @Injectable()
 export class MaterialService {
   constructor(
@@ -12,10 +15,8 @@ export class MaterialService {
     private materialModel: Model<Material>,
   ) {}
 
-  async create(createMaterialDto: any): Promise<Material> {
-    const createdMaterial = new this.materialModel(
-      createMaterialDto,
-    );
+  async create(createMaterialDto: CreateMaterialDto): Promise<Material> {
+    const createdMaterial = new this.materialModel(createMaterialDto);
 
     return createdMaterial.save();
   }
@@ -24,7 +25,7 @@ export class MaterialService {
     return this.materialModel.findById(id).exec();
   }
 
-  async update(id: string, updateMaterialDto: any): Promise<Material> {
+  async update(id: string, updateMaterialDto: UpdateMaterialDto): Promise<Material> {
     return this.materialModel
       .findByIdAndUpdate(id, updateMaterialDto, { new: true })
       .exec();

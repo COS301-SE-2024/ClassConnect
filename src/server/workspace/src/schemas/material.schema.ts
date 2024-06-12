@@ -31,3 +31,5 @@ export class Material extends Document{
     @Prop({required: true})
     file_path: string;
 }
+
+export const MaterialSchema = SchemaFactory.createForClass(Material);
