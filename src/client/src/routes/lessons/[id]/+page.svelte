@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { onMount, onDestroy } from 'svelte';
 	import { StreamVideoClient, type Call } from '@stream-io/video-client';
 
@@ -19,7 +20,7 @@
 			user: { id: $userInfo.username, name: $userInfo.name }
 		});
 
-		call = client.call('default', 'call-id');
+		call = client.call('default', $page.params.id );
 
 		await call.join({ create: true });
 		await call.camera.enable();
