@@ -1,4 +1,5 @@
 <script lang="ts">
+	import {goto} from '$app/navigation';
 	import { lessons } from '$lib/stores/store';
 	import {
 		Table,
@@ -11,6 +12,8 @@
 		BreadcrumbItem,
 		Button
 	} from 'flowbite-svelte';
+
+	import ScheduleLesson from '$lib/components/modals/+ScheduleLesson.svelte';
 
 	const headers = ['Topic', 'Date', 'Time'];
 </script>
@@ -36,7 +39,11 @@
 				</span>
 			</div>
 		</div>
+	<div class="mb-4 flex items-center gap-x-3">
+		<ScheduleLesson />
 	</div>
+	</div>
+
 
 	<br>
 
@@ -62,7 +69,7 @@
 						09:30
 					</TableBodyCell>
 					<TableBodyCell>
-						<Button size="xs" type="submit">Join</Button>
+						<Button size="xs" on:click={() => goto('lessons/1234')} >Join</Button>
 					</TableBodyCell>
 				</TableBodyRow>
 		</TableBody>
