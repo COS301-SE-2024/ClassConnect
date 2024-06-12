@@ -19,4 +19,9 @@ export class MaterialService {
 
     return createdMaterial.save();
   }
+
+
+  async findOne(id: string): Promise<Material> {
+    return this.materialModel.findById(id).exec();
+  }
 }
