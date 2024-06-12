@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
-	import { StreamVideoClient, type User, type Call } from '@stream-io/video-client';
+	import { StreamVideoClient, type Call } from '@stream-io/video-client';
 
 	import { userInfo } from '$lib/stores/store';
 	import Container from '$lib/components/lesson/Container.svelte';
@@ -13,7 +13,12 @@
 	let client: StreamVideoClient;
 
 	onMount(async () => {
-		client = new StreamVideoClient({ apiKey, token, user:{id: $userInfo.username, name: $userInfo.name} });
+		client = new StreamVideoClient({
+			apiKey,
+			token,
+			user: { id: $userInfo.username, name: $userInfo.name }
+		});
+
 		call = client.call('default', 'call-id');
 
 		await call.join({ create: true });
@@ -22,25 +27,14 @@
 	});
 
 	onDestroy(() => {
-		if (call) {
-			call.leave();
-		}
-
-		if (client) {
-			client.disconnectUser();
-		}
+		if (call) call.leave();
+		if (client) client.disconnectUser();
 	});
-
-	function toggleMicrophone() {
-		call.microphone.toggle();
-	}
-
-	function toggleCamera() {
-		call.camera.toggle();
-	}
 </script>
 
 <main>
-	<Container {call} />
-	<ControlPanel {call} />
+	{#if call}
+		<Container {call} />
+		<ControlPanel {call} />
+	{/if}
 </main>
