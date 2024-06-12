@@ -1,18 +1,34 @@
-<script>
+<script lang="ts">
     import { T } from "@threlte/core";
     import {OrbitControls, Sky, GLTF } from "@threlte/extras";
 	import { AmbientLight, AxesHelper, DirectionalLight, Mesh, MeshStandardMaterial, PerspectiveCamera, SphereGeometry } from "three";
-    import CashRegister from "./models/Cash_Register.svelte"
+    import CashRegister from "./models/Cash_Register.svelte";
 
 
 	// import { GridHelper } from "three";
 	// import { MeshStandardMaterial, PerspectiveCamera, SphereGeometry } from "three";
 	// import { metalness, roughness } from "three/examples/jsm/nodes/Nodes.js";
 
+    export let autoRotate: boolean
+    export let enableDamping: boolean
+    export let rotateSpeed: number
+    export let zoomToCursor: boolean
+    export let zoomSpeed: number
+    export let enableZoom: boolean
+
 </script>
 
-<T.PerspectiveCamera makeDefault position={[0,7,-45]}>
-    <OrbitControls enableDamping={true}/>
+<T.PerspectiveCamera makeDefault position={[0,10,-45]}
+fov={75}
+>
+    <OrbitControls
+    {enableDamping}
+    {autoRotate}
+    {rotateSpeed}
+    {zoomToCursor}
+    {zoomSpeed}
+    {enableZoom}
+  />
 </T.PerspectiveCamera>
 
 
@@ -35,10 +51,10 @@
 
 
 <GLTF url="/models/cash_register_with_a_counting_machine.glb"
-scale={0.1}/>
+scale={0.05}/>
 
 
-<Sky/>
+<!-- <Sky/> -->
 <!-- <CashRegister></CashRegister> -->
 
 
