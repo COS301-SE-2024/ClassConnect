@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 	import IconEdit from '@tabler/icons-svelte/IconEdit.svelte';
-	import { updateUser } from '../../../services/users';
-	import { stuChange } from '../../stores/store';
+	import { updateUser } from '$lib/services/users';
+	import { stuChange } from '$lib/store';
 
 	export let studentID = '';
 

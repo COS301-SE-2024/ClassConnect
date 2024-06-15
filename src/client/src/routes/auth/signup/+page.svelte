@@ -1,6 +1,6 @@
 <script lang="ts">
-	import LeftSideImage from '$lib/components/authentication/+LeftSideImage.svelte';
-	import SignUpForm from '$lib/components/authentication/+SignUpForm.svelte';
+	import LeftSideImage from '$lib/components/universal/auth/+LeftSideImage.svelte';
+	import SignUpForm from '$lib/components/universal/auth/+SignUpForm.svelte';
 </script>
 
 <main>

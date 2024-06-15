@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
-	import { createUser } from '../../../services/users';
-	import { stuChange } from '../../stores/store';
+	import { createUser } from '$lib/services/users';
+	import { lecturers } from '$lib/store';
+	import { lecChange } from '$lib/store';
 
 	let formModal = false;
 
@@ -15,8 +16,9 @@
 		const email = formData.get('email')?.toString() ?? '';
 
 		try {
-			await createUser(name, surname, email, 'student');
-			stuChange.set('new val');
+			const lecturer = await createUser(name, surname, email, 'lecturer');
+			lecturers.update((users) => [...users, lecturer]);
+			lecChange.set('new val');
 		} catch (error) {
 			console.error('Create User Error:', error);
 		}
@@ -40,22 +42,22 @@
 			d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
 		/>
 	</svg>
-	<span class="px-2">Add Student</span>
+	<span class="px-2">Add Lecturer</span>
 </Button>
 
 <Modal bind:open={formModal} size="xs" autoclose={false} class="w-full">
 	<form class="flex flex-col space-y-6" on:submit={handleSubmit}>
-		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add Student</h3>
+		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add Lecturer</h3>
 
 		<Label for="name" class="mb-2 mt-2 space-y-2">Name</Label>
-		<Input type="text" id="name" name="name" placeholder="Jon" size="md" required />
+		<Input type="text" id="name" name="name" placeholder="John" size="md" required />
 
-		<Label for="surname" class="mb-2 mt-2 space-y-2">Surname</Label>
+		<Label for="surname" class="mb-2 mt-2 space-y-2">Name</Label>
 		<Input type="text" id="surname" name="surname" placeholder="Doe" size="md" required />
 
 		<Label for="email" class="mb-2 mt-2 space-y-2">Email</Label>
 		<Input type="text" id="email" name="email" placeholder="email@example.com" size="md" required />
 
-		<Button type="submit" class="w-full1">Add Student</Button>
+		<Button type="submit" class="w-full1">Add Lecturer</Button>
 	</form>
 </Modal>

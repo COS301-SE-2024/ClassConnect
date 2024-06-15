@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { students, stuChange } from '$lib/stores/store';
-	import { getUsers } from '../../../services/users';
-	import AddStudent from '$lib/components/modals/+AddStudent.svelte';
-	import EditStudent from '$lib/components/modals/+EditStudent.svelte';
-	import Remove from '$lib/components/modals/+Remove.svelte';
+	import { students, stuChange } from '$lib/store';
+	import { getUsers } from '$lib/services/users';
+	import AddStudent from '$lib/components/admin/modals/add/+AddStudent.svelte';
+	import EditStudent from '$lib/components/admin/modals/edit/+EditStudent.svelte';
+	import Remove from '$lib/components/admin/modals/remove/+Remove.svelte';
 	import {
 		Table,
 		TableBody,

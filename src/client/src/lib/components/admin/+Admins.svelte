@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { admins, admChange } from '$lib/stores/store';
-	import { getUsers } from '../../../services/users';
-	import AddAdmin from '$lib/components/modals/+AddAdmin.svelte';
-	import EditAdmin from '$lib/components/modals/+EditAdmin.svelte';
-	import Remove from '$lib/components/modals/+Remove.svelte';
+	import { admins, admChange } from '$lib/store';
+	import { getUsers } from '../../services/users';
+	import AddAdmin from '$lib/components/admin/modals/add/+AddAdmin.svelte';
+	import EditAdmin from '$lib/components/admin/modals/edit/+EditAdmin.svelte';
+	import Remove from '$lib/components/admin/modals/remove/+Remove.svelte';
 	import {
 		Table,
 		TableBody,

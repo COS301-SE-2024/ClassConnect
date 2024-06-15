@@ -3,9 +3,9 @@
 
 	import { Button, Modal } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
-	import { deleteUser } from '../../../services/users';
+	import { deleteUser } from '$lib/services/users';
 	import IconTrash from '@tabler/icons-svelte/IconTrash.svelte';
-	import { lecChange, stuChange, admChange } from '../../stores/store';
+	import { lecChange, stuChange, admChange } from '$lib/store';
 	let popupModal = false;
 
 	async function handleRemove(event: Event) {

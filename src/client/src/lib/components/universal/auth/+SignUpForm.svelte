@@ -5,7 +5,7 @@
 	import Google from '$lib/images/google.svg';
 	import { Input, Label, Button, Checkbox, A } from 'flowbite-svelte';
 
-	import { signUp } from '../../../services/auth';
+	import { signUp } from '$lib/services/auth';
 
 	function storeAccessToken(token: string): void {
 		localStorage.setItem('accessToken', token);

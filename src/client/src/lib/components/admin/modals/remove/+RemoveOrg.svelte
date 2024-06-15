@@ -2,8 +2,8 @@
 	import { goto } from '$app/navigation';
 	import { Button, Modal } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
-	import { deleteOrganization } from '../../../services/orgs';
-	import { organisationName } from '$lib/stores/store';
+	import { deleteOrganization } from '$lib/services/orgs';
+	import { organisationName } from '$lib/store';
 	let popupModal = false;
 
 	async function handleRemove() {

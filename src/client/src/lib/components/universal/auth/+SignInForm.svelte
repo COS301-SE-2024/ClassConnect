@@ -3,7 +3,7 @@
 	import Google from '$lib/images/google.svg';
 	import { goto } from '$app/navigation';
 	import { Input, Label, Button, A } from 'flowbite-svelte';
-	import { signIn } from '../../../services/auth';
+	import { signIn } from '$lib/services/auth';
 
 	import '@fontsource/roboto';
 

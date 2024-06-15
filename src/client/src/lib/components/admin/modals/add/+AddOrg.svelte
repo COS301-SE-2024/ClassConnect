@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
-	import { organisationName } from '$lib/stores/store';
-	import { organizations } from '../../../services/orgs';
+	import { organisationName } from '$lib/store';
+	import { organizations } from '$lib/services/orgs';
 
 	let formModal = false;
 
