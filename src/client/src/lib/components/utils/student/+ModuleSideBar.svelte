@@ -1,19 +1,9 @@
 <script lang="ts">
 	import Logo from '$lib/images/class-connect-logo.png';
-	import IconHome from '@tabler/icons-svelte/IconHome.svelte';
-	import IconChartHistogram from '@tabler/icons-svelte/IconChartHistogram.svelte';
-	import IconWorld from '@tabler/icons-svelte/IconWorld.svelte';
     import IconSpeakerphone from '@tabler/icons-svelte/IconSpeakerphone.svelte';
     import IconBook from '@tabler/icons-svelte/IconBook.svelte';
     import IconSandbox from '@tabler/icons-svelte/IconSandbox.svelte';
     import IconSchool from '@tabler/icons-svelte/IconSchool.svelte';
-
-	const user = {
-		name: 'Eugene',
-		email: 'eugene.mpande@tuks.co.za',
-		avatar:
-			'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
-	};
 
 	const nav_links = [
 		{
@@ -24,17 +14,17 @@
 		{
 			icon: IconBook,
 			name: 'Study Materials',
-			href: '/student/study'
+			href: '/student/module/study'
 		},
 		{
 			icon: IconSandbox,
 			name: 'SandBox',
-			href: '/student/sandbox'
+			href: '/student/module/sandbox'
 		},
 		{
 			icon: IconSchool,
 			name: 'Classroom',
-			href: '/student/classroom'
+			href: '/student/module/classroom'
 		}
 	];
 </script>

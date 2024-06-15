@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ModuleSideBar from '$lib/components/utils/+ModuleSideBar.svelte';
+	import ModuleSideBar from '$lib/components/utils/student/+ModuleSideBar.svelte';
 	import TopBar from '$lib/components/utils/+TopBar.svelte';
 	const announcements = [
 		{

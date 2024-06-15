@@ -1,15 +1,15 @@
 <script lang="ts">
-	import SideBar from '$lib/components/utils/+SideBar.svelte';
-	import Profile from '$lib/components/admin/+Profile.svelte';
+	import StudentSideBar from '$lib/components/utils/student/+SideBar.svelte';
+	import TopBar from '$lib/components/utils/+TopBar.svelte';
+	import Contruction from '$lib/components/universal/+Construction.svelte'
 </script>
 
 <main>
 	<div class="flex">
-		<div>
-			<SideBar />
-		</div>
-		<div class="w-full bg-lightBgColor">
-			<Profile />
+		<StudentSideBar />
+		<div class="flex-1">
+			<TopBar />
+			<Contruction />
 		</div>
 	</div>
 </main>

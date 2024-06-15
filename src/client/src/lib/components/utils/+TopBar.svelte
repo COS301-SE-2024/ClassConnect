@@ -1,23 +1,18 @@
 <script>
 	import {
 		Navbar,
-		Breadcrumb,
-		BreadcrumbItem,
-		NavLi,
 		DarkMode,
-		NavHamburger,
 		Avatar,
 		Dropdown,
 		DropdownItem,
 		DropdownHeader,
 		DropdownDivider
 	} from 'flowbite-svelte';
+	import BreadCrumbs from '$lib/components/utils/universal/+Breadcrumbs.svelte';
 </script>
 
 <Navbar>
-	<Breadcrumb aria-label="Default breadcrumb example">
-		<BreadcrumbItem href="/student" home>Home</BreadcrumbItem>
-	</Breadcrumb>
+	<BreadCrumbs />
 	<div class="flex items-center md:order-2">
 		<DarkMode 
 			class="text-gray-500 dark:text-gray-600 border dark:border-gray-800 mx-2" 
@@ -38,12 +33,10 @@
 	</div>
 	<Dropdown placement="bottom" triggeredBy="#avatar-menu">
 		<DropdownHeader>
-			<span class="block text-sm">Bonnie Green</span>
-			<span class="block truncate text-sm font-medium">name@flowbite.com</span>
+			<span class="block text-sm">Eugene Mpande</span>
+			<span class="block truncate text-sm font-medium">u21573558@tuks.co.za</span>
 		</DropdownHeader>
-		<DropdownItem>Dashboard</DropdownItem>
-		<DropdownItem>Settings</DropdownItem>
-		<DropdownItem>Earnings</DropdownItem>
+		<DropdownItem href="/student/profile">Profile</DropdownItem>
 		<DropdownDivider />
 		<DropdownItem>Sign out</DropdownItem>
 	</Dropdown>

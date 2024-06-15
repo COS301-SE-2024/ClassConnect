@@ -1,7 +1,7 @@
 <script lang="ts">
-	import ModuleSideBar from '$lib/components/utils/+ModuleSideBar.svelte';
+	import ModuleSideBar from '$lib/components/utils/student/+ModuleSideBar.svelte';
 	import TopBar from '$lib/components/utils/+TopBar.svelte';
-	import Announcements from '$lib/components/admin/+Announcements.svelte';
+	import Contruction from '$lib/components/universal/+Construction.svelte'
 </script>
 
 <main>
@@ -9,7 +9,7 @@
 		<ModuleSideBar />
 		<div class="flex-1">
 			<TopBar />
-			<Announcements />
+			<Contruction />
 		</div>
 	</div>
 </main>
