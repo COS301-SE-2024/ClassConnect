@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import {goto} from '$app/navigation';
 	import { lessons } from '$lib/stores/store';
 	import {
 		Table,
@@ -39,12 +39,13 @@
 				</span>
 			</div>
 		</div>
-		<div class="mb-4 flex items-center gap-x-3">
-			<ScheduleLesson />
-		</div>
+	<div class="mb-4 flex items-center gap-x-3">
+		<ScheduleLesson />
+	</div>
 	</div>
 
-	<br />
+
+	<br>
 
 	<p class="text-l font-bold text-gray-800 dark:text-white">In Session</p>
 
@@ -55,20 +56,26 @@
 			{/each}
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
-			<TableBodyRow>
-				<TableBodyCell class="inline-flex items-center gap-x-3">
-					<p class="text-lg text-gray-800 dark:text-white">Mathematics</p>
-				</TableBodyCell>
-				<TableBodyCell>15 June</TableBodyCell>
-				<TableBodyCell>09:30</TableBodyCell>
-				<TableBodyCell>
-					<Button size="xs" on:click={() => goto('lessons/1234')}>Join</Button>
-				</TableBodyCell>
-			</TableBodyRow>
+				<TableBodyRow>
+					<TableBodyCell class="inline-flex items-center gap-x-3">
+						<p class="text-lg text-gray-800 dark:text-white">
+							Mathematics
+						</p>
+					</TableBodyCell>
+					<TableBodyCell>
+						15 June
+					</TableBodyCell>
+					<TableBodyCell>
+						09:30
+					</TableBodyCell>
+					<TableBodyCell>
+						<Button size="xs" on:click={() => goto('lessons/1234')} >Join</Button>
+					</TableBodyCell>
+				</TableBodyRow>
 		</TableBody>
 	</Table>
 
-	<br />
+	<br>
 
 	<p class="text-l font-bold text-gray-800 dark:text-white">Upcoming</p>
 

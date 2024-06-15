@@ -7,7 +7,7 @@
 	export let participant: StreamVideoParticipant;
 </script>
 
-<div class="m-5 bg-gray-200">
+<div class="bg-gray-200 m-5">
 	<Video {call} {participant} />
 	<Audio {call} {participant} />
 </div>

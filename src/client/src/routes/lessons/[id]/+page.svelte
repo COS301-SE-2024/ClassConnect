@@ -27,7 +27,7 @@
 		await call.join({ create: true });
 	});
 
-	onDestroy((): void => {
+	onDestroy(() : void => {
 		if (call) call.leave();
 		if (client) client.disconnectUser();
 	});

@@ -16,15 +16,16 @@ export const lecChange = writable('change');
 export const stuChange = writable('change');
 export const admChange = writable('change');
 
-export const username = 'e241198014';
+export const username = "e241198014"
 
 export const userInfo = writable<any>({
-	name: 'James',
-	surname: 'Guy',
-	username: 'e241198014',
-	email: 'bond@gg.moc',
-	image: 'https://www.pngkey.com/png/full/73-730477_first-name-profile-image-placeholder-png.png',
-	role: 'lecturer',
-	organisation: '665c341781a011b727589f4c',
-	workspaces: []
-});
+    name: "James",
+    surname: "Guy",
+    username: "e241198014",
+    email: "bond@gg.moc",
+    image: "https://www.pngkey.com/png/full/73-730477_first-name-profile-image-placeholder-png.png",
+    role: "lecturer",
+    organisation: "665c341781a011b727589f4c",
+    workspaces: [], 
+	token: "eyJhbGciOiJIUzI1NZC93D40"
+  });

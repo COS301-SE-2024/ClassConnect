@@ -6,14 +6,14 @@
 	async function handleSubmit(event: Event) {
 		event.preventDefault();
 
-		/*const formData = new FormData(event.target as HTMLFormElement);
+		const formData = new FormData(event.target as HTMLFormElement);
 
 		const topic = formData.get('topic')?.toString() ?? '';
 		const date = formData.get('date')?.toString() ?? '';
-		const time = formData.get('time')?.toString() ?? '';*/
+		const time = formData.get('time')?.toString() ?? '';
 
 		try {
-			// Make request
+            // Make request
 		} catch (error) {
 			console.error('Schedule Lesson Error:', error);
 		}
