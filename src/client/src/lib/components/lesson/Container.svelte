@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { type Call, type StreamVideoParticipant } from '@stream-io/video-client';
-	
+
 	import Participant from './Participant.svelte';
+	import ScreenShare from './ScreenShare.svelte';
 
 	export let call: Call;
 
@@ -19,8 +20,9 @@
 	});
 </script>
 
-<div id="participants">
+<div id="participants" class="flex">
 	{#each participants as participant}
 		<Participant {call} {participant} />
+		<ScreenShare {call} {participant} />
 	{/each}
 </div>

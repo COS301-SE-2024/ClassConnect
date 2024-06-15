@@ -20,14 +20,14 @@
 			user: { id: $userInfo.username, name: $userInfo.name }
 		});
 
-		call = client.call('default', $page.params.id );
+		call = client.call('default', $page.params.id);
 
+		await call.camera.disable();
+		await call.microphone.disable();
 		await call.join({ create: true });
-		await call.camera.enable();
-		await call.microphone.enable();
 	});
 
-	onDestroy(() => {
+	onDestroy(() : void => {
 		if (call) call.leave();
 		if (client) client.disconnectUser();
 	});
