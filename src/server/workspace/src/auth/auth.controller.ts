@@ -2,7 +2,7 @@ import { Request } from 'express';
 import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 
 import { AuthService } from './auth.service';
-//import { LocalGuard } from './guards/local.guard';
+import { LocalGuard } from './guards/local.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from './guards/jwt.guard';
 
