@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SideBar from '$lib/components/utils/+SideBar.svelte';
+	import SideBar from '$lib/components/utils/admin/+SideBar.svelte';
 	import { Navbar, Input } from 'flowbite-svelte';
 	import {
 		SearchOutline,

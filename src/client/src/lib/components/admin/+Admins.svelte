@@ -41,13 +41,6 @@
 </script>
 
 <section class="container mx-auto my-2 px-4">
-	<div class="flex items-center overflow-x-auto whitespace-nowrap py-4">
-		<Breadcrumb aria-label="Default breadcrumb example">
-			<BreadcrumbItem href="/" home>Home</BreadcrumbItem>
-			<BreadcrumbItem href="/admins">Admins</BreadcrumbItem>
-		</Breadcrumb>
-	</div>
-
 	<div class="sm:flex sm:items-center sm:justify-between">
 		<div>
 			<div class="flex items-center gap-x-3">

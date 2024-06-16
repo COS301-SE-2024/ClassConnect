@@ -7,17 +7,10 @@
 		<h1
 			class="mb-4 text-center text-4xl font-bold text-gray-700 dark:text-white md:text-5xl lg:text-6xl"
 		>
-			Site is under maintenance
+			Site is under contruction
 		</h1>
 		<p class="mb-8 text-center text-lg text-gray-500 dark:text-gray-300 md:text-xl lg:text-2xl">
 			We're working hard to improve the user experience. Stay tuned!
 		</p>
-		<div class="flex space-x-4">
-			<a
-				href="/student"
-				class="rounded bg-gray-800 px-6 py-3 font-bold text-white hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600"
-				>Go Back Home</a
-			>
-		</div>
 	</div>
 </body>
