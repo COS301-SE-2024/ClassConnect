@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { admins, admChange } from '$lib/store';
-	import { getUsers } from '../../services/users';
+	import { getUsers } from '$lib/services/users';
 	import AddAdmin from '$lib/components/admin/modals/add/+AddAdmin.svelte';
 	import EditAdmin from '$lib/components/admin/modals/edit/+EditAdmin.svelte';
 	import Remove from '$lib/components/admin/modals/remove/+Remove.svelte';
@@ -13,8 +13,6 @@
 		TableHead,
 		TableHeadCell,
 		Avatar,
-		Breadcrumb,
-		BreadcrumbItem,
 		Input,
 		Button
 	} from 'flowbite-svelte';

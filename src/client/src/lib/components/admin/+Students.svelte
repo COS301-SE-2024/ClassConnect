@@ -13,8 +13,6 @@
 		TableHead,
 		TableHeadCell,
 		Avatar,
-		Breadcrumb,
-		BreadcrumbItem,
 		Input,
 		Button
 	} from 'flowbite-svelte';

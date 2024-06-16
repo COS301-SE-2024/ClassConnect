@@ -4,8 +4,7 @@
 
 	import ModuleSideBar from '$lib/components/utils/student/+ModuleSideBar.svelte';
 	import TopBar from '$lib/components/utils/+TopBar.svelte';
-	import Study from '$lib/components/student/+Study.svelte'
-
+	import Study from '$lib/components/student/+Study.svelte';
 </script>
 
 <main>

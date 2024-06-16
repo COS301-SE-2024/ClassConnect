@@ -10,6 +10,10 @@
 		</h1>
 	</div>
 	{#each announcements as announcement}
-		<AnnouncementCard date={announcement.date} heading={announcement.heading} announcement={announcement.announcement}/>
+		<AnnouncementCard
+			date={announcement.date}
+			heading={announcement.heading}
+			announcement={announcement.announcement}
+		/>
 	{/each}
 </div>

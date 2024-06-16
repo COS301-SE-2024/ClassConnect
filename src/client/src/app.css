@@ -33,17 +33,17 @@
 	margin-bottom: 1rem;
 	border: 3px dashed transparent;
 }
-  
+
 .task:hover {
 	box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
 	border-color: rgba(162, 179, 207, 0.2) !important;
 }
-  
+
 .task p {
 	font-size: 15px;
 	margin: 1.2rem 0;
 }
-  
+
 .tag {
 	border-radius: 100px;
 	padding: 4px 13px;
@@ -51,14 +51,14 @@
 	color: #ffffff;
 	background-color: var(--primary);
 }
-  
+
 .tags {
 	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
-  
+
 .options {
 	background: transparent;
 	border: 0;
@@ -110,4 +110,3 @@
 .viewer span svg {
 	stroke: #fff;
 }
-  

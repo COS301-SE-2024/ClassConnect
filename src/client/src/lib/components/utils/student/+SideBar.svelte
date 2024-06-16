@@ -4,12 +4,6 @@
 	import IconChartHistogram from '@tabler/icons-svelte/IconChartHistogram.svelte';
 	import IconWorld from '@tabler/icons-svelte/IconWorld.svelte';
 
-	const user = {
-		name: 'Eugene',
-		email: 'eugene.mpande@tuks.co.za',
-		avatar: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
-	};
-
 	const nav_links = [
 		{
 			icon: IconHome,

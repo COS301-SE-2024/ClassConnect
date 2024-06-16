@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { lecturers, lecChange } from '$lib/store';
-	import { getUsers } from '../../services/users';
+	import { getUsers } from '$lib/services/users';
 	import AddLecturer from '$lib/components/admin/modals/add/+AddLecturer.svelte';
 	import EditLecturer from '$lib/components/admin/modals/edit/+EditLecturer.svelte';
 	import Remove from '$lib/components/admin/modals/remove/+Remove.svelte';
@@ -13,8 +13,6 @@
 		TableHead,
 		TableHeadCell,
 		Avatar,
-		Breadcrumb,
-		BreadcrumbItem,
 		Input,
 		Button
 	} from 'flowbite-svelte';
