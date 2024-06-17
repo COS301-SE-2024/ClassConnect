@@ -14,3 +14,5 @@ export const user = writable('eugene');
 export const email = writable('eugene.mpande@tuks.co.za');
 export const file = writable('');
 export const module = writable('');
+
+export const user_details = writable({});

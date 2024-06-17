@@ -6,6 +6,7 @@
 	import { Input, Label, Button, Checkbox, A } from 'flowbite-svelte';
 
 	import { signUp } from '$lib/services/auth';
+	import { user_details } from '$lib/store';
 
 	function storeAccessToken(token: string): void {
 		localStorage.setItem('accessToken', token);
@@ -31,13 +32,17 @@
 		//creates user but does not redirect to home page
 		try {
 			const response = await signUp(name, surname, email, image, password);
+			user_details.set(response);
+
+			const details = $user_details;
+			console.log(details);
 
 			console.log('Response:', response);
 
 			if (response && response.accessToken) {
 				storeAccessToken(response.accessToken);
-				goto('/');
 			}
+			goto('/student');
 		} catch (error) {
 			console.error('Sign-up error:', error);
 			alert('Sign-up failed');

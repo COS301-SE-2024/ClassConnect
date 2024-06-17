@@ -1,2 +1,2 @@
 sudo systemctl start mongod
-sudo systemctl status mongo
+sudo systemctl status mongod

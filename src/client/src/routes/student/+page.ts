@@ -1,6 +1,10 @@
 /** @type {import('./$types').PageLoad} */
+import { get } from 'svelte/store';
+import { user_details } from '$lib/store';
 
 export function load() {
+	const details = get(user_details);
+	console.log('User details:', details);
 	return {
 		modules: [
 			{

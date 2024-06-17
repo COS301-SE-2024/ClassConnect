@@ -9,6 +9,7 @@ export async function signIn(username: string, password: string): Promise<any> {
 
 		return response.data;
 	} catch (error) {
+		console.log(error);
 		throw new Error('Sign-in failed');
 	}
 }

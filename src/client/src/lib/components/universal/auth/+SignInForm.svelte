@@ -4,6 +4,7 @@
 	import { goto } from '$app/navigation';
 	import { Input, Label, Button, A } from 'flowbite-svelte';
 	import { signIn } from '$lib/services/auth';
+	import { user_details } from '$lib/store';
 
 	import '@fontsource/roboto';
 
@@ -30,15 +31,19 @@
 		// Send a request to your server-side action
 		try {
 			const response = await signIn(username, password);
+			user_details.set(response);
+
+			const details = $user_details;
+			console.log(details);
 
 			console.log('Response:', response);
 
 			if (response && response.accessToken) {
 				storeAccessToken(response.accessToken, response.sub);
-				goto('/');
 			}
+			goto('/student');
 		} catch (error) {
-			console.error('Sign-ip error:', error);
+			console.error('Sign-in error:', error);
 			alert('Sign-in failed');
 		}
 	}
