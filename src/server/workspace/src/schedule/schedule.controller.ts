@@ -12,7 +12,7 @@ import {
   
   import { ScheduleService } from './schedule.service';
   import { CreateScheduleDto } from './dto/create-schedule.dto';
-  //import { UpdateMaterialDto } from './dto/update-m.dto';
+  import { UpdateScheduleDto } from './dto/update-schedule.dto';
   import { Schedule } from '../schemas/schedule.schema';
   
   @Controller('schedules')
@@ -35,17 +35,17 @@ import {
       return this.scheduleService.findAllByWorkspaceId(workspaceId);
     }
   
-    // @Put(':id')
-    // async update(
-    //   @Param('id') id: string,
-    //   @Body() updateMaterialDto: UpdateMaterialDto,
-    // ) {
-    //   return this.scheduleService.update(id, updateMaterialDto);
-    // }
+    @Put(':id')
+    async update(
+      @Param('id') id: string,
+      @Body() updateScheduleDto: UpdateScheduleDto,
+    ) {
+      return this.scheduleService.update(id, updateScheduleDto);
+    }
   
-    // @Delete(':id')
-    // async delete(@Param('id') id: string) {
-    //   return this.scheduleService.delete(id);
-    // }
+    @Delete(':id')
+    async delete(@Param('id') id: string) {
+      return this.scheduleService.delete(id);
+    }
   }
   

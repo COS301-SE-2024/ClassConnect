@@ -1,6 +1,6 @@
 import { IsDateString, IsNotEmpty, IsString} from  'class-validator';
 
-export class CreateScheduleDto{
+export class UpdateScheduleDto{
 
     //@IsNotEmpty()
     @IsDateString()
