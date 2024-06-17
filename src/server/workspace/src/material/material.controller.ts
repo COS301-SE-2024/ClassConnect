@@ -13,6 +13,7 @@ import {
   import { MaterialService } from './material.service';
   import { CreateMaterialDto } from './dto/create-material.dto';
   import { UpdateMaterialDto } from './dto/update-material.dto';
+  import { Material } from '../schemas/material.schema';
   
   @Controller('materials')
   export class MaterialController {
@@ -27,6 +28,11 @@ import {
     @Get(':id')
     async findOne(@Param('id') id: string) {
       return this.materialService.findOne(id);
+    }
+
+    @Get('workspace/:workspaceId')
+    async findAllByWorkspaceId(@Param('workspaceId') workspaceId: string): Promise<Material[]> {
+      return this.materialService.findAllByWorkspaceId(workspaceId);
     }
   
     @Put(':id')

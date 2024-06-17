@@ -25,6 +25,10 @@ export class MaterialService {
     return this.materialModel.findById(id).exec();
   }
 
+  async findAllByWorkspaceId(workspaceId: string): Promise<Material[]> {
+    return this.materialModel.find({ workspace_id: workspaceId }).exec();
+  }
+
   async update(id: string, updateMaterialDto: UpdateMaterialDto): Promise<Material> {
     return this.materialModel
       .findByIdAndUpdate(id, updateMaterialDto, { new: true })
