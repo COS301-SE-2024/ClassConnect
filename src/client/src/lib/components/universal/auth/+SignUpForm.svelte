@@ -102,7 +102,7 @@
 			<div class="text-center">
 				<p>
 					Already have an account?{' '}
-					<A href="/signin" class="text-blue-600">Sign In</A>
+					<A href="/auth/signin" class="text-blue-600">Sign In</A>
 				</p>
 			</div>
 		</div>

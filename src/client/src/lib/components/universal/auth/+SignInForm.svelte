@@ -96,7 +96,7 @@
 			<div class="text-center">
 				<p>
 					Already have an account?{' '}
-					<A href="/signup" class="text-blue-600">Sign Up</A>
+					<A href="/auth/signup" class="text-blue-600">Sign Up</A>
 				</p>
 			</div>
 		</div>

@@ -5,15 +5,15 @@ export function load() {
 		modules: [
 			{
 				module_name: 'Computer Networks',
-				module_code: 'COS 332'
+				module_id: '123456789'
 			},
 			{
 				module_name: 'Computer Graphics',
-				module_code: 'COS 344'
+				module_id: '789123456'
 			},
 			{
 				module_name: 'Programming Languages',
-				module_code: 'COS 333'
+				module_id: '789456123'
 			}
 		]
 	};
