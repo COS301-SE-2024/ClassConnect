@@ -24,7 +24,7 @@ export class Schedule extends Document{
 
     //this is the date of the lesson
     @Prop({required: true})
-    date: Date;
+    date: string;
 
 }
 
