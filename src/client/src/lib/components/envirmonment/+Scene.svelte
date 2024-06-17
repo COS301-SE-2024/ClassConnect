@@ -1,13 +1,11 @@
 <script lang="ts">
     import { T } from "@threlte/core";
     import {OrbitControls, Sky, GLTF } from "@threlte/extras";
-	import { AmbientLight, AxesHelper, DirectionalLight, Mesh, MeshStandardMaterial, PerspectiveCamera, SphereGeometry } from "three";
     import CashRegister from "./models/Cash_Register.svelte";
 
 
-	// import { GridHelper } from "three";
-	// import { MeshStandardMaterial, PerspectiveCamera, SphereGeometry } from "three";
-	// import { metalness, roughness } from "three/examples/jsm/nodes/Nodes.js";
+//Max Zoom Out
+const maxZoomOutDistance = 100;
 
     export let autoRotate: boolean
     export let enableDamping: boolean
@@ -18,7 +16,7 @@
 
 </script>
 
-<T.PerspectiveCamera makeDefault position={[0,10,-45]}
+<T.PerspectiveCamera makeDefault position={[0,0,-45]}
 fov={75}
 >
     <OrbitControls
@@ -28,6 +26,7 @@ fov={75}
     {zoomToCursor}
     {zoomSpeed}
     {enableZoom}
+    maxDistance={maxZoomOutDistance}
   />
 </T.PerspectiveCamera>
 
@@ -47,14 +46,16 @@ fov={75}
 <!-- Add a directional light to simulate sunlight -->
 <T.DirectionalLight position={[5, 10, 7]} intensity={0.8} castShadow />
 
-
-
+<T.Mesh position.y={1}>
+    <T.BoxGeometry args={[1, 2, 1]} />
+    <T.MeshBasicMaterial color="red" />
+</T.Mesh>
 
 <GLTF url="/models/cash_register_with_a_counting_machine.glb"
-scale={0.05}/>
+<!-- scale={0.05}/> -->
 
 
-<!-- <Sky/> -->
+<Sky/>
 <!-- <CashRegister></CashRegister> -->
 
 

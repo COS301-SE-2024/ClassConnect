@@ -12,7 +12,6 @@
 
 <Pane
   theme={ThemeUtils.presets.light}
-  position="fixed"
   title="Object Settings"
 >
   <Checkbox
@@ -35,7 +34,7 @@
     label="rotateSpeed"
     bind:value={rotateSpeed}
     min={0.1}
-    max={4}
+    max={8}
     step={0.1}
   />
   <Slider
