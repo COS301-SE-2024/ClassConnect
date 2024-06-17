@@ -11,6 +11,7 @@ import {
 import { WorkspaceService } from './workspace.service';
 import { CreateWorkspaceDto } from './dto/create-workspace.dto';
 import { UpdateWorkspaceDto } from './dto/update-workspace.dto';
+import { Workspace } from '../schemas/workspace.schema';
 
 @Controller('workspaces')
 export class WorkspaceController {
@@ -19,6 +20,11 @@ export class WorkspaceController {
   @Post()
   async create(@Body() createWorkspaceDto: CreateWorkspaceDto) {
     return this.workspaceService.create(createWorkspaceDto);
+  }
+
+  @Get('organisation/:organisationId')
+  async findAllByOrganisationId(@Param('organisationId') organisationId: string): Promise<Workspace[]> {
+    return this.workspaceService.findAllByOrganisationId(organisationId);
   }
 
   @Get(':id')
