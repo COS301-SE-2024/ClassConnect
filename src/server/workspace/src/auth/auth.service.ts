@@ -7,6 +7,7 @@ import { User } from '../schemas/user.schema';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -21,6 +22,8 @@ export class AuthService {
       const user = {
         sub: findUser._id,
         role: findUser.role,
+        workspaces: findUser.workspaces,
+        organisation: findUser.organisation,
         username: findUser.username,
         accessToken: this.jwtService.sign({
           sub: findUser._id,
