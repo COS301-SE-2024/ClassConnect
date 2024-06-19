@@ -1,7 +1,7 @@
 <script lang='ts'>
     import IconCube from '@tabler/icons-svelte/IconCube.svelte';
-    import UploadObject from '$lib/components/lecturer/modals/+UploadObject.svelte';
-
+    import UploadStudy from '$lib/components/lecturer/modals/+UploadStudy.svelte';
+    
     const files = [
         {
             name: 'Object 1',
@@ -28,6 +28,6 @@
     </div>
   {/each}
   <div class="m-2 flex justify-center items-center">
-    <UploadObject />
+    <UploadStudy />
   </div>
 </div>

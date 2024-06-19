@@ -1,5 +1,6 @@
 <script>
     import FilesCard from '$lib/components/utils/lecturer/+FilesCard.svelte';
+    import ObjectCard from '$lib/components/utils/lecturer/+ObjectCard.svelte';
 
     const stats = [
         {
@@ -47,5 +48,5 @@
 
 <div class="grid grid-cols-1 gap-3 bg-gray-100 p-2 sm:grid-cols-1 sm:p-10 lg:grid-cols-2">
     <FilesCard />
-    <FilesCard />
+    <ObjectCard /> 
 </div>
