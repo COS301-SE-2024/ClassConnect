@@ -1,3 +1,4 @@
+<!-- This file routes as the annoncements page of the application. -->
 <script lang="ts">
 	import SideBar from '$lib/components/utils/+SideBar.svelte';
 	import Announcements from '$lib/components/admin/+Announcements.svelte';
