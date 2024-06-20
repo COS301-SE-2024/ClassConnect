@@ -1,5 +1,5 @@
 <script lang="ts">
-	import SideBar from '$lib/components/utils/+SideBar.svelte';
+	import SideBar from '$lib/components/utils/lecturer/+SideBar.svelte';
 	import Lessons from '$lib/components/admin/+Lessons.svelte';
 </script>
 

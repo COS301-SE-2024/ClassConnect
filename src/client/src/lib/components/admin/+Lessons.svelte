@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { lessons } from '$lib/stores/store';
+	import { lessons } from '$lib/store';
 	import {
 		Table,
 		TableBody,
