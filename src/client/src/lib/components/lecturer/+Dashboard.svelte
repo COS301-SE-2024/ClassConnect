@@ -1,7 +1,6 @@
 <script>
 	import { Tabs, TabItem } from 'flowbite-svelte';
 	import Overview from '$lib/components/lecturer/+Overview.svelte';
-	
 </script>
 
 <Tabs tabStyle="underline">
