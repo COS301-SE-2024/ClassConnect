@@ -35,6 +35,11 @@
 			href: '/admin/students'
 		},
 		{
+			icon: Student,
+			name: 'Lessons',
+			href: '/lessons'
+		},
+		{
 			icon: Users,
 			name: 'Admins',
 			href: '/admin/admins'
