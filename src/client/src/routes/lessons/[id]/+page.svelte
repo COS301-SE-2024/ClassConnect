@@ -3,7 +3,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { StreamVideoClient, type Call } from '@stream-io/video-client';
 
-	import { userInfo } from '$lib/stores/store';
+	import { userInfo } from '$lib/store';
 	import Container from '$lib/components/lesson/Container.svelte';
 	import ControlPanel from '$lib/components/lesson/ControlPanel.svelte';
 
