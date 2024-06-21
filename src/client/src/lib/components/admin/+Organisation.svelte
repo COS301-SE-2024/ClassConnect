@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import EditOrg from '$lib/components/modals/+EditOrg.svelte';
-	import AddOrg from '$lib/components/modals/+AddOrg.svelte';
-	import RemoveOrg from '$lib/components/modals/+RemoveOrg.svelte';
-	import { organisationName } from '$lib/stores/store';
-	import { getOrganization } from '../../../services/orgs';
+	import EditOrg from '$lib/components/admin/modals/edit/+EditOrg.svelte';
+	import AddOrg from '$lib/components/admin/modals/add/+AddOrg.svelte';
+	import RemoveOrg from '$lib/components/admin/modals/remove/+RemoveOrg.svelte';
+	import { organisationName } from '$lib/store';
+	import { getOrganization } from '$lib/services/orgs';
 
 	let org_exists: boolean = false;
 

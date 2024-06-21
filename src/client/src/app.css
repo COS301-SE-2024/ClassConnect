@@ -22,3 +22,96 @@
 .roboto {
 	font-family: 'Roboto', sans-serif;
 }
+
+.task {
+	position: relative;
+	color: #2e2e2f;
+	background-color: #fff;
+	padding: 1rem;
+	border-radius: 8px;
+	box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+	margin-bottom: 1rem;
+	border: 3px dashed transparent;
+}
+
+.task:hover {
+	box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+	border-color: rgba(162, 179, 207, 0.2) !important;
+}
+
+.task p {
+	font-size: 15px;
+	margin: 1.2rem 0;
+}
+
+.tag {
+	border-radius: 100px;
+	padding: 4px 13px;
+	font-size: 12px;
+	color: #ffffff;
+	background-color: var(--primary);
+}
+
+.tags {
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.options {
+	background: transparent;
+	border: 0;
+	color: #c4cad3;
+	font-size: 17px;
+}
+
+.options svg {
+	fill: #9fa4aa;
+}
+
+.stats {
+	position: relative;
+	width: 100%;
+	color: #9fa4aa;
+	font-size: 12px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.stats div {
+	margin-right: 1rem;
+	height: 20px;
+	display: flex;
+	align-items: center;
+}
+
+.stats svg {
+	margin-right: 5px;
+	height: 100%;
+	stroke: #9fa4aa;
+}
+
+.viewer span {
+	height: 30px;
+	background-color: var(--primary);
+	margin-right: -10px;
+	border-radius: 50%;
+	border: 1px solid #fff;
+	display: grid;
+	align-items: center;
+	text-align: center;
+	font-weight: bold;
+	color: #fff;
+	padding: 2px;
+}
+
+.viewer span svg {
+	stroke: #fff;
+}
+
+.active {
+	--tw-bg-opacity: 1;
+	background-color: rgb(134 239 172 / var(--tw-bg-opacity));
+}

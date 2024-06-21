@@ -1,6 +1,6 @@
 describe('Degree Dashboard page', () => {
 	it('displays the heading', () => {
-		cy.visit('http://localhost:5173');
+		cy.visit('http://localhost:5173/admin');
 		cy.get('h1').contains('Degree Dashboard').should('be.visible');
 	});
 
@@ -21,7 +21,7 @@ describe('Degree Dashboard page', () => {
 
 	degrees.forEach((degree) => {
 		it(`displays the degree: ${degree}`, () => {
-			cy.visit('http://localhost:5173');
+			cy.visit('http://localhost:5173/admin');
 			cy.contains(degree).should('be.visible');
 		});
 	});
