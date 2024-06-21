@@ -8,35 +8,35 @@ Title: Cash register with a counting machine
 -->
 
 <script>
-  import { Group } from 'three'
-  import { T, forwardEventHandlers } from '@threlte/core'
-  import { useGltf } from '@threlte/extras'
+	import { Group } from 'three';
+	import { T, forwardEventHandlers } from '@threlte/core';
+	import { useGltf } from '@threlte/extras';
 
-  export const ref = new Group()
+	export const ref = new Group();
 
-  const gltf = useGltf("/models/cash_register_with_a_counting_machine.glb");
+	const gltf = useGltf('/models/cash_register_with_a_counting_machine.glb');
 
-  const component = forwardEventHandlers()
+	const component = forwardEventHandlers();
 </script>
 
 <T is={ref} dispose={false} {...$$restProps} bind:this={$component}>
-  {#await gltf}
-    <slot name="fallback" />
-  {:then gltf}
-    <T.Group rotation={[Math.PI / 2, 0, Math.PI]}>
-      <T.Group rotation={[-Math.PI, 0, 0]}>
-        <T.Group scale={1}>
-          <T.Mesh
-            geometry={gltf.nodes.kw_3434_kasa_z_urzadzlicz_01_low_poly_14___Default_0.geometry}
-            material={gltf.materials['14___Default']}
-            position={[-0.31, 1, -0.66]}
-          />
-        </T.Group>
-      </T.Group>
-    </T.Group>
-  {:catch error}
-    <slot name="error" {error} />
-  {/await}
+	{#await gltf}
+		<slot name="fallback" />
+	{:then gltf}
+		<T.Group rotation={[Math.PI / 2, 0, Math.PI]}>
+			<T.Group rotation={[-Math.PI, 0, 0]}>
+				<T.Group scale={1}>
+					<T.Mesh
+						geometry={gltf.nodes.kw_3434_kasa_z_urzadzlicz_01_low_poly_14___Default_0.geometry}
+						material={gltf.materials['14___Default']}
+						position={[-0.31, 1, -0.66]}
+					/>
+				</T.Group>
+			</T.Group>
+		</T.Group>
+	{:catch error}
+		<slot name="error" {error} />
+	{/await}
 
-  <slot {ref} />
+	<slot {ref} />
 </T>

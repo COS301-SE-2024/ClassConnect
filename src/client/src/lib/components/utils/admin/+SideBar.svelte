@@ -9,6 +9,7 @@
 	import IconSettings from '@tabler/icons-svelte/IconSettings.svelte';
 	import IconUsers from '@tabler/icons-svelte/IconUsers.svelte';
 	import IconHome from '@tabler/icons-svelte/IconHome.svelte';
+	import IconDesk from '@tabler/icons-svelte/IconDesk.svelte';
 
 	const nav_links = [
 		{
@@ -40,6 +41,11 @@
 			icon: IconUsers,
 			name: 'Students',
 			href: '/admin/students'
+		},
+		{
+			icon: IconDesk,
+			name: 'Workspaces',
+			href: '/admin/workspaces'
 		},
 		{
 			icon: IconUserStar,
