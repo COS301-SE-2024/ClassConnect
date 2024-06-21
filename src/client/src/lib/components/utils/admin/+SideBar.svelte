@@ -1,51 +1,59 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Logo from '$lib/images/class-connect-logo.png';
-	import BullHorn from '$lib/images/bullhorn.svg';
-	import Clipboard from '$lib/images/clipboard.svg';
-	import Landmark from '$lib/images/landmark.svg';
-	import Lecturers from '$lib/images/lecturer.svg';
-	import Student from '$lib/images/students.svg';
-	import Settings from '$lib/images/gear.svg';
-	import Users from '$lib/images/users.svg';
+	import IconSpeakerphone from '@tabler/icons-svelte/IconSpeakerphone.svelte';
+	import IconClipboard from '@tabler/icons-svelte/IconClipboard.svelte';
+	import IconBuilding from '@tabler/icons-svelte/IconBuilding.svelte';
+	import IconSchool from '@tabler/icons-svelte/IconSchool.svelte';
+	import IconUserStar from '@tabler/icons-svelte/IconUserStar.svelte';
+	import IconSettings from '@tabler/icons-svelte/IconSettings.svelte';
+	import IconUsers from '@tabler/icons-svelte/IconUsers.svelte';
+	import IconHome from '@tabler/icons-svelte/IconHome.svelte';
+	import IconDesk from '@tabler/icons-svelte/IconDesk.svelte';
 
 	const nav_links = [
 		{
-			icon: BullHorn,
+			icon: IconHome,
+			name: 'Home',
+			href: '/admin'
+		},
+		{
+			icon: IconSpeakerphone,
 			name: 'Announcements',
 			href: '/admin/announcements'
 		},
 		{
-			icon: Clipboard,
+			icon: IconClipboard,
 			name: 'Activities',
 			href: '/admin/activities'
 		},
 		{
-			icon: Landmark,
+			icon: IconBuilding,
 			name: 'Organisation',
 			href: '/admin/organisation'
 		},
 		{
-			icon: Lecturers,
+			icon: IconSchool,
 			name: 'Lecturers',
 			href: '/admin/lecturers'
 		},
 		{
-			icon: Student,
+			icon: IconUsers,
 			name: 'Students',
 			href: '/admin/students'
 		},
 		{
-			icon: Student,
-			name: 'Lessons',
-			href: '/lessons'
+			icon: IconDesk,
+			name: 'Workspaces',
+			href: '/admin/workspaces'
 		},
 		{
-			icon: Users,
+			icon: IconUserStar,
 			name: 'Admins',
 			href: '/admin/admins'
 		},
 		{
-			icon: Settings,
+			icon: IconSettings,
 			name: 'Settings',
 			href: '/admin/settings'
 		}
@@ -66,10 +74,13 @@
 		<nav>
 			{#each nav_links as link}
 				<a
-					class="mt-5 flex transform items-center rounded-lg px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800"
+					class="mt-5 flex transform items-center rounded-lg px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {link.href ===
+					$page.url.pathname
+						? 'active'
+						: ''}"
 					href={link.href}
 				>
-					<img class="h-5 w-5 dark:text-gray-300" src={link.icon} alt={link.name} />
+					<svelte:component this={link.icon} />
 					<span class="mx-4 font-medium">{link.name}</span>
 				</a>
 			{/each}

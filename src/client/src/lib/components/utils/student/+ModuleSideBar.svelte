@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import Logo from '$lib/images/class-connect-logo.png';
 	import IconSpeakerphone from '@tabler/icons-svelte/IconSpeakerphone.svelte';
 	import IconBook from '@tabler/icons-svelte/IconBook.svelte';
@@ -46,7 +47,10 @@
 		<nav>
 			{#each nav_links as { icon, name, href }}
 				<a
-					class="mt-5 flex transform items-center rounded-lg px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800"
+					class="mt-5 flex transform items-center rounded-lg px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href ===
+					$page.url.pathname
+						? 'active'
+						: ''}"
 					{href}
 				>
 					<svelte:component this={icon} />
