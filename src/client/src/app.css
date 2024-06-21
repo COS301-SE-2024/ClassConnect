@@ -110,3 +110,8 @@
 .viewer span svg {
 	stroke: #fff;
 }
+
+.active {
+	--tw-bg-opacity: 1;
+	background-color: rgb(134 239 172 / var(--tw-bg-opacity));
+}

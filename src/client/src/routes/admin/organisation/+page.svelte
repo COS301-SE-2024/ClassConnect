@@ -11,7 +11,7 @@
 		</div>
 		<div class="flex-1">
 			<TopBar />
-			<div class=" w-full bg-lightBgColor dark:bg-gray-700">
+			<div class="w-full bg-lightBgColor p-2 dark:bg-gray-700">
 				<Organisation />
 			</div>
 		</div>

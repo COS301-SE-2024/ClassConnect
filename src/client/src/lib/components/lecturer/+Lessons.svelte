@@ -1,3 +1,9 @@
+<script context="module">
+	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
+	import { derived } from 'svelte/store';
+</script>
+
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { lessons } from '$lib/store';
@@ -13,9 +19,17 @@
 		Button
 	} from 'flowbite-svelte';
 
-	import ScheduleLesson from '$lib/components/modals/+ScheduleLesson.svelte';
+	import ScheduleLesson from '$lib/components/lecturer/modals/+ScheduleLesson.svelte';
 
 	const headers = ['Topic', 'Date', 'Time'];
+
+	// To handle URL changes in SvelteKit
+	const showButtonReactive = derived(page, ($page) => {
+		if (browser) {
+			return $page.url.pathname.includes('lecturer');
+		}
+		return false;
+	});
 </script>
 
 <section class="container mx-auto my-2 px-4">
@@ -39,9 +53,11 @@
 				</span>
 			</div>
 		</div>
-		<div class="mb-4 flex items-center gap-x-3">
-			<ScheduleLesson />
-		</div>
+		{#if $showButtonReactive}
+			<div class="mb-4 flex items-center gap-x-3">
+				<ScheduleLesson />
+			</div>
+		{/if}
 	</div>
 
 	<br />

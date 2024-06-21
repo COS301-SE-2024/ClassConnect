@@ -27,7 +27,7 @@
 </script>
 
 <Breadcrumb aria-label="Default breadcrumb example">
-	<BreadcrumbItem href="/student" home>Home</BreadcrumbItem>
+	<BreadcrumbItem href="/" home>Home</BreadcrumbItem>
 	{#each breadcrumbItems as item}
 		<BreadcrumbItem href={item.href}>{item.name}</BreadcrumbItem>
 	{/each}

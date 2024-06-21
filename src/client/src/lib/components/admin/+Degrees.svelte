@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { Card } from 'flowbite-svelte';
-	export let degrees: Array<{ program: string; level: string; duration: string; link: string }>;
+	export let degrees;
 </script>
 
+<div class="flex justify-center">
+	<h1 class="mb-2 text-3xl font-bold">Degree Dashboard</h1>
+</div>
 <div class="mt-6">
 	<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 		{#each degrees as degree}
