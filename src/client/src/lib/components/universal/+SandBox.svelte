@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Canvas } from '@threlte/core';
-	import Scene from '../../lib/components/envirmonment/+Scene.svelte';
+	import Scene from '$lib/components/envirmonment/+Scene.svelte';
 	import ObjectSettings from '$lib/components/envirmonment/models/+ObjectSettings.svelte';
 	import {Button } from 'flowbite-svelte';
 	import {CirclePlusOutline, CloseCircleOutline} from 'flowbite-svelte-icons';

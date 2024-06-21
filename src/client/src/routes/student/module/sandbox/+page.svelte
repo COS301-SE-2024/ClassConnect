@@ -1,15 +1,15 @@
 <script lang="ts">
-	import ModuleSideBar from '$lib/components/utils/student/+ModuleSideBar.svelte';
+	import SideBar from '$lib/components/utils/lecturer/+SideBar.svelte';
 	import TopBar from '$lib/components/utils/+TopBar.svelte';
-	import Contruction from '$lib/components/universal/+Construction.svelte';
+	import SandBox from '$lib/components/universal/+SandBox.svelte';
 </script>
 
 <main>
 	<div class="flex">
-		<ModuleSideBar />
+		<SideBar />
 		<div class="flex-1">
 			<TopBar />
-			<Contruction />
+			<SandBox />
 		</div>
 	</div>
 </main>
