@@ -23,6 +23,7 @@ export const file = writable('');
 export const module = writable('');
 
 export const user_details = writable({});
+export const module_details = writable({});
 export const username = 'e241198014';
 
 export const userInfo = writable<any>({
