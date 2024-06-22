@@ -16,3 +16,12 @@ export async function materials(type: boolean, workspace_id: string, lecturer_id
         throw new Error('Create Material Failed');
     }
 }
+
+export async function getMaterial(id: string ): Promise<any> {
+    try {
+        const response = await axios.get(`http://localhost:3000/study/material/${id}`);
+        return response.data;
+    } catch (error) {
+        throw new Error('Get Material Failed');
+    }
+}
