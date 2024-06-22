@@ -2,7 +2,6 @@
 
 import { Test, TestingModule } from '@nestjs/testing';
 import { MaterialService } from './material.service';
-import { CreateMaterialDto } from './dto/create-material.dto';
 import { UpdateMaterialDto } from './dto/update-material.dto';
 import { Material } from '../schemas/material.schema';
 import { getModelToken } from '@nestjs/mongoose';
@@ -140,7 +139,11 @@ describe('MaterialService', () => {
 
       const result = await service.update(id, updateMaterialDto);
 
-      expect(model.findByIdAndUpdate).toHaveBeenCalledWith(id, updateMaterialDto, { new: true });
+      expect(model.findByIdAndUpdate).toHaveBeenCalledWith(
+        id,
+        updateMaterialDto,
+        { new: true },
+      );
       expect(result).toEqual(updatedMaterial);
     });
   });
@@ -148,7 +151,9 @@ describe('MaterialService', () => {
   describe('delete', () => {
     it('should call the findByIdAndDelete method and return a success message', async () => {
       const id = 'test-id';
-      const deleteResponse = { message: 'Learning Material deleted successfully.' };
+      const deleteResponse = {
+        message: 'Learning Material deleted successfully.',
+      };
 
       jest.spyOn(model, 'findByIdAndDelete').mockReturnValue({
         exec: jest.fn().mockResolvedValue(deleteResponse),

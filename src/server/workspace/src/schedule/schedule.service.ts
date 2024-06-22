@@ -1,4 +1,4 @@
-//this will handle all the database querying 
+//this will handle all the database querying
 
 import { Model } from 'mongoose';
 import { Injectable } from '@nestjs/common';
@@ -29,7 +29,10 @@ export class ScheduleService {
     return this.scheduleModel.find({ workspace_id: workspaceId }).exec();
   }
 
-  async update(id: string, updateScheduleDto: UpdateScheduleDto): Promise<Schedule> {
+  async update(
+    id: string,
+    updateScheduleDto: UpdateScheduleDto,
+  ): Promise<Schedule> {
     return this.scheduleModel
       .findByIdAndUpdate(id, updateScheduleDto, { new: true })
       .exec();
@@ -39,5 +42,4 @@ export class ScheduleService {
     await this.scheduleModel.findByIdAndDelete(id).exec();
     return { message: 'Lesson deleted successfully.' };
   }
-
 }

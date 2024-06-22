@@ -23,7 +23,9 @@ export class WorkspaceController {
   }
 
   @Get('organisation/:organisationId')
-  async findAllByOrganisationId(@Param('organisationId') organisationId: string): Promise<Workspace[]> {
+  async findAllByOrganisationId(
+    @Param('organisationId') organisationId: string,
+  ): Promise<Workspace[]> {
     return this.workspaceService.findAllByOrganisationId(organisationId);
   }
 
