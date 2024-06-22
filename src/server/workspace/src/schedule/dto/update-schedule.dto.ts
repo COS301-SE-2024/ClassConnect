@@ -1,17 +1,15 @@
-import { IsDateString, IsNotEmpty, IsString} from  'class-validator';
+import { IsDateString, IsNotEmpty, IsString } from 'class-validator';
 
-export class UpdateScheduleDto{
+export class UpdateScheduleDto {
+  //@IsNotEmpty()
+  @IsDateString()
+  date?: string;
 
-    //@IsNotEmpty()
-    @IsDateString()
-    date?: string;
+  //@isOptional()
+  @IsString()
+  description?: string;
 
-
-    //@isOptional()
-    @IsString()
-    description?: string;
-
-    @IsNotEmpty()
-    @IsString()
-    topic?: string;
+  @IsNotEmpty()
+  @IsString()
+  topic?: string;
 }

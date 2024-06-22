@@ -6,7 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { WorkspaceModule } from './workspace/workspace.module';
 import { OrganisationModule } from './organisation/organisation.module';
-import { MaterialModule} from './material/material.module'
+import { MaterialModule } from './material/material.module';
 import { ScheduleModule } from './schedule/schedule.module';
 
 @Module({

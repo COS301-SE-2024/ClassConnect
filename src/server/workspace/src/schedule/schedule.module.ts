@@ -3,10 +3,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import {
-  Schedule,
-  ScheduleSchema,
-} from '../schemas/schedule.schema';
+import { Schedule, ScheduleSchema } from '../schemas/schedule.schema';
 import { ScheduleService } from './schedule.service';
 import { ScheduleController } from './schedule.controller';
 

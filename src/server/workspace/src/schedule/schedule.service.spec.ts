@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ScheduleService } from './schedule.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { Model ,Query} from 'mongoose';
+import { Model, Query } from 'mongoose';
 import { Schedule } from '../schemas/schedule.schema';
 import { UpdateScheduleDto } from './dto/update-schedule.dto';
 
@@ -39,34 +39,34 @@ describe('ScheduleService', () => {
     expect(service).toBeDefined();
   });
 
-//   describe('create', () => {
-//     it('should create a schedule', async () => {
-//       const createScheduleDto: CreateScheduleDto = {
-//         topic: 'Test Schedule', // Updated to 'topic'
-//         description: 'This is a test schedule',
-//         startTime: new Date('2024-06-24T10:00:00Z'),
-//         endTime: new Date('2024-06-24T12:00:00Z'),
-//         workspace_id: 'workspace-id-1', // Use string instead of ObjectId
-//       };
+  //   describe('create', () => {
+  //     it('should create a schedule', async () => {
+  //       const createScheduleDto: CreateScheduleDto = {
+  //         topic: 'Test Schedule', // Updated to 'topic'
+  //         description: 'This is a test schedule',
+  //         startTime: new Date('2024-06-24T10:00:00Z'),
+  //         endTime: new Date('2024-06-24T12:00:00Z'),
+  //         workspace_id: 'workspace-id-1', // Use string instead of ObjectId
+  //       };
 
-//       const createdSchedule: Schedule = {
-//         _id: 'dummy-id', // Replace with a mock ID
-//         ...createScheduleDto,
-//       };
+  //       const createdSchedule: Schedule = {
+  //         _id: 'dummy-id', // Replace with a mock ID
+  //         ...createScheduleDto,
+  //       };
 
-//       jest.spyOn(model, 'new').mockReturnValue(createdSchedule);
+  //       jest.spyOn(model, 'new').mockReturnValue(createdSchedule);
 
-//       const result = await service.create(createScheduleDto);
+  //       const result = await service.create(createScheduleDto);
 
-//       expect(result).toEqual(createdSchedule);
-//     });
-//   });
+  //       expect(result).toEqual(createdSchedule);
+  //     });
+  //   });
 
   describe('findOne', () => {
     it('should find a schedule by id', async () => {
       const scheduleId = 'dummy-id';
 
-      const foundSchedule= {
+      const foundSchedule = {
         _id: scheduleId,
         topic: 'Found Schedule', // Updated to 'topic'
         description: 'This is a found schedule',
@@ -88,7 +88,7 @@ describe('ScheduleService', () => {
   describe('findAllByWorkspaceId', () => {
     it('should call find method and return schedules', async () => {
       const workspaceId = 'dummy-workspace-id';
-      const foundSchedules= [
+      const foundSchedules = [
         {
           _id: 'schedule-id-1',
           topic: 'Schedule 1',
@@ -142,7 +142,7 @@ describe('ScheduleService', () => {
       expect(model.findByIdAndUpdate).toHaveBeenCalledWith(
         id,
         updateScheduleDto,
-        { new: true }
+        { new: true },
       );
       expect(result).toEqual(updatedSchedule);
     });

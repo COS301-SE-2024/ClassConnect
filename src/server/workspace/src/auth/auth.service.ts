@@ -7,7 +7,6 @@ import { User } from '../schemas/user.schema';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -31,7 +30,7 @@ export class AuthService {
           username: findUser.username,
         }),
       };
-      
+
       return user;
     } else {
       return null;
