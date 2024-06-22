@@ -14,11 +14,11 @@
 
 		console.log(formData);
 
-		// const response = await fetch('/lecturer/dashboard?/upload', {
-		// 	method: 'POST',
-		// 	body: formData
-		// });
-		// console.log(response);
+		const response = await fetch('/lecturer/dashboard?/upload', {
+			method: 'POST',
+			body: formData
+		});
+		console.log(response);
 		formModal = false;
 	}
 
