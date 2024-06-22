@@ -22,8 +22,7 @@
 		const name = formData.get('org_name')?.toString() ?? '';
 		console.log('This is the name parameter:', name);
 		const userID = localStorage.getItem('userID') || 'non-existent';
-		const image =
-			'https://www.edarabia.com/wp-content/uploads/2013/08/university-of-pretoria-logo-south-africa.jpg';
+		const image = 'https://www.edarabia.com/wp-content/uploads/2013/08/university-of-pretoria-logo-south-africa.jpg';
 		//console.log("User ID Add Org:", userID);
 		try {
 			const response = await organizations(name, userID, image);
