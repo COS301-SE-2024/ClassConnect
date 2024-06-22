@@ -11,6 +11,20 @@
 	export let zoomToCursor: boolean;
 	export let zoomSpeed: number;
 	export let enableZoom: boolean;
+
+	let modelLoaded = false;
+	let modelError = false;
+
+	
+	const modelUrl = "https://class-connect-file-storage.s3.amazonaws.com/objects/cash_register_with_a_counting_machine.glb";
+
+	const handleModelLoad = () => {
+		modelLoaded = true;
+	};
+
+	const handleModelError = () => {
+		modelError = true;
+	};
 </script>
 
 <T.PerspectiveCamera makeDefault position={[0, 0, -45]} fov={75}>
@@ -44,7 +58,8 @@
 	<T.MeshBasicMaterial color="red" />
 </T.Mesh>
 
-<GLTF url="/models/cash_register_with_a_counting_machine.glb" <!-- scale={0.05} /> -->
+	<GLTF url={modelUrl} scale={0.05}  />
+
 
 <Sky />
 <!-- <CashRegister></CashRegister> -->
