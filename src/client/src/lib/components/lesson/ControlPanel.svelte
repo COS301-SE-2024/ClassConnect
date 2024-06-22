@@ -3,11 +3,14 @@
 	import { goto } from '$app/navigation';
 	import { Button } from 'flowbite-svelte';
 	import { MicrophoneOutline, MicrophoneSlashOutline, VideoCameraOutline, ArrowUpFromBracketOutline, PhoneHangupOutline } from 'flowbite-svelte-icons';
-	import {writable} from 'svelte/store';
+	import { writable } from 'svelte/store';
 
 	export let call: Call;
 
 	const microphoneEnabled = writable(false);
+	const cameraEnabled = writable(false);
+    const screenShareEnabled = writable(false);
+	
 
 	function toggleMicrophone() {
 		call.microphone.toggle();
@@ -20,6 +23,7 @@
 
 	function toggleScreenShare() {
 		call.screenShare.toggle();
+		screenShareEnabled.update(enabled => !enabled);
 	}
 
 	function endCall() {
@@ -28,24 +32,35 @@
 	}
 </script>
 
-<div class="flex space-x-2">
-	<Button pill={true} on:click={toggleMicrophone} class="bg-blue-500 text-white hover:bg-blue-700">
+<div class="flex justify-around items-center h-full bg-gray-200 dark:bg-gray-800 p-4">
+
 		{#if $microphoneEnabled}
+		<Button pill={true} on:click={toggleMicrophone} class="bg-green-500 text-white hover:bg-green-700">
 			<MicrophoneOutline class="h-6 w-6" />
+		</Button>
 		{:else}
+		<Button pill={true} on:click={toggleMicrophone} class="bg-green-500 text-white hover:bg-green-700">
 			<MicrophoneSlashOutline class="h-6 w-6" />
+		</Button>
 		{/if}
-	</Button>
 
-	<Button pill={true} on:click={toggleCamera} class="bg-blue-500 text-white hover:bg-blue-700">
-		<VideoCameraOutline class="h-6 w-6" />
-	</Button>
 
-	<Button pill={true} on:click={toggleScreenShare} class="bg-blue-500 text-white hover:bg-blue-700">
+
+	{#if $cameraEnabled}
+		<Button pill={true} on:click={toggleCamera} class="bg-green-500 text-white hover:bg-green-700">
+			<VideoCameraOutline class="h-6 w-6" />
+		</Button>
+	{:else}
+		<Button pill={true} on:click={toggleCamera} class="bg-gray-500  text-white dark:hover:bg-gray-700  hover:bg-gray-700  dark:bg-gray-500">
+			<VideoCameraOutline class="h-6 w-6" />
+		</Button>
+	{/if}
+
+	<Button pill={true} on:click={toggleScreenShare} class="bg-green-500 text-white hover:bg-green-700">
 		<ArrowUpFromBracketOutline class="h-6 w-6" />
 	</Button>
 
-	<Button pill={true} on:click={endCall} class="bg-red-500 text-white hover:bg-red-700 dark:bg-red-500 dark:text-white dark:hover:bg-red-700">
+	<Button pill={true} on:click={endCall} class="bg-red-500 text-white hover:bg-red-700">
 		<PhoneHangupOutline class="h-6 w-6" />
 	</Button>
 </div>

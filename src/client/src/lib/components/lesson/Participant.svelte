@@ -7,7 +7,7 @@
 	export let participant: StreamVideoParticipant;
 </script>
 
-<div class="m-5 bg-gray-200">
+<div class="w-full h-full bg-gray-200 flex items-center justify-center">
 	<Video {call} {participant} />
 	<Audio {call} {participant} />
 </div>

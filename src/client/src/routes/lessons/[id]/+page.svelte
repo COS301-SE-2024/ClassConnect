@@ -33,9 +33,13 @@
 	});
 </script>
 
-<main>
+<main class="flex flex-col h-screen">
 	{#if call}
-		<Container {call} />
-		<ControlPanel {call} />
+		<div class="flex-1 overflow-hidden">
+			<Container {call} />
+		</div>
+		<div class="h-20">
+			<ControlPanel {call} />
+		</div>
 	{/if}
 </main>
