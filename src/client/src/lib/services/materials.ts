@@ -45,3 +45,12 @@ export async function updateWorkspace(
         throw new Error('Update Material Failed');
     }
 }
+
+export async function deleteMaterial(id: string): Promise<string> {
+    try {
+        const response = await axios.delete(`http://localhost:3000/materials/${id}`);
+        return response.data.message;
+    } catch (error) {
+        throw new Error('Delete Material Failed');
+    }
+}
