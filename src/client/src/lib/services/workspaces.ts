@@ -26,3 +26,23 @@ export async function getWorkspace(id: string): Promise<any> {
         throw new Error('Get Workspace Failed');
     }
 }
+
+export async function updateWorkspace(
+    id: string,
+    name: string,
+    organisationID: string,
+    users: string[],
+    image: string
+): Promise<any> {
+    try {
+        const response = await axios.put(`http://localhost:3000/workspaces/${id}`, {
+            name: name,
+            organisationID: organisationID,
+            users: users,
+            image: image
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error('Update Workspace Failed');
+    }
+}
