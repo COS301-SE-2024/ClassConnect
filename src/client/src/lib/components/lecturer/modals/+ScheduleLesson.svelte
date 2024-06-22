@@ -5,8 +5,9 @@
 	import { onMount } from 'svelte';
 
 	let formModal = false;
-	let userID = '';
-	let workspaceID = '';
+	let userID = 'abcdefg';
+	let workspaceID = 'abcdefg';
+	
 
 	//Function to store LessonScheduleID
 	function storeLessonID(id: string): void {
@@ -15,10 +16,10 @@
 	}
 
 	//this wil retrieve the lectureID and workspace ID from local storage
-	onMount(() => {
-		userID = localStorage.getItem('userID') || 'non-existent';
-		workspaceID = localStorage.getItem('workspaceID') || 'non-existent';
-	});
+	// onMount(() => {
+	// 	localStorage.setItem('userID', userID);
+	// 	localStorage.setItem('workspaceID', workspaceID);
+	// });
 
 	async function handleSubmit(event: Event) {
 		console.log('Schedule Lesson is being handled');
@@ -31,7 +32,7 @@
 		const date = formData.get('date')?.toString() ?? '';
 		console.log('This is date:', date);
 		const time = formData.get('time')?.toString() ?? '';
-		console.log('This is date:', time);
+		console.log('This is time:', time);
 
 		try {
 			const response = await schedules(topic, userID, workspaceID, date);
