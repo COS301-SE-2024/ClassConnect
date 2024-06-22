@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString, IsUrl, isBoolean } from 'class-validator';
+import { IsNotEmpty,  IsString } from 'class-validator';
 
 //this class just encapsulates data and does validation
 export class CreateMaterialDto{
