@@ -2,7 +2,6 @@
 	import IconCube from '@tabler/icons-svelte/IconCube.svelte';
 	import UploadStudy from '$lib/components/lecturer/modals/+UploadStudy.svelte';
 	export let files;
-
 </script>
 
 <div class="max-w-md rounded-xl border bg-white p-6 pb-10 text-gray-900">

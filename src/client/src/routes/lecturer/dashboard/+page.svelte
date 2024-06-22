@@ -13,7 +13,7 @@
 		<div class="flex-1">
 			<TopBar />
 			<div class="w-full p-2">
-				<Dashboard files={data.files}/>
+				<Dashboard files={data.files} />
 			</div>
 		</div>
 	</div>

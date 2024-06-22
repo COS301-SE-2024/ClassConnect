@@ -13,15 +13,27 @@
 		event.preventDefault();
 
 		const formData = new FormData(event.currentTarget);
+        formData.append('userId', id);
+
+        // Collect all checked workspaces and append them to the form data
+        let checkedWorkspaces = [];
+        
+        const checkboxes = event.currentTarget.querySelectorAll('input[name="workspace"]:checked');
+        
+        checkboxes.forEach(checkbox => {
+            checkedWorkspaces.push(checkbox.value);
+        });
+
+        formData.append('Workspaces', JSON.stringify(checkedWorkspaces));
 
         console.log(formData);
 
-		// const response = await fetch('/admin/workspaces?/adduser', {
-		// 	method: 'POST',
-		// 	body: formData
-		// });
+		const response = await fetch('/admin/workspaces?/adduser', {
+			method: 'POST',
+			body: formData
+		});
 
-		// console.log(response);
+		console.log(response);
 
 		formModal = false;
 
@@ -34,6 +46,9 @@
         //TODO: fetch the all the workspaces in the organization
         const organisationId = localStorage.getItem('organisationID') || 'non-existent';
         const userId = localStorage.getItem('userID') || 'non-existent';
+
+        console.log(organisationId);
+        console.log(userId);
 
         /**
          * after that use the workspace id returned to get the name of the 

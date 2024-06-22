@@ -18,17 +18,16 @@
 		}
 	];
 
-	let study_files = []
-	let object_files = []
+	let study_files = [];
+	let object_files = [];
 
-	files.forEach(file => {
+	files.forEach((file) => {
 		if (file.type === 'pdf') {
-			study_files.push(file)
+			study_files.push(file);
 		} else {
-			object_files.push(file)
+			object_files.push(file);
 		}
-	})
-
+	});
 </script>
 
 <div class="grid grid-cols-1 gap-5 bg-gray-100 p-2 sm:grid-cols-2 sm:p-5 lg:grid-cols-3">

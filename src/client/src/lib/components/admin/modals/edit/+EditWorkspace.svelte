@@ -19,7 +19,6 @@
 		console.log(response);
 
 		formModal = false;
-
 	}
 </script>
 

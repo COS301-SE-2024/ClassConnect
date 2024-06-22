@@ -12,7 +12,7 @@ export function load() {
 				title: 'Cash Register',
 				type: 'glf',
 				link: 'https://class-connect-file-storage.s3.amazonaws.com/objects/cash_register_with_a_counting_machine.glb'
-			},
+			}
 		]
 	};
 }

@@ -80,6 +80,8 @@ export const actions = {
 			// Get the form field values
 			const title = formData.get('title');
 			const description = formData.get('description');
+			const workspace = formData.get('workspace');
+			const lecturer = formData.get('user');
 			let file_url;
 			const file = formData.get('file');
 

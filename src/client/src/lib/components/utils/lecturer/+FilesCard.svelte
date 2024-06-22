@@ -4,10 +4,9 @@
 	import UploadStudy from '$lib/components/lecturer/modals/+UploadStudy.svelte';
 	export let files;
 
-	function setFile(url){
+	function setFile(url) {
 		file.set(url);
 	}
-
 </script>
 
 <div class="max-w-md rounded-xl border bg-white p-6 pb-10 text-gray-900">

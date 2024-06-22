@@ -8,8 +8,7 @@
 	<TabItem open>
 		<div slot="title" class="flex items-center gap-2">Overview</div>
 		<div>
-			<Overview files={files}/>
+			<Overview {files} />
 		</div>
 	</TabItem>
-
 </Tabs>

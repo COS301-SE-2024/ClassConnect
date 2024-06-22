@@ -2,21 +2,26 @@
 
 // Mock add, edit, and delete functions
 
-async function addWorkspace(name, organisationId, createdBy, image){
+async function addWorkspace(name, organisationId, createdBy, image) {
 	console.log(name);
 	console.log(organisationId);
 	console.log(createdBy);
 	console.log(image);
 	//TODO: Based on the api contract you now have all the infomation to create a work space now just make the call;
-
 }
 
-async function editWorkspace(name, image){
+async function editWorkspace(name, image) {
 	console.log(name);
 	console.log(image);
 
 	//TODO: Based on the api contract you now have all the infomation to edit a workspace now just make the call;
+}
 
+async function addUserToWorkspace(user, workspaces) {
+	console.log(user);
+	console.log(workspaces);
+
+	//TODO: Based on the api contract you now have all the infomation to add a user to the workspace now just make the call;
 }
 
 async function deleteDetails(name, email, role) {
@@ -44,38 +49,32 @@ export const actions = {
 			return {
 				status: 200
 			};
-
 		} catch (error) {
 			console.log(error);
 			return {
 				status: 500
-			}
+			};
 		}
 	},
 	adduser: async ({ request }) => {
 		const formData = await request.formData();
-		const name = formData.get('work_name');
-		const organisationId = formData.get('organisationId');
-		const createdBy = formData.get('createdBy');
-		const image = formData.get('image');
+		const user = formData.get('userId');
+		const workspaces = formData.get('Workspaces');
 
-		console.log(name);
-		console.log(organisationId);
-		console.log(createdBy);
-		console.log(image);
+		console.log(user);
+		console.log(workspaces);
 
 		try {
-			await addWorkspace(name, organisationId, createdBy, image);
+			await addUserToWorkspace(user, workspaces);
 
 			return {
 				status: 200
 			};
-
 		} catch (error) {
 			console.log(error);
 			return {
 				status: 500
-			}
+			};
 		}
 	},
 	edit: async ({ request }) => {
@@ -92,12 +91,11 @@ export const actions = {
 			return {
 				status: 200
 			};
-
 		} catch (error) {
 			console.log(error);
 			return {
 				status: 500
-			}
+			};
 		}
 	},
 	delete: async ({ request }) => {
