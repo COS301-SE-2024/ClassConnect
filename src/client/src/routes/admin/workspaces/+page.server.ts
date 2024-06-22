@@ -7,7 +7,6 @@ async function addWorkspace(name, organisationId, createdBy, image){
 	console.log(organisationId);
 	console.log(createdBy);
 	console.log(image);
-
 	//TODO: Based on the api contract you now have all the infomation to create a work space now just make the call;
 
 }
@@ -28,6 +27,32 @@ async function deleteDetails(name, email, role) {
 
 export const actions = {
 	add: async ({ request }) => {
+		const formData = await request.formData();
+		const name = formData.get('work_name');
+		const organisationId = formData.get('organisationId');
+		const createdBy = formData.get('createdBy');
+		const image = formData.get('image');
+
+		console.log(name);
+		console.log(organisationId);
+		console.log(createdBy);
+		console.log(image);
+
+		try {
+			await addWorkspace(name, organisationId, createdBy, image);
+
+			return {
+				status: 200
+			};
+
+		} catch (error) {
+			console.log(error);
+			return {
+				status: 500
+			}
+		}
+	},
+	adduser: async ({ request }) => {
 		const formData = await request.formData();
 		const name = formData.get('work_name');
 		const organisationId = formData.get('organisationId');
