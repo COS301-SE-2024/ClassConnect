@@ -1,41 +1,30 @@
 <script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
-	import { organisationName } from '$lib/store';
-	import { organizations } from '$lib/services/orgs';
-
 	let formModal = false;
 
-	// Function to store the access token in local storage
-	function storeOrgID(id: string): void {
-		localStorage.setItem('organisationID', id);
-		console.log('organasation ID', id);
-	}
-
 	// Function to handle form submission
-	async function handleSubmit(event: SubmitEvent) {
-		console.log('add is being handled');
+	async function handleSubmit(event) {
+		console.log('add workspace is being handled');
 		// Prevent the default form submission behavior
 		event.preventDefault();
 
-		// Create a FormData object from the form
-		const formData = new FormData(event.target as HTMLFormElement);
-		const name = formData.get('org_name')?.toString() ?? '';
-		console.log('This is the name parameter:', name);
-		const userID = localStorage.getItem('userID') || 'non-existent';
-		const image = 'https://www.edarabia.com/wp-content/uploads/2013/08/university-of-pretoria-logo-south-africa.jpg';
-		//console.log("User ID Add Org:", userID);
-		try {
-			const response = await organizations(name, userID, image);
+		const formData = new FormData(event.currentTarget);
 
-			console.log('Response:', response);
-
-			if (response) {
-				storeOrgID(response._id);
-				organisationName.set(response.name);
-			}
-		} catch (error) {
-			console.error('create org  error:', error);
-			alert('Create failed');
+		const organisationId = localStorage.getItem('organisationID') || 'non-existent';
+		const createdBy = localStorage.getItem('userID') || 'non-existent';
+		
+		if(organisationId !== 'non-existent'){
+			formData.append('organisationId', organisationId);
+			formData.append('createdBy', createdBy);
+			const response = await fetch('/admin/workspaces?/add', {
+				method: 'POST',
+				body: formData
+			});
+			console.log(response);
+			formModal = false;
+		}else{
+			const errorMessage = 'You need to be part of an organisation to create a workspace';
+			alert(errorMessage);
 		}
 	}
 </script>
