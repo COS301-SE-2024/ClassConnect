@@ -46,3 +46,12 @@ export async function updateWorkspace(
         throw new Error('Update Workspace Failed');
     }
 }
+
+export async function deleteWorkspace(id: string): Promise<string> {
+    try {
+        const response = await axios.delete(`http://localhost:3000/workspaces/${id}`);
+        return response.data.message;
+    } catch (error) {
+        throw new Error('Delete Workspace Failed');
+    }
+}
