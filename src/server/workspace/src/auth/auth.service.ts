@@ -21,6 +21,8 @@ export class AuthService {
       const user = {
         sub: findUser._id,
         role: findUser.role,
+        workspaces: findUser.workspaces,
+        organisation: findUser.organisation,
         username: findUser.username,
         accessToken: this.jwtService.sign({
           sub: findUser._id,
@@ -28,7 +30,7 @@ export class AuthService {
           username: findUser.username,
         }),
       };
-      
+
       return user;
     } else {
       return null;
