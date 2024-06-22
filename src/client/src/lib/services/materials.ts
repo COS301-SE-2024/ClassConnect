@@ -54,3 +54,12 @@ export async function deleteMaterial(id: string): Promise<string> {
         throw new Error('Delete Material Failed');
     }
 }
+
+export async function listAllMaterial() {
+    try {
+        const response = await axios.get(`http://localhost:3000/materials`);
+        return response.data;
+    } catch (error) {
+        throw new Error('List All Material Failed');
+    }
+}
