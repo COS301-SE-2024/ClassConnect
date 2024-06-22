@@ -28,7 +28,7 @@ export class AuthService {
           username: findUser.username,
         }),
       };
-      
+
       return user;
     } else {
       return null;

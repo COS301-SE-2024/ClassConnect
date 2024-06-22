@@ -7,14 +7,13 @@ async function addDetails(name, email, role) {
 	console.log(role);
 }
 
-async function addWorkspace(name, email, createdBy, image){
+async function addWorkspace(name, email, createdBy, image) {
 	console.log(name);
 	console.log(email);
 	console.log(createdBy);
 	console.log(image);
 
 	//TODO: Based on the api contract you now have all the infomation to create a work space now just make the call;
-
 }
 
 async function editDetails(name, email, role) {
@@ -64,12 +63,11 @@ export const actions = {
 			return {
 				status: 200
 			};
-
 		} catch (error) {
 			console.log(error);
 			return {
 				status: 500
-			}
+			};
 		}
 	},
 	edit: async ({ request }) => {

@@ -13,7 +13,7 @@
 		localStorage.setItem('accessToken', token);
 		localStorage.setItem('userID', id);
 		localStorage.setItem('organisationID', organisationID);
-		
+
 		console.log('This is the ID', id);
 
 		console.log('User ID stored:', localStorage.getItem('userID'));
@@ -41,7 +41,7 @@
 			console.log('Response:', response);
 
 			if (response && response.accessToken && response.organisations[0]) {
-				storeAccessToken(response.accessToken, response.sub , response.organisations[0]);
+				storeAccessToken(response.accessToken, response.sub, response.organisations[0]);
 			}
 			goto('/student');
 		} catch (error) {
