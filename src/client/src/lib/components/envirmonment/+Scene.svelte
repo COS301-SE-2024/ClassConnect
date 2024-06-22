@@ -17,14 +17,6 @@
 
 	
 	const modelUrl = "https://class-connect-file-storage.s3.amazonaws.com/objects/cash_register_with_a_counting_machine.glb";
-
-	const handleModelLoad = () => {
-		modelLoaded = true;
-	};
-
-	const handleModelError = () => {
-		modelError = true;
-	};
 </script>
 
 <T.PerspectiveCamera makeDefault position={[0, 0, -45]} fov={75}>
