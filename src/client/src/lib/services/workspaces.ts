@@ -16,3 +16,13 @@ export async function workspaces(name: string, organisationID: string, createdBy
         throw new Error('Create Workspace Failed');
     }
 }
+
+// get Workspace GET
+export async function getWorkspace(id: string): Promise<any> {
+    try {
+        const response = await axios.get(`http://localhost:3000/workspaces/${id}`);
+        return response.data;
+    } catch (error) {
+        throw new Error('Get Workspace Failed');
+    }
+}
