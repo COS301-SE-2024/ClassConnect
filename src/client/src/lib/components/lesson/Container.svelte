@@ -8,7 +8,8 @@
     export let call: Call;
 
     let participants: StreamVideoParticipant[] = [];
-    let showScreenShare = false; // Track if ScreenShare should be shown
+
+    import { screenShareEnabled } from '$lib/stores/store';
 
     onMount(() => {
         const parentContainer = document.getElementById('participants');
@@ -37,14 +38,21 @@
             return 'w-1/4 h-1/4';
         }
     }
+
+
+    let showScreenShare:boolean;
+
+    screenShareEnabled.subscribe((value:boolean) => {
+		showScreenShare = value});
 </script>
 
-<div id="participants" class="flex flex-wrap h-full">
+<div id="participants" class="flex flex-wrap justify-center h-full">
     {#each participants as participant, index}
         <div class={`participant ${getParticipantClass(index)} flex items-center justify-center p-2`}>
-            <Participant {call} {participant} />
             {#if showScreenShare}
                 <ScreenShare {call} {participant} />
+            {:else}
+            <Participant {call} {participant} />
             {/if}
         </div>
     {/each}
