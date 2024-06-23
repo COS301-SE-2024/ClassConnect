@@ -15,6 +15,20 @@ describe('User Management Integration Tests with Mocking', () => {
         updatedAt: "2023-01-01T00:00:00.000Z"
     };
 
+    const updateAdminMockData = {
+        id: "60d21b4667d0d8992e610c85",
+        username: "a24125634",
+        name: "John",
+        surname: "Adams",
+        email: "johnadams@admin.com",
+        role: "admin",
+        organisations: ["60d21b4967d0d8992e610c86"],
+        workspaces: [],
+        image: "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&q=70&fm=webp",
+        createdAt: "2023-01-01T00:00:00.000Z",
+        updatedAt: "2023-01-02T00:00:00.000Z"
+    }
+
     const lecturerMockData = {
         id: "49d21b1267d0d8c92e890c85",
         username: "l24125634",
@@ -27,6 +41,20 @@ describe('User Management Integration Tests with Mocking', () => {
         image: "https://images.ctfassets.net/h6goo9gw1hh6/35ESaRFvf7ka1qg429ihFI/f173abb985b59535e8eaa21fd31f227c/3-dating-a.jpg?w=1200&h=600&q=70&fm=webp",
         createdAt: "2023-01-01T00:00:00.000Z",
         updatedAt: "2023-01-01T00:00:00.000Z"
+    }
+
+    const updatedLecturerMockData = {
+        id: "49d21b1267d0d8c92e890c85",
+        username: "l24125634",
+        name: "Joshua",
+        surname: "Harvey",
+        email: "joshuaharvey@lecturer.com",
+        role: "lecturer",
+        organisations: ["16d12b9476d0d9892e610c68"],
+        workspaces: ["32d12b9467d0d8992e612c70"],
+        image: "https://images.ctfassets.net/h6goo9gw1hh6/35ESaRFvf7ka1qg429ihFI/f173abb985b59535e8eaa21fd31f227c/3-dating-a.jpg?w=1200&h=600&q=70&fm=webp",
+        createdAt: "2023-01-01T00:00:00.000Z",
+        updatedAt: "2023-01-02T00:00:00.000Z"
     }
 
     const studentMockData = {
@@ -43,12 +71,19 @@ describe('User Management Integration Tests with Mocking', () => {
         updatedAt: "2023-01-01T00:00:00.000Z"
     }
   
-    const updatedUserData = {
-      id: '1',
-      name: 'Updated User 1',
-      email: 'updateduser1@example.com',
-      role: 'student'
-    };
+    const updatedStudentMockData = {
+        id: "21d21b1276d0d8b29e890x34",
+        username: "s21026659",
+        name: "Savanna",
+        surname: "Schaefer",
+        email: "savannaschaefer@student.com",
+        role: "student",
+        organisations: ["60d21b4967d0d8992e610c86"],
+        workspaces: ["32d12b9467d0d8992e612c70"],
+        image: "https://images.ctfassets.net/h6goo9gw1hh6/RVoyMWRwLWiYFOd2MTpPV/1055eaefb626e3a8ef9bac67f8e1e5e5/4-sm-a.jpg?w=1200&h=600&q=70&fm=webp",
+        createdAt: "2023-01-01T00:00:00.000Z",
+        updatedAt: "2023-01-01T00:00:00.000Z"
+    }
   
     // Intercept the requests and provide mock responses
     beforeEach(() => {
