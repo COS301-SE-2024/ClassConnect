@@ -5,8 +5,8 @@ describe('User Management Integration Tests with Mocking', () => {
         id: "60d21b4667d0d8992e610c85",
         username: "a24125634",
         name: "John",
-        surname: "johndoe@example.com",
-        email: "johndoe@example.com",
+        surname: "Doe",
+        email: "johndoe@admin.com",
         role: "admin",
         organisations: ["60d21b4967d0d8992e610c86"],
         workspaces: [],
@@ -14,6 +14,20 @@ describe('User Management Integration Tests with Mocking', () => {
         createdAt: "2023-01-01T00:00:00.000Z",
         updatedAt: "2023-01-01T00:00:00.000Z"
     };
+
+    const lecturerMockData = {
+        id: "49d21b1267d0d8c92e890c85",
+        username: "l24125634",
+        name: "Neil",
+        surname: "Harvey",
+        email: "neilharvey@lecturer.com",
+        role: "lecturer",
+        organisations: ["60d21b4967d0d8992e610c86"],
+        workspaces: ["32d12b9467d0d8992e612c70"],
+        image: "https://images.ctfassets.net/h6goo9gw1hh6/35ESaRFvf7ka1qg429ihFI/f173abb985b59535e8eaa21fd31f227c/3-dating-a.jpg?w=1200&h=600&q=70&fm=webp",
+        createdAt: "2023-01-01T00:00:00.000Z",
+        updatedAt: "2023-01-01T00:00:00.000Z"
+    }
   
     const updatedUserData = {
       id: '1',
