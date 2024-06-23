@@ -5,7 +5,7 @@
 	import { onMount } from 'svelte';
 
 	let formModal = false;
-	let userID = 'abcdefg';
+	let userID = '';
 	let workspaceID = 'abcdefg';
 	
 
@@ -16,10 +16,10 @@
 	}
 
 	//this wil retrieve the lectureID and workspace ID from local storage
-	// onMount(() => {
-	// 	localStorage.setItem('userID', userID);
-	// 	localStorage.setItem('workspaceID', workspaceID);
-	// });
+	onMount(() => {
+		userID= localStorage.getItem('userID') || 'non-existent';
+		//localStorage.setItem('workspaceID', workspaceID);
+	});
 
 	async function handleSubmit(event: Event) {
 		console.log('Schedule Lesson is being handled');
