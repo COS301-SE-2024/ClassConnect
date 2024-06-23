@@ -6,7 +6,7 @@ export async function schedules(topic: string, userID: string, workspaceID: stri
 	try {
 		const response = await axios.post('http://localhost:3000/schedules', {
 			topic: topic,
-			lecture_id: userID,
+			lecturer_id: userID,
 			workspace_id: workspaceID,
             date: date
 		});
