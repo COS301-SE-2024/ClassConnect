@@ -85,36 +85,78 @@ describe('User Management Integration Tests with Mocking', () => {
         updatedAt: "2023-01-01T00:00:00.000Z"
     }
   
-    // Intercept the requests and provide mock responses
     beforeEach(() => {
-      // Mock the POST request to create a new user
-      cy.intercept('POST', `${baseUrl}/users`, {
-        statusCode: 201,
-        body: exampleUserData
-      }).as('createUser');
-  
-      // Mock the GET request to fetch the created user by ID
-      cy.intercept('GET', `${baseUrl}/users/${exampleUserData.id}`, {
-        statusCode: 200,
-        body: exampleUserData
-      }).as('getUser');
-  
-      // Mock the PUT request to update the user
-      cy.intercept('PUT', `${baseUrl}/users/${exampleUserData.id}`, {
-        statusCode: 200,
-        body: updatedUserData
-      }).as('updateUser');
-  
-      // Mock the DELETE request to delete the user
-      cy.intercept('DELETE', `${baseUrl}/users/${exampleUserData.id}`, {
-        statusCode: 204
-      }).as('deleteUser');
-  
-      // Mock the GET request after deletion to return 404
-      cy.intercept('GET', `${baseUrl}/users/${exampleUserData.id}`, {
-        statusCode: 404
-      }).as('getUserAfterDelete');
+        // Mock the POST request to create a new user
+        cy.intercept('POST', `${baseUrl}/users`, (req) => {
+            if (req.body.role === 'admin') {
+                req.reply({
+                    statusCode: 201,
+                    body: adminMockData
+                });
+            } else if (req.body.role === 'lecturer') {
+                req.reply({
+                    statusCode: 201,
+                    body: lecturerMockData
+                });
+            } else if (req.body.role === 'student') {
+                req.reply({
+                    statusCode: 201,
+                    body: studentMockData
+                });
+            }
+        }).as('createUser');
+
+        // Mock the GET request to fetch the created user by ID
+        cy.intercept('GET', `${baseUrl}/users/*`, (req) => {
+            if (req.url.includes(adminMockData.id)) {
+                req.reply({
+                    statusCode: 200,
+                    body: adminMockData
+                });
+            } else if (req.url.includes(lecturerMockData.id)) {
+                req.reply({
+                    statusCode: 200,
+                    body: lecturerMockData
+                });
+            } else if (req.url.includes(studentMockData.id)) {
+                req.reply({
+                    statusCode: 200,
+                    body: studentMockData
+                });
+            }
+        }).as('getUser');
+
+        // Mock the PUT request to update the user
+        cy.intercept('PUT', `${baseUrl}/users/*`, (req) => {
+            if (req.body.role === 'admin') {
+                req.reply({
+                    statusCode: 200,
+                    body: updateAdminMockData
+                });
+            } else if (req.body.role === 'lecturer') {
+                req.reply({
+                    statusCode: 200,
+                    body: updatedLecturerMockData
+                });
+            } else if (req.body.role === 'student') {
+                req.reply({
+                    statusCode: 200,
+                    body: updatedStudentMockData
+                });
+            }
+        }).as('updateUser');
+
+         // Mock the DELETE request to delete the user
+        cy.intercept('DELETE', `${baseUrl}/users/*`, {
+            statusCode: 204
+        }).as('deleteUser');
+
+        // Mock the GET request after deletion to return 404
+        cy.intercept('GET', `${baseUrl}/users/*`, {
+            statusCode: 404
+        }).as('getUserAfterDelete');
     });
+
   
     // CREATE
     it('should create a new user', () => {
