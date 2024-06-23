@@ -14,6 +14,7 @@
 		localStorage.setItem('userID', id);
 		localStorage.setItem('organisationID', organisationID);
 
+
 		console.log('This is the ID', id);
 		console.log('User ID stored:', localStorage.getItem('userID'));
 	}

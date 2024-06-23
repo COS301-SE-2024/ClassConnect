@@ -48,7 +48,10 @@ export class UserService {
   }
 
   async findMany(filter: Partial<CreateUserDto>): Promise<User[]> {
-    const users = await this.userModel.find(filter).sort({ createdAt: -1 }).exec();
+    const users = await this.userModel
+      .find(filter)
+      .sort({ createdAt: -1 })
+      .exec();
 
     return users;
   }
