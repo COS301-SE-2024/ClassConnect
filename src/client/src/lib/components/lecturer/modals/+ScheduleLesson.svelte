@@ -6,7 +6,8 @@
 
 	let formModal = false;
 	let userID = '';
-	let workspaceID = '';
+	let workspaceID = 'abcdefg';
+	
 
 	//Function to store LessonScheduleID
 	function storeLessonID(id: string): void {
@@ -16,8 +17,8 @@
 
 	//this wil retrieve the lectureID and workspace ID from local storage
 	onMount(() => {
-		userID = localStorage.getItem('userID') || 'non-existent';
-		workspaceID = localStorage.getItem('workspaceID') || 'non-existent';
+		userID= localStorage.getItem('userID') || 'non-existent';
+		//localStorage.setItem('workspaceID', workspaceID);
 	});
 
 	async function handleSubmit(event: Event) {
@@ -31,7 +32,7 @@
 		const date = formData.get('date')?.toString() ?? '';
 		console.log('This is date:', date);
 		const time = formData.get('time')?.toString() ?? '';
-		console.log('This is date:', time);
+		console.log('This is time:', time);
 
 		try {
 			const response = await schedules(topic, userID, workspaceID, date);
@@ -40,7 +41,10 @@
 
 			if (response) {
 				storeLessonID(response._id);
-				lessons.set(response.topic);
+				lessons.update(currentLessons => [
+					...currentLessons,
+					{ topic, date, time }
+				]);
 			}
 		} catch (error) {
 			console.error('Schedule Lesson Error:', error);
@@ -76,7 +80,7 @@
 		<Input type="text" id="topic" name="topic" placeholder="Mathematics" size="md" required />
 
 		<Label for="date" class="mb-2 mt-2 space-y-2">Date</Label>
-		<Input type="date" id="date" name="date" placeholder="16 June" size="md" required />
+		<Input type="date" id="date" name="date" placeholder="23 June" size="md" required />
 
 		<Label for="time" class="mb-2 mt-2 space-y-2">Time</Label>
 		<Input type="time" id="time" name="time" placeholder="12:00" size="md" required />

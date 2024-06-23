@@ -2,8 +2,14 @@
 	import { Button, Modal, Label, Input, Fileupload, Radio } from 'flowbite-svelte';
 	let formModal = false;
 
-	async function handleUpload(event) {
-		event.preventDefault();
+	// Function to store the materialID in local storage
+	function storeMaterialID(id: string): void {
+		localStorage.setItem('materialID', id);
+		console.log('materialID: ', id);
+	}
+
+	async function handleUpload(event: SubmitEvent) {
+
 		console.log('Upload is being handled');
 
 		const userId = localStorage.getItem('userID') || 'non-existent';

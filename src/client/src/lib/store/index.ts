@@ -12,6 +12,8 @@ export const lessons = writable<any>([
 ]);
 
 export const organisationName = writable('Organisation');
+//export const materialTitle = writable('Material');
+export const materialsInfo = writable<any[]>([]);
 
 export const lecChange = writable('change');
 export const stuChange = writable('change');

@@ -11,7 +11,7 @@ export async function schedules(
 	try {
 		const response = await axios.post('http://localhost:3000/schedules', {
 			topic: topic,
-			lecture_id: userID,
+			lecturer_id: userID,
 			workspace_id: workspaceID,
 			date: date
 		});
