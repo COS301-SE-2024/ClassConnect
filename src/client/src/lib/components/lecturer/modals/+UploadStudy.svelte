@@ -25,7 +25,7 @@
 		console.log("Description is: ", description);
 		const file_path= formData.get('file')?.toString() ?? '';
 		console.log("File is: ", file_path);
-		const userID = localStorage.getItem('userID') || 'non-existent' //this is under the assumption that userDI is in localStorage
+		const userID = localStorage.getItem('userID') || 'non-existent' //this is under the assumption that userID is in localStorage
 		const workspaceID='12345678'; //this is set to change
 
 		try{
