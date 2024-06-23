@@ -247,21 +247,51 @@ describe('User Management Integration Tests with Mocking', () => {
         });
     });
   
-  
-    // DELETE
-    it('should delete the created user', () => {
-      cy.request('DELETE', `${baseUrl}/users/${exampleUserData.id}`)
-        .then((response) => {
-          expect(response.status).to.eq(204);
+    // DELETE admin
+    it('should delete the created admin user', () => {
+        cy.request('DELETE', `${baseUrl}/users/${adminMockData.id}`).then((response) => {
+            expect(response.status).to.eq(204);
         });
-  
-      // Verify the deletion
-      cy.request({
-        method: 'GET',
-        url: `${baseUrl}/users/${exampleUserData.id}`,
-        failOnStatusCode: false
-      }).then((response) => {
-        expect(response.status).to.eq(404);
-      });
+
+        // Verify that admin has been deleted
+        cy.request({
+            method: 'GET',
+            url: `${baseUrl}/users/${adminMockData.id}`,
+            failOnStatusCode: false
+        }).then((response) => {
+            expect(response.status).to.eq(404);
+        });
     });
-  });
+
+    // DELETE lecturer
+    it('should delete the created lecturer user', () => {
+        cy.request('DELETE', `${baseUrl}/users/${lecturerMockData.id}`).then((response) => {
+            expect(response.status).to.eq(204);
+        });
+
+        // Verify that lecturer has been deleted
+        cy.request({
+            method: 'GET',
+            url: `${baseUrl}/users/${lecturerMockData.id}`,
+            failOnStatusCode: false
+        }).then((response) => {
+            expect(response.status).to.eq(404);
+        });
+    });
+
+    // DELETE student
+    it('should delete the created student user', () => {
+        cy.request('DELETE', `${baseUrl}/users/${studentMockData.id}`).then((response) => {
+            expect(response.status).to.eq(204);
+        });
+
+        // Verify that student has been deleted
+        cy.request({
+            method: 'GET',
+            url: `${baseUrl}/users/${studentMockData.id}`,
+            failOnStatusCode: false
+        }).then((response) => {
+            expect(response.status).to.eq(404);
+        });
+    });
+})
