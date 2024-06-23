@@ -1,21 +1,26 @@
 describe('Workspace Management Integration Tests with Mocking', () => {
-    const baseUrl = 'http://localhost:3000/';
+    const baseUrl = 'http://localhost:3000';
   
-    // Example data for creating a workspace
-    const exampleWorkspaceData = {
-      id: '1',
-      name: 'Workspace 1',
-      image: 'Random Image',
-      owner: 'user123',
-      organisation: 'Random Organisation'
+    const workspaceMockData = {
+      id: "60d21b4c67d0d8992e610c87",
+      name: "Development",
+      organisationId: "60d21b4967d0d8992e610c86",
+      createdBy: "60d21b4667d0d8992e610c85",
+      users: ["60d21b4667d0d8992e610c85"],
+      image: "https://www.springboard.com/blog/wp-content/uploads/2022/06/coding-.png",
+      createdAt: "2023-01-01T00:00:00.000Z",
+      updatedAt: "2023-01-01T00:00:00.000Z"
     };
   
-    const updatedWorkspaceData = {
-        id: '1',
-        name: 'Updated Workspace 1',
-        image: 'Random Image',
-        owner: 'user123',
-        organisation: 'Random Organisation'
+    const updatedWorkspaceMockData = {
+      id: "60d21b4c67d0d8992e610c87",
+      name: "COS301",
+      organisationId: "60d21b4967d0d8992e610c86",
+      createdBy: "60d21b4667d0d8992e610c85",
+      users: ["60d21b4667d0d8992e610c85"],
+      image: "https://wallpapers.com/images/hd/coding-background-9izlympnd0ovmpli.jpg",
+      createdAt: "2023-01-01T00:00:00.000Z",
+      updatedAt: "2023-01-02T00:00:00.000Z"
     };
   
     // Intercept the requests and provide mock responses
