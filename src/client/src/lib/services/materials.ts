@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+//this creates the materials
 export async function materials(
 	type: boolean,
 	workspace_id: string,
@@ -20,19 +21,23 @@ export async function materials(
 
 		return response.data;
 	} catch (error) {
-		throw new Error('Create Material Failed');
+		throw new Error('Create Material Failed', error);
 	}
 }
 
+
+//this returns the materials based on ID
 export async function getMaterial(id: string): Promise<any> {
 	try {
 		const response = await axios.get(`http://localhost:3000/materials/${id}`);
 		return response.data;
 	} catch (error) {
-		throw new Error('Get Material Failed');
+		throw new Error('Get Material Failed', error);
 	}
 }
 
+
+//this updates the materials
 export async function updateWorkspace(
 	id: string,
 	name: string,
@@ -49,24 +54,28 @@ export async function updateWorkspace(
 		});
 		return response.data;
 	} catch (error) {
-		throw new Error('Update Material Failed');
+		throw new Error('Update Material Failed', error);
 	}
 }
 
+
+//this deletes the materials
 export async function deleteMaterial(id: string): Promise<string> {
 	try {
 		const response = await axios.delete(`http://localhost:3000/materials/${id}`);
 		return response.data.message;
 	} catch (error) {
-		throw new Error('Delete Material Failed');
+		throw new Error('Delete Material Failed', error);
 	}
 }
 
-export async function listAllMaterial() {
+
+//this returns all the material in a psecific wokrspace
+export async function listAllMaterialByWorkspace(workspaceID: string) {
 	try {
-		const response = await axios.get(`http://localhost:3000/materials`);
+		const response = await axios.get(`http://localhost:3000/materials/workspace//${workspaceID}`);
 		return response.data;
 	} catch (error) {
-		throw new Error('List All Material Failed');
+		throw new Error('List All Material Failed', error);
 	}
 }
