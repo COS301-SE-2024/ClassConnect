@@ -28,6 +28,20 @@ describe('User Management Integration Tests with Mocking', () => {
         createdAt: "2023-01-01T00:00:00.000Z",
         updatedAt: "2023-01-01T00:00:00.000Z"
     }
+
+    const studentMockData = {
+        id: "21d21b1276d0d8b29e890x34",
+        username: "s21026659",
+        name: "Savanna",
+        surname: "Schaefer",
+        email: "savannaschaefer@student.com",
+        role: "student",
+        organisations: ["60d21b4967d0d8992e610c86"],
+        workspaces: ["32d12b9467d0d8992e612c70"],
+        image: "https://images.ctfassets.net/h6goo9gw1hh6/RVoyMWRwLWiYFOd2MTpPV/1055eaefb626e3a8ef9bac67f8e1e5e5/4-sm-a.jpg?w=1200&h=600&q=70&fm=webp",
+        createdAt: "2023-01-01T00:00:00.000Z",
+        updatedAt: "2023-01-01T00:00:00.000Z"
+    }
   
     const updatedUserData = {
       id: '1',
