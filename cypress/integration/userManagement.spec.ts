@@ -1,14 +1,18 @@
-// cypress/integration/userManagement.spec.ts
-
 describe('User Management Integration Tests with Mocking', () => {
-    const baseUrl = 'http://localhost:3000/api'; // Replace with the actual base URL of your API
+    const baseUrl = 'http://localhost:3000';
   
-    // Example data for creating a user
-    const exampleUserData = {
-      id: '1',
-      name: 'User 1',
-      email: 'user1@example.com',
-      role: 'student'
+    const adminMockData = {
+        id: "60d21b4667d0d8992e610c85",
+        username: "a24125634",
+        name: "John",
+        surname: "johndoe@example.com",
+        email: "johndoe@example.com",
+        role: "admin",
+        organisations: ["60d21b4967d0d8992e610c86"],
+        workspaces: [],
+        image: "https://images.ctfassets.net/h6goo9gw1hh6/2sNZtFAWOdP1lmQ33VwRN3/24e953b920a9cd0ff2e1d587742a2472/1-intro-photo-final.jpg?w=1200&h=992&q=70&fm=webp",
+        createdAt: "2023-01-01T00:00:00.000Z",
+        updatedAt: "2023-01-01T00:00:00.000Z"
     };
   
     const updatedUserData = {
