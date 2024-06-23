@@ -1,21 +1,45 @@
-<script>
+<script lang="ts">
+	import { materials } from '$lib/services/materials';
+	import { materialTitle } from '$lib/store';
 	import { Button, Modal, Label, Input, Fileupload } from 'flowbite-svelte';
 	let formModal = false;
 
-	async function handleUpload(event) {
-		event.preventDefault();
+	// Function to store the materialID in local storage
+	function storeMaterialID(id: string): void {
+		localStorage.setItem('materialID', id);
+		console.log('materialID: ', id);
+	}
+
+	async function handleUpload(event: SubmitEvent) {
+
 		console.log('Upload is being handled');
 
-		const formData = new FormData(event.currentTarget);
-		for (const [key, value] of formData.entries()) {
-			console.log(key, value);
-		}
+		//this prevents default submission
+		event.preventDefault();
+		
 
-		const response = await fetch('/lecturer/dashboard?/upload', {
-			method: 'POST',
-			body: formData
-		});
-		console.log(response);
+		const formData = new FormData(event.target as HTMLFormElement);
+		const title= formData.get('title')?.toString() ?? '';
+		console.log("Title is: ", title);
+		const description= formData.get('description')?.toString() ?? '';
+		console.log("Description is: ", description);
+		const file_path= formData.get('file')?.toString() ?? '';
+		console.log("File is: ", file_path);
+		const userID = localStorage.getItem('userID') || 'non-existent' //this is under the assumption that userDI is in localStorage
+		const workspaceID='12345678'; //this is set to change
+
+		try{
+			const response= await materials(true, workspaceID, userID, title, description, file_path);
+
+			console.log('Response:', response);
+
+			if (response) {
+				storeMaterialID(response._id);
+				materialTitle.set(response.name);
+			}
+		}catch(error){
+			console.error('Upload material failed', error);
+		}	
 		formModal = false;
 	}
 </script>

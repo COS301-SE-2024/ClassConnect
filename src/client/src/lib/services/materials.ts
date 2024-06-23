@@ -26,7 +26,7 @@ export async function materials(
 }
 
 
-//this returns the materials based on ID
+//this returns the material based on ID
 export async function getMaterial(id: string): Promise<any> {
 	try {
 		const response = await axios.get(`http://localhost:3000/materials/${id}`);
@@ -73,7 +73,7 @@ export async function deleteMaterial(id: string): Promise<string> {
 //this returns all the material in a psecific wokrspace
 export async function listAllMaterialByWorkspace(workspaceID: string) {
 	try {
-		const response = await axios.get(`http://localhost:3000/materials/workspace//${workspaceID}`);
+		const response = await axios.get(`http://localhost:3000/materials/workspace/${workspaceID}`);
 		return response.data;
 	} catch (error) {
 		throw new Error('List All Material Failed', error);
