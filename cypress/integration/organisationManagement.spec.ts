@@ -1,21 +1,24 @@
-// cypress/integration/organisationManagement.spec.ts
-
 describe('Organisation Management Integration Tests with Mocking', () => {
-    const baseUrl = 'http://localhost:3000/'; // Replace with the actual base URL of your API
-  
-    // Example data for creating an organisation
-    const exampleOrganisationData = {
-      id: '1',
-      name: 'Organisation 1',
-      description: 'A sample organisation',
-      createdBy: 'user123'
+    const baseUrl = 'http://localhost:3000';
+
+    const organisationMockData = {
+        id: "60d21b4967d0d8992e610c86",
+        name: "Pretoria of University",
+        createdBy: "60d21b4667d0d8992e610c85",
+        users: ["60d21b4667d0d8992e610c85"],
+        image: "https://pbs.twimg.com/profile_images/558604645212229632/tOX44Roj_400x400.jpeg",
+        "createdAt": "2023-01-01T00:00:00.000Z",
+        "updatedAt": "2023-01-01T00:00:00.000Z"
     };
-  
-    const updatedOrganisationData = {
-      id: '1',
-      name: 'Updated Organisation 1',
-      description: 'An updated sample organisation',
-      createdBy: 'user123'
+    
+    const updatedOrganisationMockData = {
+        id: "60d21b4967d0d8992e610c86",
+        name: "University of Pretoria",
+        createdBy: "60d21b4667d0d8992e610c85",
+        users: ["60d21b4667d0d8992e610c85"],
+        image: "https://pbs.twimg.com/profile_images/558604645212229632/tOX44Roj_400x400.jpeg",
+        "createdAt": "2023-01-01T00:00:00.000Z",
+        "updatedAt": "2023-01-02T00:00:00.000Z"
     };
   
     // Intercept the requests and provide mock responses
