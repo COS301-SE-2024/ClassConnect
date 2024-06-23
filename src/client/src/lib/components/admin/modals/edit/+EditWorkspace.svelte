@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 	import IconEdit from '@tabler/icons-svelte/IconEdit.svelte';
+	export let id;
 	let formModal = false;
 
 	// Function to handle form submission
@@ -10,7 +11,8 @@
 		event.preventDefault();
 
 		const formData = new FormData(event.currentTarget);
-
+		formData.append('work_id', id);
+		
 		const response = await fetch('/admin/workspaces?/edit', {
 			method: 'POST',
 			body: formData
@@ -33,11 +35,11 @@
 	<form class="flex flex-col space-y-6" on:submit={handleSubmit}>
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Edit Workspace</h3>
 
-		<Label for="org_name" class="mb-2 mt-2 space-y-2">Workspace Name</Label>
+		<Label for="work_name" class="mb-2 mt-2 space-y-2">Workspace Name</Label>
 		<Input
 			type="text"
-			id="org_name"
-			name="org_name"
+			id="work_name"
+			name="work_name"
 			placeholder="Example University"
 			size="md"
 			required

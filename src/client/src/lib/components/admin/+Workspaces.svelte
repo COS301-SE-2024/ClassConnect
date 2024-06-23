@@ -1,7 +1,7 @@
 <script lang="ts">
 	import EditWorkspace from '$lib/components/admin/modals/edit/+EditWorkspace.svelte';
 	import AddWorkspace from '$lib/components/admin/modals/add/+AddWorkspace.svelte';
-
+	import { wrkspcs } from '$lib/store';
 	import {
 		Table,
 		TableBody,
@@ -17,6 +17,11 @@
 	let headers = ['Name', 'Edit'];
 
 	export let workspaces;
+
+	wrkspcs.set(workspaces);
+
+	$: $wrkspcs;
+
 </script>
 
 <section class="container mx-auto my-2 px-4">
@@ -28,7 +33,7 @@
 				<span
 					class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
 				>
-					{workspaces.length}
+					{$wrkspcs.length}
 					{' '} workspaces
 				</span>
 			</div>
@@ -53,7 +58,7 @@
 			{/each}
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
-			{#each workspaces as workspace}
+			{#each $wrkspcs as workspace}
 				<TableBodyRow>
 					<TableBodyCell class="inline-flex items-center gap-x-3">
 						<div class="flex items-center gap-x-2">
@@ -66,7 +71,7 @@
 					</TableBodyCell>
 
 					<TableBodyCell>
-						<EditWorkspace />
+						<EditWorkspace id={workspace.id}/>
 					</TableBodyCell>
 				</TableBodyRow>
 			{/each}

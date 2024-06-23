@@ -1,5 +1,8 @@
 <script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
+    import {set_workspaces} from '$lib/services/workspaces';
+    import axios from 'axios';
+    import { wrkspcs } from '$lib/store';
     import { Checkbox } from 'flowbite-svelte';
     import IconLibraryPlus from '@tabler/icons-svelte/IconLibraryPlus.svelte';
     export let id;
@@ -26,8 +29,6 @@
 
         formData.append('Workspaces', JSON.stringify(checkedWorkspaces));
 
-        console.log(formData);
-
 		const response = await fetch('/admin/workspaces?/adduser', {
 			method: 'POST',
 			body: formData
@@ -41,39 +42,42 @@
 
     let workspaces = [];
 
-    function openModal(){
-        formModal = true;
-        //TODO: fetch the all the workspaces in the organization
-        const organisationId = localStorage.getItem('organisationID') || 'non-existent';
-        const userId = localStorage.getItem('userID') || 'non-existent';
+    async function openModal(){
+        
+        await set_workspaces();
 
-        console.log(organisationId);
-        console.log(userId);
+        const url = 'http://localhost:3000/users/'+id;
 
-        /**
-         * after that use the workspace id returned to get the name of the 
-         * workspaces
-        */
+        const response = await axios.get(url);
 
-        /**
-         * after you have all the workspace in a
-         * organisation use the userId to make a get all workspaces a user is a 
-         * part of and make sure the are checked
-        */
+        // Handle the response data
+        const res_data = response.data;
 
-        workspaces = [
-            {
-                name: "Computer Networks",
-                id: "1",
-                checked: false
-            },
-            {
-                name: "Computer Graphics",
-                id: "2",
-                checked: false
+        const wk_ids = []
+
+        for(let j = 0; j < res_data.workspaces.length; j++){
+            const wk_id = res_data.workspaces[j]
+            wk_ids.push(wk_id)
+        }
+
+        for(let j = 0; j < $wrkspcs.length; j++){
+            const wk_id = $wrkspcs[j].id;
+            if(wk_ids.includes(wk_id)){
+                workspaces.push({
+                    name: $wrkspcs[j].name,
+                    id: $wrkspcs[j].id,
+                    checked: true
+                });
+            } else {
+                workspaces.push({
+                    name: $wrkspcs[j].name,
+                    id: $wrkspcs[j].id,
+                    checked: false
+                });
             }
-        ]
+        }
 
+        formModal = true;
     }
 
 </script>
