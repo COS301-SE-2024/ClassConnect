@@ -1,6 +1,4 @@
 <script lang="ts">
-	import AddStuToWork from '$lib/components/admin/modals/add/+AddStuToWork.svelte';
-	import AddLecToWork from '$lib/components/admin/modals/add/+AddLecToWork.svelte';
 	import EditWorkspace from '$lib/components/admin/modals/edit/+EditWorkspace.svelte';
 	import AddWorkspace from '$lib/components/admin/modals/add/+AddWorkspace.svelte';
 
@@ -16,7 +14,7 @@
 	} from 'flowbite-svelte';
 	import { SearchOutline } from 'flowbite-svelte-icons';
 
-	let headers = ['Name', 'Add Lecturer', 'Add Student', 'Edit'];
+	let headers = ['Name', 'Edit'];
 
 	export let workspaces;
 </script>
@@ -65,14 +63,6 @@
 								</p>
 							</div>
 						</div>
-					</TableBodyCell>
-
-					<TableBodyCell>
-						<AddLecToWork />
-					</TableBodyCell>
-
-					<TableBodyCell>
-						<AddStuToWork />
 					</TableBodyCell>
 
 					<TableBodyCell>

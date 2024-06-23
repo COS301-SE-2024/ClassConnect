@@ -1,10 +1,7 @@
 <script lang="ts">
-	/** @type {import('./$types').PageData} */
-	export let data;
-
 	import SideBar from '$lib/components/utils/lecturer/+SideBar.svelte';
 	import TopBar from '$lib/components/utils/+TopBar.svelte';
-	import Dashboard from '$lib/components/lecturer/+Dashboard.svelte';
+	import Material from '$lib/components/student/+Material.svelte';
 </script>
 
 <main>
@@ -12,9 +9,7 @@
 		<SideBar />
 		<div class="flex-1">
 			<TopBar />
-			<div class="w-full p-2">
-				<Dashboard files={data.files} />
-			</div>
+			<Material />
 		</div>
 	</div>
 </main>
