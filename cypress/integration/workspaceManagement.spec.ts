@@ -28,69 +28,69 @@ describe('Workspace Management Integration Tests with Mocking', () => {
       // Mock the POST request to create a new workspace
       cy.intercept('POST', `${baseUrl}/workspaces`, {
         statusCode: 201,
-        body: exampleWorkspaceData
+        body: workspaceMockData
       }).as('createWorkspace');
   
       // Mock the GET request to fetch the created workspace by ID
-      cy.intercept('GET', `${baseUrl}/workspaces/${exampleWorkspaceData.id}`, {
+      cy.intercept('GET', `${baseUrl}/workspaces/${workspaceMockData.id}`, {
         statusCode: 200,
-        body: exampleWorkspaceData
+        body: workspaceMockData
       }).as('getWorkspace');
   
       // Mock the PUT request to update the workspace
-      cy.intercept('PUT', `${baseUrl}/workspaces/${exampleWorkspaceData.id}`, {
+      cy.intercept('PUT', `${baseUrl}/workspaces/${workspaceMockData.id}`, {
         statusCode: 200,
-        body: updatedWorkspaceData
+        body: updatedWorkspaceMockData
       }).as('updateWorkspace');
   
       // Mock the DELETE request to delete the workspace
-      cy.intercept('DELETE', `${baseUrl}/workspaces/${exampleWorkspaceData.id}`, {
+      cy.intercept('DELETE', `${baseUrl}/workspaces/${workspaceMockData.id}`, {
         statusCode: 204
       }).as('deleteWorkspace');
   
       // Mock the GET request after deletion to return 404
-      cy.intercept('GET', `${baseUrl}/workspaces/${exampleWorkspaceData.id}`, {
+      cy.intercept('GET', `${baseUrl}/workspaces/${workspaceMockData.id}`, {
         statusCode: 404
       }).as('getWorkspaceAfterDelete');
     });
   
     // CREATE
     it('should create a new workspace', () => {
-      cy.request('POST', `${baseUrl}/workspaces`, exampleWorkspaceData)
+      cy.request('POST', `${baseUrl}/workspaces`, workspaceMockData)
         .then((response) => {
           expect(response.status).to.eq(201);
-          expect(response.body).to.deep.equal(exampleWorkspaceData);
+          expect(response.body).to.deep.equal(workspaceMockData);
         });
     });
   
     // READ
     it('should fetch the created workspace by ID', () => {
-      cy.request('GET', `${baseUrl}/workspaces/${exampleWorkspaceData.id}`)
+      cy.request('GET', `${baseUrl}/workspaces/${workspaceMockData.id}`)
         .then((response) => {
           expect(response.status).to.eq(200);
-          expect(response.body).to.deep.equal(exampleWorkspaceData);
+          expect(response.body).to.deep.equal(workspaceMockData);
         });
     });
   
     // UPDATE
     it('should update the workspace details', () => {
-      cy.request('PUT', `${baseUrl}/workspaces/${exampleWorkspaceData.id}`, updatedWorkspaceData)
+      cy.request('PUT', `${baseUrl}/workspaces/${workspaceMockData.id}`, updatedWorkspaceMockData)
         .then((response) => {
           expect(response.status).to.eq(200);
-          expect(response.body).to.deep.equal(updatedWorkspaceData);
+          expect(response.body).to.deep.equal(updatedWorkspaceMockData);
         });
   
       // Verify the update
-      cy.request('GET', `${baseUrl}/workspaces/${exampleWorkspaceData.id}`)
+      cy.request('GET', `${baseUrl}/workspaces/${workspaceMockData.id}`)
         .then((response) => {
           expect(response.status).to.eq(200);
-          expect(response.body).to.deep.equal(updatedWorkspaceData);
+          expect(response.body).to.deep.equal(updatedWorkspaceMockData);
         });
     });
   
     // DELETE
     it('should delete the created workspace', () => {
-      cy.request('DELETE', `${baseUrl}/workspaces/${exampleWorkspaceData.id}`)
+      cy.request('DELETE', `${baseUrl}/workspaces/${workspaceMockData.id}`)
         .then((response) => {
           expect(response.status).to.eq(204);
         });
@@ -98,7 +98,7 @@ describe('Workspace Management Integration Tests with Mocking', () => {
       // Verify the deletion
       cy.request({
         method: 'GET',
-        url: `${baseUrl}/workspaces/${exampleWorkspaceData.id}`,
+        url: `${baseUrl}/workspaces/${workspaceMockData.id}`,
         failOnStatusCode: false
       }).then((response) => {
         expect(response.status).to.eq(404);
