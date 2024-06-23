@@ -15,7 +15,7 @@ describe('User Management Integration Tests with Mocking', () => {
         updatedAt: "2023-01-01T00:00:00.000Z"
     };
 
-    const updateAdminMockData = {
+    const updatedAdminMockData = {
         id: "60d21b4667d0d8992e610c85",
         username: "a24125634",
         name: "John",
@@ -205,22 +205,48 @@ describe('User Management Integration Tests with Mocking', () => {
         });
     });
 
-  
-    // UPDATE
-    it('should update the user details', () => {
-      cy.request('PUT', `${baseUrl}/users/${exampleUserData.id}`, updatedUserData)
-        .then((response) => {
-          expect(response.status).to.eq(200);
-          expect(response.body).to.deep.equal(updatedUserData);
+    // UPDATE admin
+    it('should update the admin user details', () => {
+        cy.request('PUT', `${baseUrl}/users/${adminMockData.id}`, updatedAdminMockData).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body).to.deep.equal(updatedAdminMockData);
         });
-  
-      // Verify the update
-      cy.request('GET', `${baseUrl}/users/${exampleUserData.id}`)
-        .then((response) => {
-          expect(response.status).to.eq(200);
-          expect(response.body).to.deep.equal(updatedUserData);
+
+        // Verify that admin has been updated
+        cy.request('GET', `${baseUrl}/users/${adminMockData.id}`).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body).to.deep.equal(updatedAdminMockData);
         });
     });
+
+    // UPDATE lecturer
+    it('should update the lecturer user details', () => {
+        cy.request('PUT', `${baseUrl}/users/${lecturerMockData.id}`, updatedLecturerMockData).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body).to.deep.equal(updatedLecturerMockData);
+        });
+
+        // Verify that lecturer has been updated
+        cy.request('GET', `${baseUrl}/users/${lecturerMockData.id}`).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body).to.deep.equal(updatedLecturerMockData);
+        });
+    });
+
+    // UPDATE student
+    it('should update the student user details', () => {
+        cy.request('PUT', `${baseUrl}/users/${studentMockData.id}`, updatedStudentMockData).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body).to.deep.equal(updatedStudentMockData);
+        });
+
+        // Verify that student has been updated
+        cy.request('GET', `${baseUrl}/users/${studentMockData.id}`).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body).to.deep.equal(updatedStudentMockData);
+        });
+    });
+  
   
     // DELETE
     it('should delete the created user', () => {
