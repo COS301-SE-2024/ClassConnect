@@ -3,7 +3,6 @@
 	let formModal = false;
 
 	async function handleUpload(event) {
-
 		console.log('Upload is being handled');
 
 		const userId = localStorage.getItem('userID') || 'non-existent';

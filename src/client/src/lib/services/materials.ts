@@ -25,7 +25,6 @@ export async function materials(
 	}
 }
 
-
 //this returns the material based on ID
 export async function getMaterial(id: string): Promise<any> {
 	try {
@@ -35,7 +34,6 @@ export async function getMaterial(id: string): Promise<any> {
 		throw new Error('Get Material Failed', error);
 	}
 }
-
 
 //this updates the materials
 export async function updateWorkspace(
@@ -58,7 +56,6 @@ export async function updateWorkspace(
 	}
 }
 
-
 //this deletes the materials
 export async function deleteMaterial(id: string): Promise<string> {
 	try {
@@ -68,7 +65,6 @@ export async function deleteMaterial(id: string): Promise<string> {
 		throw new Error('Delete Material Failed', error);
 	}
 }
-
 
 //this returns all the material in a psecific wokrspace
 export async function listAllMaterialByWorkspace(workspaceID: string) {

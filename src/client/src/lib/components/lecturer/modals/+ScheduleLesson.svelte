@@ -7,7 +7,6 @@
 	let formModal = false;
 	let userID = '';
 	let workspaceID = 'abcdefg';
-	
 
 	//Function to store LessonScheduleID
 	function storeLessonID(id: string): void {
@@ -17,7 +16,7 @@
 
 	//this wil retrieve the lectureID and workspace ID from local storage
 	onMount(() => {
-		userID= localStorage.getItem('userID') || 'non-existent';
+		userID = localStorage.getItem('userID') || 'non-existent';
 		//localStorage.setItem('workspaceID', workspaceID);
 	});
 
@@ -41,10 +40,7 @@
 
 			if (response) {
 				storeLessonID(response._id);
-				lessons.update(currentLessons => [
-					...currentLessons,
-					{ topic, date, time }
-				]);
+				lessons.update((currentLessons) => [...currentLessons, { topic, date, time }]);
 			}
 		} catch (error) {
 			console.error('Schedule Lesson Error:', error);
