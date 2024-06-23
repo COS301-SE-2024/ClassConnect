@@ -131,7 +131,7 @@ describe('User Management Integration Tests with Mocking', () => {
             if (req.body.role === 'admin') {
                 req.reply({
                     statusCode: 200,
-                    body: updateAdminMockData
+                    body: updatedAdminMockData
                 });
             } else if (req.body.role === 'lecturer') {
                 req.reply({
