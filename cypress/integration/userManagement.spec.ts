@@ -157,13 +157,27 @@ describe('User Management Integration Tests with Mocking', () => {
         }).as('getUserAfterDelete');
     });
 
-  
-    // CREATE
-    it('should create a new user', () => {
-      cy.request('POST', `${baseUrl}/users`, exampleUserData)
-        .then((response) => {
-          expect(response.status).to.eq(201);
-          expect(response.body).to.deep.equal(exampleUserData);
+    // CREATE admin
+    it('should create a new admin user', () => {
+        cy.request('POST', `${baseUrl}/users`, adminMockData).then((response) => {
+            expect(response.status).to.eq(201);
+            expect(response.body).to.deep.equal(adminMockData);
+        });
+    });
+
+    // CREATE lecturer
+    it('should create a new lecturer user', () => {
+        cy.request('POST', `${baseUrl}/users`, lecturerMockData).then((response) => {
+            expect(response.status).to.eq(201);
+            expect(response.body).to.deep.equal(lecturerMockData);
+        });
+    });
+
+    //CREATE student
+    it('should create a new student user', () => {
+        cy.request('POST', `${baseUrl}/users`, studentMockData).then((response) => {
+            expect(response.status).to.eq(201);
+            expect(response.body).to.deep.equal(studentMockData);
         });
     });
   
