@@ -22,6 +22,10 @@ export class WorkspaceService {
     return this.workspaceModel.findById(id).exec();
   }
 
+  async findMany(query: Partial<CreateWorkspaceDto>): Promise<Workspace[]> {
+    return this.workspaceModel.find(query).exec();
+  }
+
   async findAllByOrganisationId(organisationId: string): Promise<Workspace[]> {
     return this.workspaceModel.find({ organisation: organisationId }).exec();
   }

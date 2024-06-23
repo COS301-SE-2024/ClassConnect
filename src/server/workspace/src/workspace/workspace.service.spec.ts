@@ -19,6 +19,19 @@ describe('WorkspaceService', () => {
     name: 'Updated Workspace',
   };
 
+  const query = { name: 'Test Workspace' };
+
+  const workspacesMock = [
+    {
+      _id: 'test-id-1',
+      name: 'Test Workspace 1',
+    },
+    {
+      _id: 'test-id-2',
+      name: 'Test Workspace 2',
+    },
+  ];
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -29,6 +42,7 @@ describe('WorkspaceService', () => {
             new: jest.fn().mockResolvedValue(workspaceMock),
             constructor: jest.fn().mockResolvedValue(workspaceMock),
             findById: jest.fn(),
+            find: jest.fn(),
             findByIdAndUpdate: jest.fn(),
             findByIdAndDelete: jest.fn(),
           },
@@ -49,6 +63,16 @@ describe('WorkspaceService', () => {
       const result = await service.findOne('test-id');
 
       expect(result).toEqual(workspaceMock);
+    });
+  });
+
+  describe('findMany', () => {
+    it('should find many workspaces based on query', async () => {
+      jest.spyOn(model, 'find').mockReturnValueOnce({
+        exec: jest.fn().mockResolvedValueOnce(workspacesMock),
+      } as any);
+      const result = await service.findMany(query);
+      expect(result).toEqual(workspacesMock);
     });
   });
 

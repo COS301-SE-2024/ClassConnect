@@ -17,6 +17,7 @@ describe('WorkspaceController', () => {
           useValue: {
             create: jest.fn(),
             findOne: jest.fn(),
+            findMany: jest.fn(),
             update: jest.fn(),
             delete: jest.fn(),
           },
@@ -49,6 +50,32 @@ describe('WorkspaceController', () => {
       await controller.findOne(id);
 
       expect(service.findOne).toHaveBeenCalledWith(id);
+    });
+  });
+
+  describe('findMany', () => {
+    it('should call the findMany method of the service with empty query', async () => {
+      const query = {};
+      await controller.findMany(query);
+
+      expect(service.findMany).toHaveBeenCalledWith(query);
+    });
+
+    it('should call the findMany method of the service with specific name query', async () => {
+      const query = { name: 'Specific Workspace' };
+      await controller.findMany(query);
+
+      expect(service.findMany).toHaveBeenCalledWith(query);
+    });
+
+    it('should call the findMany method of the service with multiple query parameters', async () => {
+      const query = {
+        name: 'Specific Workspace',
+        createdBy: 'specific-user-id',
+      };
+      await controller.findMany(query);
+
+      expect(service.findMany).toHaveBeenCalledWith(query);
     });
   });
 

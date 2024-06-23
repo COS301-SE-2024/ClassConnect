@@ -3,6 +3,7 @@ import {
   Put,
   Body,
   Post,
+  Query,
   Param,
   Delete,
   Controller,
@@ -27,6 +28,11 @@ export class WorkspaceController {
     @Param('organisationId') organisationId: string,
   ): Promise<Workspace[]> {
     return this.workspaceService.findAllByOrganisationId(organisationId);
+  }
+
+  @Get()
+  async findMany(@Query() query: Partial<CreateWorkspaceDto>) {
+    return await this.workspaceService.findMany({ ...query });
   }
 
   @Get(':id')
