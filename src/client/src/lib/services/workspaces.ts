@@ -65,27 +65,26 @@ export async function deleteWorkspace(id: string): Promise<string> {
 
 export async function set_workspaces() {
 	try {
-		//TODO FIX THE URL ERROR
-		const url = 'http://localhost:3000/workspaces/organisation/6677db97de4bb64b1ba43059';
+		const url = 'http://localhost:3000/workspaces/organisation/66782cb5370486e47cd2fe0b';
 
 		const response = await axios.get(url);
-	
+
 		// Handle the response data
 		const res_data = response.data;
 
-		if(res_data){
+		if (res_data) {
 			if (res_data.length === 0) {
 				wrkspcs.set([]);
 				return {
 					workspaces: []
 				};
-			}else{
+			} else {
 				const wkspc = [];
-				for(let i = 0; i < res_data.length; i++){
+				for (let i = 0; i < res_data.length; i++) {
 					const new_work = {
 						name: res_data[i].name,
 						id: res_data[i]._id
-					}
+					};
 					wkspc.push(new_work);
 				}
 				wrkspcs.set(wkspc);
@@ -94,7 +93,6 @@ export async function set_workspaces() {
 				};
 			}
 		}
-
 	} catch (error) {
 		// Handle any errors
 		console.error('Error making the GET request:', error);

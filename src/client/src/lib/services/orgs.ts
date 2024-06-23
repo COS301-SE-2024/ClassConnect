@@ -9,7 +9,7 @@ export async function organizations(org_name: string, userID: string, image: str
 			image: image
 		});
 
-		const url = 'http://localhost:3000/users/'+userID;
+		const url = 'http://localhost:3000/users/' + userID;
 
 		const data = {
 			organisation: userID
@@ -17,12 +17,11 @@ export async function organizations(org_name: string, userID: string, image: str
 
 		const res = await axios.put(url, data);
 
-		if(res){
+		if (res) {
 			return response.data;
-		} else{
+		} else {
 			throw new Error('Addition of user to org failed');
 		}
-
 	} catch (error) {
 		throw new Error('Create Org  failed');
 	}

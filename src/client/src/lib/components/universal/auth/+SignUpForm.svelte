@@ -40,10 +40,10 @@
 
 			console.log('Response:', response);
 
-			if (response && response.accessToken && response._id) {
-				storeAccessToken(response.accessToken,response._id);
-				goto('/'+response.role);
-			}else{
+			if (response && response._id) {
+				storeAccessToken(response.accessToken, response._id);
+				goto('/' + response.role);
+			} else {
 				goto('/auth');
 			}
 		} catch (error) {

@@ -21,7 +21,6 @@
 	wrkspcs.set(workspaces);
 
 	$: $wrkspcs;
-
 </script>
 
 <section class="container mx-auto my-2 px-4">
@@ -71,7 +70,7 @@
 					</TableBodyCell>
 
 					<TableBodyCell>
-						<EditWorkspace id={workspace.id}/>
+						<EditWorkspace id={workspace.id} />
 					</TableBodyCell>
 				</TableBodyRow>
 			{/each}

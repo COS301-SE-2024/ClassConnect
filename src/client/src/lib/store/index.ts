@@ -19,6 +19,7 @@ export const admChange = writable('change');
 export const workChange = writable('change');
 
 export const wrkspcs = writable<any>([]);
+export const orgID = writable('');
 
 export const user = writable('eugene');
 export const email = writable('eugene.mpande@tuks.co.za');

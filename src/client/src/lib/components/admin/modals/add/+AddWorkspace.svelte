@@ -16,7 +16,7 @@
 		if (organisationId !== 'non-existent') {
 			formData.append('organisationId', organisationId);
 			formData.append('createdBy', createdBy);
-			
+
 			const response = await fetch('/admin/workspaces?/add', {
 				method: 'POST',
 				body: formData
@@ -24,12 +24,10 @@
 
 			console.log(response);
 			formModal = false;
-
 		} else {
 			const errorMessage = 'You need to be part of an organisation to create a workspace';
 			alert(errorMessage);
 		}
-
 	}
 </script>
 

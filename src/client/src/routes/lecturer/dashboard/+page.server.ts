@@ -73,14 +73,28 @@ async function uploadFileToS3(file, filename, contentType) {
 	}
 }
 
-async function sendToDatabase(type, workspace_id, lecturer_id, title, description, file_path) {
-	console.log(type);
-	console.log(workspace_id);
-	console.log(lecturer_id);
-	console.log(title);
-	console.log(description);
-	console.log(file_path);
-	//TODO : just make the api call
+async function sendToDatabase(
+	type_in,
+	workspace_id_in,
+	lecturer_id_in,
+	title_in,
+	description_in,
+	file_path_in
+) {
+	const url = 'http://localhost:3000/materials';
+
+	const data = {
+		type: type_in,
+		workspace_id: workspace_id_in,
+		lecturer_id: lecturer_id_in,
+		title: title_in,
+		description: description_in,
+		file_path: file_path_in
+	};
+
+	const response = await axios.post(url, data);
+	console.log(response.data);
+	return response.data;
 }
 
 export const actions = {

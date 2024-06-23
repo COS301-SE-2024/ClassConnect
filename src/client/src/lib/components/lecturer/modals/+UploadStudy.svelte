@@ -6,7 +6,7 @@
 		event.preventDefault();
 		console.log('Upload is being handled');
 
-        const userId = localStorage.getItem('userID') || 'non-existent';
+		const userId = localStorage.getItem('userID') || 'non-existent';
 
 		const formData = new FormData(event.currentTarget);
 
@@ -24,24 +24,23 @@
 
 	let workspaces = [];
 
-    function openModal(){
-        formModal = true;
-        //TODO: fetch all the workspaces the user is a part of then get their names using the get workspaces
-        const userId = localStorage.getItem('userID') || 'non-existent';
-        console.log(userId);
+	function openModal() {
+		formModal = true;
+		//TODO: fetch all the workspaces the user is a part of then get their names using the get workspaces
+		const userId = localStorage.getItem('userID') || 'non-existent';
+		console.log(userId);
 
-        workspaces = [
-            {
-                name: "Computer Networks",
-                id: "1",
-            },
-            {
-                name: "Computer Graphics",
-                id: "2",
-            }
-        ]
-    }
-
+		workspaces = [
+			{
+				name: 'Computer Networks',
+				id: '1'
+			},
+			{
+				name: 'Computer Graphics',
+				id: '2'
+			}
+		];
+	}
 </script>
 
 <Button on:click={openModal}>Upload</Button>

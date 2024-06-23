@@ -12,7 +12,7 @@
 
 		const formData = new FormData(event.currentTarget);
 		formData.append('work_id', id);
-		
+
 		const response = await fetch('/admin/workspaces?/edit', {
 			method: 'POST',
 			body: formData
