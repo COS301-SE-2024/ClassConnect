@@ -181,14 +181,30 @@ describe('User Management Integration Tests with Mocking', () => {
         });
     });
   
-    // READ
-    it('should fetch the created user by ID', () => {
-      cy.request('GET', `${baseUrl}/users/${exampleUserData.id}`)
-        .then((response) => {
-          expect(response.status).to.eq(200);
-          expect(response.body).to.deep.equal(exampleUserData);
+    // READ admin
+    it('should fetch the created admin user by ID', () => {
+        cy.request('GET', `${baseUrl}/users/${adminMockData.id}`).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body).to.deep.equal(adminMockData);
         });
     });
+
+    //READ lecturer
+    it('should fetch the created lecturer user by ID', () => {
+        cy.request('GET', `${baseUrl}/users/${lecturerMockData.id}`).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body).to.deep.equal(lecturerMockData);
+        });
+    });
+
+    //READ student
+    it('should fetch the created student user by ID', () => {
+        cy.request('GET', `${baseUrl}/users/${studentMockData.id}`).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body).to.deep.equal(studentMockData);
+        });
+    });
+
   
     // UPDATE
     it('should update the user details', () => {
