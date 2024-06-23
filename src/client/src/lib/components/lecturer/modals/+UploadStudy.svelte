@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { materials } from '$lib/services/materials';
-	import { materialTitle } from '$lib/store';
+	import { materialsInfo } from '$lib/store';
 	import { Button, Modal, Label, Input, Fileupload } from 'flowbite-svelte';
 	let formModal = false;
 
@@ -35,7 +35,10 @@
 
 			if (response) {
 				storeMaterialID(response._id);
-				materialTitle.set(response.name);
+				materialsInfo.update(currentMaterials => [
+					...currentMaterials,
+					{ title, description, file_path }
+				]);
 			}
 		}catch(error){
 			console.error('Upload material failed', error);
