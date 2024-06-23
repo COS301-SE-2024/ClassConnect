@@ -26,69 +26,69 @@ describe('Organisation Management Integration Tests with Mocking', () => {
       // Mock the POST request to create a new organisation
       cy.intercept('POST', `${baseUrl}/organisations`, {
         statusCode: 201,
-        body: exampleOrganisationData
+        body: organisationMockData
       }).as('createOrganisation');
   
       // Mock the GET request to fetch the created organisation by ID
-      cy.intercept('GET', `${baseUrl}/organisations/${exampleOrganisationData.id}`, {
+      cy.intercept('GET', `${baseUrl}/organisations/${organisationMockData.id}`, {
         statusCode: 200,
-        body: exampleOrganisationData
+        body: organisationMockData
       }).as('getOrganisation');
   
       // Mock the PUT request to update the organisation
-      cy.intercept('PUT', `${baseUrl}/organisations/${exampleOrganisationData.id}`, {
+      cy.intercept('PUT', `${baseUrl}/organisations/${organisationMockData.id}`, {
         statusCode: 200,
-        body: updatedOrganisationData
+        body: updatedOrganisationMockData
       }).as('updateOrganisation');
   
       // Mock the DELETE request to delete the organisation
-      cy.intercept('DELETE', `${baseUrl}/organisations/${exampleOrganisationData.id}`, {
+      cy.intercept('DELETE', `${baseUrl}/organisations/${organisationMockData.id}`, {
         statusCode: 204
       }).as('deleteOrganisation');
   
       // Mock the GET request after deletion to return 404
-      cy.intercept('GET', `${baseUrl}/organisations/${exampleOrganisationData.id}`, {
+      cy.intercept('GET', `${baseUrl}/organisations/${organisationMockData.id}`, {
         statusCode: 404
       }).as('getOrganisationAfterDelete');
     });
   
     // CREATE
     it('should create a new organisation', () => {
-      cy.request('POST', `${baseUrl}/organisations`, exampleOrganisationData)
+      cy.request('POST', `${baseUrl}/organisations`, organisationMockData)
         .then((response) => {
           expect(response.status).to.eq(201);
-          expect(response.body).to.deep.equal(exampleOrganisationData);
+          expect(response.body).to.deep.equal(organisationMockData);
         });
     });
   
     // READ
     it('should fetch the created organisation by ID', () => {
-      cy.request('GET', `${baseUrl}/organisations/${exampleOrganisationData.id}`)
+      cy.request('GET', `${baseUrl}/organisations/${organisationMockData.id}`)
         .then((response) => {
           expect(response.status).to.eq(200);
-          expect(response.body).to.deep.equal(exampleOrganisationData);
+          expect(response.body).to.deep.equal(organisationMockData);
         });
     });
   
     // UPDATE
     it('should update the organisation details', () => {
-      cy.request('PUT', `${baseUrl}/organisations/${exampleOrganisationData.id}`, updatedOrganisationData)
+      cy.request('PUT', `${baseUrl}/organisations/${organisationMockData.id}`, updatedOrganisationMockData)
         .then((response) => {
           expect(response.status).to.eq(200);
-          expect(response.body).to.deep.equal(updatedOrganisationData);
+          expect(response.body).to.deep.equal(updatedOrganisationMockData);
         });
   
       // Verify the update
-      cy.request('GET', `${baseUrl}/organisations/${exampleOrganisationData.id}`)
+      cy.request('GET', `${baseUrl}/organisations/${organisationMockData.id}`)
         .then((response) => {
           expect(response.status).to.eq(200);
-          expect(response.body).to.deep.equal(updatedOrganisationData);
+          expect(response.body).to.deep.equal(updatedOrganisationMockData);
         });
     });
   
     // DELETE
     it('should delete the created organisation', () => {
-      cy.request('DELETE', `${baseUrl}/organisations/${exampleOrganisationData.id}`)
+      cy.request('DELETE', `${baseUrl}/organisations/${organisationMockData.id}`)
         .then((response) => {
           expect(response.status).to.eq(204);
         });
@@ -96,7 +96,7 @@ describe('Organisation Management Integration Tests with Mocking', () => {
       // Verify the deletion
       cy.request({
         method: 'GET',
-        url: `${baseUrl}/organisations/${exampleOrganisationData.id}`,
+        url: `${baseUrl}/organisations/${organisationMockData.id}`,
         failOnStatusCode: false
       }).then((response) => {
         expect(response.status).to.eq(404);
