@@ -1,15 +1,16 @@
-// cypress/integration/materialManagement.spec.ts
-
 describe('Material Management Integration Tests with Mocking', () => {
-    const baseUrl = 'http://localhost:3000/';
+    const baseUrl = 'http://localhost:3000';
   
-    // Example data for creating material
-    const exampleMaterialData = {
-      id: '1',
-      title: 'Material 1',
-      description: 'A sample material',
-      url: 'http://example.com/material1',
-      courseId: 'CS101'
+    const pdfLectureMaterialMockData = {
+        _id: "60d21b4c67d0d8992e610c87",
+        type: true,
+        workspace_id: "60d21b4c67d0d8992e610c87",
+        lecturer_id: "49d21b1267d0d8c92e890c85",
+        title: "Lecture Material",
+        description: "Here is a Mock Pdf",
+        file_path: "string",
+        createdAt: "2023-01-01T00:00:00.000Z",
+        updatedAt: "2023-01-01T00:00:00.000Z"
     };
   
     const updatedMaterialData = {
