@@ -28,7 +28,7 @@ jobs:
         run: bash boot.sh
         working-directory: scripts
       - name: Run Frontend Tests
-        run: npm run cy:run-ct
+        run: npm run test
         working-directory: src/client
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4.0.1

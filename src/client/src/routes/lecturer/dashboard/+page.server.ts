@@ -105,7 +105,7 @@ export const actions = {
 			// Get the form field values
 			const title = formData.get('title');
 			const description = formData.get('description');
-			const workspace_id = formData.get('workspace');
+			const workspace_id = '1';
 			const lecturer_id = formData.get('userId');
 			let file_url;
 			const file = formData.get('file');
