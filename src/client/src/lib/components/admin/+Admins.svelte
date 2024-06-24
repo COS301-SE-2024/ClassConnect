@@ -1,11 +1,24 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { admins } from '../../stores/store';
-	import { getUsers } from '../../../services/users';
-	import { admChange } from '../../stores/store';
-	import AddAdmin from '$lib/components/modals/+AddAdmin.svelte';
-	import EditAdmin from '$lib/components/modals/+EditAdmin.svelte';
-	import Remove from '$lib/components/modals/+Remove.svelte';
+	import { admins, admChange } from '$lib/store';
+	import { getUsers } from '$lib/services/users';
+	import AddAdmin from '$lib/components/admin/modals/add/+AddAdmin.svelte';
+	import EditAdmin from '$lib/components/admin/modals/edit/+EditAdmin.svelte';
+	import Remove from '$lib/components/admin/modals/remove/+Remove.svelte';
+	import {
+		Table,
+		TableBody,
+		TableBodyCell,
+		TableBodyRow,
+		TableHead,
+		TableHeadCell,
+		Avatar,
+		Input,
+		Button
+	} from 'flowbite-svelte';
+	import { SearchOutline } from 'flowbite-svelte-icons';
+
+	let headers = ['Name', 'Admin Number', 'Email address', 'Edit'];
 
 	async function loadAdmins() {
 		try {
@@ -26,24 +39,6 @@
 </script>
 
 <section class="container mx-auto my-2 px-4">
-	<div class="flex items-center overflow-x-auto whitespace-nowrap py-4">
-		<a href="/" class="text-gray-600 dark:text-gray-200">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				class="h-5 w-5"
-				viewBox="0 0 20 20"
-				fill="currentColor"
-			>
-				<path
-					d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"
-				/>
-			</svg>
-		</a>
-
-		<span class="mx-5 text-gray-500 dark:text-gray-300"> / </span>
-
-		<a href="/admins" class="text-green-600 hover:underline dark:text-green-400"> Admins </a>
-	</div>
 	<div class="sm:flex sm:items-center sm:justify-between">
 		<div>
 			<div class="flex items-center gap-x-3">
@@ -51,120 +46,59 @@
 
 				<span
 					class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
-					>{$admins.length} {' '} lecturers</span
 				>
+					{$admins.length}
+					{' '} admins
+				</span>
 			</div>
 		</div>
 
-		<div class="relative mt-4 flex items-center md:mt-0">
-			<span class="absolute">
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke-width="1.5"
-					stroke="currentColor"
-					class="mx-3 h-5 w-5 text-gray-400 dark:text-gray-600"
-				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-					/>
-				</svg>
-			</span>
-
-			<input
-				type="text"
-				placeholder="Search"
-				class="block w-full rounded-lg border border-gray-200 bg-white py-1.5 pl-11 pr-5 text-gray-700 placeholder-gray-400/70 focus:border-green-400 focus:outline-none focus:ring focus:ring-green-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-green-300 md:w-80 rtl:pl-5 rtl:pr-11"
-			/>
+		<div class="relative mb-4 flex items-center md:mt-0">
+			<Input id="search" placeholder="Search" size="lg">
+				<SearchOutline slot="left" class="h-6 w-6 text-gray-500 dark:text-gray-400" />
+				<Button slot="right" size="sm" type="submit">Search</Button>
+			</Input>
 		</div>
 
-		<div class="mt-4 flex items-center gap-x-3">
+		<div class="mb-4 flex items-center gap-x-3">
 			<AddAdmin />
 		</div>
 	</div>
 
-	<div class="mt-6 flex flex-col">
-		<div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-			<div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-				<div class="overflow-hidden border border-gray-200 dark:border-gray-700 md:rounded-lg">
-					<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-						<thead class="bg-gray-50 dark:bg-gray-800">
-							<tr>
-								<th
-									scope="col"
-									class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
-								>
-									<div class="flex items-center gap-x-3">
-										<span>Name</span>
-									</div>
-								</th>
-
-								<th
-									scope="col"
-									class="px-12 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
-								>
-									<button class="flex items-center gap-x-2">
-										<span>Status</span>
-									</button>
-								</th>
-
-								<th
-									scope="col"
-									class="px-4 py-3.5 text-left text-sm font-normal text-gray-500 dark:text-gray-400 rtl:text-right"
-									>Email address</th
-								>
-
-								<th scope="col" class="relative px-4 py-3.5">
-									<span class="sr-only">Edit</span>
-								</th>
-							</tr>
-						</thead>
-						<tbody class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-900">
-							{#each $admins as admin}
-								<tr>
-									<td class="whitespace-nowrap px-4 py-4 text-sm font-medium text-gray-700">
-										<div class="inline-flex items-center gap-x-3">
-											<div class="flex items-center gap-x-2">
-												<img class="h-10 w-10 rounded-full object-cover" src={admin.image} alt="" />
-												<div>
-													<h2 class="font-medium text-gray-800 dark:text-white">
-														{admin.name}
-														{admin.surname}
-													</h2>
-													<p class="text-sm font-normal text-gray-600 dark:text-gray-400">
-														{admin.username}
-													</p>
-												</div>
-											</div>
-										</div>
-									</td>
-									<td class="whitespace-nowrap px-12 py-4 text-sm font-medium text-gray-700">
-										<div
-											class="inline-flex items-center gap-x-2 rounded-full bg-emerald-100/60 px-3 py-1 dark:bg-gray-800"
-										>
-											<span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
-
-											<h2 class="text-sm font-normal text-emerald-500">Online</h2>
-										</div>
-									</td>
-									<td class="whitespace-nowrap px-4 py-4 text-sm text-gray-500 dark:text-gray-300"
-										>{admin.email}</td
-									>
-									<td class="whitespace-nowrap px-4 py-4 text-sm">
-										<div class="flex items-center gap-x-6">
-											<Remove bind:id={admin._id} />
-											<EditAdmin bind:adminID={admin._id} />
-										</div>
-									</td>
-								</tr>
-							{/each}
-						</tbody>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
+	<Table class="my-2">
+		<TableHead>
+			{#each headers as header}
+				<TableHeadCell>{header}</TableHeadCell>
+			{/each}
+		</TableHead>
+		<TableBody tableBodyClass="divide-y">
+			{#each $admins as admin}
+				<TableBodyRow>
+					<TableBodyCell class="inline-flex items-center gap-x-3">
+						<div class="flex items-center gap-x-2">
+							<Avatar src={admin.image} />
+							<div>
+								<p class="text-lg text-gray-800 dark:text-white">
+									{admin.name}
+									{admin.surname}
+								</p>
+							</div>
+						</div></TableBodyCell
+					>
+					<TableBodyCell>
+						{admin.username}
+					</TableBodyCell>
+					<TableBodyCell>
+						{admin.email}
+					</TableBodyCell>
+					<TableBodyCell>
+						<div class="flex items-center gap-x-6">
+							<Remove id={admin._id} />
+							<EditAdmin adminID={admin._id} />
+						</div>
+					</TableBodyCell>
+				</TableBodyRow>
+			{/each}
+		</TableBody>
+	</Table>
 </section>

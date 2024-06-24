@@ -49,7 +49,7 @@ ClassConnect is an innovative educational platform that blends the traditional l
 <h2>🔧 Technologies</h2>
 <p">
     <a href="https://skillicons.dev">
-        <img src="https://skillicons.dev/icons?i=svelte,vite,tailwind,threejs,nestjs,bun,mongodb,vercel,figma,blender&perline=10" />
+        <img src="https://skillicons.dev/icons?i=aws,svelte,vite,tailwind,threejs,nestjs,bun,mongodb,figma,blender&perline=10" />
     </a>
 </p>
 
