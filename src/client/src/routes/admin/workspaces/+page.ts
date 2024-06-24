@@ -3,7 +3,6 @@ import axios from 'axios';
 
 export async function load() {
 	try {
-
 		const url = 'http://localhost:3000/workspaces/organisation/667921611c557b42b92e53b6';
 
 		const response = await axios.get(url);

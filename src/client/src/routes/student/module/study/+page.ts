@@ -5,27 +5,26 @@ import two from '$lib/files/study-notes-two.pdf';
 import three from '$lib/files/study-notes-three.pdf';
 
 export async function load() {
-
-	try{
+	try {
 		const url = 'http://localhost:3000/materials/workspace/1';
 
 		const response = await axios.get(url);
-	
+
 		const mats = [];
-	
-		for(let i =0 ; i<response.data.length;i++){
+
+		for (let i = 0; i < response.data.length; i++) {
 			const mat = {
 				title: response.data[i].title,
-				description:response.data[i].description,
-				link:response.data[i].file_path
-			}
-			mats.push(mat)
+				description: response.data[i].description,
+				link: response.data[i].file_path
+			};
+			mats.push(mat);
 		}
-	
+
 		return {
 			materials: mats
-		}
-	}catch(error){
+		};
+	} catch (error) {
 		return {
 			materials: [
 				{
