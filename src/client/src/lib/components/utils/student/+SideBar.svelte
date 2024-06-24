@@ -25,7 +25,7 @@
 			icon: IconWorld,
 			name: 'FAQ',
 			href: '/student/faq'
-		},
+		}
 	];
 </script>
 

@@ -37,7 +37,7 @@
 			icon: IconSandbox,
 			name: 'FAQ',
 			href: '/lecturer/faq'
-		},
+		}
 	];
 </script>
 
