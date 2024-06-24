@@ -32,7 +32,12 @@
 			icon: IconSandbox,
 			name: 'Sandbox',
 			href: '/lecturer/sandbox'
-		}
+		},
+		{
+			icon: IconSandbox,
+			name: 'FAQ',
+			href: '/lecturer/faq'
+		},
 	];
 </script>
 

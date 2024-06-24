@@ -20,7 +20,12 @@
 			icon: IconWorld,
 			name: 'Activities',
 			href: '/student/activities'
-		}
+		},
+		{
+			icon: IconWorld,
+			name: 'FAQ',
+			href: '/student/faq'
+		},
 	];
 </script>
 
