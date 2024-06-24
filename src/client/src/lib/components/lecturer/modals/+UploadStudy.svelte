@@ -33,10 +33,6 @@
 			{
 				name: 'Computer Networks',
 				id: '1'
-			},
-			{
-				name: 'Computer Graphics',
-				id: '2'
 			}
 		];
 	}

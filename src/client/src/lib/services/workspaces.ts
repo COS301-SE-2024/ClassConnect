@@ -65,7 +65,7 @@ export async function deleteWorkspace(id: string): Promise<string> {
 
 export async function set_workspaces() {
 	try {
-		const url = 'http://localhost:3000/workspaces/organisation/66782cb5370486e47cd2fe0b';
+		const url = 'http://localhost:3000/workspaces/organisation/667921611c557b42b92e53b6';
 
 		const response = await axios.get(url);
 
