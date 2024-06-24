@@ -28,7 +28,7 @@ export class UserController {
 
   @Get()
   async getUsers(@Query() query: Partial<CreateUserDto>) {
-    return await this.userService.findMany({...query});
+    return await this.userService.findMany({ ...query });
   }
 
   @Put(':id')

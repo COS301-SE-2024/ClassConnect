@@ -1,6 +1,6 @@
 describe('Activities page', () => {
 	it('displays the heading', () => {
-		cy.visit('http://localhost:5173/activities');
+		cy.visit('http://localhost:5173/admin/activities');
 		cy.get('h1').contains('Activities').should('be.visible');
 	});
 
@@ -15,7 +15,7 @@ describe('Activities page', () => {
 
 	activities.forEach((activity) => {
 		it(`displays the activity: ${activity}`, () => {
-			cy.visit('http://localhost:5173/activities');
+			cy.visit('http://localhost:5173/admin/activities');
 			cy.contains(activity).should('be.visible');
 		});
 	});
