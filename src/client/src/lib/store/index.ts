@@ -42,3 +42,5 @@ export const userInfo = writable<any>({
 	organisation: '665c341781a011b727589f4c',
 	workspaces: []
 });
+
+export const screenShareEnabled = writable(false);

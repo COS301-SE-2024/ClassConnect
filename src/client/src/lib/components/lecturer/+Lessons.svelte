@@ -78,7 +78,7 @@
 				<TableBodyCell>15 June</TableBodyCell>
 				<TableBodyCell>09:30</TableBodyCell>
 				<TableBodyCell>
-					<Button size="xs" on:click={() => goto('lessons/1234')}>Join</Button>
+					<Button size="xs" on:click={() => goto('classroom/1234')}>Join</Button>
 				</TableBodyCell>
 			</TableBodyRow>
 		</TableBody>
