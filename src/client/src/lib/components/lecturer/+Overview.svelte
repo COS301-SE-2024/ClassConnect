@@ -1,21 +1,33 @@
 <script>
+	export let files;
 	import FilesCard from '$lib/components/utils/lecturer/+FilesCard.svelte';
 	import ObjectCard from '$lib/components/utils/lecturer/+ObjectCard.svelte';
 
 	const stats = [
 		{
 			title: 'Students',
-			stat: '20'
+			stat: '2'
 		},
 		{
 			title: 'Lectures today',
-			stat: '3'
+			stat: '1'
 		},
 		{
 			title: 'Study Material',
-			stat: '4'
+			stat: files.length
 		}
 	];
+
+	let study_files = [];
+	let object_files = [];
+
+	files.forEach((file) => {
+		if (file.type === 'pdf') {
+			study_files.push(file);
+		} else {
+			object_files.push(file);
+		}
+	});
 </script>
 
 <div class="grid grid-cols-1 gap-5 bg-gray-100 p-2 sm:grid-cols-2 sm:p-5 lg:grid-cols-3">
@@ -42,6 +54,6 @@
 </div>
 
 <div class="grid grid-cols-1 gap-3 bg-gray-100 p-2 sm:grid-cols-1 sm:p-10 lg:grid-cols-2">
-	<FilesCard />
-	<ObjectCard />
+	<FilesCard files={study_files} />
+	<ObjectCard files={object_files} />
 </div>

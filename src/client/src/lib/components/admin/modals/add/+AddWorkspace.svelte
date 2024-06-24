@@ -16,10 +16,12 @@
 		if (organisationId !== 'non-existent') {
 			formData.append('organisationId', organisationId);
 			formData.append('createdBy', createdBy);
+
 			const response = await fetch('/admin/workspaces?/add', {
 				method: 'POST',
 				body: formData
 			});
+
 			console.log(response);
 			formModal = false;
 		} else {
@@ -51,11 +53,11 @@
 	<form class="flex flex-col space-y-6" on:submit={handleSubmit}>
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Create New Workspace</h3>
 
-		<Label for="org_name" class="mb-2 mt-2 space-y-2">Workspace Name</Label>
+		<Label for="work_name" class="mb-2 mt-2 space-y-2">Workspace Name</Label>
 		<Input
 			type="text"
-			id="org_name"
-			name="org_name"
+			id="work_name"
+			name="work_name"
 			placeholder="Example University"
 			size="md"
 			required

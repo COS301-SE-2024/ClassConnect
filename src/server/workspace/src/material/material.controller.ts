@@ -29,6 +29,7 @@ export class MaterialController {
     return this.materialService.findOne(id);
   }
 
+  //this returns all material based off a specific workspace
   @Get('workspace/:workspaceId')
   async findAllByWorkspaceId(
     @Param('workspaceId') workspaceId: string,

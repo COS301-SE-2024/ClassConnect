@@ -8,8 +8,9 @@
 	import { signUp } from '$lib/services/auth';
 	import { user_details } from '$lib/store';
 
-	function storeAccessToken(token: string): void {
+	function storeAccessToken(token: string, id: string): void {
 		localStorage.setItem('accessToken', token);
+		localStorage.setItem('userID', id);
 	}
 
 	async function handleSubmit(event: SubmitEvent): Promise<void> {
@@ -39,10 +40,12 @@
 
 			console.log('Response:', response);
 
-			if (response && response.accessToken) {
-				storeAccessToken(response.accessToken);
+			if (response && response._id) {
+				storeAccessToken(response.accessToken, response._id);
+				goto('/' + response.role);
+			} else {
+				goto('/auth');
 			}
-			goto('/student');
 		} catch (error) {
 			console.error('Sign-up error:', error);
 			alert('Sign-up failed');

@@ -39,71 +39,71 @@ describe('ScheduleController', () => {
     expect(controller).toBeDefined();
   });
 
-//   describe('create', () => {
-//     it('should create a new schedule', async () => {
-//       const createDto: CreateScheduleDto = {
-//         date: '2024-06-24T10:00:00Z',
-//         workspace_id: 'workspace-id-1',
-//         lecturer_id: 'lecturer-id-1',
-//         description: 'Sample description',
-//         topic: 'Sample topic',
-//       };
+  //   describe('create', () => {
+  //     it('should create a new schedule', async () => {
+  //       const createDto: CreateScheduleDto = {
+  //         date: '2024-06-24T10:00:00Z',
+  //         workspace_id: 'workspace-id-1',
+  //         lecturer_id: 'lecturer-id-1',
+  //         description: 'Sample description',
+  //         topic: 'Sample topic',
+  //       };
 
-//       const createdSchedule: Schedule = {
-//         _id: '6037bce2df95b73e28bc7227',
-//         ...createDto,
-//       };
+  //       const createdSchedule: Schedule = {
+  //         _id: '6037bce2df95b73e28bc7227',
+  //         ...createDto,
+  //       };
 
-//       jest.spyOn(scheduleService, 'create').mockResolvedValue(createdSchedule);
+  //       jest.spyOn(scheduleService, 'create').mockResolvedValue(createdSchedule);
 
-//       const result = await controller.create(createDto);
+  //       const result = await controller.create(createDto);
 
-//       expect(result).toEqual(createdSchedule);
-//     });
-//   });
+  //       expect(result).toEqual(createdSchedule);
+  //     });
+  //   });
 
-describe('findOne', () => {
-  it('should call the findOne method of the service', async () => {
-    const id = 'test-id';
+  describe('findOne', () => {
+    it('should call the findOne method of the service', async () => {
+      const id = 'test-id';
 
-    await controller.findOne(id);
+      await controller.findOne(id);
 
-    expect(service.findOne).toHaveBeenCalledWith(id);
+      expect(service.findOne).toHaveBeenCalledWith(id);
+    });
   });
-});
 
-describe('findAllByWorkspaceId', () => {
-  it('should call the findAllByWorkspaceId method of the service', async () => {
-    const workspaceId = 'workspace-id-1';
+  describe('findAllByWorkspaceId', () => {
+    it('should call the findAllByWorkspaceId method of the service', async () => {
+      const workspaceId = 'workspace-id-1';
 
-    await controller.findAllByWorkspaceId(workspaceId);
+      await controller.findAllByWorkspaceId(workspaceId);
 
-    expect(service.findAllByWorkspaceId).toHaveBeenCalledWith(workspaceId);
+      expect(service.findAllByWorkspaceId).toHaveBeenCalledWith(workspaceId);
+    });
   });
-});
 
-describe('update', () => {
-  it('should call the update method of the service', async () => {
-    const id = 'test-id';
-    const updateScheduleDto: UpdateScheduleDto = {
-      topic: 'Updated Material',
-      description: 'Updated Description',
-      date: '/path/to/updated-file.pdf',
-    };
+  describe('update', () => {
+    it('should call the update method of the service', async () => {
+      const id = 'test-id';
+      const updateScheduleDto: UpdateScheduleDto = {
+        topic: 'Updated Material',
+        description: 'Updated Description',
+        date: '/path/to/updated-file.pdf',
+      };
 
-    await controller.update(id, updateScheduleDto);
+      await controller.update(id, updateScheduleDto);
 
-    expect(service.update).toHaveBeenCalledWith(id, updateScheduleDto);
+      expect(service.update).toHaveBeenCalledWith(id, updateScheduleDto);
+    });
   });
-});
 
-describe('delete', () => {
-  it('should call the delete method of the service', async () => {
-    const id = 'test-id';
+  describe('delete', () => {
+    it('should call the delete method of the service', async () => {
+      const id = 'test-id';
 
-    await controller.delete(id);
+      await controller.delete(id);
 
-    expect(service.delete).toHaveBeenCalledWith(id);
+      expect(service.delete).toHaveBeenCalledWith(id);
+    });
   });
-});
 });

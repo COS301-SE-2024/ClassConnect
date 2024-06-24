@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { wrkspcs } from '$lib/store';
 
 // create workspace POST
 export async function workspaces(
@@ -60,4 +61,57 @@ export async function deleteWorkspace(id: string): Promise<string> {
 	} catch (error) {
 		throw new Error('Delete Workspace Failed');
 	}
+}
+
+export async function set_workspaces() {
+	try {
+		const url = 'http://localhost:3000/workspaces/organisation/66782cb5370486e47cd2fe0b';
+
+		const response = await axios.get(url);
+
+		// Handle the response data
+		const res_data = response.data;
+
+		if (res_data) {
+			if (res_data.length === 0) {
+				wrkspcs.set([]);
+				return {
+					workspaces: []
+				};
+			} else {
+				const wkspc = [];
+				for (let i = 0; i < res_data.length; i++) {
+					const new_work = {
+						name: res_data[i].name,
+						id: res_data[i]._id
+					};
+					wkspc.push(new_work);
+				}
+				wrkspcs.set(wkspc);
+				return {
+					workspaces: wkspc
+				};
+			}
+		}
+	} catch (error) {
+		// Handle any errors
+		console.error('Error making the GET request:', error);
+	}
+
+	return {
+		workspaces: [
+			{
+				name: 'Computer Networks'
+			},
+			{
+				name: 'Artificial Intelligence'
+			},
+			{
+				name: 'Programming Languages'
+			},
+			{
+				name: 'Computer Graphics'
+			}
+		]
+	};
 }

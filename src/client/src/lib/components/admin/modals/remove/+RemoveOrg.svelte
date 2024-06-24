@@ -17,7 +17,7 @@
 			localStorage.removeItem('organisationID');
 
 			organisationName.set('');
-			goto('/organisation');
+			goto('/admin/organisation');
 		} catch (error) {
 			console.error('Delete organization error:', error);
 		}

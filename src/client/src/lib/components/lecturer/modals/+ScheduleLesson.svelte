@@ -1,19 +1,47 @@
 <script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
+	import { schedules } from '$lib/services/schedule';
+	import { lessons } from '$lib/store';
+	import { onMount } from 'svelte';
 
 	let formModal = false;
+	let userID = '';
+	let workspaceID = 'abcdefg';
+
+	//Function to store LessonScheduleID
+	function storeLessonID(id: string): void {
+		localStorage.setItem('scheduleID', id);
+		console.log('scheduleID', id);
+	}
+
+	//this wil retrieve the lectureID and workspace ID from local storage
+	onMount(() => {
+		userID = localStorage.getItem('userID') || 'non-existent';
+		//localStorage.setItem('workspaceID', workspaceID);
+	});
 
 	async function handleSubmit(event: Event) {
+		console.log('Schedule Lesson is being handled');
 		event.preventDefault();
 
-		/*const formData = new FormData(event.target as HTMLFormElement);
+		const formData = new FormData(event.target as HTMLFormElement);
 
 		const topic = formData.get('topic')?.toString() ?? '';
+		console.log('This is topic:', topic);
 		const date = formData.get('date')?.toString() ?? '';
-		const time = formData.get('time')?.toString() ?? '';*/
+		console.log('This is date:', date);
+		const time = formData.get('time')?.toString() ?? '';
+		console.log('This is time:', time);
 
 		try {
-			// Make request
+			const response = await schedules(topic, userID, workspaceID, date);
+
+			console.log('Response:', response);
+
+			if (response) {
+				storeLessonID(response._id);
+				lessons.update((currentLessons) => [...currentLessons, { topic, date, time }]);
+			}
 		} catch (error) {
 			console.error('Schedule Lesson Error:', error);
 		}
@@ -48,7 +76,7 @@
 		<Input type="text" id="topic" name="topic" placeholder="Mathematics" size="md" required />
 
 		<Label for="date" class="mb-2 mt-2 space-y-2">Date</Label>
-		<Input type="date" id="date" name="date" placeholder="16 June" size="md" required />
+		<Input type="date" id="date" name="date" placeholder="23 June" size="md" required />
 
 		<Label for="time" class="mb-2 mt-2 space-y-2">Time</Label>
 		<Input type="time" id="time" name="time" placeholder="12:00" size="md" required />
