@@ -10,6 +10,8 @@
 
 ## 📄 Description
 
+hi from the demo
+
 ClassConnect is an innovative educational platform that blends the traditional learning
 hub with a 3D learning environment. Its primary objective is to leverage cutting-edge
 and emerging 3D technologies to enrich learning experiences. This is achieved by
