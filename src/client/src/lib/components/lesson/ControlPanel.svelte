@@ -2,23 +2,30 @@
 	import { type Call } from '@stream-io/video-client';
 	import { goto } from '$app/navigation';
 	import { Button } from 'flowbite-svelte';
-	import { MicrophoneOutline, MicrophoneSlashOutline, VideoCameraOutline, ArrowUpFromBracketOutline, PhoneHangupOutline } from 'flowbite-svelte-icons';
+	import {
+		MicrophoneOutline,
+		MicrophoneSlashOutline,
+		VideoCameraOutline,
+		ArrowUpFromBracketOutline,
+		PhoneHangupOutline
+	} from 'flowbite-svelte-icons';
 	import { writable } from 'svelte/store';
-	import {screenShareEnabled} from '$lib/store/index'
+	import { screenShareEnabled } from '$lib/store/index';
 
 	export let call: Call;
 
 	const microphoneEnabled = writable(false);
 	const cameraEnabled = writable(false);
-	
-	let screenShare
-	screenShareEnabled.subscribe((value:boolean) => {
-		screenShare = value
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	let screenShare;
+	screenShareEnabled.subscribe((value: boolean) => {
+		screenShare = value;
 	});
 
 	function toggleMicrophone() {
 		call.microphone.toggle();
-		microphoneEnabled.update(enabled => !enabled);
+		microphoneEnabled.update((enabled) => !enabled);
 	}
 
 	function toggleCamera() {
@@ -27,7 +34,7 @@
 
 	function toggleScreenShare() {
 		call.screenShare.toggle();
-		screenShareEnabled.update(enabled => !enabled);
+		screenShareEnabled.update((enabled) => !enabled);
 	}
 
 	function endCall() {
@@ -36,40 +43,65 @@
 	}
 </script>
 
-<div class="flex justify-around items-center h-full bg-gray-300 dark:bg-gray-800 p-4">
-
-		{#if $microphoneEnabled}
-		<Button pill={true} on:click={toggleMicrophone} class="bg-green-500 text-white hover:bg-green-700">
+<div class="flex h-full items-center justify-around bg-gray-300 p-4 dark:bg-gray-800">
+	{#if $microphoneEnabled}
+		<Button
+			pill={true}
+			on:click={toggleMicrophone}
+			class="bg-green-500 text-white hover:bg-green-700"
+		>
 			<MicrophoneOutline class="h-6 w-6" />
 		</Button>
-		{:else}
-		<Button pill={true} on:click={toggleMicrophone} class="bg-green-500 text-white hover:bg-green-700">
+	{:else}
+		<Button
+			pill={true}
+			on:click={toggleMicrophone}
+			class="bg-green-500 text-white hover:bg-green-700"
+		>
 			<MicrophoneSlashOutline class="h-6 w-6" />
 		</Button>
-		{/if}
-
-
+	{/if}
 
 	{#if $cameraEnabled}
-		<Button pill={true} on:click={toggleCamera} class="bg-green-500 dark:bg-green-500 dark:hover:bg-green-700 text-white hover:bg-green-700">
+		<Button
+			pill={true}
+			on:click={toggleCamera}
+			class="bg-green-500 text-white hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-700"
+		>
 			<VideoCameraOutline class="h-6 w-6" />
 		</Button>
 	{:else}
-		<Button pill={true} on:click={toggleCamera} class="bg-gray-500  text-white dark:hover:bg-gray-700  hover:bg-gray-700  dark:bg-gray-500">
+		<Button
+			pill={true}
+			on:click={toggleCamera}
+			class="bg-gray-500  text-white hover:bg-gray-700  dark:bg-gray-500  dark:hover:bg-gray-700"
+		>
 			<VideoCameraOutline class="h-6 w-6" />
 		</Button>
 	{/if}
-	
+
 	{#if $screenShareEnabled}
-	<Button pill={true} on:click={toggleScreenShare} class="bg-green-500 text-white hover:bg-green-700">
-		<ArrowUpFromBracketOutline class="h-6 w-6" />
-	</Button>
+		<Button
+			pill={true}
+			on:click={toggleScreenShare}
+			class="bg-green-500 text-white hover:bg-green-700"
+		>
+			<ArrowUpFromBracketOutline class="h-6 w-6" />
+		</Button>
 	{:else}
-	<Button pill={true} on:click={toggleScreenShare} class="bg-gray-500 text-white hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-700">
-		<ArrowUpFromBracketOutline class="h-6 w-6" />
-	</Button>
+		<Button
+			pill={true}
+			on:click={toggleScreenShare}
+			class="bg-gray-500 text-white hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-700"
+		>
+			<ArrowUpFromBracketOutline class="h-6 w-6" />
+		</Button>
 	{/if}
-	<Button pill={true} on:click={endCall} class="bg-red-500 text-white dark:bg-red-500 hover:bg-red-700 dark:hover:bg-red-700">
+	<Button
+		pill={true}
+		on:click={endCall}
+		class="bg-red-500 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-700"
+	>
 		<PhoneHangupOutline class="h-6 w-6" />
 	</Button>
 </div>
