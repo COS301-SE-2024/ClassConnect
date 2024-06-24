@@ -19,16 +19,21 @@ export class AuthService {
 
     if (findUser && (await bcrypt.compare(password, findUser.password))) {
       const user = {
-        sub: findUser._id,
-        role: findUser.role,
+        id: findUser._id,
+        name: findUser.name,
+        surname: findUser.surname,
         username: findUser.username,
+        image: findUser.image,
+        role: findUser.role,
+        workspaces: findUser.workspaces,
+        organisation: findUser.organisation,
         accessToken: this.jwtService.sign({
           sub: findUser._id,
           role: findUser.role,
           username: findUser.username,
         }),
       };
-      
+
       return user;
     } else {
       return null;

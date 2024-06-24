@@ -1,20 +1,23 @@
 <script lang="ts">
 	import Apple from '$lib/images/apple.svg';
 	import Google from '$lib/images/google.svg';
+	import { getUser } from '$lib/services/users';
 	import { goto } from '$app/navigation';
 	import { Input, Label, Button, A } from 'flowbite-svelte';
 	import { signIn } from '$lib/services/auth';
 	import { user_details } from '$lib/store';
+	import { orgID } from '$lib/store';
 
 	import '@fontsource/roboto';
 
 	// Function to store the access token in local storage
-	function storeAccessToken(token: string, id: string): void {
+	function storeAccessToken(token: string, id: string, organisationID: any): void {
 		localStorage.setItem('accessToken', token);
 		localStorage.setItem('userID', id);
-		console.log('This is the ID', id);
-
-		console.log('User ID stored:', localStorage.getItem('userID'));
+		if (organisationID) {
+			localStorage.setItem('organisationID', organisationID);
+			orgID.set(organisationID);
+		}
 	}
 
 	// Function to handle form submission
@@ -31,17 +34,26 @@
 		// Send a request to your server-side action
 		try {
 			const response = await signIn(username, password);
-			user_details.set(response);
-
-			const details = $user_details;
-			console.log(details);
 
 			console.log('Response:', response);
 
-			if (response && response.accessToken) {
-				storeAccessToken(response.accessToken, response.sub);
+			if (response.id && response.role && response.accessToken) {
+				const user_data = await getUser(response.id);
+
+				user_details.set(user_data);
+
+				console.log('User Details:', response);
+
+				storeAccessToken(response.accessToken, user_data._id, user_data.organisation);
+
+				const redirect = '/' + response.role + '/';
+
+				console.log('Redirecting to:', redirect);
+
+				goto('/' + response.role + '/');
+			} else {
+				goto('/auth/signin');
 			}
-			goto('/student');
 		} catch (error) {
 			console.error('Sign-in error:', error);
 			alert('Sign-in failed');

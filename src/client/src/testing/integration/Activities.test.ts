@@ -1,6 +1,6 @@
 import { render } from '@testing-library/svelte';
 import { expect, test } from 'vitest';
-import ActivityTimeline from '../lib/components/universal/+Activities.svelte';
+import ActivityTimeline from '$lib/components/universal/+Activities.svelte';
 
 test('renders activities correctly', () => {
 	const { getByText } = render(ActivityTimeline);

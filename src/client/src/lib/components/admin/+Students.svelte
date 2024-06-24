@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { students, stuChange } from '$lib/store';
 	import { getUsers } from '$lib/services/users';
+	import AddToWorkSpace from '$lib/components/admin/modals/add/+AddToWorkSpace.svelte';
 	import AddStudent from '$lib/components/admin/modals/add/+AddStudent.svelte';
 	import EditStudent from '$lib/components/admin/modals/edit/+EditStudent.svelte';
 	import Remove from '$lib/components/admin/modals/remove/+Remove.svelte';
@@ -92,6 +93,7 @@
 					<TableBodyCell>
 						<div class="flex items-center gap-x-6">
 							<Remove id={student._id} />
+							<AddToWorkSpace id={student._id} />
 							<EditStudent studentID={student._id} />
 						</div>
 					</TableBodyCell>

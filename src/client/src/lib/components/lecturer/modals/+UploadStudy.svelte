@@ -1,15 +1,17 @@
 <script>
-	import { Button, Modal, Label, Input, Fileupload } from 'flowbite-svelte';
+	import { Button, Modal, Label, Input, Fileupload, Radio } from 'flowbite-svelte';
 	let formModal = false;
 
 	async function handleUpload(event) {
-		event.preventDefault();
 		console.log('Upload is being handled');
 
+		const userId = localStorage.getItem('userID') || 'non-existent';
+
 		const formData = new FormData(event.currentTarget);
-		for (const [key, value] of formData.entries()) {
-			console.log(key, value);
-		}
+
+		formData.append('userId', userId);
+
+		console.log(formData);
 
 		const response = await fetch('/lecturer/dashboard?/upload', {
 			method: 'POST',
@@ -18,9 +20,25 @@
 		console.log(response);
 		formModal = false;
 	}
+
+	let workspaces = [];
+
+	function openModal() {
+		formModal = true;
+		//TODO: fetch all the workspaces the user is a part of then get their names using the get workspaces
+		const userId = localStorage.getItem('userID') || 'non-existent';
+		console.log(userId);
+
+		workspaces = [
+			{
+				name: 'Computer Networks',
+				id: '1'
+			}
+		];
+	}
 </script>
 
-<Button on:click={() => (formModal = true)}>Upload</Button>
+<Button on:click={openModal}>Upload</Button>
 
 <Modal bind:open={formModal} size="xs" autoclose={false} class="w-full">
 	<form class="flex flex-col space-y-6" on:submit={handleUpload}>
@@ -32,6 +50,12 @@
 		<Label class="space-y-2" for="description">
 			<span>Description</span>
 			<Input type="text" placeholder="description" size="lg" id="description" name="description" />
+		</Label>
+		<Label class="space-y-2" for="workspace">
+			<span>Workspace</span>
+			{#each workspaces as workspace}
+				<Radio name="workspace" value={workspace.id}>{workspace.name}</Radio>
+			{/each}
 		</Label>
 		<Label class="py-2" for="file">Upload File</Label>
 		<Fileupload id="file" size="lg" name="file" />

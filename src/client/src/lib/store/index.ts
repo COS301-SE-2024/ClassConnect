@@ -12,10 +12,16 @@ export const lessons = writable<any>([
 ]);
 
 export const organisationName = writable('Organisation');
+//export const materialTitle = writable('Material');
+export const materialsInfo = writable<any[]>([]);
 
 export const lecChange = writable('change');
 export const stuChange = writable('change');
 export const admChange = writable('change');
+export const workChange = writable('change');
+
+export const wrkspcs = writable<any>([]);
+export const orgID = writable('');
 
 export const user = writable('eugene');
 export const email = writable('eugene.mpande@tuks.co.za');
@@ -23,6 +29,7 @@ export const file = writable('');
 export const module = writable('');
 
 export const user_details = writable({});
+export const module_details = writable({});
 export const username = 'e241198014';
 
 export const userInfo = writable<any>({
