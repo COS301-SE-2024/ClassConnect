@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { lecturers, lecChange } from '$lib/stores/store';
-	import { getUsers } from '../../../services/users';
-	import AddLecturer from '$lib/components/modals/+AddLecturer.svelte';
-	import EditLecturer from '$lib/components/modals/+EditLecturer.svelte';
-	import Remove from '$lib/components/modals/+Remove.svelte';
+	import { lecturers, lecChange } from '$lib/store';
+	import { getUsers } from '$lib/services/users';
+	import AddToWorkSpace from '$lib/components/admin/modals/add/+AddToWorkSpace.svelte';
+	import AddLecturer from '$lib/components/admin/modals/add/+AddLecturer.svelte';
+	import EditLecturer from '$lib/components/admin/modals/edit/+EditLecturer.svelte';
+	import Remove from '$lib/components/admin/modals/remove/+Remove.svelte';
 	import {
 		Table,
 		TableBody,
@@ -13,8 +14,6 @@
 		TableHead,
 		TableHeadCell,
 		Avatar,
-		Breadcrumb,
-		BreadcrumbItem,
 		Input,
 		Button
 	} from 'flowbite-svelte';
@@ -41,13 +40,6 @@
 </script>
 
 <section class="container mx-auto my-2 px-4">
-	<div class="flex items-center overflow-x-auto whitespace-nowrap py-4">
-		<Breadcrumb aria-label="Default breadcrumb example">
-			<BreadcrumbItem href="/" home>Home</BreadcrumbItem>
-			<BreadcrumbItem href="/lecturers">Lecturers</BreadcrumbItem>
-		</Breadcrumb>
-	</div>
-
 	<div class="sm:flex sm:items-center sm:justify-between">
 		<div>
 			<div class="flex items-center gap-x-3">
@@ -103,6 +95,7 @@
 					<TableBodyCell>
 						<div class="flex items-center gap-x-6">
 							<Remove id={lecturer._id} />
+							<AddToWorkSpace id={lecturer._id} />
 							<EditLecturer lecturerID={lecturer._id} />
 						</div>
 					</TableBodyCell>
