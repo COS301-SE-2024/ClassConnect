@@ -42,7 +42,7 @@ ClassConnect is an innovative educational platform that blends the traditional l
   </summary>
 
   - [Demo 1 Video](https://drive.google.com/file/d/1AJAgftIAKCBaGVa4KQGHvoX01R3dvBUb/view?usp=sharing)
-  - [Demo 2 Video]()
+  - [Demo 2 Video](https://drive.google.com/file/d/1ghBQ9XuCCzSb2AlCx-fG7FqwTJvoJDyO/view?usp=sharing)
 </details>
 
 
