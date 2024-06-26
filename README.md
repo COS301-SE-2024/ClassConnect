@@ -20,42 +20,54 @@ ClassConnect is an innovative educational platform that blends the traditional l
   </summary>
 
   - [SRS Document V1](https://drive.google.com/file/d/1_EG2l7GWTb_-C0pbum3-EAEQ1Ve1242p/view?usp=sharing)
-  - [SRS Document V2]()
+  - [SRS Document V2](https://drive.google.com/file/d/1EZuMLH_4-fGVMaonVHUkiSljRxUDW1Yo/view?usp=sharing)
 </details>
 
 <details>
   <summary>
-    Additional Documentation
+    Architecture Requirements
   </summary>
 
-  - [Coding Standards]()
-  - [Testing Policy]()
-  - [Architecture Document]()
-  - [Contributions]()
+  - [Architecture Requirements V1](https://drive.google.com/file/d/1U9p_uGadIggmrLtXrF3WIuLZL7QBzgXq/view?usp=drive_link)
 </details>
+
+For any additional documentation please have look at our [Wiki](https://github.com/COS301-SE-2024/ClassConnect/wiki)
 
 <h2>🎬 Demo Videos</h2>
 
 <details>
   <summary>
-    Demo Videos
+    Videos
   </summary>
 
   - [Demo 1 Video](https://drive.google.com/file/d/1AJAgftIAKCBaGVa4KQGHvoX01R3dvBUb/view?usp=sharing)
   - [Demo 2 Video](https://drive.google.com/file/d/1ghBQ9XuCCzSb2AlCx-fG7FqwTJvoJDyO/view?usp=sharing)
 </details>
 
+<h2>💽 Demo Drives</h2>
+
+<details>
+  <summary>
+    Drives
+  </summary>
+
+  - [Demo 1 Drive](https://drive.google.com/drive/folders/1-Xo9FraJS8LYL13yk2PoG1i2sIW5E1rP?usp=drive_link)
+  - [Demo 2 Drive](https://drive.google.com/drive/folders/1vPqquuWAz_eJKksglXVZcm3WIr7eJcvr?usp=drive_link)
+</details>
+
 
 <h2>🔧 Technologies</h2>
 <p">
     <a href="https://skillicons.dev">
-        <img src="https://skillicons.dev/icons?i=aws,svelte,vite,tailwind,threejs,nestjs,bun,mongodb,figma,blender&perline=10" />
+        <img src="https://skillicons.dev/icons?i=svelte,vite,tailwind,threejs,nestjs,bun,mongodb,aws,figma,blender&perline=10" />
     </a>
 </p>
 
 <h2>📋 Project Management</h2>
 
-[Project Board](https://github.com/orgs/COS301-SE-2024/projects/80)
+- [Project Board](https://github.com/orgs/COS301-SE-2024/projects/80)
+
+- [Roadmap](https://github.com/orgs/COS301-SE-2024/projects/80/views/6)
 
 <h2>👥 Team Members</h2>
 
@@ -69,8 +81,9 @@ ClassConnect is an innovative educational platform that blends the traditional l
 
 <h2>✉️ Contact</h2>
 
-### phantomworks.capstone@gmail.com
-
-<div>
-  <img src="./resources/images/phantom-works-logo.jpg" alt="phantom-works logo"  height="300" width="300"/>
+<div align="center">
+  <h3>phantomworks.capstone@gmail.com</h3>
+  <br>
+  <img src="./resources/images/phantom-works-logo.jpg" alt="phantom-works logo" height="300" width="300" />
 </div>
+
