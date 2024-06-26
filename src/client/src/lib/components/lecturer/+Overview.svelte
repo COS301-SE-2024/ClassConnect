@@ -1,7 +1,7 @@
 <script>
 	export let files;
-	import FilesCard from '$lib/components/utils/lecturer/+FilesCard.svelte';
-	import ObjectCard from '$lib/components/utils/lecturer/+ObjectCard.svelte';
+	import FilesCard from '$lib/components/lecturer/+FilesCard.svelte';
+	import ObjectCard from '$lib/components/lecturer/+ObjectCard.svelte';
 
 	const stats = [
 		{

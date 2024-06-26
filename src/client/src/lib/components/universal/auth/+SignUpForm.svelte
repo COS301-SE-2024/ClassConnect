@@ -90,23 +90,6 @@
 		</form>
 
 		<div class="p-2">
-			<div class="flex items-center">
-				<div class="flex-1 border-t border-black"></div>
-				<span class="px-2 text-black">Or</span>
-				<div class="flex-1 border-t border-black"></div>
-			</div>
-
-			<div class="flex items-center">
-				<Button class="m-2 border-[1px] border-gray-700 bg-white text-black hover:bg-gray-100">
-					<img alt="Apple Logo" class="me-2 h-5 w-5" src={Apple} />
-					Sign Up with Apple
-				</Button>
-				<Button class="m-2 border-[1px] border-gray-700 bg-white text-black hover:bg-gray-100">
-					<img alt="Google Logo" class="me-2 h-5 w-5" src={Google} />
-					Sign Up with Google
-				</Button>
-			</div>
-
 			<div class="text-center">
 				<p>
 					Already have an account?{' '}

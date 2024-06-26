@@ -2,8 +2,8 @@
 	/** @type {import('./$types').PageData} */
 	export let data;
 
-	import SideBar from '$lib/components/utils/lecturer/+SideBar.svelte';
-	import TopBar from '$lib/components/utils/+TopBar.svelte';
+	import SideBar from '$lib/components/lecturer/+SideBar.svelte';
+	import TopBar from '$lib/components/universal/+TopBar.svelte';
 	import Dashboard from '$lib/components/lecturer/+Dashboard.svelte';
 </script>
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let modules;
-	import HomeCard from '$lib/components/utils/student/+HomeCard.svelte';
+	import HomeCard from '$lib/components/student/+HomeCard.svelte';
 </script>
 
 <div class="p-4">

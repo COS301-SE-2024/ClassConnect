@@ -39,7 +39,7 @@
 
 	function endCall() {
 		call.leave();
-		goto('/lessons');
+		goto('/lecturer/classroom');
 	}
 </script>
 

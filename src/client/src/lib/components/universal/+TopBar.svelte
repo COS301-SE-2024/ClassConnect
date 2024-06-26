@@ -8,7 +8,7 @@
 		DropdownHeader,
 		DropdownDivider
 	} from 'flowbite-svelte';
-	import BreadCrumbs from '$lib/components/utils/universal/+Breadcrumbs.svelte';
+	import BreadCrumbs from '$lib/components/universal/+Breadcrumbs.svelte';
 </script>
 
 <Navbar>

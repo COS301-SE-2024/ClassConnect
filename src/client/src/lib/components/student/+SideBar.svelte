@@ -1,42 +1,31 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import IconHelpHexagon from '@tabler/icons-svelte/IconHelpHexagon.svelte';
 	import Logo from '$lib/images/class-connect-logo.png';
+	import IconHome from '@tabler/icons-svelte/IconHome.svelte';
+	import IconChartHistogram from '@tabler/icons-svelte/IconChartHistogram.svelte';
 	import IconWorld from '@tabler/icons-svelte/IconWorld.svelte';
-	import IconSpeakerphone from '@tabler/icons-svelte/IconSpeakerphone.svelte';
-	import IconSandbox from '@tabler/icons-svelte/IconSandbox.svelte';
-	import IconSchool from '@tabler/icons-svelte/IconSchool.svelte';
-	import IconDashboard from '@tabler/icons-svelte/IconDashboard.svelte';
 
 	const nav_links = [
 		{
-			icon: IconSpeakerphone,
-			name: 'Announcements',
-			href: '/lecturer'
+			icon: IconHome,
+			name: 'Home',
+			href: '/student'
+		},
+		{
+			icon: IconChartHistogram,
+			name: 'Grades',
+			href: '/student/grades'
 		},
 		{
 			icon: IconWorld,
 			name: 'Activities',
-			href: '/lecturer/activities'
+			href: '/student/activities'
 		},
 		{
-			icon: IconDashboard,
-			name: 'Dashboard',
-			href: '/lecturer/dashboard'
-		},
-		{
-			icon: IconSchool,
-			name: 'Classroom',
-			href: '/lecturer/classroom'
-		},
-		{
-			icon: IconSandbox,
-			name: 'Sandbox',
-			href: '/lecturer/sandbox'
-		},
-		{
-			icon: IconSandbox,
+			icon: IconHelpHexagon,
 			name: 'FAQ',
-			href: '/lecturer/faq'
+			href: '/student/faq'
 		}
 	];
 </script>

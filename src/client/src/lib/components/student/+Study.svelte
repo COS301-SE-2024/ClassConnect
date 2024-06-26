@@ -1,5 +1,5 @@
 <script lang="ts">
-	import StudyCard from '$lib/components/utils/universal/cards/+StudyCard.svelte';
+	import StudyCard from '$lib/components/universal/cards/+StudyCard.svelte';
 	export let materials;
 </script>
 

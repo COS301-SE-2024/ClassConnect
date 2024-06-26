@@ -1,6 +1,6 @@
 import { render, fireEvent } from '@testing-library/svelte';
 import { describe, it, expect, vi } from 'vitest';
-import ModuleCard from '$lib/components/utils/student/+HomeCard.svelte';
+import ModuleCard from '$lib/components/student/+HomeCard.svelte';
 import { module } from '$lib/store';
 import { goto } from '$app/navigation';
 

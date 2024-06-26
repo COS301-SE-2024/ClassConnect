@@ -1,6 +1,6 @@
 <script lang="ts">
-	import SideBar from '$lib/components/utils/lecturer/+SideBar.svelte';
-	import TopBar from '$lib/components/utils/+TopBar.svelte';
+	import SideBar from '$lib/components/lecturer/+SideBar.svelte';
+	import TopBar from '$lib/components/universal/+TopBar.svelte';
 	import Contruction from '$lib/components/universal/+Construction.svelte';
 </script>
 

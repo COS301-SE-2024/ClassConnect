@@ -1,6 +1,6 @@
 import { render } from '@testing-library/svelte';
 import { describe, it, expect } from 'vitest';
-import Task from '$lib/components/utils/universal/cards/+AnnCard.svelte';
+import Task from '$lib/components/universal/cards/+AnnCard.svelte';
 
 describe('Task Component', () => {
 	const props = {

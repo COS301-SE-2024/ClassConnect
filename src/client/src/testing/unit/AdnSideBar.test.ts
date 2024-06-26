@@ -1,6 +1,6 @@
 import { render } from '@testing-library/svelte';
 import { describe, it, expect, vi } from 'vitest';
-import Sidebar from '$lib/components/utils/admin/+SideBar.svelte';
+import Sidebar from '$lib/components/admin/+SideBar.svelte';
 
 vi.mock('$app/stores', () => ({
 	page: {
