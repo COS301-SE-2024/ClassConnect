@@ -1,0 +1,18 @@
+import mongoose from 'mongoose';
+
+const organisationSchema = new mongoose.Schema({
+	name: {
+		type: String,
+		required: true
+	},
+	image: String,
+	createdBy: {
+		type: mongoose.Types.ObjectId,
+		ref: 'User',
+		required: true
+	}
+});
+
+const Organisation = mongoose.model('Organisation', organisationSchema);
+
+export default Organisation;
