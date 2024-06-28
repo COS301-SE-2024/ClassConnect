@@ -1,4 +1,4 @@
-import { Lucia } from 'lucia';
+import { Lucia, TimeSpan } from 'lucia';
 import mongoose from '$db/db';
 import { dev } from '$app/environment';
 import type { UserDoc, SessionDoc } from '../types/document';
@@ -11,13 +11,14 @@ const adapter = new MongodbAdapter(sessions as any, users as any);
 
 export const lucia = new Lucia(adapter, {
 	sessionCookie: {
+		expires: false,
 		attributes: {
 			secure: !dev
 		}
 	},
 	getUserAttributes: (attributes) => {
 		return {
-			username: attributes.username
+			role: attributes.role
 		};
 	}
 });
@@ -30,5 +31,5 @@ declare module 'lucia' {
 }
 
 interface DatabaseUserAttributes {
-	username: string;
+	role: string;
 }
