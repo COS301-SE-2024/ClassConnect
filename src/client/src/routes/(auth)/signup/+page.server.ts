@@ -1,38 +1,33 @@
 import User from '$db/schemas/User';
-import nodemailer from 'nodemailer';
+import sgMail from '@sendgrid/mail';
 import { hash } from '@node-rs/argon2';
 import type { Actions } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { generateUsername } from '$utils/user';
-import { EMAIL_USER, EMAIL_PASS } from '$env/static/private';
+import { SENDGRID_API_KEY, FROM_EMAIL } from '$env/static/private';
 
-const transporter = nodemailer.createTransport({
-	service: 'gmail',
-	auth: {
-		user: EMAIL_USER,
-		pass: EMAIL_PASS
-	}
-});
+sgMail.setApiKey(SENDGRID_API_KEY);
 
 async function sendWelcomeEmail(to: string, name: string, username: string) {
-	const mailOptions = {
-		from: EMAIL_USER,
+	const msg = {
 		to: to,
-		subject: 'Welcome To ClassConnect!',
+		from: `ClassConnect <${FROM_EMAIL}>`,
+		subject: 'Welcome to ClassConnect!',
 		html: `
 		<h1>Welcome, ${name}!</h1>
 		<p>Thank you for joining ClassConnect. We're excited to have you on board!</p>
 		<p>Your generated username is: <strong>${username}</strong></p>
-		<p>You can use this username to log in to your account.</p>
-	  `
+		<p>You can use this username to <a href="http://localhost:5173/signin">Log in</a> to your account.</p>`
 	};
 
-	try {
-		await transporter.sendMail(mailOptions);
-		console.log('Welcome email sent successfully');
-	} catch (error) {
-		console.error('Error sending welcome email:', error);
-	}
+	sgMail
+		.send(msg)
+		.then(() => {
+			console.log('Welcome email sent successfully!');
+		})
+		.catch((error) => {
+			console.error('Error sending welcome email: ', error);
+		});
 }
 
 export const actions: Actions = {
@@ -43,7 +38,7 @@ export const actions: Actions = {
 		const surname = formData.get('surname');
 		const email = formData.get('email');
 		const password = formData.get('password');
-		const confirmPassword = formData.get('confirmPassword');
+		const confirmPassword = formData.get('confirm-password');
 
 		if (typeof name !== 'string' || name.length === 0) {
 			return fail(400, {
@@ -102,8 +97,6 @@ export const actions: Actions = {
 			await newUser.save();
 
 			await sendWelcomeEmail(email, name, username);
-
-			throw redirect(302, '/signup/successful');
 		} catch (e) {
 			console.log('Error', e);
 
@@ -111,5 +104,7 @@ export const actions: Actions = {
 				error: 'An unknown error occurred'
 			};
 		}
+
+		redirect(303, `/signup/successful?name=${encodeURIComponent(name)}`);
 	}
 };

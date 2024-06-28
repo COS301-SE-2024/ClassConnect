@@ -84,13 +84,13 @@
 							{/if}
 						</button>
 					</div>
-					<Label for="confirm_password" class="mb-2 mt-2 dark:text-gray-800">Confirm password</Label
+					<Label for="confirm-password" class="mb-2 mt-2 dark:text-gray-800">Confirm Password</Label
 					>
 					<div class="relative">
 						<Input
 							type="password"
-							id="confirm_password"
-							name="confirm_password"
+							id="confirm-password"
+							name="confirm-password"
 							placeholder="•••••••••"
 							disabled={loading}
 							required
