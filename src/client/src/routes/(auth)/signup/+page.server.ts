@@ -13,6 +13,7 @@ export const actions: Actions = {
 		const surname = formData.get('surname');
 		const email = formData.get('email');
 		const password = formData.get('password');
+		const confirmPassword = formData.get('confirmPassword');
 
 		if (typeof name !== 'string' || name.length === 0) {
 			return fail(400, {
@@ -42,6 +43,12 @@ export const actions: Actions = {
 			});
 		}
 
+		if (typeof confirmPassword !== 'string' || confirmPassword !== password) {
+			return fail(400, {
+				error: 'Passwords do not match'
+			});
+		}
+
 		const username = generateUsername('admin', email);
 
 		const hashedPassword = await hash(password, {
@@ -57,6 +64,7 @@ export const actions: Actions = {
 				surname,
 				username,
 				email,
+				role: 'admin',
 				password: hashedPassword
 			});
 
@@ -69,6 +77,6 @@ export const actions: Actions = {
 			};
 		}
 
-		redirect(300, '/signin');
+		redirect(302, '/signin');
 	}
 };

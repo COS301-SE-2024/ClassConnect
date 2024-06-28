@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from '$db/db';
 
 const userSchema = new mongoose.Schema({
 	name: {
@@ -31,8 +31,7 @@ const userSchema = new mongoose.Schema({
 	},
 	organisation: {
 		type: mongoose.Types.ObjectId,
-		ref: 'Organisation',
-		default: ''
+		ref: 'Organisation'
 	},
 	workspaces: [
 		{

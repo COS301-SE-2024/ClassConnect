@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from '$db/db';
 
 const sessionSchema = new mongoose.Schema(
 	{
