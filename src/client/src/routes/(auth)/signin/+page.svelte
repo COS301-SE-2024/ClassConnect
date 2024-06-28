@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LeftSideImage from '$lib/components/universal/auth/+LeftSideImage.svelte';
+	import LeftSideImage from '../signup/SideImage.svelte';
 	import SignInForm from '$lib/components/universal/auth/+SignInForm.svelte';
 </script>
 

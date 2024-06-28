@@ -15,6 +15,4 @@ export default defineConfig({
 	optimizeDeps: {
 		include: ['@tabler/icons-svelte']
 	}
-
-	a
 });

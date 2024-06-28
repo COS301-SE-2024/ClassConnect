@@ -17,4 +17,6 @@ const lessonSchema = new mongoose.Schema({
 	}
 });
 
-const Lesson = mongoose.model('Schedule', lessonSchema);
+const Lesson = mongoose.models.Lesson || mongoose.model('Schedule', lessonSchema);
+
+export default Lesson;
