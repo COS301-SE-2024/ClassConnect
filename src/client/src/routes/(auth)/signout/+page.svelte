@@ -1,5 +1,6 @@
 <script>
 	import { enhance } from '$app/forms';
+	import { goto } from '$app/navigation';
 	import { Button } from 'flowbite-svelte';
 </script>
 
@@ -9,10 +10,11 @@
 	<div class="w-full max-w-md rounded-lg bg-white bg-opacity-90 p-8 shadow-xl backdrop-blur-sm">
 		<h1 class="mb-6 text-center text-3xl font-bold text-green-700">Sign Out</h1>
 
-		<p class="mb-8 text-center text-gray-700">Class Connect will miss you.</p>
+		<p class="mb-8 text-center text-gray-700">Are you sure you want to sign out?</p>
 
-		<form method="POST" use:enhance>
-			<Button type="submit" color="red" class="w-full">Sign Out</Button>
+		<form method="POST" use:enhance class="flex">
+			<Button type="submit" color="red" class="mx-2 w-full">Yes, I am sure</Button>
+			<Button on:click={() => goto('/home')} class="mx-2 w-full">No, cancel</Button>
 		</form>
 	</div>
 </main>

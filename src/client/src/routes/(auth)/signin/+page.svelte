@@ -27,7 +27,7 @@
 				{#if form?.error}
 					<p class="mt-2 text-center text-red-500">{form.error}</p>
 				{/if}
-				
+
 				<form
 					method="POST"
 					use:enhance={() => {
@@ -72,13 +72,13 @@
 						</button>
 					</div>
 
-					<Button type="submit" class="my-4 w-full">
-						{#if loading}
+					{#if loading}
+						<Button disabled class="my-4 w-full">
 							<Spinner class="me-3" size="4" color="white" />
-						{:else}
-							Sign In
-						{/if}
-					</Button>
+						</Button>
+					{:else}
+						<Button type="submit" class="my-4 w-full">Sign In</Button>
+					{/if}
 				</form>
 				<div class="p-2">
 					<div class="text-center">
