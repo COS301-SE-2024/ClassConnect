@@ -4,5 +4,5 @@ export async function load({ locals }) {
 	if (!locals.user) redirect(302, '/signin');
 	if (locals.user.role !== 'admin') throw error(401);
 
-	return { user: locals.user };
+	return { role: locals.user.role, id: locals.user.id.toString() };
 }

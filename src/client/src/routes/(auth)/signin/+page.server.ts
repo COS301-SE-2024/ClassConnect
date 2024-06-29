@@ -43,9 +43,10 @@ export const actions: Actions = {
 
 			console.log(user.role);
 			console.log(user.id);
+			console.log(user._id);
 			console.log(user);
 
-			const session = await lucia.createSession(user.id, { role: user.role });
+			const session = await lucia.createSession(user._id, { role: user.role });
 			const sessionCookie = lucia.createSessionCookie(session.id);
 
 			event.cookies.set(sessionCookie.name, sessionCookie.value, {
