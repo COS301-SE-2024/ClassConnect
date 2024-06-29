@@ -41,10 +41,9 @@ export const actions: Actions = {
 				});
 			}
 
-			role.set(user.role);
-
-			console.log(role);
 			console.log(user.role);
+			console.log(user.id);
+			console.log(user);
 
 			const session = await lucia.createSession(user.id, { role: user.role });
 			const sessionCookie = lucia.createSessionCookie(session.id);

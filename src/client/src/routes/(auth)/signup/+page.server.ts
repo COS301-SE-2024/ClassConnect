@@ -1,3 +1,4 @@
+import { generateIdFromEntropySize } from 'lucia';
 import User from '$db/schemas/User';
 import sgMail from '@sendgrid/mail';
 import { hash } from '@node-rs/argon2';
@@ -83,8 +84,11 @@ export const actions: Actions = {
 			parallelism: 1
 		});
 
+		const _id = generateIdFromEntropySize(10);
+
 		try {
 			const newUser = new User({
+				_id,
 				name,
 				surname,
 				username,

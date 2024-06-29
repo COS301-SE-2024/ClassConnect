@@ -1,4 +1,4 @@
-import { Lucia, TimeSpan } from 'lucia';
+import { Lucia } from 'lucia';
 import mongoose from '$db/db';
 import { dev } from '$app/environment';
 import type { UserDoc, SessionDoc } from '../types/document';
