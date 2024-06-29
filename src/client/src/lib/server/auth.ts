@@ -30,10 +30,6 @@ declare module 'lucia' {
 	}
 }
 
-interface DatabaseUserAttributes {
-	role: string;
-}
-
 interface UserDoc {
 	_id: ObjectId;
 }
@@ -42,4 +38,8 @@ interface SessionDoc {
 	_id: string;
 	expires_at: Date;
 	user_id: ObjectId;
+}
+
+interface DatabaseUserAttributes {
+	role: string;
 }

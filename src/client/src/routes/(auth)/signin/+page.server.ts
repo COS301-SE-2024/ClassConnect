@@ -1,9 +1,12 @@
 import User from '$db/schemas/User';
-import { role } from '$lib/store/user';
 import type { Actions } from './$types';
 import { lucia } from '$lib/server/auth';
 import { verify } from '@node-rs/argon2';
 import { fail, redirect } from '@sveltejs/kit';
+
+export async function load({ locals }) {
+	if (locals.user) redirect(302, '/home');
+}
 
 export const actions: Actions = {
 	default: async (event) => {

@@ -1,4 +1,4 @@
-import mongoose from '$db/db';
+import mongoose from '$lib/server/database/db';
 
 const organisationSchema = new mongoose.Schema({
 	name: {

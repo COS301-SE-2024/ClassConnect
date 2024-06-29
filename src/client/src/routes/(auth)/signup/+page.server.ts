@@ -1,10 +1,14 @@
-import User from '$db/schemas/User';
+import User from '$lib/server/database/schemas/User';
 import sgMail from '@sendgrid/mail';
 import { hash } from '@node-rs/argon2';
 import type { Actions } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { generateUsername } from '$utils/user';
 import { SENDGRID_API_KEY, FROM_EMAIL } from '$env/static/private';
+
+export async function load({ locals }) {
+	if (locals.user) redirect(302, '/home');
+}
 
 sgMail.setApiKey(SENDGRID_API_KEY);
 
