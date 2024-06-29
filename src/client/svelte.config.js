@@ -14,7 +14,7 @@ const config = {
 		adapter: adapter(),
 		alias: {
 			$utils: './src/utils',
-			$db: './src/lib/server/database',
+			$db: './src/lib/server/database'
 		}
 	}
 };

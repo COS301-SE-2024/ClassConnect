@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Logo from '$lib/images/class-connect-logo.png';
-	/*import IconSpeakerphone from '@tabler/icons-svelte/IconSpeakerphone.svelte';
+	import IconSpeakerphone from '@tabler/icons-svelte/IconSpeakerphone.svelte';
 	import IconClipboard from '@tabler/icons-svelte/IconClipboard.svelte';
 	import IconBuilding from '@tabler/icons-svelte/IconBuilding.svelte';
 	import IconSchool from '@tabler/icons-svelte/IconSchool.svelte';
@@ -9,51 +9,51 @@
 	import IconSettings from '@tabler/icons-svelte/IconSettings.svelte';
 	import IconUsers from '@tabler/icons-svelte/IconUsers.svelte';
 	import IconHome from '@tabler/icons-svelte/IconHome.svelte';
-	import IconDesk from '@tabler/icons-svelte/IconDesk.svelte';*/
+	import IconDesk from '@tabler/icons-svelte/IconDesk.svelte';
 
 	const nav_links = [
 		{
-			//icon: IconHome,
+			icon: IconHome,
 			name: 'Home',
 			href: '/admin'
 		},
 		{
-			//icon: IconSpeakerphone,
+			icon: IconSpeakerphone,
 			name: 'Announcements',
 			href: '/admin/announcements'
 		},
 		{
-			//icon: IconClipboard,
+			icon: IconClipboard,
 			name: 'Activities',
 			href: '/admin/activities'
 		},
 		{
-			//icon: IconBuilding,
+			icon: IconBuilding,
 			name: 'Organisation',
 			href: '/admin/organisation'
 		},
 		{
-			//icon: IconSchool,
+			icon: IconSchool,
 			name: 'Lecturers',
 			href: '/admin/lecturers'
 		},
 		{
-			//icon: IconUsers,
+			icon: IconUsers,
 			name: 'Students',
 			href: '/admin/students'
 		},
 		{
-			//icon: IconDesk,
+			icon: IconDesk,
 			name: 'Workspaces',
 			href: '/admin/workspaces'
 		},
 		{
-			//icon: IconUserStar,
+			icon: IconUserStar,
 			name: 'Admins',
 			href: '/admin/admins'
 		},
 		{
-			//icon: IconSettings,
+			icon: IconSettings,
 			name: 'Settings',
 			href: '/admin/settings'
 		}

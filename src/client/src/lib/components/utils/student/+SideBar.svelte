@@ -1,28 +1,28 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Logo from '$lib/images/class-connect-logo.png';
-	/*import IconHome from '@tabler/icons-svelte/IconHome.svelte';
+	import IconHome from '@tabler/icons-svelte/IconHome.svelte';
 	import IconChartHistogram from '@tabler/icons-svelte/IconChartHistogram.svelte';
-	import IconWorld from '@tabler/icons-svelte/IconWorld.svelte';*/
+	import IconWorld from '@tabler/icons-svelte/IconWorld.svelte';
 
 	const nav_links = [
 		{
-			//icon: IconHome,
+			icon: IconHome,
 			name: 'Home',
 			href: '/student'
 		},
 		{
-			//icon: IconChartHistogram,
+			icon: IconChartHistogram,
 			name: 'Grades',
 			href: '/student/grades'
 		},
 		{
-			//icon: IconWorld,
+			icon: IconWorld,
 			name: 'Activities',
 			href: '/student/activities'
 		},
 		{
-			//icon: IconWorld,
+			icon: IconWorld,
 			name: 'FAQ',
 			href: '/student/faq'
 		}
