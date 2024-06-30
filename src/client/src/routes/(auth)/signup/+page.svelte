@@ -74,6 +74,7 @@
 						/>
 						<button
 							type="button"
+							aria-label="Toggle password visibility"
 							class="absolute inset-y-0 right-0 flex items-center pr-3"
 							on:click={() => (showPassword = !showPassword)}
 						>
@@ -98,7 +99,7 @@
 					</div>
 					<Button type="submit" class="my-4 w-full">
 						{#if loading}
-							<Spinner class="me-3" size="4" color="white" />
+							<Spinner class="me-3" size="4" color="white" data-testid="spinner" />
 						{:else}
 							Sign Up
 						{/if}

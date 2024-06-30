@@ -127,8 +127,10 @@ export const actions: Actions = {
 		const formData = await event.request.formData();
 		const result = await handleSignup(formData);
 
+		console.log('Signup result:', result);
+
 		if (!result.success) return fail(400, { error: result.error });
 
-		throw redirect(303, `/signup/successful?name=${encodeURIComponent(result.name!)}`);
+		redirect(303, `/signup/successful?name=${encodeURIComponent(result.name!)}`);
 	}
 };
