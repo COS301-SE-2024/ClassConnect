@@ -59,6 +59,6 @@ export const actions: Actions = {
 			};
 		}
 
-		redirect(302, '/');
+		redirect(302, '/home');
 	}
 };
