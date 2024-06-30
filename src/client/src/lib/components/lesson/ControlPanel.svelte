@@ -30,6 +30,7 @@
 
 	function toggleCamera() {
 		call.camera.toggle();
+		cameraEnabled.update((enabled) => !enabled);
 	}
 
 	function toggleScreenShare() {

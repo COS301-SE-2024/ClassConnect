@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import { type Call, type StreamVideoParticipant } from '@stream-io/video-client';
 
 export const admins = writable<any>([]);
 export const students = writable<any>([]);
@@ -44,3 +45,12 @@ export const userInfo = writable<any>({
 });
 
 export const screenShareEnabled = writable(false);
+
+
+export const participantsThere = writable<StreamVideoParticipant[]>([]);
+
+export const participantsCount = writable<number>(0);
+
+participantsThere.subscribe((participants) => {
+  participantsCount.set(participants.length);
+});
