@@ -1,12 +1,8 @@
-.DS_Store
-node_modules
-/build
-/.svelte-kit
-/package
+# Files
 .env
-.env.*
-!.env.example
-.vercel
-.output
-vite.config.js.timestamp-*
-vite.config.ts.timestamp-*
+
+# Directories
+build
+.vscode
+.svelte-kit
+node_modules
