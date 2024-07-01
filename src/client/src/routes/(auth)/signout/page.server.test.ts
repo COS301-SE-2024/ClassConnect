@@ -34,7 +34,7 @@ describe('Module to Test', () => {
 			} catch (e) {
 				expect(e).toEqual(error(401));
 			}
-            
+
 			expect(error).toHaveBeenCalledWith(401);
 		});
 

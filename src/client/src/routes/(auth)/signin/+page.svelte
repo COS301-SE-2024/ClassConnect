@@ -75,7 +75,7 @@
 
 					{#if loading}
 						<Button disabled class="my-4 w-full">
-							<Spinner class="me-3" size="4" color="white" data-testid="spinner"/>
+							<Spinner class="me-3" size="4" color="white" data-testid="spinner" />
 						</Button>
 					{:else}
 						<Button type="submit" class="my-4 w-full">Sign In</Button>

@@ -6,7 +6,7 @@ import Welcome from './+page.svelte';
 
 vi.mock('svelte', async () => {
 	const actual = await vi.importActual('svelte');
-	
+
 	return {
 		...actual,
 		onMount: vi.fn((callback) => callback())
