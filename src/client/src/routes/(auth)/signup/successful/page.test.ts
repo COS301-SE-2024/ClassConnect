@@ -1,11 +1,12 @@
-import Welcome from './+page.svelte';
-
 import { writable } from 'svelte/store';
 import { render, screen } from '@testing-library/svelte';
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
+import Welcome from './+page.svelte';
+
 vi.mock('svelte', async () => {
 	const actual = await vi.importActual('svelte');
+	
 	return {
 		...actual,
 		onMount: vi.fn((callback) => callback())

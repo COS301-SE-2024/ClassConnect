@@ -7,7 +7,7 @@ import User from '$db/schemas/User';
 import { lucia } from '$lib/server/auth';
 
 export async function load({ locals }: { locals: { user: any } }) {
-	if (locals.user) throw redirect(302, '/home');
+	if (locals.user) redirect(302, '/home');
 }
 
 interface SignInData {
