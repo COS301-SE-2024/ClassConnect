@@ -1,6 +1,4 @@
 import type { ObjectId } from 'mongoose';
-import { name } from '$lib/store/user';
-import { get } from 'svelte/store';
 import { verify } from '@node-rs/argon2';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, RequestEvent } from './$types';
@@ -57,24 +55,22 @@ export const actions: Actions = {
 
 		if (validationError) return fail(400, validationError);
 
+		let role = '';
+
 		try {
 			const { user, error } = await authenticateUser(formData);
 
 			if (error) return fail(400, { error });
 
+			role = user.role;
+
 			await createSessionAndSetCookie(event, user._id, user.role);
-
-			const redirectUrl = '/' + user.role;
-
-			console.log('Redirecting to', redirectUrl);
-
-			redirect(302, redirectUrl );
-
 		} catch (e) {
 			console.error('Authentication error:', e);
 
 			return fail(500, { error: 'An unknown error occurred' });
 		}
 
+		redirect(302, '/' + role);
 	}
 };
