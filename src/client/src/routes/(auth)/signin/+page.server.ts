@@ -2,12 +2,13 @@ import type { ObjectId } from 'mongoose';
 import { verify } from '@node-rs/argon2';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, RequestEvent } from './$types';
+import type { UserData } from '$lib/store/types';
 
 import User from '$db/schemas/User';
 import { lucia } from '$lib/server/auth';
 
 export async function load({ locals }: { locals: { user: any } }) {
-	if (locals.user) redirect(302, '/home');
+	if (locals.user) throw redirect(302, '/');
 }
 
 interface SignInData {
@@ -55,22 +56,30 @@ export const actions: Actions = {
 
 		if (validationError) return fail(400, validationError);
 
-		let role = '';
-
 		try {
 			const { user, error } = await authenticateUser(formData);
 
 			if (error) return fail(400, { error });
 
-			role = user.role;
-
 			await createSessionAndSetCookie(event, user._id, user.role);
+
+			const return_user: UserData = {
+				first_name: user.name,
+				last_name: user.surname,
+				username: user.username,
+				id: user._id.toString(),
+				email: user.email,
+				image: user.image,
+				role: user.role,
+				organisation: user.organisation,
+				workspaces: user.workspaces
+			};
+
+			return JSON.stringify(return_user);
+
 		} catch (e) {
 			console.error('Authentication error:', e);
-
 			return fail(500, { error: 'An unknown error occurred' });
 		}
-
-		redirect(302, '/' + role);
 	}
 };

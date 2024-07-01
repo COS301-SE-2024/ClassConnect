@@ -2,6 +2,10 @@
 	import '@fontsource/roboto';
 	import { Input, Label, Button, A, Spinner } from 'flowbite-svelte';
 	import { EyeOutline, EyeSlashOutline } from 'flowbite-svelte-icons';
+	import { goto } from '$app/navigation';
+	import type { UserData } from '$lib/store/types';
+	import { Admin } from '$lib/store/admin';
+	import { user } from '$lib/store';
 
 	export let form;
 
@@ -17,16 +21,39 @@
 				method: 'POST',
 				body: formData
 			});
-			const result = await response.json();
+			const res = await response.json();
+
 			if (response.ok) {
-				// Handle successful response
-				console.log('Success:', result);
+				const stringifiedArray = res.data
+				const jsonArray = JSON.parse(stringifiedArray);
+				const jsonString = jsonArray[0];
+				const result = JSON.parse(jsonString);
+
+				const ret_user_data: UserData = {
+					first_name: result.first_name,
+					last_name: result.last_name,
+					username: result.username,
+					id: result.id,
+					email: result.email,
+					image: result.image,
+					role: result.role,
+					organisation: result.organisation ?? '',
+					workspaces: result.workspaces
+				};
+				
+				if(ret_user_data.role === 'admin'){
+					const AdminInstance: Admin = new Admin(ret_user_data);
+					user.set(AdminInstance);
+				}
+				
+				const redirect: string = '/' + ret_user_data.role;
+				
+				goto(redirect)
 			} else {
-				// Handle error response
-				form.error = result.error || 'An error occurred';
+				throw new Error(res.error);
 			}
 		} catch (error) {
-			form.error = 'An error occurred';
+			console.log(error);
 		} finally {
 			loading = false;
 		}

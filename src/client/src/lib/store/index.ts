@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import { Admin } from '$lib/store/admin';
 
 export const admins = writable<any>([]);
 export const students = writable<any>([]);
@@ -11,8 +12,9 @@ export const lessons = writable<any>([
 	{ topic: 'Technology', date: '19 June', time: '13:30' }
 ]);
 
+export const user = writable<Admin>();
+
 export const organisationName = writable('Organisation');
-//export const materialTitle = writable('Material');
 export const materialsInfo = writable<any[]>([]);
 
 export const lecChange = writable('change');
@@ -23,7 +25,6 @@ export const workChange = writable('change');
 export const wrkspcs = writable<any>([]);
 export const orgID = writable('');
 
-export const user = writable('eugene');
 export const email = writable('eugene.mpande@tuks.co.za');
 export const file = writable('');
 export const module = writable('');

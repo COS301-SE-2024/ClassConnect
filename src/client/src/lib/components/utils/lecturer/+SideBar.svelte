@@ -8,8 +8,7 @@
 		InfoCircleOutline,
 		DesktopPcOutline,
 		GridOutline
-	} 
-	from 'flowbite-svelte-icons';
+	} from 'flowbite-svelte-icons';
 
 	const nav_links = [
 		{
