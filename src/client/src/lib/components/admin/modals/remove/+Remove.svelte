@@ -4,7 +4,7 @@
 	import { Button, Modal } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
 	import { deleteUser } from '$lib/services/users';
-	import IconTrash from '@tabler/icons-svelte/IconTrash.svelte';
+	import TrashBinOutline from 'flowbite-svelte-icons';
 	import { lecChange, stuChange, admChange } from '$lib/store';
 	let popupModal = false;
 
@@ -28,7 +28,7 @@
 	on:click={() => (popupModal = true)}
 	class="transition-colors duration-200 hover:text-green-500 focus:outline-none dark:text-gray-300 dark:hover:text-green-500"
 >
-	<IconTrash stroke={2} />
+	<TrashBinOutline stroke={2} />
 </button>
 
 <Modal bind:open={popupModal} size="xs" autoclose>

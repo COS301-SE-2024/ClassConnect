@@ -1,59 +1,62 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Logo from '$lib/images/class-connect-logo.png';
-	import IconSpeakerphone from '@tabler/icons-svelte/IconSpeakerphone.svelte';
-	import IconClipboard from '@tabler/icons-svelte/IconClipboard.svelte';
-	import IconBuilding from '@tabler/icons-svelte/IconBuilding.svelte';
-	import IconSchool from '@tabler/icons-svelte/IconSchool.svelte';
-	import IconUserStar from '@tabler/icons-svelte/IconUserStar.svelte';
-	import IconSettings from '@tabler/icons-svelte/IconSettings.svelte';
-	import IconUsers from '@tabler/icons-svelte/IconUsers.svelte';
-	import IconHome from '@tabler/icons-svelte/IconHome.svelte';
-	import IconDesk from '@tabler/icons-svelte/IconDesk.svelte';
+	import {
+		BullhornSolid,
+		ClipboardSolid,
+		BuildingSolid,
+		ProfileCardOutline,
+		UserCircleOutline,
+		UsersGroupOutline,
+		HomeOutline,
+		BriefcaseOutline,
+		AdjustmentsHorizontalSolid
+	} 
+	from 'flowbite-svelte-icons';
 
 	const nav_links = [
 		{
-			icon: IconHome,
+			icon: HomeOutline,
 			name: 'Home',
 			href: '/admin'
 		},
 		{
-			icon: IconSpeakerphone,
+			icon: BullhornSolid,
 			name: 'Announcements',
 			href: '/admin/announcements'
 		},
 		{
-			icon: IconClipboard,
+			icon: ClipboardSolid,
 			name: 'Activities',
 			href: '/admin/activities'
 		},
 		{
-			icon: IconBuilding,
+			icon: BuildingSolid,
 			name: 'Organisation',
 			href: '/admin/organisation'
 		},
 		{
-			icon: IconSchool,
+			icon: ProfileCardOutline,
 			name: 'Lecturers',
 			href: '/admin/lecturers'
 		},
 		{
-			icon: IconUsers,
+			icon: UsersGroupOutline,
 			name: 'Students',
 			href: '/admin/students'
 		},
 		{
-			icon: IconDesk,
+			icon: BriefcaseOutline,
 			name: 'Workspaces',
 			href: '/admin/workspaces'
 		},
 		{
-			icon: IconUserStar,
+			icon: UserCircleOutline,
 			name: 'Admins',
 			href: '/admin/admins'
 		},
 		{
-			icon: IconSettings,
+			icon: AdjustmentsHorizontalSolid,
 			name: 'Settings',
 			href: '/admin/settings'
 		}

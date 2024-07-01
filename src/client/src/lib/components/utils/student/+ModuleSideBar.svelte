@@ -1,29 +1,37 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import Logo from '$lib/images/class-connect-logo.png';
-	import IconSpeakerphone from '@tabler/icons-svelte/IconSpeakerphone.svelte';
-	import IconBook from '@tabler/icons-svelte/IconBook.svelte';
-	import IconSandbox from '@tabler/icons-svelte/IconSandbox.svelte';
-	import IconSchool from '@tabler/icons-svelte/IconSchool.svelte';
+	import {
+		BullhornSolid,
+		FireOutline,
+		DesktopPcOutline,
+		BookOpenOutline,
+		UserCircleOutline,
+		UsersGroupOutline,
+		HomeOutline,
+		BriefcaseOutline,
+		AdjustmentsHorizontalSolid
+	} 
+	from 'flowbite-svelte-icons';
 
 	const nav_links = [
 		{
-			icon: IconSpeakerphone,
+			icon: BullhornSolid,
 			name: 'Announcements',
 			href: '/student/module'
 		},
 		{
-			icon: IconBook,
+			icon: BookOpenOutline,
 			name: 'Study Materials',
 			href: '/student/module/study'
 		},
 		{
-			icon: IconSandbox,
+			icon: FireOutline,
 			name: 'SandBox',
 			href: '/student/module/sandbox'
 		},
 		{
-			icon: IconSchool,
+			icon: DesktopPcOutline,
 			name: 'Classroom',
 			href: '/student/module/classroom'
 		}

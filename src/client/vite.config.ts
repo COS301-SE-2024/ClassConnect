@@ -10,8 +10,5 @@ export default defineConfig({
 	},
 	ssr: {
 		noExternal: ['three']
-	},
-	optimizeDeps: {
-		include: ['@tabler/icons-svelte']
 	}
 });
