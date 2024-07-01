@@ -38,7 +38,7 @@
 						};
 					}}
 				>
-					<Label for="name" class="mb-2 mt-2 dark:text-gray-800">Username</Label>
+					<Label for="username" class="mb-2 mt-2 dark:text-gray-800">Username</Label>
 					<Input
 						type="text"
 						id="username"
@@ -61,6 +61,7 @@
 						/>
 						<button
 							type="button"
+							aria-label="Toggle password visibility"
 							class="absolute inset-y-0 right-0 flex items-center pr-3"
 							on:click={() => (showPassword = !showPassword)}
 						>
@@ -74,7 +75,7 @@
 
 					{#if loading}
 						<Button disabled class="my-4 w-full">
-							<Spinner class="me-3" size="4" color="white" />
+							<Spinner class="me-3" size="4" color="white" data-testid="spinner"/>
 						</Button>
 					{:else}
 						<Button type="submit" class="my-4 w-full">Sign In</Button>
