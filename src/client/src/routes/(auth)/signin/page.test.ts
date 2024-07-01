@@ -51,7 +51,7 @@ describe('SignIn Component', () => {
 
 	it('has a link to the sign-up page', () => {
 		const signUpLink = screen.getByRole('link', { name: 'Sign Up' });
-        
+
 		expect(signUpLink).toBeTruthy();
 		expect(signUpLink.getAttribute('href')).toBe('/signup');
 	});
