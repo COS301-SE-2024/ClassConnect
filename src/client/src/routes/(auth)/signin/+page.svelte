@@ -1,6 +1,5 @@
 <script lang="ts">
 	import '@fontsource/roboto';
-	import { enhance } from '$app/forms';
 	import { Input, Label, Button, A, Spinner } from 'flowbite-svelte';
 	import { EyeOutline, EyeSlashOutline } from 'flowbite-svelte-icons';
 
@@ -8,6 +7,30 @@
 
 	let loading = false;
 	let showPassword = false;
+
+	async function handleSubmit(event) {
+		event.preventDefault();
+		loading = true;
+		const formData = new FormData(event.target);
+		try {
+			const response = await fetch('/signin', {
+				method: 'POST',
+				body: formData
+			});
+			const result = await response.json();
+			if (response.ok) {
+				// Handle successful response
+				console.log('Success:', result);
+			} else {
+				// Handle error response
+				form.error = result.error || 'An error occurred';
+			}
+		} catch (error) {
+			form.error = 'An error occurred';
+		} finally {
+			loading = false;
+		}
+	}
 </script>
 
 <main class="flex">
@@ -28,16 +51,7 @@
 					<p class="mt-2 text-center text-red-500">{form.error}</p>
 				{/if}
 
-				<form
-					method="POST"
-					use:enhance={() => {
-						loading = true;
-						return async ({ update }) => {
-							await update();
-							loading = false;
-						};
-					}}
-				>
+				<form method="POST" on:submit={handleSubmit}>
 					<Label for="username" class="mb-2 mt-2 dark:text-gray-800">Username</Label>
 					<Input
 						type="text"
