@@ -8,6 +8,13 @@ import { SENDGRID_API_KEY, FROM_EMAIL } from '$env/static/private';
 
 sgMail.setApiKey(SENDGRID_API_KEY);
 
+interface SignUpData {
+	name: string;
+	surname: string;
+	email: string;
+	password: string;
+}
+
 const HASH_OPTIONS = {
 	timeCost: 2,
 	outputLen: 32,
@@ -74,7 +81,7 @@ async function checkEmailExists(email: string): Promise<boolean> {
 	return !!user;
 }
 
-async function createUser(data: SignupData, username: string): Promise<void> {
+async function createUser(data: SignUpData, username: string): Promise<void> {
 	const hashedPassword = await hash(data.password, HASH_OPTIONS);
 
 	const newUser = new User({
@@ -94,7 +101,7 @@ async function handleSignup(
 	formData: FormData
 ): Promise<{ success: boolean; name?: string; error?: string }> {
 	try {
-		const data: SignupData = {
+		const data: SignUpData = {
 			name: validateName(formData.get('name')),
 			surname: validateName(formData.get('surname')),
 			email: validateEmail(formData.get('email')),
