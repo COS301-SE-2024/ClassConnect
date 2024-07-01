@@ -1,6 +1,8 @@
 import User from '$db/schemas/User';
 import type { Actions } from './$types';
 import { lucia } from '$lib/server/auth';
+import { name } from '$lib/store/user';
+import { get } from 'svelte/store';
 import { verify } from '@node-rs/argon2';
 import { fail, redirect } from '@sveltejs/kit';
 
@@ -44,6 +46,10 @@ export const actions: Actions = {
 				});
 			}
 
+			name.set(user.name + ' ' + user.surname);
+
+			console.log('This is the name: ',get(name))
+
 			const session = await lucia.createSession(user._id, { role: user.role });
 			const sessionCookie = lucia.createSessionCookie(session.id);
 
@@ -51,6 +57,13 @@ export const actions: Actions = {
 				path: '.',
 				...sessionCookie.attributes
 			});
+
+			const redirectUrl = '/' + user.role;
+
+			console.log('Redirecting to', redirectUrl);
+
+			redirect(302, redirectUrl );
+
 		} catch (e) {
 			console.log('Error', e);
 
@@ -59,6 +72,5 @@ export const actions: Actions = {
 			};
 		}
 
-		redirect(302, '/home');
 	}
 };

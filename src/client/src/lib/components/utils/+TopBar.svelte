@@ -9,6 +9,10 @@
 		DropdownDivider
 	} from 'flowbite-svelte';
 	import BreadCrumbs from '$lib/components/utils/universal/+Breadcrumbs.svelte';
+	import { name } from '$lib/store/user';
+
+	console.log($name)
+
 </script>
 
 <Navbar>
@@ -21,7 +25,7 @@
 			class="mx-2"
 		/>
 		<div class="mx-2">
-			<div class="text-lg font-bold">Eugene Mpande</div>
+			<div class="text-lg font-bold">{$name}</div>
 			<div class="text-lg font-semibold">u21573558</div>
 		</div>
 	</div>
