@@ -12,8 +12,6 @@
 	<div class="flex-1">
 		<Header {data} />
 
-		<div class="m-2">
-			<slot />
-		</div>
+		<slot />
 	</div>
 </div>
