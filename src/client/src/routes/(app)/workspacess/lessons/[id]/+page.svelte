@@ -7,7 +7,7 @@
 	import Container from '$lib/components/lesson/Container.svelte';
 	import ControlPanel from '$lib/components/lesson/ControlPanel.svelte';
 
-	export let data;
+	export let data../../classroom/[id]/$types.js;
 	const { apiKey, token } = data;
 
 	let call: Call;
