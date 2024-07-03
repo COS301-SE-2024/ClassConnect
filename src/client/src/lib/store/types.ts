@@ -14,6 +14,12 @@ export type Student = {
 	username: string;
 };
 
+export type Org = {
+	id: string;
+	org_name: string;
+	image: string;
+};
+
 export type Org_Admin = {
 	id: string;
 	first_name: string;
@@ -39,5 +45,6 @@ export type UserData = {
 	image: string;
 	role: string;
 	organisation: string;
+	org: Org;
 	workspaces: any[];
 };

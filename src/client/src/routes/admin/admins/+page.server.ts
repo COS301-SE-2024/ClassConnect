@@ -42,24 +42,31 @@ function generatePassword() {
     return passwordArray.join('');
 }
 
-export async function load({ params, url }) {
+export async function load({ url }) {
 
     try{
         const ret_admins : Org_Admin[] = await getAdminsFromDB();
+        const orgID : string | null = url.searchParams.get('orgID');
 
-        const test : Org_Admin ={
-            id: "1",
-            first_name: "John",
-            last_name: "Doe",
-            email: "test@email.com",
-            username: "a24242424",
-            image: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg"
-        }
+        if(orgID ===null || orgID === undefined || orgID === ''){
 
-        ret_admins.push(test);
+            const test : Org_Admin ={
+                id: "1",
+                first_name: "John",
+                last_name: "Doe",
+                email: "test@email.com",
+                username: "a24242424",
+                image: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg"
+            }
+    
+            ret_admins.push(test);
+    
+            return{
+                admins: ret_admins
+            }
 
-        return{
-            admins: ret_admins
+        }else{
+            throw new Error('No organisation ID was provided')
         }
 
     }catch(e){

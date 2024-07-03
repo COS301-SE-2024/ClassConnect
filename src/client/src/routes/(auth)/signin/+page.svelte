@@ -21,6 +21,7 @@
 				method: 'POST',
 				body: formData
 			});
+
 			const res = await response.json();
 
 			if (response.ok) {
@@ -38,7 +39,12 @@
 					image: result.image,
 					role: result.role,
 					organisation: result.organisation ?? '',
-					workspaces: result.workspaces
+					workspaces: result.workspaces,
+					org: {
+						id: '',
+						org_name: '',
+						image: ''
+					}
 				};
 				
 				if(ret_user_data.role === 'admin'){

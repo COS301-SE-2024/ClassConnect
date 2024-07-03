@@ -1,15 +1,9 @@
 <script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
-	import { organisationName } from '$lib/store';
-	import { organizations } from '$lib/services/orgs';
+	import { user } from '$lib/store';
+	import type { Org } from '$lib/store/types'
 
 	let formModal = false;
-
-	// Function to store the access token in local storage
-	function storeOrgID(id: string): void {
-		localStorage.setItem('organisationID', id);
-		console.log('organasation ID', id);
-	}
 
 	// Function to handle form submission
 	async function handleSubmit(event: SubmitEvent) {
@@ -19,25 +13,50 @@
 
 		// Create a FormData object from the form
 		const formData = new FormData(event.target as HTMLFormElement);
+		formData.append('userID', $user.getUserID());
+		
 		const name = formData.get('org_name')?.toString() ?? '';
+		const userID = formData.get('userID')?.toString() ?? '';
+
 		console.log('This is the name parameter:', name);
-		const userID = localStorage.getItem('userID') || 'non-existent';
-		const image =
-			'https://www.edarabia.com/wp-content/uploads/2013/08/university-of-pretoria-logo-south-africa.jpg';
-		//console.log("User ID Add Org:", userID);
+		console.log('This is the userID parameter:', userID);
+
 		try {
-			const response = await organizations(name, userID, image);
+			const response = await fetch('/admin/organisation?/create', {
+				method: 'POST',
+				body: formData
+			});
 
-			console.log('Response:', response);
+			const res = await response.json();
 
-			if (response) {
-				storeOrgID(response._id);
-				organisationName.set(response.name);
+			if(response.ok) {
+				const stringifiedArray = res.data
+				const jsonArray = JSON.parse(stringifiedArray);
+				const jsonString = jsonArray[0];
+				const result = JSON.parse(jsonString);
+
+				console.log(result)
+
+				const org : Org = {
+					id: result.id,
+					org_name: result.org_name,
+					image: result.image
+				}
+
+				$user.updateOrganisation(org);
+
+				alert('Organisation created successfully');
+
+			}else{
+				throw(Error('Failed to create organisation'));
 			}
+
 		} catch (error) {
 			console.error('create org  error:', error);
 			alert('Create failed');
 		}
+
+		formModal = false;
 	}
 </script>
 
@@ -72,9 +91,6 @@
 			size="md"
 			required
 		/>
-
-		<Label for="upload_image" class="mb-2 mt-2 space-y-2">Upload image:</Label>
-		<Input type="file" id="image" name="image" />
 
 		<Button type="submit" class="w-full1">Create Organisation</Button>
 	</form>

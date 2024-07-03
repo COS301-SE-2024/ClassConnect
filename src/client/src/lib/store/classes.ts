@@ -1,4 +1,4 @@
-import type { UserData } from '$lib/store/types';
+import type { Org, UserData } from '$lib/store/types';
 
 export class User {
 	protected user: UserData;
@@ -35,11 +35,16 @@ export class User {
 		return this.user.organisation;
 	}
 
+	getOrgDetails(): Org {
+		return this.user.org;
+	}
+
 	getUserID(): string {
 		return this.user.id;
 	}
 
-	updateOrganisation(organisation: string): void {
-		this.user.organisation = organisation;
+	updateOrganisation(organisation: Org): void {
+		this.user.organisation = organisation.id;
+		this.user.org = organisation;
 	}
 }
