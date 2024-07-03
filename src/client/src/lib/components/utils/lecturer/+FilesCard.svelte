@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { file } from '$lib/store';
-	import FileCopyAltOutline from 'flowbite-svelte-icons';
+	import { FileCopyAltOutline } from 'flowbite-svelte-icons';
 	import UploadStudy from '$lib/components/lecturer/modals/+UploadStudy.svelte';
 	export let files;
 

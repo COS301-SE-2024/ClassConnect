@@ -7,6 +7,10 @@ export class User {
 		this.user = initial;
 	}
 
+	clearWorkspaces(): void {
+		this.user.workspaces = [];
+	}
+
 	getFullName(): string {
 		return `${this.user.first_name} ${this.user.last_name}`;
 	}
@@ -29,6 +33,10 @@ export class User {
 
 	getOrganisation(): string {
 		return this.user.organisation;
+	}
+
+	getUserID(): string {
+		return this.user.id;
 	}
 
 	updateOrganisation(organisation: string): void {

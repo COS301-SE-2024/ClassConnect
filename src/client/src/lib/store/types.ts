@@ -20,6 +20,7 @@ export type Org_Admin = {
 	last_name: string;
 	email: string;
 	username: string;
+	image: string;
 };
 
 export type Workspace = {

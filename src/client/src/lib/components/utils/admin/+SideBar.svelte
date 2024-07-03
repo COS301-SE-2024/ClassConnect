@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { user } from '$lib/store';
 	import Logo from '$lib/images/class-connect-logo.png';
 	import {
 		BullhornSolid,
@@ -32,27 +33,27 @@
 		{
 			icon: BuildingSolid,
 			name: 'Organisation',
-			href: '/admin/organisation'
+			href: '/admin/organisation?orgID='+$user.getOrganisation()
 		},
 		{
 			icon: ProfileCardOutline,
 			name: 'Lecturers',
-			href: '/admin/lecturers'
+			href: '/admin/lecturers?orgID='+$user.getOrganisation()
 		},
 		{
 			icon: UsersGroupOutline,
 			name: 'Students',
-			href: '/admin/students'
+			href: '/admin/students?orgID='+$user.getOrganisation()
 		},
 		{
 			icon: BriefcaseOutline,
 			name: 'Workspaces',
-			href: '/admin/workspaces'
+			href: '/admin/workspaces?orgID='+$user.getOrganisation()
 		},
 		{
 			icon: UserCircleOutline,
 			name: 'Admins',
-			href: '/admin/admins'
+			href: '/admin/admins?orgID='+$user.getOrganisation()
 		},
 		{
 			icon: AdjustmentsHorizontalSolid,

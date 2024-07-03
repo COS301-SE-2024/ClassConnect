@@ -1,5 +1,5 @@
 <script lang="ts">
-	import FlowbiteSolid from 'flowbite-svelte-icons';
+	import { FlowbiteSolid } from 'flowbite-svelte-icons';
 	import UploadStudy from '$lib/components/lecturer/modals/+UploadStudy.svelte';
 	export let files;
 </script>

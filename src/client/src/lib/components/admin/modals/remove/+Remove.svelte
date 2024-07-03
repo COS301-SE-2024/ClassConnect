@@ -1,21 +1,24 @@
 <script lang="ts">
-	export let id = '';
-
-	import { Button, Modal } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
-	import { deleteUser } from '$lib/services/users';
-	import TrashBinOutline from 'flowbite-svelte-icons';
-	import { lecChange, stuChange, admChange } from '$lib/store';
+	import { TrashBinOutline } from 'flowbite-svelte-icons';
+	import { Button, Modal } from 'flowbite-svelte';
+	
+	export let id = '';
 	let popupModal = false;
 
 	async function handleRemove(event: Event) {
 		event.preventDefault();
 
+		const formData = new FormData(event.target as HTMLFormElement);
+
+		formData.append('userID', id);
+
 		try {
-			await deleteUser(id);
-			lecChange.set('new val');
-			stuChange.set('new val');
-			admChange.set('new val');
+			const response = await fetch('/admin/admins?/remove', {
+				method: 'POST',
+				body: formData
+			});
+			console.log(response)
 		} catch (error) {
 			console.error('Create User Error:', error);
 		}
