@@ -4,8 +4,8 @@
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
 
 	export let id: string;
+	export let item: string;
 	export let open: boolean;
-	export let item: 'user' | 'organisation';
 
 	let error: string;
 

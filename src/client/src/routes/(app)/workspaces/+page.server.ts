@@ -1,170 +1,79 @@
-/** @type {import('./$types').Actions} */
-import axios from 'axios';
-import { get } from 'svelte/store';
-import { wrkspcs } from '$lib/store';
+import type { Actions } from '@sveltejs/kit';
+import { fail, error, redirect } from '@sveltejs/kit';
 
-// Mock add, edit, and delete functions
+import User from '$db/schemas/User';
+import Workspace from '$db/schemas/Workspace';
 
-async function addWorkspace(name_in, organisation_in, owner_in, image_in) {
-	const url = 'http://localhost:3000/workspaces';
-
-	const data = {
-		name: name_in,
-		organisation: organisation_in,
-		owner: owner_in,
-		image: image_in
-	};
-
-	const response = await axios.post(url, data);
-
-	const workspaces = get(wrkspcs);
-
-	const new_work = {
-		name: response.data.name,
-		id: response.data._id
-	};
-
-	workspaces.push(new_work);
-
-	wrkspcs.set(workspaces);
-
-	return response.data;
+async function getName(id: string) {
+	const user = await User.findById(id).select('name surname');
+	return user ? `${user.name} ${user.surname}` : 'Unknown';
 }
 
-async function editWorkspace(name_in, id, image_in) {
-	const url = 'http://localhost:3000/workspaces/' + id;
-
-	const data = {
-		name: name_in,
-		image: image_in
-	};
-
-	const response = await axios.put(url, data);
-
-	const old_workspaces = get(wrkspcs);
-
-	const new_workspaces = [];
-
-	const new_work = {
-		name: response.data.name,
-		id: response.data._id
-	};
-
-	for (let i = 0; i < old_workspaces.length; i++) {
-		if (old_workspaces[i].id !== new_work.id) {
-			new_workspaces.push(old_workspaces[i]);
-		}
-	}
-
-	new_workspaces.push(new_work);
-
-	wrkspcs.set(new_workspaces);
-
-	return response.data;
-}
-
-async function addUserToWorkspace(user, workspaces_in) {
-	const url = 'http://localhost:3000/users/' + user;
-
-	const data = {
-		workspaces: workspaces_in
-	};
+export async function load({ locals }) {
+	if (!locals.user) return redirect(302, '/signin');
+	if (locals.user.role !== 'admin') throw error(401, 'Unauthorized');
 
 	try {
-		const response = await axios.put(url, data);
+		const workspaces = await Workspace.find({ organisation: locals.user.organisation }).select(
+			'_id name image owner'
+		);
 
-		return response.data;
+		const availableLecturers = await User.find({
+			organisation: locals.user.organisation,
+			workspaces: []
+		}).select('_id name');
+
+		const formattedWorkspacesPromises = workspaces.map(async (workspace) => ({
+			id: workspace._id.toString(),
+			name: workspace.name,
+			image: workspace.image,
+			owner: await getName(workspace.owner)
+		}));
+
+		const formattedWorkspaces = await Promise.all(formattedWorkspacesPromises);
+
+		const formattedLecturers = availableLecturers.map((lecturer) => ({
+			id: lecturer._id.toString(),
+			name: lecturer.name
+		}));
+
+		return {
+			lecturers: formattedLecturers,
+			workspaces: formattedWorkspaces
+		};
 	} catch (error) {
-		console.log(error);
+		console.error('Server error:', error);
+		return fail(500, { error: 'An unexpected error occurred while fetching workspaces' });
 	}
 }
 
-async function deleteDetails(name, email, role) {
-	console.log(name);
-	console.log(email);
-	console.log(role);
-}
+export const actions: Actions = {
+	create: async ({ request, locals }) => {
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
 
-export const actions = {
-	add: async ({ request }) => {
-		const formData = await request.formData();
-		const name = formData.get('work_name');
-		const organisationId = formData.get('organisationId');
-		const createdBy = formData.get('createdBy');
-		const image =
-			'https://seeklogo.com/images/U/university-of-pretoria-logo-353892E0F3-seeklogo.com.png';
+		const data = await request.formData();
+		const name = data.get('name') as string;
+		const owner = data.get('owner') as string;
+		const image = data.get('image') as string;
 
 		try {
-			const res = await addWorkspace(name, organisationId, createdBy, image);
+			const newWorkspace = new Workspace({
+				name,
+				owner,
+				organisation: locals.user.organisation,
+				image: image || 'images/workspace-placeholder.svg'
+			});
 
-			return {
-				status: 200,
-				body: res
-			};
+			const user = await User.findById(owner);
+			user.workspaces.push(newWorkspace._id);
+
+			await user.save();
+			await newWorkspace.save();
+
+			return { success: true };
 		} catch (error) {
-			console.log(error);
-			return {
-				status: 500
-			};
+			console.error('Server error:', error);
+			return fail(500, { error: 'Failed to add workspace' });
 		}
-	},
-	adduser: async ({ request }) => {
-		const formData = await request.formData();
-		const user = formData.get('userId');
-		const workspaces = formData.get('Workspaces');
-
-		try {
-			await addUserToWorkspace(user, workspaces);
-
-			return {
-				status: 200
-			};
-		} catch (error) {
-			console.log(error);
-			return {
-				status: 500
-			};
-		}
-	},
-	edit: async ({ request }) => {
-		const formData = await request.formData();
-		const name = formData.get('work_name');
-		const id = formData.get('work_id');
-		const image =
-			'https://seeklogo.com/images/U/university-of-pretoria-logo-353892E0F3-seeklogo.com.png';
-
-		console.log(name);
-		console.log(id);
-		console.log(image);
-
-		try {
-			const res = await editWorkspace(name, id, image);
-
-			return {
-				status: 200,
-				body: res
-			};
-		} catch (error) {
-			console.log(error);
-			return {
-				status: 500
-			};
-		}
-	},
-	delete: async ({ request }) => {
-		const formData = await request.formData();
-		const name = formData.get('org_name');
-		const email = formData.get('email');
-		const role = formData.get('role');
-
-		console.log(name);
-		console.log(email);
-		console.log(role);
-
-		deleteDetails(name, email, role);
-
-		return {
-			status: 200
-		};
 	}
 };

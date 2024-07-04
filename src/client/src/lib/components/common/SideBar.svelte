@@ -23,13 +23,13 @@
 	const navLinks = {
 		admin: [
 			{ icon: GridOutline, name: 'Dashboard', href: '/dashboard' },
-			{ icon: BullhornSolid, name: 'Announcements', href: '/announcements' },
 			{ icon: ClipboardSolid, name: 'Activities', href: '/activities' },
+			{ icon: BullhornSolid, name: 'Announcements', href: '/announcements' },
 			{ icon: BuildingSolid, name: 'Organisation', href: '/organisation' },
-			{ icon: ProfileCardOutline, name: 'Lecturers', href: '/lecturers' },
-			{ icon: UsersGroupOutline, name: 'Students', href: '/students' },
 			{ icon: BriefcaseOutline, name: 'Workspaces', href: '/workspaces' },
-			{ icon: UserCircleOutline, name: 'Admins', href: '/admins' }
+			{ icon: UserCircleOutline, name: 'Admins', href: '/admins' },
+			{ icon: ProfileCardOutline, name: 'Lecturers', href: '/lecturers' },
+			{ icon: UsersGroupOutline, name: 'Students', href: '/students' }
 		],
 		lecturer: [
 			{ icon: BullhornSolid, name: 'Workspaces', href: '/lecturer/workspace' },

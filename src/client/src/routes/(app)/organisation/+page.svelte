@@ -2,9 +2,9 @@
 	import type { PageData } from './$types';
 	import { Button } from 'flowbite-svelte';
 
+	import DeleteModal from '$lib/components/admin/modals/Delete.svelte';
 	import EditModal from '$lib/components/admin/modals/organisation/Edit.svelte';
 	import CreateModal from '$lib/components/admin/modals/organisation/Add.svelte';
-	import DeleteModal from '$lib/components/admin/modals/remove/Organisation.svelte';
 
 	export let data: PageData;
 
@@ -40,4 +40,4 @@
 
 <CreateModal bind:open={isCreateModalOpen} />
 <EditModal bind:open={isEditModalOpen} {id} />
-<DeleteModal bind:open={isDeleteModalOpen} {id} />
+<DeleteModal bind:open={isDeleteModalOpen} {id} item="organisation" />
