@@ -25,6 +25,7 @@
 
 	interface PageData {
 		workspaces: Workspace[];
+		lecturers: [{ id: string; name: string }];
 	}
 
 	export let data: PageData;
