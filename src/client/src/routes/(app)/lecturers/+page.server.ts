@@ -12,7 +12,7 @@ export async function load({ locals }) {
 		const lecturers = await User.find({
 			role: 'lecturer',
 			organisation: locals.user.organisation
-		}).select('_id name surname username email image');
+		});
 
 		const formattedLecturers = lecturers.map((lecturer) => ({
 			id: lecturer._id.toString(),
