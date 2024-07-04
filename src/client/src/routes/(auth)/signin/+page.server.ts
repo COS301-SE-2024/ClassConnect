@@ -37,8 +37,13 @@ async function authenticateUser(
 	return { user, error: null };
 }
 
-async function createSessionAndSetCookie(event: RequestEvent, userId: ObjectId, role: string) {
-	const session = await lucia.createSession(userId, { role });
+async function createSessionAndSetCookie(
+	event: RequestEvent,
+	userId: ObjectId,
+	role: string,
+	organisation: ObjectId
+) {
+	const session = await lucia.createSession(userId, { role, organisation });
 	const sessionCookie = lucia.createSessionCookie(session.id);
 
 	event.cookies.set(sessionCookie.name, sessionCookie.value, {
@@ -63,8 +68,9 @@ export const actions: Actions = {
 			if (error) return fail(400, { error });
 
 			role = user.role;
+			const organisation = user.organisation || '';
 
-			await createSessionAndSetCookie(event, user._id, user.role);
+			await createSessionAndSetCookie(event, user._id, role, organisation);
 		} catch (e) {
 			console.error('Authentication error:', e);
 

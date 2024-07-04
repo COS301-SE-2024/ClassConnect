@@ -17,7 +17,8 @@ export const lucia = new Lucia(adapter, {
 	},
 	getUserAttributes: (attributes) => {
 		return {
-			role: attributes.role
+			role: attributes.role,
+			organisation: attributes.organisation
 		};
 	}
 });
@@ -42,4 +43,5 @@ interface SessionDoc {
 
 interface DatabaseUserAttributes {
 	role: string;
+	organisation: ObjectId;
 }

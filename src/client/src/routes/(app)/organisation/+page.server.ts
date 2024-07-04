@@ -51,6 +51,8 @@ const createOrganisation = async (request: Request, locals: any) => {
 		await newOrganisation.save();
 		await User.updateOne({ _id: locals.user.id }, { organisation: newOrganisation._id });
 
+		locals.user.organisation = newOrganisation._id;
+
 		return { success: true };
 	} catch (error) {
 		return handleServerError(error);
@@ -99,6 +101,8 @@ const deleteOrganisation = async (request: Request, locals: any) => {
 		await Organisation.deleteOne({ _id: id });
 		await User.updateOne({ _id: locals.user.id }, { $unset: { organisation: '' } });
 		await User.deleteMany({ organisation: id });
+
+		locals.user.organisation = '';
 
 		return { success: true };
 	} catch (error) {
