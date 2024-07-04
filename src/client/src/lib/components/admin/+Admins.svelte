@@ -4,7 +4,7 @@
 	import { getUsers } from '$lib/services/users';
 	import AddAdmin from '$lib/components/admin/modals/add/+AddAdmin.svelte';
 	import EditAdmin from '$lib/components/admin/modals/edit/+EditAdmin.svelte';
-	import Remove from '$lib/components/admin/modals/remove/+Remove.svelte';
+	import Remove from '$lib/components/admin/modals/remove/Remove.svelte';
 	import {
 		Table,
 		TableBody,

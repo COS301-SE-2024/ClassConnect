@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 
+	export let role: string;
 	export let open: boolean;
 
 	let error: string;
@@ -20,7 +21,7 @@
 
 <Modal bind:open size="xs" class="w-full">
 	<form method="POST" action="?/add" class="flex flex-col" use:enhance={close}>
-		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add New Lecturer</h3>
+		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add New {role}</h3>
 
 		{#if error}
 			<p class="mt-2 text-center text-red-500">{error}</p>
@@ -37,9 +38,9 @@
 			type="email"
 			id="email"
 			name="email"
-			placeholder="johndoe@example.com"
 			size="md"
 			required
+			placeholder="johndoe@example.com"
 		/>
 
 		<Label for="image" class="mb-2 mt-4 text-left">Profile Picture</Label>
@@ -51,6 +52,6 @@
 			placeholder="https://example.com/logo.png"
 		/>
 
-		<Button type="submit" class="mt-4 w-full">Add Lecturer</Button>
+		<Button type="submit" class="mt-4 w-full">Add {role}</Button>
 	</form>
 </Modal>

@@ -2,8 +2,8 @@
 	import type { PageData } from './$types';
 	import { Button } from 'flowbite-svelte';
 
-	import EditModal from '$lib/components/admin/modals/edit/Organisation.svelte';
-	import CreateModal from '$lib/components/admin/modals/add/Organisation.svelte';
+	import EditModal from '$lib/components/admin/modals/organisation/Edit.svelte';
+	import CreateModal from '$lib/components/admin/modals/organisation/Add.svelte';
 	import DeleteModal from '$lib/components/admin/modals/remove/Organisation.svelte';
 
 	export let data: PageData;

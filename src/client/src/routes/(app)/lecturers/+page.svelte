@@ -10,7 +10,11 @@
 		TableBodyCell
 	} from 'flowbite-svelte';
 
-	import AddModal from '$lib/components/admin/modals/add/Lecturer.svelte';
+	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
+
+	import AddModal from '$lib/components/admin/modals/user/Add.svelte';
+	import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
+	import EditModal from '$lib/components/admin/modals/user/Edit.svelte';
 
 	interface Lecturer {
 		id: string;
@@ -27,9 +31,22 @@
 
 	export let data: PageData;
 
+	let id: string;
 	let isAddModalOpen = false;
+	let isEditModalOpen = false;
+	let isRemoveModalOpen = false;
 
 	const headers: string[] = ['Name', 'Username', 'Email Address'];
+
+	function handleEditModalOpen(lecturerId: string) {
+		id = lecturerId;
+		isEditModalOpen = true;
+	}
+
+	function handleRemoveModalOpen(lecturerId: string) {
+		id = lecturerId;
+		isRemoveModalOpen = true;
+	}
 
 	$: ({ lecturers } = data);
 </script>
@@ -68,12 +85,14 @@
 					<TableHeadCell>{header}</TableHeadCell>
 				{/each}
 			</TableHead>
+
 			<TableBody tableBodyClass="divide-y">
 				{#each lecturers as lecturer (lecturer.id)}
 					<TableBodyRow>
 						<TableBodyCell class="inline-flex items-center gap-x-3">
 							<div class="flex items-center gap-x-2">
 								<Avatar src={lecturer.image} alt={`${lecturer.name} ${lecturer.surname}`} />
+
 								<div>
 									<p class="text-lg text-gray-800 dark:text-white">
 										{lecturer.name}
@@ -82,13 +101,20 @@
 								</div>
 							</div>
 						</TableBodyCell>
+
 						<TableBodyCell>{lecturer.username}</TableBodyCell>
+
 						<TableBodyCell>{lecturer.email}</TableBodyCell>
+
 						<TableBodyCell>
 							<div class="flex items-center gap-x-6">
-								<!-- <Remove id={lecturer.id} />
-								<AddToWorkSpace id={lecturer.id} />
-								<EditLecturer lecturerID={lecturer.id} /> -->
+								<Button on:click={() => handleEditModalOpen(lecturer.id)}>
+									<EditOutline />
+								</Button>
+
+								<Button color="red" on:click={() => handleRemoveModalOpen(lecturer.id)}>
+									<TrashBinOutline />
+								</Button>
 							</div>
 						</TableBodyCell>
 					</TableBodyRow>
@@ -98,4 +124,6 @@
 	{/if}
 </main>
 
-<AddModal bind:open={isAddModalOpen} />
+<AddModal bind:open={isAddModalOpen} role="Lecturer" />
+<EditModal bind:open={isEditModalOpen} {id} role="Lecturer" />
+<RemoveModal bind:open={isRemoveModalOpen} {id} item="user" />

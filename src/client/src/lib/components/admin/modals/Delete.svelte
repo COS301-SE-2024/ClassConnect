@@ -3,8 +3,9 @@
 	import { Button, Modal, Input } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
 
-	export let id;
-	export let open = false;
+	export let id: string;
+	export let open: boolean;
+	export let item: 'user' | 'organisation';
 
 	let error: string;
 
@@ -24,7 +25,7 @@
 	<ExclamationCircleOutline class="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-200" />
 
 	<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-		Are you sure you want to delete this organisation?
+		Are you sure you want to remove this {item}?
 	</h3>
 
 	{#if error}

@@ -5,7 +5,7 @@
 	import AddToWorkSpace from '$lib/components/admin/modals/add/+AddToWorkSpace.svelte';
 	import AddStudent from '$lib/components/admin/modals/add/+AddStudent.svelte';
 	import EditStudent from '$lib/components/admin/modals/edit/+EditStudent.svelte';
-	import Remove from '$lib/components/admin/modals/remove/+Remove.svelte';
+	import Remove from '$lib/components/admin/modals/remove/Remove.svelte';
 	import {
 		Table,
 		TableBody,

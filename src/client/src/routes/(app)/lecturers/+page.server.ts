@@ -81,11 +81,14 @@ export const actions: Actions = {
 		if (!id) return fail(400, { error: 'Lecturer ID is required' });
 
 		try {
-			const updatedLecturer = await User.findByIdAndUpdate(
-				id,
-				{ name, surname, email, image },
-				{ new: true, runValidators: true }
-			);
+			const updateData: { [key: string]: string } = {};
+
+			if (name !== '') updateData.name = name;
+			if (surname !== '') updateData.surname = surname;
+			if (email !== '') updateData.email = email;
+			if (image !== '') updateData.image = image;
+
+			const updatedLecturer = await User.findByIdAndUpdate(id, updateData, { new: true });
 
 			if (!updatedLecturer) return fail(404, { error: 'Lecturer not found' });
 
@@ -96,7 +99,7 @@ export const actions: Actions = {
 		}
 	},
 
-	remove: async ({ request, locals }) => {
+	delete: async ({ request, locals }) => {
 		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
 
 		const data = await request.formData();
