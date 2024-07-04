@@ -1,17 +1,24 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import type { LayoutData } from './$types';
 	import Header from '$lib/components/common/Header.svelte';
 	import SideBar from '$lib/components/common/SideBar.svelte';
+	import WorkspaceSidebar from '$lib/components/common/workspace/Sidebar.svelte';
 
 	export let data: LayoutData;
+
+	$: isWorkspacePage = /^\/workspaces\/[^\/]+(?:\/|$)/.test($page.url.pathname);
 </script>
 
 <div class="flex">
-	<SideBar role={data.role} />
+	{#if isWorkspacePage}
+		<WorkspaceSidebar role={data.role} workspace={data.workspace} />
+	{:else}
+		<SideBar role={data.role} />
+	{/if}
 
 	<div class="flex-1">
 		<Header {data} />
-
 		<slot />
 	</div>
 </div>

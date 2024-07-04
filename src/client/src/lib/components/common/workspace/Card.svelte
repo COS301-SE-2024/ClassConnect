@@ -4,7 +4,16 @@
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
 
 	export let workspace;
+	export let role: string;
 	let { id, name, image, description } = workspace;
+
+	function openWorkspace() {
+		if (role === 'lecturer') {
+			goto(`/workspaces/${id}/dashboard`);
+		} else {
+			goto(`/workspaces/${id}/announcements`);
+		}
+	}
 </script>
 
 <Card img={image} imgClass="h-40 w-full object-fit">
@@ -12,11 +21,11 @@
 		{name}
 	</h4>
 
-	<h5 class="mb-2 text-l font-bold tracking-tight text-gray-900 dark:text-white">
+	<h5 class="text-l mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
 		{description}
 	</h5>
 
-	<Button on:click={() => goto(`/workspaces/${id}`)}>
-		Open<ArrowRightOutline class="ms-2 h-6 w-6 text-white" />
+	<Button on:click={openWorkspace}>
+		Open <ArrowRightOutline class="ms-2 h-6 w-6 text-white" />
 	</Button>
 </Card>

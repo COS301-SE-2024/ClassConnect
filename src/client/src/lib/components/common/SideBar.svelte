@@ -1,29 +1,26 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	import Logo from '$lib/images/class-connect-logo.png';
 	import {
 		GridOutline,
-		FireOutline,
 		GlobeOutline,
 		BullhornSolid,
 		BuildingSolid,
-		ClipboardSolid,
-		DesktopPcOutline,
 		BriefcaseOutline,
 		UserCircleOutline,
 		InfoCircleOutline,
 		UsersGroupOutline,
+		ChartLineUpOutline,
 		ProfileCardOutline,
 		ArrowLeftToBracketOutline,
 		AdjustmentsHorizontalSolid
 	} from 'flowbite-svelte-icons';
+	import { page } from '$app/stores';
+	import Logo from '$lib/images/class-connect-logo.png';
 
 	export let role: 'lecturer' | 'admin' | 'student';
 
 	const navLinks = {
 		admin: [
 			{ icon: GridOutline, name: 'Dashboard', href: '/dashboard' },
-			{ icon: ClipboardSolid, name: 'Activities', href: '/activities' },
 			{ icon: BullhornSolid, name: 'Announcements', href: '/announcements' },
 			{ icon: BuildingSolid, name: 'Organisation', href: '/organisation' },
 			{ icon: BriefcaseOutline, name: 'Workspaces', href: '/workspaces' },
@@ -33,15 +30,13 @@
 		],
 		lecturer: [
 			{ icon: BullhornSolid, name: 'Workspaces', href: '/workspaces' },
-			{ icon: GlobeOutline, name: 'Activities', href: '/activities' },
-			{ icon: GridOutline, name: 'Dashboard', href: '/dashboard' },
-			{ icon: DesktopPcOutline, name: 'Lesson', href: '/lessons' },
-			{ icon: FireOutline, name: 'Sandbox', href: '/sandbox' }
+			{ icon: BullhornSolid, name: 'Announcements', href: '/announcements' }
 		],
 		student: [
 			{ icon: GridOutline, name: 'Dashboard', href: '/student' },
-			{ icon: DesktopPcOutline, name: 'Classroom', href: '/student/classroom' },
-			{ icon: GlobeOutline, name: 'Activities', href: '/student/activities' }
+			{ icon: GlobeOutline, name: 'Activities', href: '/activities' },
+			{ icon: BullhornSolid, name: 'Announcements', href: '/announcements' },
+			{ icon: ChartLineUpOutline, name: 'Grades', href: '/grades' }
 		]
 	};
 

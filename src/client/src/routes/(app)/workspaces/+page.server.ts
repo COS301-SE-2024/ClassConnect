@@ -3,7 +3,6 @@ import { fail, error, redirect } from '@sveltejs/kit';
 
 import User from '$db/schemas/User';
 import Workspace from '$db/schemas/Workspace';
-import { descending } from '@stream-io/video-client';
 
 async function getName(id: string) {
 	const user = await User.findById(id).select('name surname');
