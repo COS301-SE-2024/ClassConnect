@@ -114,22 +114,22 @@ export const actions: Actions ={
 	},
 
 	delete: async ({ request, locals }) => {
-		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
+		if (!locals.user || locals.user.role !== 'student') throw error(401, 'Unauthorized');
 
 		const data = await request.formData();
 		const id = data.get('id') as string;
 
-		if (!id) return fail(400, { error: 'Admin ID is required' });
+		if (!id) return fail(400, { error: 'Student ID is required' });
 
 		try {
-			const deletedAdmin = await User.findByIdAndDelete(id);
+			const deletedStudent = await User.findByIdAndDelete(id);
 
-			if (!deletedAdmin) return fail(404, { error: 'Admin not found' });
+			if (!deletedStudent) return fail(404, { error: 'Student not found' });
 
 			return { success: true };
 		} catch (err) {
-			console.error('Error removing admin:', err);
-			return fail(500, { error: 'Failed to remove admin' });
+			console.error('Error removing student:', err);
+			return fail(500, { error: 'Failed to remove student' });
 		}
 	}
 }
