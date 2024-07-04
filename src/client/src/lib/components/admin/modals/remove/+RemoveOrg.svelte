@@ -1,26 +1,51 @@
-<script>
+<script lang='ts'>
 	import { goto } from '$app/navigation';
 	import { Button, Modal } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
-	import { deleteOrganization } from '$lib/services/orgs';
-	import { organisationName } from '$lib/store';
+	import type { Org } from '$lib/store/types'
+	import { user } from '$lib/store';
 	let popupModal = false;
 
 	async function handleRemove() {
-		const orgID = localStorage.getItem('organisationID') || 'non-existent';
+		console.log('remove is being handled');
+
+		// Create a FormData object
+		const formData = new FormData();
+		formData.append('organisationID', $user.getOrganisation());
 
 		try {
-			const message = await deleteOrganization(orgID);
+			const response = await fetch('/admin/organisation?/remove', {
+				method: 'POST',
+				body: formData
+			});
 
-			console.log(message);
+			const res = await response.json();
 
-			localStorage.removeItem('organisationID');
+			if(response.ok) {
+				const stringifiedArray = res.data
+				const jsonArray = JSON.parse(stringifiedArray);
+				const jsonString = jsonArray[0];
+				const result = JSON.parse(jsonString);
 
-			organisationName.set('');
-			goto('/admin/organisation');
+				console.log(result)
+
+				const org : Org = {
+					id: result.id,
+					org_name: result.org_name,
+					image: result.image
+				}
+
+				$user.updateOrganisation(org);
+
+			}else{
+				throw(Error('Failed to remove organisation'));
+			}
+
 		} catch (error) {
-			console.error('Delete organization error:', error);
+			console.error('remove org error:', error);
 		}
+
+		popupModal = false;
 	}
 </script>
 

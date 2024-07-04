@@ -1,8 +1,10 @@
 import type { ObjectId } from 'mongoose';
+import { getOrganisationDetails } from '$lib/server/organisation';
 import { verify } from '@node-rs/argon2';
 import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, RequestEvent } from './$types';
 import type { UserData } from '$lib/store/types';
+import type { Org } from '$lib/store/types';
 
 import User from '$db/schemas/User';
 import { lucia } from '$lib/server/auth';
@@ -63,6 +65,16 @@ export const actions: Actions = {
 
 			await createSessionAndSetCookie(event, user._id, user.role);
 
+			let orgDet : Org = {
+				id: '',
+				org_name: '',
+				image: ''
+			};
+
+			if (user.organisation && user.organisation !== '') {
+				orgDet = await getOrganisationDetails(user.organisation);
+			}
+
 			const return_user: UserData = {
 				first_name: user.name,
 				last_name: user.surname,
@@ -72,7 +84,8 @@ export const actions: Actions = {
 				image: user.image,
 				role: user.role,
 				organisation: user.organisation,
-				workspaces: user.workspaces
+				workspaces: user.workspaces,
+				org: orgDet
 			};
 
 			return JSON.stringify(return_user);

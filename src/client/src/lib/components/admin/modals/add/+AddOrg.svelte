@@ -13,6 +13,7 @@
 
 		// Create a FormData object from the form
 		const formData = new FormData(event.target as HTMLFormElement);
+		formData.append('orgID', $user.getOrganisation());
 		formData.append('userID', $user.getUserID());
 		
 		const name = formData.get('org_name')?.toString() ?? '';
@@ -45,15 +46,12 @@
 
 				$user.updateOrganisation(org);
 
-				alert('Organisation created successfully');
-
 			}else{
 				throw(Error('Failed to create organisation'));
 			}
 
 		} catch (error) {
 			console.error('create org  error:', error);
-			alert('Create failed');
 		}
 
 		formModal = false;

@@ -40,11 +40,7 @@
 					role: result.role,
 					organisation: result.organisation ?? '',
 					workspaces: result.workspaces,
-					org: {
-						id: '',
-						org_name: '',
-						image: ''
-					}
+					org: result.org
 				};
 				
 				if(ret_user_data.role === 'admin'){

@@ -1,5 +1,6 @@
 /** @type {import('./$types').Actions} */
 import Organisation from '$db/schemas/Organisation';
+import { propagateOrgDelete } from '$lib/server/organisation';
 import User from '$db/schemas/User';
 import type { Org } from '$lib/store/types';
 
@@ -26,22 +27,38 @@ async function createOrg(org_name : any, userID : any) : Promise<Org> {
 	return ret_org;
 }
 
-async function editDetails(org_name : any, image_file : any, orgID : any) {
-	if (org_name) {
-		console.log(org_name);
-	}
+async function editDetails(org_name : any, orgID : any) : Promise<Org> {
+	const org = await Organisation.findById(orgID);
 
-	if (image_file) {
-		console.log(image_file.name);
-	}
+	if (org === null) {
+		throw new Error('Organisation not found');
+	} else {
+		org.name = org_name;
+		await org.save();
 
-	if (orgID) {
-		console.log(orgID);
+		return {
+			id: org._id.toString(),
+			org_name: org.name,
+			image: org.image ?? ''
+		};
 	}
 }
 
-async function removeOrg(orgId : any) {
-	console.log(orgId);
+async function removeOrg(orgId : any) : Promise<Org>  {
+	const org = await Organisation.findById(orgId);
+
+	if (org === null) {
+		throw new Error('Organisation not found');
+	} else {
+		
+		await propagateOrgDelete(orgId, org.createdBy);
+
+		return {
+			id: '',
+			org_name: '',
+			image: ''
+		};
+	}
 }
 
 export const actions = {
@@ -62,34 +79,21 @@ export const actions = {
 	edit: async ({ request }) => {
 		const formData = await request.formData();
 		const orgName = formData.get('org_name');
-		const imageFile = formData.get('image');
 		const OrgId = formData.get('orgID');
 
 		console.log('Organisation Name: ', orgName);
+		console.log('Organisation ID: ', OrgId);
 
-		if (imageFile instanceof File) {
-			console.log('Received file');
-			console.log('File name: ', imageFile.name);
-			console.log('File type: ', imageFile.type);
-			console.log('File size: ', imageFile.size);
-		} else {
-			console.log('No file received');
-		}
+		const new_org : Org = await editDetails(orgName, OrgId);
 
-		await editDetails(orgName, imageFile, OrgId);
-
-		return JSON.stringify({
-			success: true
-		});
+		return JSON.stringify(new_org);
 	},
 	remove: async ({ request }) => {
         const formData = await request.formData();
         const orgId = formData.get('organisationID');
         
-        await removeOrg(orgId);
+        const new_org : Org = await removeOrg(orgId);
         
-        return JSON.stringify({
-            success: true
-        });
+        return JSON.stringify(new_org);
 	}
 };

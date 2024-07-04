@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
-	import { organisationName } from '$lib/store';
-	import { updateOrganization } from '$lib/services/orgs';
+	import { user } from '$lib/store';
 
 	let formModal = false;
 
@@ -11,23 +10,44 @@
 		event.preventDefault();
 
 		const formData = new FormData(event.target as HTMLFormElement);
+		formData.append('orgID', $user.getOrganisation());
+		
 		const name = formData.get('org_name')?.toString() ?? '';
-		console.log('This is the name parameter:', name);
-		const image = 'https://example.com/images/university_updated.jpg';
-		const id = localStorage.getItem('organisationID') || 'non-existent';
+		const id = formData.get('orgID')?.toString() ?? '';
+
 		try {
-			const response = await updateOrganization(id, name, image);
+			const response = await fetch('/admin/organisation?/edit', {
+				method: 'POST',
+				body: formData
+			});
 
-			console.log('Response:', response);
+			const res = await response.json();
 
-			if (response) {
-				organisationName.set(response.name);
-				//goto('/');
+			if(response.ok) {
+				const stringifiedArray = res.data
+				const jsonArray = JSON.parse(stringifiedArray);
+				const jsonString = jsonArray[0];
+				const result = JSON.parse(jsonString);
+
+				console.log(result)
+
+				const org : Org = {
+					id: result.id,
+					org_name: result.org_name,
+					image: result.image
+				}
+
+				$user.updateOrganisation(org);
+
+			}else{
+				throw(Error('Failed to update organisation'));
 			}
+
 		} catch (error) {
-			console.error('update org error:', error);
-			alert('Update failed');
+			console.error('create org  error:', error);
 		}
+
+		let formModal = false;
 	}
 </script>
 
@@ -58,13 +78,10 @@
 			type="text"
 			id="org_name"
 			name="org_name"
-			placeholder="Example University"
+			placeholder="Organisation"
 			size="md"
 			required
 		/>
-
-		<Label for="upload_image" class="mb-2 mt-2 space-y-2">Upload image:</Label>
-		<Input type="file" id="image" name="image" />
 
 		<Button type="submit" class="w-full1">Edit Organisation</Button>
 	</form>
