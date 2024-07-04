@@ -62,6 +62,7 @@ export const actions: Actions ={
 				email,
 				role: 'admin',
 				password: username,
+				username,
 				organisation: locals.user.organisation,
 				image: image || 'images/profile-placeholder.png'
 			});
