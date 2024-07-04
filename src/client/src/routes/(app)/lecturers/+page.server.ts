@@ -1,8 +1,16 @@
+import { hash } from '@node-rs/argon2';
 import type { Actions } from './$types';
 import { fail, error, redirect } from '@sveltejs/kit';
 
 import User from '$db/schemas/User';
 import { generateUsername } from '$utils/user';
+
+const HASH_OPTIONS = {
+	timeCost: 2,
+	outputLen: 32,
+	parallelism: 1,
+	memoryCost: 19456
+};
 
 export async function load({ locals }) {
 	if (!locals.user) return redirect(302, '/signin');
@@ -48,6 +56,7 @@ export const actions: Actions = {
 			if (existingUser) return fail(400, { error: 'Email already in use' });
 
 			const username = generateUsername('lecturer', email);
+			const hashedPassword = await hash(username, HASH_OPTIONS);
 
 			const newLecturer = new User({
 				name,
@@ -55,7 +64,7 @@ export const actions: Actions = {
 				email,
 				username,
 				role: 'lecturer',
-				password: username,
+				password: hashedPassword,
 				organisation: locals.user.organisation,
 				image: image || 'images/profile-placeholder.png'
 			});

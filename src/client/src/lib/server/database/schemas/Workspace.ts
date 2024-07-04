@@ -6,6 +6,7 @@ const workspaceSchema = new mongoose.Schema({
 		required: true
 	},
 	image: String,
+	description: String,
 	owner: {
 		type: mongoose.Types.ObjectId,
 		ref: 'User',

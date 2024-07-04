@@ -32,12 +32,11 @@
 			{ icon: UsersGroupOutline, name: 'Students', href: '/students' }
 		],
 		lecturer: [
-			{ icon: BullhornSolid, name: 'Workspaces', href: '/lecturer/workspace' },
-			{ icon: GlobeOutline, name: 'Activities', href: '/lecturer/activities' },
-			{ icon: GridOutline, name: 'Dashboard', href: '/lecturer/dashboard' },
-			{ icon: DesktopPcOutline, name: 'Classroom', href: '/lecturer/classroom' },
-			{ icon: FireOutline, name: 'Sandbox', href: '/lecturer/sandbox' },
-			{ icon: InfoCircleOutline, name: 'FAQ', href: '/lecturer/faq' }
+			{ icon: BullhornSolid, name: 'Workspaces', href: '/workspaces' },
+			{ icon: GlobeOutline, name: 'Activities', href: '/activities' },
+			{ icon: GridOutline, name: 'Dashboard', href: '/dashboard' },
+			{ icon: DesktopPcOutline, name: 'Lesson', href: '/lessons' },
+			{ icon: FireOutline, name: 'Sandbox', href: '/sandbox' }
 		],
 		student: [
 			{ icon: GridOutline, name: 'Dashboard', href: '/student' },
