@@ -44,22 +44,18 @@ export const actions: Actions ={
 		//retrieve information from form data
 		const data= await request.formData();
 		const name= data.get('name') as string;
+		
 		const surname= data.get('surname') as string;
 		const email= data.get('email') as string;
 		const image= data.get('image') as string;
-
+		
 		//create new admin and save 
 		try{
 			//if user already exists
-			const existingUser= await User.findOne({email});
-			if(existingUser){
-				console.error('Email already exists');
-				return fail(400, { error: 'Email already in use' });
-			}
-
+			
 			//generate username
 			const username = generateUsername('admin', email);
-
+			
 			const newAdmin = new User({
 				name,
 				surname,
@@ -75,10 +71,44 @@ export const actions: Actions ={
 				success: true
 			};
 		}
-
+		
 		catch(error){
 			console.log('Server error:', error);
-			return fail(400, 'Failed to create admin');
+			return fail(500, 'Failed to create admin');
 		}
+	},
+	
+	edit: async ({request, locals})=>{
+		///check for unauthorised accesss
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unathorised');
+		
+		//retrieve information from form data
+		const data= await request.formData();
+		const name= data.get('name') as string;
+		const id= data.get('id') as string;
+		const surname= data.get('surname') as string;
+		const email= data.get('email') as string;
+		const image= data.get('image') as string;
+		
+		
+		try {
+			if (!id) return fail(400, { error: 'Admin ID is required' });
+			const updateData: { [key: string]: string } = {};
+
+			if (name !== '') updateData.name = name;
+			if (surname !== '') updateData.surname = surname;
+			if (email !== '') updateData.email = email;
+			if (image !== '') updateData.image = image;
+
+			const updatedAdmin = await User.findByIdAndUpdate(id, updateData, { new: true });
+
+			if (!updatedAdmin) return fail(404, { error: 'Admin not found' });
+
+			return { success: true };
+		} catch (err) {
+			console.error('Error updating Admin:', err);
+			return fail(500, { error: 'Failed to update admin' });
+		}
+
 	}
 }
