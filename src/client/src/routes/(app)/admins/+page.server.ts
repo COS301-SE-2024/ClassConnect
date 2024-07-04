@@ -110,5 +110,25 @@ export const actions: Actions ={
 			return fail(500, { error: 'Failed to update admin' });
 		}
 
+	},
+
+	delete: async ({ request, locals }) => {
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
+
+		const data = await request.formData();
+		const id = data.get('id') as string;
+
+		if (!id) return fail(400, { error: 'Admin ID is required' });
+
+		try {
+			const deletedAdmin = await User.findByIdAndDelete(id);
+
+			if (!deletedAdmin) return fail(404, { error: 'Admin not found' });
+
+			return { success: true };
+		} catch (err) {
+			console.error('Error removing admin:', err);
+			return fail(500, { error: 'Failed to remove admin' });
+		}
 	}
 }
