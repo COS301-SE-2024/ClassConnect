@@ -44,3 +44,6 @@ export const userInfo = writable<any>({
 });
 
 export const screenShareEnabled = writable(false);
+
+export const  temporary = writable<string>("");
+export const useLocalFile = writable(false);
