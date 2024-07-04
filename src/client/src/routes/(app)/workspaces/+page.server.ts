@@ -75,5 +75,25 @@ export const actions: Actions = {
 			console.error('Server error:', error);
 			return fail(500, { error: 'Failed to add workspace' });
 		}
+	},
+	delete: async ({ request, locals }) => {
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
+
+		const data = await request.formData();
+		const id = data.get('id') as string;
+
+		if (!id) return fail(400, { error: 'Workspace ID is required' });
+
+		try {
+			const deletedLecturer = await Workspace.findByIdAndDelete(id);
+			if (!deletedLecturer) return fail(404, { error: 'Workspace not found' });
+
+			await User.findByIdAndUpdate(deletedLecturer.owner, { owner: null });
+
+			return { success: true };
+		} catch (err) {
+			console.error('Error removing lecturer:', err);
+			return fail(500, { error: 'Failed to remove lecturer' });
+		}
 	}
 };
