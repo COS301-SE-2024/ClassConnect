@@ -13,6 +13,7 @@
 	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 
 	import AddModal from '$lib/components/admin/modals/user/Add.svelte';
+	import EnrolModal from '$lib/components/admin/modals/user/Enrol.svelte';
 	import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
 	import EditModal from '$lib/components/admin/modals/user/Edit.svelte';
 
@@ -35,12 +36,18 @@
 	let isAddModalOpen = false;
 	let isEditModalOpen = false;
 	let isRemoveModalOpen = false;
+	let isEnrolModalOpen = false;
 
 	const headers: string[] = ['Name', 'Username', 'Email Address'];
 
 	function handleEditModalOpen(studentId: string) {
 		id = studentId;
 		isEditModalOpen = true;
+	}
+
+	function handleEnrolModalOpen(studentId: string) {
+		id = studentId;
+		isEnrolModalOpen = true;
 	}
 
 	function handleRemoveModalOpen(studentId: string) {
@@ -115,6 +122,10 @@
 								<Button color="red" on:click={() => handleRemoveModalOpen(student.id)}>
 									<TrashBinOutline />
 								</Button>
+
+								<Button color="yellow" on:click={() => handleEnrolModalOpen(student.id)}>
+									<TrashBinOutline />
+								</Button>
 							</div>
 						</TableBodyCell>
 					</TableBodyRow>
@@ -124,6 +135,7 @@
 	{/if}
 </main>
 
+<EnrolModal bind:open={isEnrolModalOpen} role="Student"/>
 <AddModal bind:open={isAddModalOpen} role="Student" />
 <EditModal bind:open={isEditModalOpen} {id} role="Student" />
 <RemoveModal bind:open={isRemoveModalOpen} {id} item="user" />
