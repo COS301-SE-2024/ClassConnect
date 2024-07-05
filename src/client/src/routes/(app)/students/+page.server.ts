@@ -147,6 +147,7 @@ export const actions: Actions ={
 			return fail(500, { error: 'Failed to remove student' });
 		}
 	},
+	
 	enrol: async ({request, locals})=>{
 		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
 
