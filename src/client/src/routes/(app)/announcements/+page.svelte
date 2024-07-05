@@ -13,8 +13,8 @@
 	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 
 	import AddModal from '$lib/components/admin/modals/announcement/Add.svelte';
-	import Announcements from '$lib/components/universal/+Announcements.svelte';
-	// import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
+	//import Announcements from '$lib/components/universal/+Announcements.svelte';
+	 import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
 	 import EditModal from '$lib/components/admin/modals/announcement/Edit.svelte';
 
 	interface Announcement {
@@ -35,7 +35,7 @@
 	let id: string;
 	let isAddModalOpen = false;
 	 let isEditModalOpen = false;
-	// let isRemoveModalOpen = false;
+	 let isRemoveModalOpen = false;
 
 	const headers: string[] = ['Title', 'Decsription', 'Date'];
 
@@ -44,10 +44,10 @@
 		isEditModalOpen = true;
 	}
 
-	// function handleRemoveModalOpen(adminId: string) {
-	// 	id = adminId;
-	// 	isRemoveModalOpen = true;
-	// }
+	function handleRemoveModalOpen(adminId: string) {
+		id = adminId;
+		isRemoveModalOpen = true;
+	}
 
 	$: ({ announcements } = data);
 </script>
@@ -117,7 +117,7 @@
 						</div>
 						<div>
 							<Button class="mr-2" on:click={() => handleEditModalOpen(announcement.ann_id)}>Edit</Button>
-							<Button color="red">Delete</Button>
+							<Button color="red" on:click={() => handleRemoveModalOpen(announcement.ann_id)}>Delete</Button>
 						</div>
 					</div>
 				</div>
@@ -127,4 +127,4 @@
 </main>
 <AddModal bind:open={isAddModalOpen}  />
 <EditModal bind:open={isEditModalOpen} {id} role="Admin"/>
-<!-- <RemoveModal bind:open={isRemoveModalOpen} {id} item="user" /> -->
+<RemoveModal bind:open={isRemoveModalOpen} {id} item="announcement" />
