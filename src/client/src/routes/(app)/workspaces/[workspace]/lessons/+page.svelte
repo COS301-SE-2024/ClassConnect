@@ -1,105 +1,60 @@
-<script context="module">
-	import { browser } from '$app/environment';
-	import { page } from '$app/stores';
-	import { derived } from 'svelte/store';
-</script>
-
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { lessons } from '$lib/store';
-	import {
-		Table,
-		TableBody,
-		TableBodyCell,
-		TableBodyRow,
-		TableHead,
-		TableHeadCell,
-		Button
-	} from 'flowbite-svelte';
+	import { Button } from 'flowbite-svelte';
 
-	import ScheduleLesson from '$lib/components/lecturer/modals/+ScheduleLesson.svelte';
+	import { formatDate } from '$utils/date';
+	import Upcoming from '$lib/components/lecturer/lessons/Upcoming.svelte';
+	import InSession from '$lib/components/lecturer/lessons/InSession.svelte';
+	import ScheduleModal from '$lib/components/lecturer/modals/lessons/Schedule.svelte';
 
-	const headers = ['Topic', 'Date', 'Time'];
+	export let data: any;
 
-	const showButtonReactive = derived(page, ($page) => {
-		if (browser) {
-			return $page.url.pathname.includes('lecturer');
-		}
-		return false;
-	});
+	let isScheduleModalOpen = false;
+
+	let upcomingLessons: any[] = [];
+	let inSessionLessons: any[] = [];
+
+	$: ({ role, lessons } = data);
+
+	$: {
+		const now = new Date();
+
+		lessons = lessons.map((lesson: any) => ({
+			...lesson,
+			date: formatDate(new Date(lesson.date)),
+			unformattedDate: new Date(lesson.date)
+		}));
+
+		upcomingLessons = lessons.filter((lesson: any) => lesson.unformattedDate > now);
+		inSessionLessons = lessons.filter((lesson: any) => lesson.unformattedDate <= now);
+	}
 </script>
 
-<section class="container mx-auto my-2 px-4">
+<main class="container mx-auto my-2 px-4">
 	<div class="sm:flex sm:items-center sm:justify-between">
 		<div>
 			<div class="flex items-center gap-x-3">
 				<h2 class="text-xl font-bold text-gray-800 dark:text-white">Lessons</h2>
-
 				<span
 					class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
 				>
-					{$lessons.length + 1}
-					{' '} lessons
+					{lessons.length} lessons
 				</span>
 			</div>
 		</div>
-		{#if $showButtonReactive}
-			<div class="mb-4 flex items-center gap-x-3">
-				<ScheduleLesson />
-			</div>
+		{#if role === 'lecturer'}
+			<Button size="sm" on:click={() => (isScheduleModalOpen = true)}>Schedule Lesson</Button>
 		{/if}
 	</div>
-
 	<br />
 
-	<p class="text-l font-bold text-gray-800 dark:text-white">In Session</p>
+	{#if lessons.length === 0}
+		<p class="text-l text-gray-800 dark:text-white">
+			There are no lessons scheduled at the moment.
+		</p>
+	{:else}
+		<InSession lessons={inSessionLessons} {role} />
+		<Upcoming lessons={upcomingLessons} {role} />
+	{/if}
+</main>
 
-	<Table class="my-2">
-		<TableHead>
-			{#each headers as header}
-				<TableHeadCell>{header}</TableHeadCell>
-			{/each}
-		</TableHead>
-		<TableBody tableBodyClass="divide-y">
-			<TableBodyRow>
-				<TableBodyCell class="inline-flex items-center gap-x-3">
-					<p class="text-lg text-gray-800 dark:text-white">Mathematics</p>
-				</TableBodyCell>
-				<TableBodyCell>15 June</TableBodyCell>
-				<TableBodyCell>09:30</TableBodyCell>
-				<TableBodyCell>
-					<Button size="xs" on:click={() => goto('classroom/1234')}>Join</Button>
-				</TableBodyCell>
-			</TableBodyRow>
-		</TableBody>
-	</Table>
-
-	<br />
-
-	<p class="text-l font-bold text-gray-800 dark:text-white">Upcoming</p>
-
-	<Table class="my-2">
-		<TableHead>
-			{#each headers as header}
-				<TableHeadCell>{header}</TableHeadCell>
-			{/each}
-		</TableHead>
-		<TableBody tableBodyClass="divide-y">
-			{#each $lessons as lesson}
-				<TableBodyRow>
-					<TableBodyCell class="inline-flex items-center gap-x-3">
-						<p class="text-lg text-gray-800 dark:text-white">
-							{lesson.topic}
-						</p>
-					</TableBodyCell>
-					<TableBodyCell>
-						{lesson.date}
-					</TableBodyCell>
-					<TableBodyCell>
-						{lesson.time}
-					</TableBodyCell>
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</Table>
-</section>
+<ScheduleModal open={isScheduleModalOpen} />
