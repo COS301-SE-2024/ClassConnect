@@ -76,7 +76,7 @@ export const actions: Actions ={
 		
 		catch(error){
 			console.log('Server error:', error);
-			return fail(500, error: 'Failed to create admin');
+			return fail(500, {error: 'Failed to create admin'});
 		}
 	},
 	
@@ -131,35 +131,8 @@ export const actions: Actions ={
 			console.error('Error removing admin:', err);
 			return fail(500, { error: 'Failed to remove admin' });
 		}
-	},
+	}
 
-	enrol: async ({request, locals})=>{
-		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
-
-		 // get information from form data
-		 const data = await request.formData();
-		 const studentId = data.get('id') as string;
-		 const selectedWorkspaces = data.getAll('workspaces') as string[];
-		
-		 try {
-			// Find the student
-			const student = await User.findById(studentId);
-			if (!student) {
-			  return fail(404,{error: 'Student not found'});
-			}
-	  
-			// Update student's workspaces
-			student.workspaces = selectedWorkspaces;
-			await student.save();
-	  
-			return {
-			  success: true
-			};
-		  } catch (err) {
-			console.log('Server error:', err);
-			return fail(500, {error: 'Failed to enrol student'});
-		  }
-		}
 		
 
 	

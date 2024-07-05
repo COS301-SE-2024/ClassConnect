@@ -26,8 +26,15 @@
 		image: string;
 	}
 
+	interface Workspace{
+		id: string;
+		name: string;
+		image: string;
+	}
+
 	interface PageData {
 		students: Student[];
+		workspaces: Workspace[];
 	}
 
 	export let data: PageData;
@@ -55,7 +62,8 @@
 		isRemoveModalOpen = true;
 	}
 
-	$: ({ students } = data);
+	$: ({ students, workspaces } = data);
+
 </script>
 
 <main class="container mx-auto my-2 px-4">
@@ -126,6 +134,7 @@
 								<Button color="yellow" on:click={() => handleEnrolModalOpen(student.id)}>
 									<TrashBinOutline />
 								</Button>
+								
 							</div>
 						</TableBodyCell>
 					</TableBodyRow>
@@ -135,7 +144,7 @@
 	{/if}
 </main>
 
-<EnrolModal bind:open={isEnrolModalOpen} role="Student"/>
+<EnrolModal bind:open={isEnrolModalOpen} {id} {workspaces} role="Student"/>
 <AddModal bind:open={isAddModalOpen} role="Student" />
 <EditModal bind:open={isEditModalOpen} {id} role="Student" />
 <RemoveModal bind:open={isRemoveModalOpen} {id} item="user" />

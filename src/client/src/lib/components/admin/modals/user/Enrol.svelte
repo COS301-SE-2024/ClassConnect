@@ -5,6 +5,7 @@
 	export let id: string;
 	export let role: string;
 	export let open: boolean;
+	export let workspaces: any;
 
 	let error: string;
 
@@ -20,17 +21,13 @@
 	}
 
     // Static list of available workspaces with images
-    let workspaces = [
-        { id: 'workspace1', name: 'Workspace 1', image: 'https://example.com/workspace1.png' },
-        { id: 'workspace2', name: 'Workspace 2', image: 'https://example.com/workspace2.png' },
-        { id: 'workspace3', name: 'Workspace 3', image: 'https://example.com/workspace3.png' }
-    ];
+    
 
     let selectedWorkspaces = [];
 </script>
 
 <Modal bind:open size="xs" class="w-full">
-	<form method="POST" action="?/edit" class="flex flex-col" use:enhance={close}>
+	<form method="POST" action="?/enrol" class="flex flex-col" use:enhance={close}>
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Enrol {role}</h3>
 
 		{#if error}
