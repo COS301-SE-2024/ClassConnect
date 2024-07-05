@@ -3,6 +3,7 @@
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 
     export let id: string;
+	export let role: string;
 	export let open: boolean;
 
 	let error: string;

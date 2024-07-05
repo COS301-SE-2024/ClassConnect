@@ -18,7 +18,7 @@
 	 import EditModal from '$lib/components/admin/modals/announcement/Edit.svelte';
 
 	interface Announcement {
-		id:string;
+		ID:string;
 		ann_id: string;
 		title: string;
 		description: string;
@@ -116,7 +116,7 @@
 							<span class="ml-2">{announcement.date}</span>
 						</div>
 						<div>
-							<Button class="mr-2" on:click={() => (isEditModalOpen = true)}>Edit</Button>
+							<Button class="mr-2" on:click={() => handleEditModalOpen(announcement.ann_id)}>Edit</Button>
 							<Button color="red">Delete</Button>
 						</div>
 					</div>
@@ -126,5 +126,5 @@
 	{/if}
 </main>
 <AddModal bind:open={isAddModalOpen}  />
-<EditModal bind:open={isEditModalOpen} {id} role="admin"/>
+<EditModal bind:open={isEditModalOpen} {id} role="Admin"/>
 <!-- <RemoveModal bind:open={isRemoveModalOpen} {id} item="user" /> -->

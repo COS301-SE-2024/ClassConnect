@@ -83,7 +83,7 @@ export const actions: Actions ={
 		//retrieve information from form data
 		const data= await request.formData();
 		const title= data.get('title') as string;
-		const id= data.get('id') as string;
+		const id= data.get('id') as string; //announcement Id
 		const description= data.get('description') as string;
 		
 		try {
@@ -93,8 +93,11 @@ export const actions: Actions ={
 			if (title !== '') updateData.title = title;
 			if (description !== '') updateData.description = description;
 			
+			console.log('announcement ID', id);
+			
+			const updatedAnnouncement = await Announcement.findByIdAndUpdate(id, updateData, { new: true });
 
-			const updatedAnnouncement = await User.findByIdAndUpdate(id, updateData, { new: true });
+			console.log('Updated Data',updateData);
 
 			if (!updatedAnnouncement) return fail(404, { error: 'Announcement not found' });
 
