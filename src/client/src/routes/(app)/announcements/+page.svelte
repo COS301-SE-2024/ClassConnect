@@ -15,7 +15,7 @@
 	import AddModal from '$lib/components/admin/modals/announcement/Add.svelte';
 	import Announcements from '$lib/components/universal/+Announcements.svelte';
 	// import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
-	// import EditModal from '$lib/components/admin/modals/announcement/user/Edit.svelte';
+	 import EditModal from '$lib/components/admin/modals/announcement/Edit.svelte';
 
 	interface Announcement {
 		id:string;
@@ -32,16 +32,17 @@
 	}
 
 	export let data: PageData;
+	let id: string;
 	let isAddModalOpen = false;
-	// let isEditModalOpen = false;
+	 let isEditModalOpen = false;
 	// let isRemoveModalOpen = false;
 
 	const headers: string[] = ['Title', 'Decsription', 'Date'];
 
-	// function handleEditModalOpen(adminId: string) {
-	// 	id = adminId;
-	// 	isEditModalOpen = true;
-	// }
+	function handleEditModalOpen(annId: string) {
+		id = annId;
+		isEditModalOpen = true;
+	}
 
 	// function handleRemoveModalOpen(adminId: string) {
 	// 	id = adminId;
@@ -115,8 +116,8 @@
 							<span class="ml-2">{announcement.date}</span>
 						</div>
 						<div>
-							<Button class="mr-2">/</Button>
-							<Button color="red">-</Button>
+							<Button class="mr-2" on:click={() => (isEditModalOpen = true)}>Edit</Button>
+							<Button color="red">Delete</Button>
 						</div>
 					</div>
 				</div>
@@ -125,5 +126,5 @@
 	{/if}
 </main>
 <AddModal bind:open={isAddModalOpen}  />
-<!-- <EditModal bind:open={isEditModalOpen} {id} role="Admin" />
-<RemoveModal bind:open={isRemoveModalOpen} {id} item="user" /> -->
+<EditModal bind:open={isEditModalOpen} {id} role="admin"/>
+<!-- <RemoveModal bind:open={isRemoveModalOpen} {id} item="user" /> -->
