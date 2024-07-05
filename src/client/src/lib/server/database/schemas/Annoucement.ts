@@ -21,9 +21,15 @@ const announcementsSchema = new mongoose.Schema({
         required: true
     },
 
-	id: {
+	ID: {
 		type: mongoose.Types.ObjectId,
 		ref: 'Workspace' || 'Organisation', 
+		required: true
+	},
+
+	createdBy:{
+		type: mongoose.Types.ObjectId,
+		ref: 'User',
 		required: true
 	}
 

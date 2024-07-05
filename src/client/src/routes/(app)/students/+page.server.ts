@@ -4,7 +4,7 @@ import { generateUsername } from '$utils/user';
 import User from '$db/schemas/User';
 import Workspace from '$db/schemas/Workspace';
 //import { Workspace } from '../../../../../server/workspace/dist/schemas/workspace.schema.js';
-import { orgID } from '../../../lib/store/index.ts';
+//import { orgID } from '../../../lib/store/index.ts';
 
 export async function load({ locals }) {
 	//handle user
