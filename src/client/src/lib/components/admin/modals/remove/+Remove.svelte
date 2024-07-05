@@ -2,7 +2,7 @@
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
 	import { TrashBinOutline } from 'flowbite-svelte-icons';
 	import { Button, Modal } from 'flowbite-svelte';
-	
+
 	export let id = '';
 	let popupModal = false;
 
@@ -18,7 +18,7 @@
 				method: 'POST',
 				body: formData
 			});
-			console.log(response)
+			console.log(response);
 		} catch (error) {
 			console.error('Create User Error:', error);
 		}

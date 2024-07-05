@@ -5,12 +5,7 @@
 		BullhornSolid,
 		FireOutline,
 		DesktopPcOutline,
-		BookOpenOutline,
-		UserCircleOutline,
-		UsersGroupOutline,
-		HomeOutline,
-		BriefcaseOutline,
-		AdjustmentsHorizontalSolid
+		BookOpenOutline
 	} from 'flowbite-svelte-icons';
 
 	const nav_links = [

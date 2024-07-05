@@ -65,7 +65,7 @@ export const actions: Actions = {
 
 			await createSessionAndSetCookie(event, user._id, user.role);
 
-			let orgDet : Org = {
+			let orgDet: Org = {
 				id: '',
 				org_name: '',
 				image: ''
@@ -89,7 +89,6 @@ export const actions: Actions = {
 			};
 
 			return JSON.stringify(return_user);
-
 		} catch (e) {
 			console.error('Authentication error:', e);
 			return fail(500, { error: 'An unknown error occurred' });

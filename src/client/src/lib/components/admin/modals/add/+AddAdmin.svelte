@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
-	
+
 	let formModal = false;
 
 	async function handleSubmit(event: Event) {
@@ -13,7 +13,7 @@
 				method: 'POST',
 				body: formData
 			});
-			console.log(response)
+			console.log(response);
 		} catch (error) {
 			console.error('Create User Error:', error);
 		}

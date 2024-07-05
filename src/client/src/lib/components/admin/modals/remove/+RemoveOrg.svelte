@@ -1,10 +1,11 @@
-<script lang='ts'>
-	import { goto } from '$app/navigation';
-	import { Button, Modal } from 'flowbite-svelte';
-	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
-	import type { Org } from '$lib/store/types'
-	import { user } from '$lib/store';
+<script lang="ts">
+	import { Banner, Button, Modal } from 'flowbite-svelte';
+	import { ExclamationCircleOutline, BullhornSolid } from 'flowbite-svelte-icons';
+	import type { Org } from '$lib/store/types';
+	import { user, orgChange } from '$lib/store';
+
 	let popupModal = false;
+	let showBanner = false;
 
 	async function handleRemove() {
 		console.log('remove is being handled');
@@ -21,26 +22,34 @@
 
 			const res = await response.json();
 
-			if(response.ok) {
-				const stringifiedArray = res.data
+			if (response.ok) {
+				const stringifiedArray = res.data;
 				const jsonArray = JSON.parse(stringifiedArray);
 				const jsonString = jsonArray[0];
 				const result = JSON.parse(jsonString);
 
-				console.log(result)
+				console.log(result);
 
-				const org : Org = {
+				const org: Org = {
 					id: result.id,
 					org_name: result.org_name,
 					image: result.image
-				}
+				};
 
 				$user.updateOrganisation(org);
 
-			}else{
-				throw(Error('Failed to remove organisation'));
-			}
+				// Close the form modal and show the banner
+				popupModal = false;
+				showBanner = true;
 
+				const time: string = Date.now().toString();
+
+				const updateString: string = 'Organisation updated at ' + time;
+
+				orgChange.set(updateString);
+			} else {
+				throw Error('Failed to remove organisation');
+			}
 		} catch (error) {
 			console.error('remove org error:', error);
 		}
@@ -61,3 +70,15 @@
 		<Button color="alternative">No, cancel</Button>
 	</div>
 </Modal>
+
+{#if showBanner}
+	<Banner id="default-banner" position="absolute">
+		<p class="flex items-center text-2xl font-normal text-red-600 dark:text-red-400">
+			<span class="me-3 inline-flex rounded-full bg-red-200 p-1 dark:bg-red-600">
+				<BullhornSolid class="h-3 w-3 text-red-600 dark:text-red-400" />
+				<span class="sr-only">Warning</span>
+			</span>
+			<span> Organisation deleted successfully </span>
+		</p>
+	</Banner>
+{/if}

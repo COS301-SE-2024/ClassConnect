@@ -14,6 +14,8 @@
 		AdjustmentsHorizontalSolid
 	} from 'flowbite-svelte-icons';
 
+	console.log($user);
+
 	const nav_links = [
 		{
 			icon: HomeOutline,
@@ -33,27 +35,27 @@
 		{
 			icon: BuildingSolid,
 			name: 'Organisation',
-			href: '/admin/organisation?orgID='+$user.getOrganisation()
+			href: '/admin/organisation?orgID=' + $user.getOrganisation()
 		},
 		{
 			icon: ProfileCardOutline,
 			name: 'Lecturers',
-			href: '/admin/lecturers?orgID='+$user.getOrganisation()
+			href: '/admin/lecturers?orgID=' + $user.getOrganisation()
 		},
 		{
 			icon: UsersGroupOutline,
 			name: 'Students',
-			href: '/admin/students?orgID='+$user.getOrganisation()
+			href: '/admin/students?orgID=' + $user.getOrganisation()
 		},
 		{
 			icon: BriefcaseOutline,
 			name: 'Workspaces',
-			href: '/admin/workspaces?orgID='+$user.getOrganisation()
+			href: '/admin/workspaces?orgID=' + $user.getOrganisation()
 		},
 		{
 			icon: UserCircleOutline,
 			name: 'Admins',
-			href: '/admin/admins?orgID='+$user.getOrganisation()
+			href: '/admin/admins?orgID=' + $user.getOrganisation()
 		},
 		{
 			icon: AdjustmentsHorizontalSolid,

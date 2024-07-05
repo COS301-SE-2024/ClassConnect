@@ -4,7 +4,7 @@
 	import Remove from '$lib/components/admin/modals/remove/+Remove.svelte';
 	import { SearchOutline } from 'flowbite-svelte-icons';
 	import { user } from '$lib/store';
-    import type { Org_Admin } from '$lib/store/types';
+	import type { Org_Admin } from '$lib/store/types';
 	import {
 		Table,
 		TableBody,
@@ -20,7 +20,6 @@
 	let admins: Org_Admin[] = $user.getAdmins();
 
 	let headers = ['Name', 'Admin Number', 'Email address', 'Edit'];
-
 </script>
 
 <section class="container mx-auto my-2 px-4">

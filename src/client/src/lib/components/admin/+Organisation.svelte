@@ -3,18 +3,44 @@
 	import EditOrg from '$lib/components/admin/modals/edit/+EditOrg.svelte';
 	import AddOrg from '$lib/components/admin/modals/add/+AddOrg.svelte';
 	import RemoveOrg from '$lib/components/admin/modals/remove/+RemoveOrg.svelte';
-	import { user } from '$lib/store';
+	import { user, orgChange } from '$lib/store';
+	import { writable } from 'svelte/store';
 
 	let org_exists: boolean = false;
+	const organisation_name = writable('');
 
-	onMount(() => {
-		if ($user.getOrganisation() !== '') {
-			org_exists = true;
-		}else{
+	async function getOrgDetails() {
+		if ($user) {
+			try {
+				const orgID: string = $user.getOrganisation();
+				if (orgID !== '' && orgID !== undefined) {
+					const org = $user.getOrgDetails();
+					console.log('This is the new org: ', org);
+					if (org) {
+						org_exists = true;
+						organisation_name.set(org.org_name);
+					} else {
+						org_exists = false;
+					}
+				} else {
+					org_exists = false;
+				}
+			} catch (e) {
+				console.error('Error getting organisation details:', e);
+				org_exists = false;
+			}
+		} else {
 			org_exists = false;
 		}
-	});
+	}
 
+	onMount(getOrgDetails);
+
+	$: {
+		orgChange.subscribe(() => {
+			getOrgDetails();
+		});
+	}
 </script>
 
 {#if org_exists}
@@ -60,11 +86,13 @@
 								<tr>
 									<td class="whitespace-nowrap px-4 py-4 text-sm font-medium">
 										<div>
-											<h2 class="font-medium text-gray-800 dark:text-gray-300">Orgnisation Name</h2>
+											<h2 class="font-medium text-gray-800 dark:text-gray-300">
+												Organisation Name
+											</h2>
 										</div>
 									</td>
 									<td class="whitespace-nowrap px-12 py-4 text-sm font-medium dark:text-gray-300">
-										{$user.getOrgDetails().org_name}
+										{$organisation_name}
 									</td>
 								</tr>
 							</tbody>

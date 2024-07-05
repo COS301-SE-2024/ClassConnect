@@ -1,7 +1,7 @@
 import type { Org, UserData } from '$lib/store/types';
 
 export class User {
-	protected user: UserData;
+	public user: UserData;
 
 	constructor(initial: UserData) {
 		this.user = initial;

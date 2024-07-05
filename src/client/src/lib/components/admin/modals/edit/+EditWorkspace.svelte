@@ -5,7 +5,7 @@
 	let formModal = false;
 
 	// Function to handle form submission
-	async function handleSubmit(event : Event) {
+	async function handleSubmit(event: Event) {
 		console.log('edit workspace is being handled');
 		// Prevent the default form submission behavior
 		event.preventDefault();

@@ -15,7 +15,7 @@
 				method: 'POST',
 				body: formData
 			});
-			console.log(response)
+			console.log(response);
 		} catch (error) {
 			console.error('Create User Error:', error);
 		}

@@ -17,6 +17,7 @@ export const user = writable<Admin>();
 export const organisationName = writable('Organisation');
 export const materialsInfo = writable<any[]>([]);
 
+export const orgChange = writable('change');
 export const lecChange = writable('change');
 export const stuChange = writable('change');
 export const admChange = writable('change');

@@ -5,12 +5,7 @@
 		GlobeOutline,
 		InfoCircleOutline,
 		ChartLineUpOutline,
-		ProfileCardOutline,
-		UserCircleOutline,
-		UsersGroupOutline,
-		HomeOutline,
-		BriefcaseOutline,
-		AdjustmentsHorizontalSolid
+		HomeOutline
 	} from 'flowbite-svelte-icons';
 
 	const nav_links = [

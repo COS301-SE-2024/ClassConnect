@@ -1,8 +1,11 @@
 <script lang="ts">
-	import { Button, Modal, Label, Input } from 'flowbite-svelte';
-	import { user } from '$lib/store';
+	import { Banner, Button, Modal, Label, Input } from 'flowbite-svelte';
+	import type { Org } from '$lib/store/types';
+	import { BullhornSolid } from 'flowbite-svelte-icons';
+	import { user, orgChange } from '$lib/store';
 
 	let formModal = false;
+	let showBanner = false;
 
 	// Function to handle form submission
 	async function handleSubmit(event: SubmitEvent) {
@@ -11,9 +14,6 @@
 
 		const formData = new FormData(event.target as HTMLFormElement);
 		formData.append('orgID', $user.getOrganisation());
-		
-		const name = formData.get('org_name')?.toString() ?? '';
-		const id = formData.get('orgID')?.toString() ?? '';
 
 		try {
 			const response = await fetch('/admin/organisation?/edit', {
@@ -23,31 +23,39 @@
 
 			const res = await response.json();
 
-			if(response.ok) {
-				const stringifiedArray = res.data
+			if (response.ok) {
+				const stringifiedArray = res.data;
 				const jsonArray = JSON.parse(stringifiedArray);
 				const jsonString = jsonArray[0];
 				const result = JSON.parse(jsonString);
 
-				console.log(result)
+				console.log(result);
 
-				const org : Org = {
+				const org: Org = {
 					id: result.id,
 					org_name: result.org_name,
 					image: result.image
-				}
+				};
 
 				$user.updateOrganisation(org);
 
-			}else{
-				throw(Error('Failed to update organisation'));
+				console.log('This is the user after the update: ', $user);
+
+				// Close the form modal and show the banner
+				formModal = false;
+				showBanner = true;
+
+				const time: string = Date.now().toString();
+
+				const updateString: string = 'Organisation updated at ' + time;
+
+				orgChange.set(updateString);
+			} else {
+				throw Error('Failed to update organisation');
 			}
-
 		} catch (error) {
-			console.error('create org  error:', error);
+			console.error('create org error:', error);
 		}
-
-		let formModal = false;
 	}
 </script>
 
@@ -86,3 +94,15 @@
 		<Button type="submit" class="w-full1">Edit Organisation</Button>
 	</form>
 </Modal>
+
+{#if showBanner}
+	<Banner id="default-banner" position="absolute">
+		<p class="flex items-center text-2xl font-normal text-green-600 dark:text-green-400">
+			<span class="me-3 inline-flex rounded-full bg-green-200 p-1 dark:bg-green-600">
+				<BullhornSolid class="h-3 w-3 text-green-600 dark:text-green-400" />
+				<span class="sr-only">Information</span>
+			</span>
+			<span>Organisation details edited</span>
+		</p>
+	</Banner>
+{/if}

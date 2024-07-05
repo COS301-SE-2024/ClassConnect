@@ -12,10 +12,10 @@
 	let loading = false;
 	let showPassword = false;
 
-	async function handleSubmit(event) {
+	async function handleSubmit(event: Event) {
 		event.preventDefault();
 		loading = true;
-		const formData = new FormData(event.target);
+		const formData = new FormData(event.target as HTMLFormElement);
 		try {
 			const response = await fetch('/signin', {
 				method: 'POST',
@@ -25,7 +25,7 @@
 			const res = await response.json();
 
 			if (response.ok) {
-				const stringifiedArray = res.data
+				const stringifiedArray = res.data;
 				const jsonArray = JSON.parse(stringifiedArray);
 				const jsonString = jsonArray[0];
 				const result = JSON.parse(jsonString);
@@ -42,15 +42,15 @@
 					workspaces: result.workspaces,
 					org: result.org
 				};
-				
-				if(ret_user_data.role === 'admin'){
+
+				if (ret_user_data.role === 'admin') {
 					const AdminInstance: Admin = new Admin(ret_user_data);
 					user.set(AdminInstance);
 				}
-				
+
 				const redirect: string = '/' + ret_user_data.role;
-				
-				goto(redirect)
+
+				goto(redirect);
 			} else {
 				throw new Error(res.error);
 			}

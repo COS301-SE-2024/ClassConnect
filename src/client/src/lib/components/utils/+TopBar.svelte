@@ -11,10 +11,9 @@
 	import BreadCrumbs from '$lib/components/utils/universal/+Breadcrumbs.svelte';
 	import { user } from '$lib/store';
 
-	console.log('This is the user class: ',$user)
+	console.log('This is the user class: ', $user);
 
 	const profileUrl = '/' + $user.getRole() + '/profile';
-
 </script>
 
 <Navbar>
@@ -38,6 +37,6 @@
 		</DropdownHeader>
 		<DropdownItem href={profileUrl}>Profile</DropdownItem>
 		<DropdownDivider />
-		<DropdownItem href='/signout'>Sign out</DropdownItem>
+		<DropdownItem href="/signout">Sign out</DropdownItem>
 	</Dropdown>
 </Navbar>

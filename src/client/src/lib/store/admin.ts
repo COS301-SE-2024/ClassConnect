@@ -13,18 +13,18 @@ export class Admin extends User {
 		this.admins = [];
 	}
 
-	clearAdmins() : void {
+	clearAdmins(): void {
 		this.admins = [];
 	}
 
-	clearStudents() : void {
+	clearStudents(): void {
 		this.students = [];
 	}
 
-	clearLecturers() : void {
+	clearLecturers(): void {
 		this.lecturers = [];
 	}
-	
+
 	getLecturers(): Lecturer[] {
 		return this.lecturers;
 	}

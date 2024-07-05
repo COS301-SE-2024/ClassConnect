@@ -4,8 +4,7 @@ import { propagateOrgDelete } from '$lib/server/organisation';
 import User from '$db/schemas/User';
 import type { Org } from '$lib/store/types';
 
-async function createOrg(org_name : any, userID : any) : Promise<Org> {
-
+async function createOrg(org_name: any, userID: any): Promise<Org> {
 	//create new organisation
 	const newOrg = new Organisation({
 		name: org_name,
@@ -18,7 +17,7 @@ async function createOrg(org_name : any, userID : any) : Promise<Org> {
 	// Add the user to the new Org
 	await User.findByIdAndUpdate(userID, { organisation: newOrg._id });
 
-	const ret_org : Org = {
+	const ret_org: Org = {
 		id: newOrg._id.toString(),
 		org_name: newOrg.name,
 		image: newOrg.image ?? ''
@@ -27,7 +26,7 @@ async function createOrg(org_name : any, userID : any) : Promise<Org> {
 	return ret_org;
 }
 
-async function editDetails(org_name : any, orgID : any) : Promise<Org> {
+async function editDetails(org_name: any, orgID: any): Promise<Org> {
 	const org = await Organisation.findById(orgID);
 
 	if (org === null) {
@@ -44,13 +43,12 @@ async function editDetails(org_name : any, orgID : any) : Promise<Org> {
 	}
 }
 
-async function removeOrg(orgId : any) : Promise<Org>  {
+async function removeOrg(orgId: any): Promise<Org> {
 	const org = await Organisation.findById(orgId);
 
 	if (org === null) {
 		throw new Error('Organisation not found');
 	} else {
-		
 		await propagateOrgDelete(orgId, org.createdBy);
 
 		return {
@@ -70,9 +68,9 @@ export const actions = {
 		console.log('Organisation Name: ', orgName);
 		console.log('createdBy', userID);
 
-		const new_org : Org = await createOrg(orgName, userID);
+		const new_org: Org = await createOrg(orgName, userID);
 
-		console.log(new_org)
+		console.log(new_org);
 
 		return JSON.stringify(new_org);
 	},
@@ -84,16 +82,16 @@ export const actions = {
 		console.log('Organisation Name: ', orgName);
 		console.log('Organisation ID: ', OrgId);
 
-		const new_org : Org = await editDetails(orgName, OrgId);
+		const new_org: Org = await editDetails(orgName, OrgId);
 
 		return JSON.stringify(new_org);
 	},
 	remove: async ({ request }) => {
-        const formData = await request.formData();
-        const orgId = formData.get('organisationID');
-        
-        const new_org : Org = await removeOrg(orgId);
-        
-        return JSON.stringify(new_org);
+		const formData = await request.formData();
+		const orgId = formData.get('organisationID');
+
+		const new_org: Org = await removeOrg(orgId);
+
+		return JSON.stringify(new_org);
 	}
 };
