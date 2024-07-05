@@ -1,7 +1,7 @@
 import mongoose from '$lib/server/database/db';
 
 const announcementsSchema = new mongoose.Schema({
-	topic: {
+	title: {
 		type: String,
 		required: true
 	},
