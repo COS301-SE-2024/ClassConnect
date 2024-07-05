@@ -6,7 +6,7 @@ import User from '$db/schemas/User';
 export async function load({ locals }) {
 	//handle user
 	if (!locals.user) return redirect(302, '/signin');
-	if (locals.user.role !== 'student') throw error(401, 'Unathorised');
+	if (locals.user.role !== 'admin') throw error(401, 'Unathorised');
 
 
 	//find all students in organisation
@@ -39,7 +39,7 @@ export async function load({ locals }) {
 export const actions: Actions ={
 	add: async ({request, locals})=>{
 		///check for unauthorised accesss
-		if (!locals.user || locals.user.role !== 'student') throw error(401, 'Unathorised');
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unathorised');
 
 		//retrieve information from form data
 		const data= await request.formData();
@@ -81,7 +81,7 @@ export const actions: Actions ={
 	
 	edit: async ({request, locals})=>{
 		///check for unauthorised accesss
-		if (!locals.user || locals.user.role !== 'student') throw error(401, 'Unathorised');
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unathorised');
 		
 		//retrieve information from form data
 		const data= await request.formData();
@@ -114,7 +114,7 @@ export const actions: Actions ={
 	},
 
 	delete: async ({ request, locals }) => {
-		if (!locals.user || locals.user.role !== 'student') throw error(401, 'Unauthorized');
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
 
 		const data = await request.formData();
 		const id = data.get('id') as string;
