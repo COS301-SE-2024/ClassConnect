@@ -42,15 +42,8 @@
 			placeholder="05/07/2024"
 		/>
 
-		<Label for="image" class="mb-2 mt-4 text-left">Profile Picture</Label>
-		<Input
-			type="text"
-			id="image"
-			name="image"
-			size="md"
-			placeholder="https://example.com/logo.png"
-		/>
+		
 
-		<Button type="submit" class="mt-4 w-full">Add {role}</Button>
+		<Button type="submit" class="mt-4 w-full">Create</Button>
 	</form>
 </Modal>

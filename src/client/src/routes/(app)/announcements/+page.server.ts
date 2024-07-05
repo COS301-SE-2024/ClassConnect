@@ -12,20 +12,22 @@ export async function load({locals}) {
 	try{
 
 		const announcements = await Announcement.find({
-			organisation: locals.user.organisation
+			ID: locals.user.organisation
 
 		}).select('title description date type ID');
 
 		//format results
 		const formattedAnn = announcements.map((announcements)=>({
 			title: announcements.title,
+			
 			description: announcements.description,
 			date: announcements.date,
 			type: announcements.type,
 			id: announcements.ID.toString(),
 			ann_id: announcements._id.toString(),
 		}));
-
+		
+		console.log('these are ann', formattedAnn);
 		return {
 			announcements: formattedAnn
 		};
@@ -40,20 +42,14 @@ export async function load({locals}) {
 export const actions: Actions ={
 	add: async ({request, locals})=>{
 		///check for unauthorised accesss
-		if (!locals.user || locals.user.role !== 'admin'|| 'lecturer' ) throw error(401, 'Unathorised');
+		if (!locals.user || locals.user.role !== 'admin' ) throw error(401, 'Unathorised');
 
 		//retrieve information from form data
 		const data= await request.formData();
 		const title= data.get('title') as string;
 		const description= data.get('description') as string;
 		const date= data.get('date') as string;
-		let type;
-		if( locals.user.role === 'admin'){
-			type= 'global';
-		}
-		else if(locals.user.role === 'lecturer'){
-			type= 'local';
-		}
+		const type='global';
 
 		//create new announcement and save 
 		try{
@@ -68,6 +64,7 @@ export const actions: Actions ={
 			});
 
 			await newAnnouncement.save();
+			console.log('Saved successfully');
 			return{
 				success: true
 			};

@@ -14,7 +14,7 @@
 
 	import AddModal from '$lib/components/admin/modals/workspace/Add.svelte';
 	import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
-	import EditModal from '$lib/components/admin/modals/announcement/user/Edit.svelte';
+	import EditModal from '$lib/components/admin/modals/workspace/Edit.svelte';
 
 	interface Workspace {
 		id: string;

@@ -23,7 +23,7 @@ const announcementsSchema = new mongoose.Schema({
 
 	ID: {
 		type: mongoose.Types.ObjectId,
-		ref: 'Workspace' || 'Organisation', 
+		ref:  'Organisation', 
 		required: true
 	},
 

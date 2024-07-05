@@ -12,9 +12,9 @@
 
 	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 
-	import AddModal from '$lib/components/admin/modals/announcement/user/Add.svelte';
+	import AddModal from '$lib/components/admin/modals/user/Add.svelte';
 	import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
-	import EditModal from '$lib/components/admin/modals/announcement/user/Edit.svelte';
+	import EditModal from '$lib/components/admin/modals/user/Edit.svelte';
 
 	interface Admin {
 		id: string;
