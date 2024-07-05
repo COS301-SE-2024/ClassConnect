@@ -1,6 +1,6 @@
 import { render } from '@testing-library/svelte';
 import { describe, it, expect } from 'vitest';
-import Announcements from '$lib/components/universal/+Announcements.svelte';
+import Announcements from '$lib/components/common/announcements/Main.svelte';
 
 describe('Announcements Component', () => {
 	const sampleAnnouncements = [

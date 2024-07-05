@@ -11,7 +11,7 @@
 	export let workspace;
 	export let role: 'lecturer' | 'student';
 
-	let workspaceURL = `/workspaces/${$page.params.id}`;
+	let workspaceURL = `/workspaces/${$page.params.workspace}`;
 
 	const navLinks = {
 		lecturer: [
@@ -37,9 +37,9 @@
 	class="bg-primary-100 flex h-screen w-64 flex-col overflow-y-auto border-r px-4 py-1 rtl:border-l rtl:border-r-0 dark:border-gray-700 dark:bg-gray-900"
 >
 	<a href="/" class="mx-auto">
-		<div class="flex items-center">
-			<img class="mr-2 h-20 w-20" src={workspace.image} alt="Class Connect owl logo" />
-			<div class="roboto text-xl dark:text-gray-300">{workspace.name}</div>
+		<div class="items-center">
+			<img class="h-20 w-20 mb-2" src={workspace.image} alt="Class Connect owl logo" />
+			<div class="roboto text-center text-xl dark:text-gray-300">{workspace.name}</div>
 		</div>
 	</a>
 

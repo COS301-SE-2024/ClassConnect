@@ -10,8 +10,8 @@ export async function load({ locals, params }) {
 		const user = await User.findById(locals.user.id);
 		if (!user) throw error(404, 'User not found');
 
-		if (params.id) {
-			const workspace = await Workspace.findById(params.id).select('name image');
+		if (params.workspace) {
+			const workspace = await Workspace.findById(params.workspace).select('name image');
 			if (!workspace) throw error(404, 'Workspace not found');
 
 			const formattedWorkspace = {

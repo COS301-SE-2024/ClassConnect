@@ -1,7 +1,7 @@
 <script lang="ts">
 	import SideBar from '$lib/components/utils/admin/+SideBar.svelte';
 	import TopBar from '$lib/components/utils/+TopBar.svelte';
-	import Contruction from '$lib/components/universal/+Construction.svelte';
+	import Contruction from '$lib/components/common/Construction.svelte';
 </script>
 
 <main>

@@ -7,7 +7,7 @@
 		<h1
 			class="mb-4 text-center text-4xl font-bold text-gray-700 dark:text-white md:text-5xl lg:text-6xl"
 		>
-			Site is under contruction
+			Site is under construction
 		</h1>
 		<p class="mb-8 text-center text-lg text-gray-500 dark:text-gray-300 md:text-xl lg:text-2xl">
 			We're working hard to improve the user experience. Stay tuned!
