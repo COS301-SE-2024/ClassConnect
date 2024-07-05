@@ -2,4 +2,6 @@
 	let pdf_data = 'https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210101201653/PDF.pdf';
 </script>
 
-<object class="h-full w-full" data={pdf_data} title="Study Material" />
+<main class="flex h-[calc(100vh-64px)] flex-col">
+	<object class="w-full flex-grow" data={pdf_data} title="Study Material" />
+</main>

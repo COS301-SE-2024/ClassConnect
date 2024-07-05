@@ -57,4 +57,4 @@
 	{/if}
 </main>
 
-<ScheduleModal open={isScheduleModalOpen} />
+<ScheduleModal bind:open={isScheduleModalOpen} />

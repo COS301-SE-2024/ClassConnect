@@ -6,15 +6,17 @@
 	import WorkspaceSidebar from '$lib/components/common/workspace/Sidebar.svelte';
 
 	export let data: LayoutData;
+	let { role, workspace } = data;
 
+	$: $page.url.pathname;
 	$: isWorkspacePage = /^\/workspaces\/[^\/]+(?:\/|$)/.test($page.url.pathname);
 </script>
 
 <div class="flex">
 	{#if isWorkspacePage}
-		<WorkspaceSidebar role={data.role} workspace={data.workspace} />
+		<WorkspaceSidebar {role} {workspace} />
 	{:else}
-		<SideBar role={data.role} />
+		<SideBar {role} />
 	{/if}
 
 	<div class="flex-1">
