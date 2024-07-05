@@ -26,7 +26,7 @@ export async function load({locals}) {
 			id: announcements.ID.toString(),
 			ann_id: announcements._id.toString(),
 		}));
-		
+
 		console.log('these are ann', formattedAnn);
 		return {
 			announcements: formattedAnn
@@ -74,5 +74,36 @@ export const actions: Actions ={
 			console.log('Server error:', error);
 			return fail(500, {error: 'Failed to create announcement'});
 		}
+	},
+
+	edit: async ({request, locals})=>{
+		///check for unauthorised accesss
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unathorised');
+		
+		//retrieve information from form data
+		const data= await request.formData();
+		const title= data.get('title') as string;
+		const id= data.get('id') as string;
+		const description= data.get('description') as string;
+		
+		try {
+			if (!id) return fail(400, { error: 'Admin ID is required' });
+			const updateData: { [key: string]: string } = {};
+
+			if (title !== '') updateData.title = title;
+			if (description !== '') updateData.description = description;
+			
+
+			const updatedAnnouncement = await User.findByIdAndUpdate(id, updateData, { new: true });
+
+			if (!updatedAnnouncement) return fail(404, { error: 'Announcement not found' });
+
+			return { success: true };
+		} catch (err) {
+			console.error('Error updating Announcement:', err);
+			return fail(500, { error: 'Failed to update announcement' });
+		}
+
 	}
+
 }
