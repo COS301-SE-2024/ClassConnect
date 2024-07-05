@@ -107,6 +107,26 @@ export const actions: Actions ={
 			return fail(500, { error: 'Failed to update announcement' });
 		}
 
+	},
+
+	delete: async ({ request, locals }) => {
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
+
+		const data = await request.formData();
+		const id = data.get('id') as string;
+
+		if (!id) return fail(400, { error: 'Admin ID is required' });
+
+		try {
+			const deletedAnn = await Announcement.findByIdAndDelete(id);
+
+			if (!deletedAnn) return fail(404, { error: 'Announcement not found' });
+
+			return { success: true };
+		} catch (err) {
+			console.error('Error removing announcement:', err);
+			return fail(500, { error: 'Failed to remove announcement' });
+		}
 	}
 
 }
