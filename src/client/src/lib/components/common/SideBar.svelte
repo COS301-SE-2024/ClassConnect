@@ -1,35 +1,35 @@
 <script lang="ts">
 	import {
+		GridSolid,
 		GridOutline,
 		GlobeOutline,
 		BullhornSolid,
 		BuildingSolid,
-		BriefcaseOutline,
-		UserCircleOutline,
-		InfoCircleOutline,
-		UsersGroupOutline,
+		BriefcaseSolid,
+		InfoCircleSolid,
+		ProfileCardSolid,
+		UserCircleSolid,
+		UsersGroupSolid,
 		ChartLineUpOutline,
-		ProfileCardOutline,
 		ArrowLeftToBracketOutline,
 		AdjustmentsHorizontalSolid
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
-	import Logo from '$lib/images/class-connect-logo.png';
 
 	export let role: 'lecturer' | 'admin' | 'student';
 
 	const navLinks = {
 		admin: [
-			{ icon: GridOutline, name: 'Dashboard', href: '/dashboard' },
+			{ icon: GridSolid, name: 'Dashboard', href: '/dashboard' },
 			{ icon: BullhornSolid, name: 'Announcements', href: '/announcements' },
 			{ icon: BuildingSolid, name: 'Organisation', href: '/organisation' },
-			{ icon: BriefcaseOutline, name: 'Workspaces', href: '/workspaces' },
-			{ icon: UserCircleOutline, name: 'Admins', href: '/admins' },
-			{ icon: ProfileCardOutline, name: 'Lecturers', href: '/lecturers' },
-			{ icon: UsersGroupOutline, name: 'Students', href: '/students' }
+			{ icon: BriefcaseSolid, name: 'Workspaces', href: '/workspaces' },
+			{ icon: UserCircleSolid, name: 'Admins', href: '/admins' },
+			{ icon: ProfileCardSolid, name: 'Lecturers', href: '/lecturers' },
+			{ icon: UsersGroupSolid, name: 'Students', href: '/students' }
 		],
 		lecturer: [
-			{ icon: BullhornSolid, name: 'Workspaces', href: '/workspaces' },
+			{ icon: BriefcaseSolid, name: 'Workspaces', href: '/workspaces' },
 			{ icon: BullhornSolid, name: 'Announcements', href: '/announcements' }
 		],
 		student: [
@@ -41,8 +41,9 @@
 	};
 
 	const commonLinks = [
+		{ icon: ProfileCardSolid, name: 'Profile', href: '/profile' },
 		{ icon: AdjustmentsHorizontalSolid, name: 'Settings', href: '/settings' },
-		{ icon: InfoCircleOutline, name: 'FAQ', href: '/student/faq' }
+		{ icon: InfoCircleSolid, name: 'FAQ', href: '/faq' }
 	];
 
 	$: currentLinks = navLinks[role];
@@ -53,7 +54,11 @@
 >
 	<a href="/" class="mx-auto">
 		<div class="flex items-center">
-			<img class="mr-2 h-20 w-20" src={Logo} alt="Class Connect owl logo" />
+			<img
+				class="mr-2 h-20 w-20"
+				src="images/class-connect-logo.png"
+				alt="Class Connect owl logo"
+			/>
 			<div class="roboto text-xl dark:text-gray-300">Class Connect</div>
 		</div>
 	</a>
@@ -64,7 +69,7 @@
 				<a
 					class="hover:bg-primary-300 mt-5 flex transform items-center rounded-lg px-4 py-2 text-gray-600 transition-colors duration-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href ===
 					$page.url.pathname
-						? 'active'
+						? 'active dark:text-gray-800'
 						: ''}"
 					{href}
 				>
@@ -80,7 +85,7 @@
 				<a
 					class="hover:bg-primary-300 mt-5 flex transform items-center rounded-lg px-4 py-2 text-gray-600 transition-colors duration-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href ===
 					$page.url.pathname
-						? 'active'
+						? 'active dark:text-gray-800'
 						: ''}"
 					{href}
 				>
