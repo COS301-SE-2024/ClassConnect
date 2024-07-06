@@ -1,6 +1,7 @@
 import sgMail from '@sendgrid/mail';
 import { hash } from '@node-rs/argon2';
 import { fail, redirect } from '@sveltejs/kit';
+import { TEST_PASSWORD } from '$env/static/private';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import User from '$db/schemas/User';
@@ -67,8 +68,8 @@ describe('Signup Process', () => {
 			formData.append('name', 'John');
 			formData.append('surname', 'Doe');
 			formData.append('email', 'john@example.com');
-			formData.append('password', 'ValidP@ss123');
-			formData.append('confirm-password', 'ValidP@ss123');
+			formData.append('password', TEST_PASSWORD);
+			formData.append('confirm-password', TEST_PASSWORD);
 
 			const event = {
 				request: {
@@ -102,8 +103,8 @@ describe('Signup Process', () => {
 			formData.append('name', '');
 			formData.append('surname', 'Doe');
 			formData.append('email', 'john@example.com');
-			formData.append('password', 'ValidP@ss123');
-			formData.append('confirm-password', 'ValidP@ss123');
+			formData.append('password', TEST_PASSWORD);
+			formData.append('confirm-password', TEST_PASSWORD);
 
 			const event = {
 				request: {
@@ -121,8 +122,8 @@ describe('Signup Process', () => {
 			formData.append('name', 'John');
 			formData.append('surname', 'Doe');
 			formData.append('email', 'existing@example.com');
-			formData.append('password', 'ValidP@ss123');
-			formData.append('confirm-password', 'ValidP@ss123');
+			formData.append('password', TEST_PASSWORD);
+			formData.append('confirm-password', TEST_PASSWORD);
 
 			const event = {
 				request: {

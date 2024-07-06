@@ -26,16 +26,16 @@ describe('Module to Test', () => {
 	});
 
 	describe('load function', () => {
-		it('should throw 401 error if user does not exist in locals', async () => {
+		it('should throw 404 error if user does not exist in locals', async () => {
 			const locals = { user: null };
 
 			try {
 				await moduleToTest.load({ locals });
 			} catch (e) {
-				expect(e).toEqual(error(401));
+				expect(e).toEqual(error(404));
 			}
 
-			expect(error).toHaveBeenCalledWith(401);
+			expect(error).toHaveBeenCalledWith(404);
 		});
 
 		it('should not throw error if user exists in locals', async () => {
@@ -47,14 +47,18 @@ describe('Module to Test', () => {
 	});
 
 	describe('actions.default', () => {
-		it('should fail with 401 if session does not exist in event.locals', async () => {
+		it('should fail with 404 if session does not exist in event.locals', async () => {
 			const event = {
 				locals: { session: null }
 			};
 
-			const result = await moduleToTest.actions.default(event as any);
-			expect(result).toEqual(fail(401));
-			expect(fail).toHaveBeenCalledWith(401);
+			try {
+				await moduleToTest.actions.default(event as any);
+			} catch (e) {
+				expect(e).toEqual(error(404));
+			}
+
+			expect(error).toHaveBeenCalledWith(404);
 		});
 
 		it('should invalidate session, set cookie and redirect if session exists', async () => {

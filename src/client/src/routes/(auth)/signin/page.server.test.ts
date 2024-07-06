@@ -1,5 +1,6 @@
 import { verify } from '@node-rs/argon2';
 import { fail, redirect } from '@sveltejs/kit';
+import { TEST_PASSWORD } from '$env/static/private';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import User from '$db/schemas/User';
@@ -44,7 +45,7 @@ describe('Authentication Process', () => {
 			const locals = { user: { id: '123' } };
 			await signInModule.load({ locals });
 
-			expect(redirect).toHaveBeenCalledWith(302, '/home');
+			expect(redirect).toHaveBeenCalledWith(302, '/dashboard');
 		});
 
 		it('should not redirect if not signed in', async () => {
@@ -60,7 +61,7 @@ describe('Authentication Process', () => {
 		it('should handle successful authentication', async () => {
 			const formData = new FormData();
 			formData.append('username', 'johndoe');
-			formData.append('password', 'ValidP@ss123');
+			formData.append('password', TEST_PASSWORD);
 
 			const event = {
 				request: {
@@ -71,7 +72,12 @@ describe('Authentication Process', () => {
 				}
 			};
 
-			const mockUser = { _id: '123', password: 'hashedPassword', role: 'user' };
+			const mockUser = {
+				_id: '123',
+				password: 'hashedPassword',
+				role: 'user',
+				organisation: '321'
+			};
 
 			(User.findOne as any).mockResolvedValue(mockUser);
 			(verify as any).mockResolvedValue(true);
@@ -85,21 +91,24 @@ describe('Authentication Process', () => {
 			await signInModule.actions.default(event as any);
 
 			expect(User.findOne).toHaveBeenCalledWith({ username: 'johndoe' });
-			expect(verify).toHaveBeenCalledWith('hashedPassword', 'ValidP@ss123');
-			expect(lucia.createSession).toHaveBeenCalledWith('123', { role: 'user' });
+			expect(verify).toHaveBeenCalledWith('hashedPassword', TEST_PASSWORD);
+			expect(lucia.createSession).toHaveBeenCalledWith('123', {
+				role: 'user',
+				organisation: '321'
+			});
 			expect(lucia.createSessionCookie).toHaveBeenCalledWith('session123');
 			expect(event.cookies.set).toHaveBeenCalledWith(
 				'session',
 				'cookievalue',
 				expect.objectContaining({ path: '.' })
 			);
-			expect(redirect).toHaveBeenCalledWith(302, '/home');
+			expect(redirect).toHaveBeenCalledWith(302, '/dashboard');
 		});
 
 		it('should handle invalid username', async () => {
 			const formData = new FormData();
 			formData.append('username', '');
-			formData.append('password', 'ValidP@ss123');
+			formData.append('password', TEST_PASSWORD);
 
 			const event = {
 				request: {
@@ -129,7 +138,7 @@ describe('Authentication Process', () => {
 		it('should handle non-existent user', async () => {
 			const formData = new FormData();
 			formData.append('username', 'nonexistent');
-			formData.append('password', 'ValidP@ss123');
+			formData.append('password', TEST_PASSWORD);
 
 			const event = {
 				request: {
@@ -146,7 +155,7 @@ describe('Authentication Process', () => {
 		it('should handle incorrect password', async () => {
 			const formData = new FormData();
 			formData.append('username', 'johndoe');
-			formData.append('password', 'WrongP@ss123');
+			formData.append('password', '?');
 
 			const event = {
 				request: {
@@ -166,7 +175,7 @@ describe('Authentication Process', () => {
 		it('should handle unknown errors', async () => {
 			const formData = new FormData();
 			formData.append('username', 'johndoe');
-			formData.append('password', 'ValidP@ss123');
+			formData.append('password', TEST_PASSWORD);
 
 			const event = {
 				request: {
