@@ -19,7 +19,7 @@
 </script>
 
 <Modal bind:open size="xs" class="w-full">
-	<form method="POST" action="?/add" class="flex flex-col" use:enhance={close}>
+	<form method="POST" action="?/post" class="flex flex-col" use:enhance={close}>
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Create Announcement</h3>
 
 		{#if error}
@@ -30,20 +30,15 @@
 		<Input type="text" id="title" name="title" placeholder="Fire Drill" size="md" required />
 
 		<Label for="description" class="mb-2 mt-2 text-left">Description</Label>
-		<Input type="text" id="description" name="description" placeholder="The fire drill is as follows..." size="md" required />
-
-		<Label for="date" class="mb-2 mt-2 text-left">Date</Label>
 		<Input
-			type="date"
-			id="date"
-			name="date"
+			type="text"
+			id="description"
+			name="description"
+			placeholder="The fire drill is as follows..."
 			size="md"
 			required
-			placeholder="05/07/2024"
 		/>
 
-		
-
-		<Button type="submit" class="mt-4 w-full">Create</Button>
+		<Button type="submit" class="mt-4 w-full">Post</Button>
 	</form>
 </Modal>

@@ -1,51 +1,24 @@
 <script lang="ts">
-	import {
-		Table,
-		Button,
-		Avatar,
-		TableBody,
-		TableHead,
-		TableBodyRow,
-		TableHeadCell,
-		TableBodyCell
-	} from 'flowbite-svelte';
+	import { Button } from 'flowbite-svelte';
 
-	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
-
+	import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
 	import AddModal from '$lib/components/admin/modals/announcement/Add.svelte';
-	//import Announcements from '$lib/components/universal/+Announcements.svelte';
-	 import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
-	 import EditModal from '$lib/components/admin/modals/announcement/Edit.svelte';
+	import EditModal from '$lib/components/admin/modals/announcement/Edit.svelte';
 
-	interface Announcement {
-		ID:string;
-		ann_id: string;
-		title: string;
-		description: string;
-		date: string;
-		type: string;
-		
-	}
+	export let data: any;
 
-	interface PageData {
-		announcements: Announcement[];
-	}
-
-	export let data: PageData;
 	let id: string;
 	let isAddModalOpen = false;
-	 let isEditModalOpen = false;
-	 let isRemoveModalOpen = false;
+	let isEditModalOpen = false;
+	let isRemoveModalOpen = false;
 
-	const headers: string[] = ['Title', 'Decsription', 'Date'];
-
-	function handleEditModalOpen(annId: string) {
-		id = annId;
+	function handleEditModalOpen(announcementsId: string) {
+		id = announcementsId;
 		isEditModalOpen = true;
 	}
 
-	function handleRemoveModalOpen(adminId: string) {
-		id = adminId;
+	function handleRemoveModalOpen(announcementsId: string) {
+		id = announcementsId;
 		isRemoveModalOpen = true;
 	}
 
@@ -65,8 +38,11 @@
 			<div>
 				<div class="flex items-center gap-x-3">
 					<h2 class="text-xl font-bold text-gray-800 dark:text-white">Announcements</h2>
-					<span class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400">
-						{announcements.length} {announcements.length === 1 ? 'announcement' : 'announcements'}
+					<span
+						class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
+					>
+						{announcements.length}
+						{announcements.length === 1 ? 'announcement' : 'announcements'}
 					</span>
 				</div>
 			</div>
@@ -76,9 +52,9 @@
 		</div>
 
 		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-			{#each announcements as announcement (announcement.ann_id)}
-				<div class="task m-2 p-4 bg-white rounded-lg shadow-md">
-					<div class="tags flex justify-between items-center">
+			{#each announcements as announcement (announcement.id)}
+				<div class="task m-2 rounded-lg bg-white p-4 shadow-md">
+					<div class="tags flex items-center justify-between">
 						<span class="tag text-lg font-bold">{announcement.title}</span>
 						<button class="options">
 							<svg
@@ -91,15 +67,21 @@
 								height="24"
 							>
 								<g>
-									<path d="M11.214,20.956c0,3.091-2.509,5.589-5.607,5.589C2.51,26.544,0,24.046,0,20.956c0-3.082,2.511-5.585,5.607-5.585 C8.705,15.371,11.214,17.874,11.214,20.956z"></path>
-									<path d="M26.564,20.956c0,3.091-2.509,5.589-5.606,5.589c-3.097,0-5.607-2.498-5.607-5.589c0-3.082,2.511-5.585,5.607-5.585 C24.056,15.371,26.564,17.874,26.564,20.956z"></path>
-									<path d="M41.915,20.956c0,3.091-2.509,5.589-5.607,5.589c-3.097,0-5.606-2.498-5.606-5.589c0-3.082,2.511-5.585,5.606-5.585 C39.406,15.371,41.915,17.874,41.915,20.956z"></path>
+									<path
+										d="M11.214,20.956c0,3.091-2.509,5.589-5.607,5.589C2.51,26.544,0,24.046,0,20.956c0-3.082,2.511-5.585,5.607-5.585 C8.705,15.371,11.214,17.874,11.214,20.956z"
+									></path>
+									<path
+										d="M26.564,20.956c0,3.091-2.509,5.589-5.606,5.589c-3.097,0-5.607-2.498-5.607-5.589c0-3.082,2.511-5.585,5.607-5.585 C24.056,15.371,26.564,17.874,26.564,20.956z"
+									></path>
+									<path
+										d="M41.915,20.956c0,3.091-2.509,5.589-5.607,5.589c-3.097,0-5.606-2.498-5.606-5.589c0-3.082,2.511-5.585,5.606-5.585 C39.406,15.371,41.915,17.874,41.915,20.956z"
+									></path>
 								</g>
 							</svg>
 						</button>
 					</div>
 					<p class="my-2">{announcement.description}</p>
-					<div class="stats flex justify-between items-center">
+					<div class="stats flex items-center justify-between">
 						<div class="flex items-center">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
@@ -116,8 +98,13 @@
 							<span class="ml-2">{announcement.date}</span>
 						</div>
 						<div>
-							<Button class="mr-2" on:click={() => handleEditModalOpen(announcement.ann_id)}>Edit</Button>
-							<Button color="red" on:click={() => handleRemoveModalOpen(announcement.ann_id)}>Delete</Button>
+							<Button class="mr-2" on:click={() => handleEditModalOpen(announcement.id)}>
+								Edit
+							</Button>
+
+							<Button color="red" on:click={() => handleRemoveModalOpen(announcement.id)}>
+								Delete
+							</Button>
 						</div>
 					</div>
 				</div>
@@ -125,6 +112,7 @@
 		</div>
 	{/if}
 </main>
-<AddModal bind:open={isAddModalOpen}  />
-<EditModal bind:open={isEditModalOpen} {id} role="Admin"/>
+
+<AddModal bind:open={isAddModalOpen} />
+<EditModal bind:open={isEditModalOpen} {id} />
 <RemoveModal bind:open={isRemoveModalOpen} {id} item="announcement" />

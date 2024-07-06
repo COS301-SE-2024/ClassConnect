@@ -1,6 +1,6 @@
 import type { Actions } from './$types';
 import { lucia } from '$lib/server/auth';
-import { error, fail, redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 
 export async function load({ locals }) {
 	if (!locals.user) throw error(401);
@@ -8,9 +8,7 @@ export async function load({ locals }) {
 
 export const actions: Actions = {
 	default: async (event) => {
-		if (!event.locals.session) {
-			return fail(401);
-		}
+		if (!event.locals.session) throw error(404, 'Session not found');
 
 		await lucia.invalidateSession(event.locals.session.id);
 		const sessionCookie = lucia.createBlankSessionCookie();

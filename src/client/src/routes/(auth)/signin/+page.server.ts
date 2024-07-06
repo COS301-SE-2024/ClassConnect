@@ -5,14 +5,12 @@ import type { Actions, RequestEvent } from './$types';
 
 import User from '$db/schemas/User';
 import { lucia } from '$lib/server/auth';
+import type { SignInData } from '$src/types';
 
-export async function load({ locals }: { locals: { user: any } }) {
-	if (locals.user) redirect(302, '/home');
-}
-
-interface SignInData {
-	username: string;
-	password: string;
+export async function load({ locals }) {
+	if (locals.user) {
+		locals.user.role === 'lecturer' ? redirect(302, '/workspaces') : redirect(302, '/dashboard');
+	}
 }
 
 function validateFormData(formData: SignInData): { error: string } | null {
@@ -77,6 +75,6 @@ export const actions: Actions = {
 			return fail(500, { error: 'An unknown error occurred' });
 		}
 
-		redirect(302, '/' + role);
+		role === 'lecturer' ? redirect(302, '/workspaces') : redirect(302, '/dashboard');
 	}
 };

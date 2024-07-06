@@ -16,20 +16,7 @@
 	import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
 	import EditModal from '$lib/components/admin/modals/user/Edit.svelte';
 
-	interface Admin {
-		id: string;
-		name: string;
-		surname: string;
-		username: string;
-		email: string;
-		image: string;
-	}
-
-	interface PageData {
-		admins: Admin[];
-	}
-
-	export let data: PageData;
+	export let data;
 
 	let id: string;
 	let isAddModalOpen = false;

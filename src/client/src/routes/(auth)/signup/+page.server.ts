@@ -1,26 +1,15 @@
-import User from '$db/schemas/User';
 import sgMail from '@sendgrid/mail';
 import { hash } from '@node-rs/argon2';
 import type { Actions } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
-import { generateUsername } from '$utils/user';
 import { SENDGRID_API_KEY, FROM_EMAIL } from '$env/static/private';
 
+import User from '$db/schemas/User';
+import type { SignUpData } from '$src/types';
+import { HASH_OPTIONS } from '$src/constants';
+import { generateUsername } from '$utils/user';
+
 sgMail.setApiKey(SENDGRID_API_KEY);
-
-interface SignUpData {
-	name: string;
-	surname: string;
-	email: string;
-	password: string;
-}
-
-const HASH_OPTIONS = {
-	timeCost: 2,
-	outputLen: 32,
-	parallelism: 1,
-	memoryCost: 19456
-};
 
 export async function load({ locals }) {
 	if (locals.user) redirect(302, '/home');

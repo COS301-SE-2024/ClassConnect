@@ -1,5 +1,7 @@
 import { redirect } from '@sveltejs/kit';
 
 export async function load({ locals }) {
-	if (locals.user) redirect(302, '/home');
+	if (locals.user) {
+		locals.user.role === 'lecturer' ? redirect(302, '/workspaces') : redirect(302, '/dashboard');
+	}
 }

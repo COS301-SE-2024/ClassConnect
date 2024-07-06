@@ -5,34 +5,25 @@ const announcementsSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-
-	description:{
-        type: String,
-        required: true
-    },
-
+	description: {
+		type: String,
+		required: true
+	},
 	date: {
 		type: Date,
-		required: true
+		required: true,
+		default: Date.now
 	},
-
-    type: {
-        type: String,
-        required: true
-    },
-
-	ID: {
+	owner: {
 		type: mongoose.Types.ObjectId,
-		ref:  'Organisation', 
+		ref: 'Organisation' || 'Workspace',
 		required: true
 	},
-
-	createdBy:{
+	createdBy: {
 		type: mongoose.Types.ObjectId,
 		ref: 'User',
 		required: true
 	}
-
 });
 
 const Announcement = mongoose.models.Announcement || mongoose.model('Announcement', announcementsSchema);

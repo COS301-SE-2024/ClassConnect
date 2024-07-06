@@ -1,71 +1,52 @@
 import { hash } from '@node-rs/argon2';
 import type { Actions } from './$types';
-import { fail, error, redirect } from '@sveltejs/kit';
-import { generateUsername } from '$utils/user';
-import User from '$db/schemas/User';
-import Workspace from '$db/schemas/Workspace';
+import { fail, error } from '@sveltejs/kit';
 
-const HASH_OPTIONS = {
-	timeCost: 2,
-	outputLen: 32,
-	parallelism: 1,
-	memoryCost: 19456
-};
+import User from '$db/schemas/User';
+import { HASH_OPTIONS } from '$src/constants';
+import { generateUsername } from '$utils/user';
 
 export async function load({ locals }) {
-	//handle user
-	if (!locals.user) return redirect(302, '/signin');
-	if (locals.user.role !== 'admin') throw error(401, 'Unathorised');
+	if (locals.user?.role !== 'admin') throw error(401, 'Unauthorised');
 
+	try {
+		const admins = await User.find({ role: 'admin', organisation: locals.user.organisation });
 
-	//find all admins in organisation
-	try{
-		const admins= await User.find({
-			role: 'admin',
-			organisation: locals.user.organisation
-		}).select('_id name surname username email image');
-	
+		const formattedAdmins = admins.map((admin) => ({
+			id: admin._id.toString(),
+			name: admin.name,
+			email: admin.email,
+			image: admin.image,
+			surname: admin.surname,
+			username: admin.username
+		}));
 
-		const formatAdmins= admins.map((admin)=>(
-			{
-				id: admin._id.toString(),
-				name: admin.name,
-				surname: admin.surname,
-				username: admin.username,
-				email: admin.email,
-				image: admin.image
-			}));
-		return{
-			admins: formatAdmins
+		return {
+			admins: formattedAdmins
 		};
-	}
-	catch (error){
-		console.error('Failed to load data', error);
+	} catch (error) {
+		console.error('Failed to load admins', error);
 		return fail(500, { error: 'An unexpected error occurred while fetching admins' });
 	}
 }
 
-export const actions: Actions ={
-	add: async ({request, locals})=>{
-		///check for unauthorised accesss
-		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unathorised');
+export const actions: Actions = {
+	add: async ({ request, locals }) => {
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
 
-		//retrieve information from form data
-		const data= await request.formData();
-		const name= data.get('name') as string;
-		
-		const surname= data.get('surname') as string;
-		const email= data.get('email') as string;
-		const image= data.get('image') as string;
-		
-		//create new admin and save 
-		try{
-			//if user already exists
-			
-			//generate username
+		const data = await request.formData();
+		const name = data.get('name') as string;
+		const email = data.get('email') as string;
+		const image = data.get('image') as string;
+		const surname = data.get('surname') as string;
+
+		try {
+			const existingUser = await User.findOne({ email });
+			if (existingUser) return fail(400, { error: 'Email already in use' });
+
 			const username = generateUsername('admin', email);
 			const hashedPassword = await hash(username, HASH_OPTIONS);
-			
+
 			const newAdmin = new User({
 				name,
 				surname,
@@ -78,52 +59,45 @@ export const actions: Actions ={
 			});
 
 			await newAdmin.save();
-			return{
-				success: true
-			};
-		}
-		
-		catch(error){
-			console.log('Server error:', error);
-			return fail(500, {error: 'Failed to create admin'});
+
+			return { success: true };
+		} catch (error) {
+			console.log('Error adding admin:\n', error);
+			return fail(500, { error: 'Failed to add admin' });
 		}
 	},
-	
-	edit: async ({request, locals})=>{
-		///check for unauthorised accesss
-		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unathorised');
-		
-		//retrieve information from form data
-		const data= await request.formData();
-		const name= data.get('name') as string;
-		const id= data.get('id') as string;
-		const surname= data.get('surname') as string;
-		const email= data.get('email') as string;
-		const image= data.get('image') as string;
-		
-		
+	edit: async ({ request, locals }) => {
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
+
+		const data = await request.formData();
+		const id = data.get('id') as string;
+		const name = data.get('name') as string;
+		const email = data.get('email') as string;
+		const image = data.get('image') as string;
+		const surname = data.get('surname') as string;
+
+		if (!id) return fail(400, { error: 'Admin ID is required' });
+
+		const updateData: { [key: string]: string } = {};
+
+		if (name !== '') updateData.name = name;
+		if (email !== '') updateData.email = email;
+		if (image !== '') updateData.image = image;
+		if (surname !== '') updateData.surname = surname;
+
 		try {
-			if (!id) return fail(400, { error: 'Admin ID is required' });
-			const updateData: { [key: string]: string } = {};
-
-			if (name !== '') updateData.name = name;
-			if (surname !== '') updateData.surname = surname;
-			if (email !== '') updateData.email = email;
-			if (image !== '') updateData.image = image;
-
 			const updatedAdmin = await User.findByIdAndUpdate(id, updateData, { new: true });
 
 			if (!updatedAdmin) return fail(404, { error: 'Admin not found' });
 
 			return { success: true };
 		} catch (err) {
-			console.error('Error updating Admin:', err);
+			console.error('Error updating admin:\n', err);
 			return fail(500, { error: 'Failed to update admin' });
 		}
-
 	},
 	delete: async ({ request, locals }) => {
-		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
 
 		const data = await request.formData();
 		const id = data.get('id') as string;
@@ -137,12 +111,8 @@ export const actions: Actions ={
 
 			return { success: true };
 		} catch (err) {
-			console.error('Error removing admin:', err);
+			console.error('Error removing admin:\n', err);
 			return fail(500, { error: 'Failed to remove admin' });
 		}
 	}
-
-		
-
-	
-}
+};

@@ -2,8 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 
-    export let id: string;
-	export let role: string;
+	export let id: string;
 	export let open: boolean;
 
 	let error: string;
@@ -28,14 +27,19 @@
 			<p class="mt-2 text-center text-red-500">{error}</p>
 		{/if}
 
-        <Input type="hidden" id="id" name="id" value={id} size="md" readonly />
-        
+		<Input type="hidden" id="id" name="id" value={id} size="md" readonly />
+
 		<Label for="title" class="mb-2 mt-2 text-left">New Title</Label>
-		<Input type="text" id="title" name="title" placeholder="Fire Drill" size="md" required />
+		<Input type="text" id="title" name="title" placeholder="Fire Drill" size="md" />
 
 		<Label for="description" class="mb-2 mt-2 text-left">New Description</Label>
-		<Input type="text" id="description" name="description" placeholder="The fire drill is as follows..." size="md" required />
-
+		<Input
+			type="text"
+			id="description"
+			name="description"
+			placeholder="The fire drill is as follows..."
+			size="md"
+		/>
 
 		<Button type="submit" class="mt-4 w-full">Save</Button>
 	</form>

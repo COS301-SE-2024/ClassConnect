@@ -1,97 +1,70 @@
 import type { Actions } from './$types';
 import { fail, error } from '@sveltejs/kit';
-import Announcement from '$db/schemas/Annoucement';
 
-export async function load({locals}) {
-	try{
+import Announcement from '$db/schemas/Announcement';
 
-		const announcements = await Announcement.find({
-			ID: locals.user?.organisation
+export async function load({ locals }) {
+	try {
+		const announcements = await Announcement.find({ owner: locals.user?.organisation });
 
-		}).select('title description date type ID');
-
-		//format results
-		const formattedAnn = announcements.map((announcements)=>({
+		const formattedAnnouncement = announcements.map((announcements) => ({
 			title: announcements.title,
-			
+			id: announcements._id.toString(),
 			description: announcements.description,
-			date: announcements.date,
-			type: announcements.type,
-			id: announcements.ID.toString(),
-			ann_id: announcements._id.toString(),
+			date: announcements.date.toISOString(),
+			createBy: announcements.createdBy.toString()
 		}));
 
-		console.log('these are ann', formattedAnn);
-		return {
-			announcements: formattedAnn
-		};
-
-	}
-	catch(error){
-		console.error('Failed to fetch announcements: ', error);
+		return { announcements: formattedAnnouncement };
+	} catch (error) {
+		console.error('Failed to load announcements: ', error);
 		return fail(500, { error: 'An unexpected error occurred while fetching announcements' });
 	}
 }
 
-export const actions: Actions ={
-	add: async ({request, locals})=>{
-		///check for unauthorised accesss
-		if (!locals.user || locals.user.role !== 'admin' ) throw error(401, 'Unathorised');
+export const actions: Actions = {
+	post: async ({ request, locals }) => {
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
 
-		//retrieve information from form data
-		const data= await request.formData();
-		const title= data.get('title') as string;
-		const description= data.get('description') as string;
-		const date= data.get('date') as string;
-		const type='global';
+		const data = await request.formData();
+		const title = data.get('title') as string;
+		const description = data.get('description') as string;
 
-		//create new announcement and save 
-		try{
-			
+		try {
 			const newAnnouncement = new Announcement({
 				title,
 				description,
-				date,
-				type,
 				createdBy: locals.user.id,
-				ID: locals.user.organisation
+				owner: locals.user.organisation
 			});
 
 			await newAnnouncement.save();
-			console.log('Saved successfully');
-			return{
-				success: true
-			};
-		}
-		
-		catch(error){
-			console.log('Server error:', error);
-			return fail(500, {error: 'Failed to create announcement'});
+
+			return { success: true };
+		} catch (error) {
+			console.log('Error posting announcement:\n', error);
+			return fail(500, { error: 'Failed to post announcement' });
 		}
 	},
+	edit: async ({ request, locals }) => {
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
 
-	edit: async ({request, locals})=>{
-		///check for unauthorised accesss
-		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unathorised');
-		
-		//retrieve information from form data
-		const data= await request.formData();
-		const title= data.get('title') as string;
-		const id= data.get('id') as string; //announcement Id
-		const description= data.get('description') as string;
-		
+		const data = await request.formData();
+		const id = data.get('id') as string;
+		const title = data.get('title') as string;
+		const description = data.get('description') as string;
+
+		if (!id) return fail(400, { error: 'Admin ID is required' });
+
+		const updateData: { [key: string]: string } = {};
+
+		if (title !== '') updateData.title = title;
+		if (description !== '') updateData.description = description;
+
 		try {
-			if (!id) return fail(400, { error: 'Admin ID is required' });
-			const updateData: { [key: string]: string } = {};
-
-			if (title !== '') updateData.title = title;
-			if (description !== '') updateData.description = description;
-			
-			console.log('announcement ID', id);
-			
-			const updatedAnnouncement = await Announcement.findByIdAndUpdate(id, updateData, { new: true });
-
-			console.log('Updated Data',updateData);
+			const updatedAnnouncement = await Announcement.findByIdAndUpdate(id, updateData, {
+				new: true
+			});
 
 			if (!updatedAnnouncement) return fail(404, { error: 'Announcement not found' });
 
@@ -100,11 +73,9 @@ export const actions: Actions ={
 			console.error('Error updating Announcement:', err);
 			return fail(500, { error: 'Failed to update announcement' });
 		}
-
 	},
-
 	delete: async ({ request, locals }) => {
-		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
 
 		const data = await request.formData();
 		const id = data.get('id') as string;
@@ -122,5 +93,4 @@ export const actions: Actions ={
 			return fail(500, { error: 'Failed to remove announcement' });
 		}
 	}
-
-}
+};

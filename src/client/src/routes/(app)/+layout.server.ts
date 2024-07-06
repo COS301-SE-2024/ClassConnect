@@ -22,18 +22,18 @@ export async function load({ locals, params }) {
 			return {
 				name: user.name,
 				image: user.image,
-				workspace: formattedWorkspace || null,
-				role: locals.user.role as any
+				role: locals.user.role,
+				workspace: formattedWorkspace || null
 			};
 		}
 
 		return {
 			name: user.name,
 			image: user.image,
-			role: locals.user.role as any
+			role: locals.user.role
 		};
-	} catch (err) {
-		console.error('Error fetching workspace:', err);
-		throw error(500, 'An error occurred while fetching the workspace');
+	} catch (e) {
+		console.error('Error fetching workspace:', e);
+		throw error(500, 'An error occurred while loading page.');
 	}
 }
