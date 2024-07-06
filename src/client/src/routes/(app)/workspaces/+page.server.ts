@@ -17,9 +17,10 @@ export async function load({ locals }) {
 			const workspaces = await Workspace.find({ organisation: locals.user.organisation });
 
 			const availableLecturers = await User.find({
-				organisation: locals.user.organisation,
-				workspaces: []
-			}).select('name');
+				role: 'lecturer',
+				workspaces: [],
+				organisation: locals.user.organisation
+			}).select('name surname');
 
 			const formattedWorkspacesPromises = workspaces.map(async (workspace) => ({
 				id: workspace._id.toString(),
@@ -32,7 +33,8 @@ export async function load({ locals }) {
 
 			const formattedLecturers = availableLecturers.map((lecturer) => ({
 				id: lecturer._id.toString(),
-				name: lecturer.name
+				name: lecturer.name,
+				surname: lecturer.surname
 			}));
 
 			return {

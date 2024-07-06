@@ -11,7 +11,7 @@
 		{#if materials && materials.length > 0}
 			<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 				{#each materials as material}
-					<Card title={material.title} description={material.description} link={material.link} />
+					<Card title={material.title} description={material.description} />
 				{/each}
 			</div>
 		{:else}

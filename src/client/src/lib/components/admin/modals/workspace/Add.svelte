@@ -42,7 +42,7 @@
 		<Label for="owner" class="mb-2 mt-4 text-left">Owner</Label>
 		<Select id="owner" name="owner" required>
 			{#each lecturers as lecturer}
-				<option value={lecturer.id}>{lecturer.name}</option>
+				<option value={lecturer.id}>{lecturer.name} {lecturer.surname}</option>
 			{/each}
 		</Select>
 

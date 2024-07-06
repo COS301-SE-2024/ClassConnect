@@ -1,7 +1,7 @@
 <script>
 	import { Avatar, Navbar, DarkMode, Dropdown, DropdownItem } from 'flowbite-svelte';
 
-	import BreadCrumbs from '$lib/components/utils/universal/+Breadcrumbs.svelte';
+	import BreadCrumbs from '$lib/components/common/Breadcrumbs.svelte';
 
 	export let data;
 	let { name, image } = data;
