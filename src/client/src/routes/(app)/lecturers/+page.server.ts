@@ -1,20 +1,13 @@
 import { hash } from '@node-rs/argon2';
 import type { Actions } from './$types';
-import { fail, error, redirect } from '@sveltejs/kit';
+import { fail, error } from '@sveltejs/kit';
 
 import User from '$db/schemas/User';
+import { HASH_OPTIONS } from '$src/constants';
 import { generateUsername } from '$utils/user';
 
-const HASH_OPTIONS = {
-	timeCost: 2,
-	outputLen: 32,
-	parallelism: 1,
-	memoryCost: 19456
-};
-
 export async function load({ locals }) {
-	if (!locals.user) return redirect(302, '/signin');
-	if (locals.user.role !== 'admin') throw error(401, 'Unauthorized');
+	if (locals.user?.role !== 'admin') throw error(401, 'Unauthorised');
 
 	try {
 		const lecturers = await User.find({
@@ -35,14 +28,14 @@ export async function load({ locals }) {
 			lecturers: formattedLecturers
 		};
 	} catch (error) {
-		console.error('Server error:', error);
+		console.error('Failed to load lecturers:\n', error);
 		return fail(500, { error: 'An unexpected error occurred while fetching lecturers' });
 	}
 }
 
 export const actions: Actions = {
 	add: async ({ request, locals }) => {
-		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
 
 		const data = await request.formData();
 		const name = data.get('name') as string;
@@ -73,12 +66,12 @@ export const actions: Actions = {
 
 			return { success: true };
 		} catch (error) {
-			console.error('Server error:', error);
+			console.error('Failed to load lecturers:\n', error);
 			return fail(500, { error: 'Failed to add lecturer' });
 		}
 	},
 	edit: async ({ request, locals }) => {
-		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
 
 		const data = await request.formData();
 		const id = data.get('id') as string;
@@ -89,27 +82,26 @@ export const actions: Actions = {
 
 		if (!id) return fail(400, { error: 'Lecturer ID is required' });
 
+		const updateData: { [key: string]: string } = {};
+
+		if (name !== '') updateData.name = name;
+		if (email !== '') updateData.email = email;
+		if (image !== '') updateData.image = image;
+		if (surname !== '') updateData.surname = surname;
+
 		try {
-			const updateData: { [key: string]: string } = {};
-
-			if (name !== '') updateData.name = name;
-			if (surname !== '') updateData.surname = surname;
-			if (email !== '') updateData.email = email;
-			if (image !== '') updateData.image = image;
-
 			const updatedLecturer = await User.findByIdAndUpdate(id, updateData, { new: true });
 
 			if (!updatedLecturer) return fail(404, { error: 'Lecturer not found' });
 
 			return { success: true };
-		} catch (err) {
-			console.error('Error updating lecturer:', err);
+		} catch (error) {
+			console.error('Error updating lecturer:', error);
 			return fail(500, { error: 'Failed to update lecturer' });
 		}
 	},
-
 	delete: async ({ request, locals }) => {
-		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
 
 		const data = await request.formData();
 		const id = data.get('id') as string;

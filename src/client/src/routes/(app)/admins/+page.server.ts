@@ -25,7 +25,7 @@ export async function load({ locals }) {
 			admins: formattedAdmins
 		};
 	} catch (error) {
-		console.error('Failed to load admins', error);
+		console.error('Failed to load admins:\n', error);
 		return fail(500, { error: 'An unexpected error occurred while fetching admins' });
 	}
 }

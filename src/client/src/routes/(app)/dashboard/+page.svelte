@@ -3,10 +3,12 @@
 	import StudentDashboard from '$lib/components/student/Dashboard.svelte';
 
 	export let data;
+
+	$: role = data.role;
 </script>
 
-{#if data.role === 'admin'}
-	<AdminDashboard {data} />
-{:else if data.role === 'student'}
-	<StudentDashboard {data} />
+{#if role === 'admin'}
+	<AdminDashboard {role} />
+{:else if role === 'student'}
+	<StudentDashboard {role} />
 {/if}

@@ -44,6 +44,7 @@
 		{ icon: InfoCircleSolid, name: 'FAQ', href: '/faq' }
 	];
 
+	$: role;
 	$: currentLinks = navLinks[role];
 </script>
 

@@ -13,23 +13,10 @@
 	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 
 	import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
-	import EditModal from '$lib/components/admin/modals/user/Edit.svelte';
+	import EditModal from '$lib/components/admin/modals/workspace/Edit.svelte';
 	import AddModal from '$lib/components/admin/modals/workspace/Add.svelte';
 
-	interface Workspace {
-		id: string;
-		name: string;
-		owner: string;
-		image: string;
-	}
-
-	interface PageData {
-		workspaces: Workspace[];
-		role: 'admin' | 'lecturer' | 'student';
-		lecturers: [{ id: string; name: string }];
-	}
-
-	export let data: PageData;
+	export let data: any;
 
 	let id: string;
 	let isAddModalOpen = false;
@@ -120,5 +107,5 @@
 </main>
 
 <AddModal bind:open={isAddModalOpen} {lecturers} />
-<EditModal bind:open={isEditModalOpen} {id} role="Lecturer" />
+<EditModal bind:open={isEditModalOpen} {id} {lecturers} />
 <RemoveModal bind:open={isRemoveModalOpen} {id} item="workspace" />

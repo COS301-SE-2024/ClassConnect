@@ -30,6 +30,15 @@
 		<Label for="name" class="mb-2 mt-2 text-left">Name</Label>
 		<Input type="text" id="name" name="name" placeholder="Example University" size="md" required />
 
+		<Label for="description" class="mb-2 mt-2 text-left">Description</Label>
+		<Input
+			type="text"
+			id="description"
+			name="description"
+			placeholder="Introduction to OOP"
+			size="md"
+		/>
+
 		<Label for="owner" class="mb-2 mt-4 text-left">Owner</Label>
 		<Select id="owner" name="owner" required>
 			{#each lecturers as lecturer}

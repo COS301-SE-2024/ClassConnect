@@ -10,34 +10,14 @@
 		TableBodyCell
 	} from 'flowbite-svelte';
 
-	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
+	import { UserAddOutline, EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 
 	import AddModal from '$lib/components/admin/modals/user/Add.svelte';
-	import EnrolModal from '$lib/components/admin/modals/user/Enrol.svelte';
 	import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
 	import EditModal from '$lib/components/admin/modals/user/Edit.svelte';
+	import EnrolModal from '$lib/components/admin/modals/user/Enrol.svelte';
 
-	interface Student {
-		id: string;
-		name: string;
-		surname: string;
-		username: string;
-		email: string;
-		image: string;
-	}
-
-	interface Workspace{
-		id: string;
-		name: string;
-		image: string;
-	}
-
-	interface PageData {
-		students: Student[];
-		workspaces: Workspace[];
-	}
-
-	export let data: PageData;
+	export let data: any;
 
 	let id: string;
 	let isAddModalOpen = false;
@@ -63,7 +43,6 @@
 	}
 
 	$: ({ students, workspaces } = data);
-
 </script>
 
 <main class="container mx-auto my-2 px-4">
@@ -132,9 +111,8 @@
 								</Button>
 
 								<Button color="yellow" on:click={() => handleEnrolModalOpen(student.id)}>
-									<TrashBinOutline />
+									<UserAddOutline />
 								</Button>
-								
 							</div>
 						</TableBodyCell>
 					</TableBodyRow>
@@ -144,7 +122,7 @@
 	{/if}
 </main>
 
-<EnrolModal bind:open={isEnrolModalOpen} {id} {workspaces} role="Student"/>
 <AddModal bind:open={isAddModalOpen} role="Student" />
 <EditModal bind:open={isEditModalOpen} {id} role="Student" />
 <RemoveModal bind:open={isRemoveModalOpen} {id} item="user" />
+<EnrolModal bind:open={isEnrolModalOpen} {id} {workspaces} role="Student" />

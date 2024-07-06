@@ -4,7 +4,8 @@
 		BriefcaseOutline,
 		UserCircleOutline,
 		UsersGroupOutline,
-		ChartLineUpOutline
+		ChartLineUpOutline,
+		ArrowLeftOutline
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
 
@@ -30,18 +31,28 @@
 		]
 	};
 
+	$: role;
+	$: workspace;
 	$: currentLinks = navLinks[role];
 </script>
 
 <aside
 	class="bg-primary-100 flex h-screen w-64 flex-col overflow-y-auto border-r px-4 py-1 rtl:border-l rtl:border-r-0 dark:border-gray-700 dark:bg-gray-900"
 >
+	<!-- Back button -->
+	<a
+		href="/workspaces"
+		class="mb-4 flex items-center text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
+	>
+		<ArrowLeftOutline class="h-5 w-5" />
+		<span class="ml-2">Back to Workspaces</span>
+	</a>
+
 	<a href="/" class="mx-auto">
 		<div class="items-center">
 			<div class="flex justify-center">
 				<img class="mb-2 h-20 w-20" src={workspace.image} alt="Class Connect owl logo" />
 			</div>
-
 			<div class="roboto text-center text-xl dark:text-gray-300">{workspace.name}</div>
 		</div>
 	</a>
@@ -52,7 +63,7 @@
 				<a
 					class="hover:bg-primary-300 mt-5 flex transform items-center rounded-lg px-4 py-2 text-gray-600 transition-colors duration-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href ===
 					$page.url.pathname
-						? 'active'
+						? 'active dark:text-gray-800'
 						: ''}"
 					{href}
 				>

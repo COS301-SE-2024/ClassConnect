@@ -64,7 +64,7 @@ export async function load({ locals }) {
 
 export const actions: Actions = {
 	create: async ({ request, locals }) => {
-		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
 
 		const data = await request.formData();
 		const name = data.get('name') as string;
@@ -91,8 +91,8 @@ export const actions: Actions = {
 			return fail(500, { error: 'Failed to add workspace' });
 		}
 	},
-	delete: async ({ request, locals }) => {
-		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorized');
+	edit: async ({ request, locals }) => {
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
 
 		const data = await request.formData();
 		const id = data.get('id') as string;
@@ -100,15 +100,53 @@ export const actions: Actions = {
 		if (!id) return fail(400, { error: 'Workspace ID is required' });
 
 		try {
-			const deletedLecturer = await Workspace.findByIdAndDelete(id);
-			if (!deletedLecturer) return fail(404, { error: 'Workspace not found' });
+			const workspace = await Workspace.findById(id);
+			if (!workspace) return fail(404, { error: 'Workspace not found' });
 
-			await User.findByIdAndUpdate(deletedLecturer.owner, { owner: null });
+			const name = data.get('name') as string | null;
+			const owner = data.get('owner') as string | null;
+			const image = data.get('image') as string | null;
+
+			if (name) workspace.name = name;
+			if (image) workspace.image = image;
+
+			console.log(owner);
+
+			if (owner && owner !== workspace.owner.toString()) {
+				await User.findByIdAndUpdate(workspace.owner, { $pull: { workspaces: workspace._id } });
+				await User.findByIdAndUpdate(owner, { $push: { workspaces: workspace._id } });
+
+				workspace.owner = owner;
+			}
+
+			await workspace.save();
 
 			return { success: true };
 		} catch (err) {
-			console.error('Error removing lecturer:', err);
-			return fail(500, { error: 'Failed to remove lecturer' });
+			console.error('Error editing workspace:', err);
+			return fail(500, { error: 'Failed to edit workspace' });
+		}
+	},
+	delete: async ({ request, locals }) => {
+		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
+
+		const data = await request.formData();
+		const id = data.get('id') as string;
+
+		if (!id) return fail(400, { error: 'Workspace ID is required' });
+
+		try {
+			const deletedWorkspace = await Workspace.findByIdAndDelete(id);
+			if (!deletedWorkspace) return fail(404, { error: 'Workspace not found' });
+
+			await User.findByIdAndUpdate(deletedWorkspace.owner, { $pull: { workspaces: id } });
+
+			await User.updateMany({ workspaces: id }, { $pull: { workspaces: id } });
+
+			return { success: true };
+		} catch (err) {
+			console.error('Error removing workspace:', err);
+			return fail(500, { error: 'Failed to remove workspace' });
 		}
 	}
 };
