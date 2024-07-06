@@ -9,6 +9,11 @@
 		DropdownDivider
 	} from 'flowbite-svelte';
 	import BreadCrumbs from '$lib/components/utils/universal/+Breadcrumbs.svelte';
+	import { user } from '$lib/store';
+
+	console.log('This is the user class: ', $user);
+
+	const profileUrl = '/' + $user.getRole() + '/profile';
 </script>
 
 <Navbar>
@@ -21,17 +26,17 @@
 			class="mx-2"
 		/>
 		<div class="mx-2">
-			<div class="text-lg font-bold">Eugene Mpande</div>
-			<div class="text-lg font-semibold">u21573558</div>
+			<div class="text-lg font-bold">{$user.getFullName()}</div>
+			<div class="text-lg font-semibold">{$user.getUsername()}</div>
 		</div>
 	</div>
 	<Dropdown placement="bottom" triggeredBy="#avatar-menu">
 		<DropdownHeader>
-			<span class="block text-sm">Eugene Mpande</span>
-			<span class="block truncate text-sm font-medium">u21573558@tuks.co.za</span>
+			<span class="block text-sm">{$user.getFullName()}</span>
+			<span class="block truncate text-sm font-medium">{$user.getEmail()}</span>
 		</DropdownHeader>
-		<DropdownItem href="/student/profile">Profile</DropdownItem>
+		<DropdownItem href={profileUrl}>Profile</DropdownItem>
 		<DropdownDivider />
-		<DropdownItem>Sign out</DropdownItem>
+		<DropdownItem href="/signout">Sign out</DropdownItem>
 	</Dropdown>
 </Navbar>

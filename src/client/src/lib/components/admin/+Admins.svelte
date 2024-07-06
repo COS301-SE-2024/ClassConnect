@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { admins, admChange } from '$lib/store';
-	import { getUsers } from '$lib/services/users';
 	import AddAdmin from '$lib/components/admin/modals/add/+AddAdmin.svelte';
 	import EditAdmin from '$lib/components/admin/modals/edit/+EditAdmin.svelte';
 	import Remove from '$lib/components/admin/modals/remove/+Remove.svelte';
+	import { SearchOutline } from 'flowbite-svelte-icons';
+	import { user } from '$lib/store';
+	import type { Org_Admin } from '$lib/store/types';
 	import {
 		Table,
 		TableBody,
@@ -16,26 +16,10 @@
 		Input,
 		Button
 	} from 'flowbite-svelte';
-	import { SearchOutline } from 'flowbite-svelte-icons';
+
+	let admins: Org_Admin[] = $user.getAdmins();
 
 	let headers = ['Name', 'Admin Number', 'Email address', 'Edit'];
-
-	async function loadAdmins() {
-		try {
-			const users = await getUsers({ role: 'admin' });
-			admins.set(users);
-		} catch (error) {
-			admins.set([]);
-		}
-	}
-
-	onMount(loadAdmins);
-
-	$: {
-		admChange.subscribe(() => {
-			loadAdmins();
-		});
-	}
 </script>
 
 <section class="container mx-auto my-2 px-4">
@@ -47,7 +31,7 @@
 				<span
 					class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
 				>
-					{$admins.length}
+					{admins.length}
 					{' '} admins
 				</span>
 			</div>
@@ -72,15 +56,15 @@
 			{/each}
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
-			{#each $admins as admin}
+			{#each admins as admin}
 				<TableBodyRow>
 					<TableBodyCell class="inline-flex items-center gap-x-3">
 						<div class="flex items-center gap-x-2">
 							<Avatar src={admin.image} />
 							<div>
 								<p class="text-lg text-gray-800 dark:text-white">
-									{admin.name}
-									{admin.surname}
+									{admin.first_name}
+									{admin.last_name}
 								</p>
 							</div>
 						</div></TableBodyCell
@@ -93,8 +77,8 @@
 					</TableBodyCell>
 					<TableBodyCell>
 						<div class="flex items-center gap-x-6">
-							<Remove id={admin._id} />
-							<EditAdmin adminID={admin._id} />
+							<Remove id={admin.id} />
+							<EditAdmin adminID={admin.id} />
 						</div>
 					</TableBodyCell>
 				</TableBodyRow>

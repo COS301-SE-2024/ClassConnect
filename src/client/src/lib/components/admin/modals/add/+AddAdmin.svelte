@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
-	import { createUser } from '$lib/services/users';
-	import { admChange } from '$lib/store';
 
 	let formModal = false;
 
@@ -10,13 +8,12 @@
 
 		const formData = new FormData(event.target as HTMLFormElement);
 
-		const name = formData.get('name')?.toString() ?? '';
-		const surname = formData.get('surname')?.toString() ?? '';
-		const email = formData.get('email')?.toString() ?? '';
-
 		try {
-			await createUser(name, surname, email, 'admin');
-			admChange.set('new val');
+			const response = await fetch('/admin/admins?/add', {
+				method: 'POST',
+				body: formData
+			});
+			console.log(response);
 		} catch (error) {
 			console.error('Create User Error:', error);
 		}

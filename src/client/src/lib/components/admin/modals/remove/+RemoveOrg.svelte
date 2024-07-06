@@ -1,26 +1,60 @@
-<script>
-	import { goto } from '$app/navigation';
-	import { Button, Modal } from 'flowbite-svelte';
-	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
-	import { deleteOrganization } from '$lib/services/orgs';
-	import { organisationName } from '$lib/store';
+<script lang="ts">
+	import { Banner, Button, Modal } from 'flowbite-svelte';
+	import { ExclamationCircleOutline, BullhornSolid } from 'flowbite-svelte-icons';
+	import type { Org } from '$lib/store/types';
+	import { user, orgChange } from '$lib/store';
+
 	let popupModal = false;
+	let showBanner = false;
 
 	async function handleRemove() {
-		const orgID = localStorage.getItem('organisationID') || 'non-existent';
+		console.log('remove is being handled');
+
+		// Create a FormData object
+		const formData = new FormData();
+		formData.append('organisationID', $user.getOrganisation());
 
 		try {
-			const message = await deleteOrganization(orgID);
+			const response = await fetch('/admin/organisation?/remove', {
+				method: 'POST',
+				body: formData
+			});
 
-			console.log(message);
+			const res = await response.json();
 
-			localStorage.removeItem('organisationID');
+			if (response.ok) {
+				const stringifiedArray = res.data;
+				const jsonArray = JSON.parse(stringifiedArray);
+				const jsonString = jsonArray[0];
+				const result = JSON.parse(jsonString);
 
-			organisationName.set('');
-			goto('/admin/organisation');
+				console.log(result);
+
+				const org: Org = {
+					id: result.id,
+					org_name: result.org_name,
+					image: result.image
+				};
+
+				$user.updateOrganisation(org);
+
+				// Close the form modal and show the banner
+				popupModal = false;
+				showBanner = true;
+
+				const time: string = Date.now().toString();
+
+				const updateString: string = 'Organisation updated at ' + time;
+
+				orgChange.set(updateString);
+			} else {
+				throw Error('Failed to remove organisation');
+			}
 		} catch (error) {
-			console.error('Delete organization error:', error);
+			console.error('remove org error:', error);
 		}
+
+		popupModal = false;
 	}
 </script>
 
@@ -36,3 +70,15 @@
 		<Button color="alternative">No, cancel</Button>
 	</div>
 </Modal>
+
+{#if showBanner}
+	<Banner id="default-banner" position="absolute">
+		<p class="flex items-center text-2xl font-normal text-red-600 dark:text-red-400">
+			<span class="me-3 inline-flex rounded-full bg-red-200 p-1 dark:bg-red-600">
+				<BullhornSolid class="h-3 w-3 text-red-600 dark:text-red-400" />
+				<span class="sr-only">Warning</span>
+			</span>
+			<span> Organisation deleted successfully </span>
+		</p>
+	</Banner>
+{/if}

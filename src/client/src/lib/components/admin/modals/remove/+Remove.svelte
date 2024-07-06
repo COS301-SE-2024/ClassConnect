@@ -1,21 +1,24 @@
 <script lang="ts">
-	export let id = '';
-
-	import { Button, Modal } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
-	import { deleteUser } from '$lib/services/users';
-	import IconTrash from '@tabler/icons-svelte/IconTrash.svelte';
-	import { lecChange, stuChange, admChange } from '$lib/store';
+	import { TrashBinOutline } from 'flowbite-svelte-icons';
+	import { Button, Modal } from 'flowbite-svelte';
+
+	export let id = '';
 	let popupModal = false;
 
 	async function handleRemove(event: Event) {
 		event.preventDefault();
 
+		const formData = new FormData(event.target as HTMLFormElement);
+
+		formData.append('userID', id);
+
 		try {
-			await deleteUser(id);
-			lecChange.set('new val');
-			stuChange.set('new val');
-			admChange.set('new val');
+			const response = await fetch('/admin/admins?/remove', {
+				method: 'POST',
+				body: formData
+			});
+			console.log(response);
 		} catch (error) {
 			console.error('Create User Error:', error);
 		}
@@ -28,7 +31,7 @@
 	on:click={() => (popupModal = true)}
 	class="transition-colors duration-200 hover:text-green-500 focus:outline-none dark:text-gray-300 dark:hover:text-green-500"
 >
-	<IconTrash stroke={2} />
+	<TrashBinOutline stroke={2} />
 </button>
 
 <Modal bind:open={popupModal} size="xs" autoclose>

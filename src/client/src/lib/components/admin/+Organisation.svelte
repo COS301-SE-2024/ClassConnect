@@ -3,40 +3,42 @@
 	import EditOrg from '$lib/components/admin/modals/edit/+EditOrg.svelte';
 	import AddOrg from '$lib/components/admin/modals/add/+AddOrg.svelte';
 	import RemoveOrg from '$lib/components/admin/modals/remove/+RemoveOrg.svelte';
-	import { organisationName } from '$lib/store';
-	import { getOrganization } from '$lib/services/orgs';
+	import { user, orgChange } from '$lib/store';
+	import { writable } from 'svelte/store';
 
 	let org_exists: boolean = false;
+	const organisation_name = writable('');
 
-	async function loadOrganizationDetails() {
-		const id = localStorage.getItem('organisationID') || 'non-existent';
-		try {
-			const response = await getOrganization(id);
-			console.log('Get Org Response:', response);
-			organisationName.set(response.name);
-		} catch (error) {
-			console.error('get org error:', error);
-			alert('Failed to load organization details');
-		}
-	}
-
-	function checkOrganisationID() {
-		if (typeof window !== 'undefined') {
-			const organisationID = localStorage.getItem('organisationID');
-			org_exists = organisationID !== null;
-			if (org_exists === true) {
-				loadOrganizationDetails();
+	async function getOrgDetails() {
+		if ($user) {
+			try {
+				const orgID: string = $user.getOrganisation();
+				if (orgID !== '' && orgID !== undefined) {
+					const org = $user.getOrgDetails();
+					console.log('This is the new org: ', org);
+					if (org) {
+						org_exists = true;
+						organisation_name.set(org.org_name);
+					} else {
+						org_exists = false;
+					}
+				} else {
+					org_exists = false;
+				}
+			} catch (e) {
+				console.error('Error getting organisation details:', e);
+				org_exists = false;
 			}
+		} else {
+			org_exists = false;
 		}
 	}
 
-	// Call the function when the component is initialized
-	onMount(checkOrganisationID);
+	onMount(getOrgDetails);
 
-	// Reactive statement that watches for changes in organisationName
 	$: {
-		organisationName.subscribe(() => {
-			checkOrganisationID();
+		orgChange.subscribe(() => {
+			getOrgDetails();
 		});
 	}
 </script>
@@ -84,11 +86,13 @@
 								<tr>
 									<td class="whitespace-nowrap px-4 py-4 text-sm font-medium">
 										<div>
-											<h2 class="font-medium text-gray-800 dark:text-gray-300">Orgnisation Name</h2>
+											<h2 class="font-medium text-gray-800 dark:text-gray-300">
+												Organisation Name
+											</h2>
 										</div>
 									</td>
 									<td class="whitespace-nowrap px-12 py-4 text-sm font-medium dark:text-gray-300">
-										{$organisationName}
+										{$organisation_name}
 									</td>
 								</tr>
 							</tbody>
@@ -102,7 +106,7 @@
 	<div class="sm:flex sm:items-center sm:justify-between">
 		<div>
 			<div class="flex items-center gap-x-3">
-				<h2 class="text-lg font-medium text-gray-800 dark:text-white">{$organisationName}</h2>
+				<h2 class="text-lg font-medium text-gray-800 dark:text-white">Organisation Name</h2>
 			</div>
 		</div>
 

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { file } from '$lib/store';
-	import IconFiles from '@tabler/icons-svelte/IconFiles.svelte';
+	import { FileCopyAltOutline } from 'flowbite-svelte-icons';
 	import UploadStudy from '$lib/components/lecturer/modals/+UploadStudy.svelte';
 	export let files;
 
@@ -15,7 +15,7 @@
 		<a href="/lecturer/dashboard/material">
 			<button on:click={setFile(file.link)} class="w-full" type="button">
 				<div class="mt-4 flex items-center rounded-lg bg-gray-100 px-2 py-1 text-gray-600">
-					<IconFiles />
+					<FileCopyAltOutline />
 					<p class="p-2 text-sm">{file.title}</p>
 				</div>
 			</button>

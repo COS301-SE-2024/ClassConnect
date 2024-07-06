@@ -1,16 +1,16 @@
 <script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
-	import IconEdit from '@tabler/icons-svelte/IconEdit.svelte';
+	import { EditOutline } from 'flowbite-svelte-icons';
 	export let id;
 	let formModal = false;
 
 	// Function to handle form submission
-	async function handleSubmit(event) {
+	async function handleSubmit(event: Event) {
 		console.log('edit workspace is being handled');
 		// Prevent the default form submission behavior
 		event.preventDefault();
 
-		const formData = new FormData(event.currentTarget);
+		const formData = new FormData(event.currentTarget as HTMLFormElement);
 		formData.append('work_id', id);
 
 		const response = await fetch('/admin/workspaces?/edit', {
@@ -28,7 +28,7 @@
 	on:click={() => (formModal = true)}
 	class="transition-colors duration-200 hover:text-green-500 focus:outline-none dark:text-gray-300 dark:hover:text-green-500"
 >
-	<IconEdit stroke={2} />
+	<EditOutline stroke={2} />
 </button>
 
 <Modal bind:open={formModal} size="xs" autoclose={false} class="w-full">

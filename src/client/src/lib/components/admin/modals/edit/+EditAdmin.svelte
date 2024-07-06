@@ -1,10 +1,6 @@
 <script lang="ts">
-	export let adminID = '';
-
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
-	import { updateUser } from '$lib/services/users';
-	import { admChange } from '$lib/store';
-
+	export let adminID = '';
 	let formModal = false;
 
 	async function handleSubmit(event: Event) {
@@ -12,20 +8,14 @@
 
 		const formData = new FormData(event.target as HTMLFormElement);
 
-		const name = formData.get('name')?.toString() ?? '';
-		const surname = formData.get('surname')?.toString() ?? '';
-		const email = formData.get('email')?.toString() ?? '';
-
-		const newInfo = {
-			name: name || undefined,
-			surname: surname || undefined,
-			email: email || undefined
-		};
+		formData.append('adminID', adminID);
 
 		try {
-			await updateUser(adminID, newInfo);
-			console.log('User updated');
-			admChange.set('new');
+			const response = await fetch('/admin/admins?/edit', {
+				method: 'POST',
+				body: formData
+			});
+			console.log(response);
 		} catch (error) {
 			console.error('Create User Error:', error);
 		}
@@ -61,7 +51,7 @@
 		<Label for="name" class="mb-2 mt-2 space-y-2">Name</Label>
 		<Input type="text" id="name" name="name" placeholder="Sam" size="md" />
 
-		<Label for="surname" class="mb-2 mt-2 space-y-2">Name</Label>
+		<Label for="surname" class="mb-2 mt-2 space-y-2">Surname</Label>
 		<Input type="text" id="surname" name="surname" placeholder="Smith" size="md" />
 
 		<Label for="email" class="mb-2 mt-2 space-y-2">Email</Label>

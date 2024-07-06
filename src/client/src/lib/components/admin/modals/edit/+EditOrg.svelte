@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { Button, Modal, Label, Input } from 'flowbite-svelte';
-	import { organisationName } from '$lib/store';
-	import { updateOrganization } from '$lib/services/orgs';
+	import { Banner, Button, Modal, Label, Input } from 'flowbite-svelte';
+	import type { Org } from '$lib/store/types';
+	import { BullhornSolid } from 'flowbite-svelte-icons';
+	import { user, orgChange } from '$lib/store';
 
 	let formModal = false;
+	let showBanner = false;
 
 	// Function to handle form submission
 	async function handleSubmit(event: SubmitEvent) {
@@ -11,22 +13,48 @@
 		event.preventDefault();
 
 		const formData = new FormData(event.target as HTMLFormElement);
-		const name = formData.get('org_name')?.toString() ?? '';
-		console.log('This is the name parameter:', name);
-		const image = 'https://example.com/images/university_updated.jpg';
-		const id = localStorage.getItem('organisationID') || 'non-existent';
+		formData.append('orgID', $user.getOrganisation());
+
 		try {
-			const response = await updateOrganization(id, name, image);
+			const response = await fetch('/admin/organisation?/edit', {
+				method: 'POST',
+				body: formData
+			});
 
-			console.log('Response:', response);
+			const res = await response.json();
 
-			if (response) {
-				organisationName.set(response.name);
-				//goto('/');
+			if (response.ok) {
+				const stringifiedArray = res.data;
+				const jsonArray = JSON.parse(stringifiedArray);
+				const jsonString = jsonArray[0];
+				const result = JSON.parse(jsonString);
+
+				console.log(result);
+
+				const org: Org = {
+					id: result.id,
+					org_name: result.org_name,
+					image: result.image
+				};
+
+				$user.updateOrganisation(org);
+
+				console.log('This is the user after the update: ', $user);
+
+				// Close the form modal and show the banner
+				formModal = false;
+				showBanner = true;
+
+				const time: string = Date.now().toString();
+
+				const updateString: string = 'Organisation updated at ' + time;
+
+				orgChange.set(updateString);
+			} else {
+				throw Error('Failed to update organisation');
 			}
 		} catch (error) {
-			console.error('update org error:', error);
-			alert('Update failed');
+			console.error('create org error:', error);
 		}
 	}
 </script>
@@ -58,14 +86,23 @@
 			type="text"
 			id="org_name"
 			name="org_name"
-			placeholder="Example University"
+			placeholder="Organisation"
 			size="md"
 			required
 		/>
 
-		<Label for="upload_image" class="mb-2 mt-2 space-y-2">Upload image:</Label>
-		<Input type="file" id="image" name="image" />
-
 		<Button type="submit" class="w-full1">Edit Organisation</Button>
 	</form>
 </Modal>
+
+{#if showBanner}
+	<Banner id="default-banner" position="absolute">
+		<p class="flex items-center text-2xl font-normal text-green-600 dark:text-green-400">
+			<span class="me-3 inline-flex rounded-full bg-green-200 p-1 dark:bg-green-600">
+				<BullhornSolid class="h-3 w-3 text-green-600 dark:text-green-400" />
+				<span class="sr-only">Information</span>
+			</span>
+			<span>Organisation details edited</span>
+		</p>
+	</Banner>
+{/if}
