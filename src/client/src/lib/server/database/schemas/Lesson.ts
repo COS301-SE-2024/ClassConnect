@@ -6,17 +6,21 @@ const lessonSchema = new mongoose.Schema({
 		required: true
 	},
 	description: String,
+	time: {
+		type: String,
+		required: true
+	},
 	date: {
 		type: Date,
 		required: true
 	},
-	workspace_id: {
+	workspace: {
 		type: mongoose.Types.ObjectId,
 		ref: 'Workspace',
 		required: true
 	}
 });
 
-const Lesson = mongoose.models.Lesson || mongoose.model('Schedule', lessonSchema);
+const Lesson = mongoose.models.Lesson || mongoose.model('Lesson', lessonSchema);
 
 export default Lesson;

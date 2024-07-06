@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import type { Actions } from './$types';
 import { fail, error, redirect } from '@sveltejs/kit';
 import User from '$db/schemas/User';
@@ -130,3 +131,8 @@ export const actions: Actions ={
 	}
 
 }
+=======
+export async function load() {
+	return { announcements: [] };
+}
+>>>>>>> update/routing
