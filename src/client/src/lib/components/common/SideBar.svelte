@@ -1,8 +1,6 @@
 <script lang="ts">
 	import {
 		GridSolid,
-		GridOutline,
-		GlobeOutline,
 		BullhornSolid,
 		BuildingSolid,
 		BriefcaseSolid,
@@ -33,8 +31,8 @@
 			{ icon: BullhornSolid, name: 'Announcements', href: '/announcements' }
 		],
 		student: [
-			{ icon: GridOutline, name: 'Dashboard', href: '/student' },
-			{ icon: GlobeOutline, name: 'Activities', href: '/activities' },
+			{ icon: GridSolid, name: 'Dashboard', href: '/dashboard' },
+			{ icon: BriefcaseSolid, name: 'Workspaces', href: '/workspaces' },
 			{ icon: BullhornSolid, name: 'Announcements', href: '/announcements' },
 			{ icon: ChartLineUpOutline, name: 'Grades', href: '/grades' }
 		]

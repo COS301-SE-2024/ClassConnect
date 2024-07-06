@@ -2,7 +2,7 @@
 	import { Card } from 'flowbite-svelte';
 
 	export let data;
-	let { students, lecturers, workspaces } = data;
+	$: ({ students, lecturers, workspaces } = data);
 </script>
 
 <main>

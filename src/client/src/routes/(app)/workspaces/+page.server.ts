@@ -14,14 +14,12 @@ export async function load({ locals }) {
 
 	if (locals.user.role === 'admin') {
 		try {
-			const workspaces = await Workspace.find({ organisation: locals.user.organisation }).select(
-				'_id name image owner'
-			);
+			const workspaces = await Workspace.find({ organisation: locals.user.organisation });
 
 			const availableLecturers = await User.find({
 				organisation: locals.user.organisation,
 				workspaces: []
-			}).select('_id name');
+			}).select('name');
 
 			const formattedWorkspacesPromises = workspaces.map(async (workspace) => ({
 				id: workspace._id.toString(),
@@ -46,12 +44,10 @@ export async function load({ locals }) {
 			console.error('Server error:', error);
 			return fail(500, { error: 'An unexpected error occurred while fetching workspaces' });
 		}
-	} else if (locals.user.role === 'lecturer') {
+	} else {
 		const user = await User.findById(locals.user.id).select('workspaces');
 
-		const workspaces = await Workspace.find({ _id: { $in: user.workspaces } }).select(
-			'_id name image'
-		);
+		const workspaces = await Workspace.find({ _id: { $in: user.workspaces } });
 
 		const formattedWorkspaces = workspaces.map((workspace) => ({
 			id: workspace._id.toString(),
@@ -63,12 +59,6 @@ export async function load({ locals }) {
 		return {
 			workspaces: formattedWorkspaces
 		};
-	} else if (locals.user.role === 'student') {
-		return {
-			workspaces: []
-		};
-	} else {
-		throw error(401, 'Unauthorized');
 	}
 }
 

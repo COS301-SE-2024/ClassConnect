@@ -1,18 +1,12 @@
 import type { Actions } from './$types';
-import { fail, error, redirect } from '@sveltejs/kit';
-import User from '$db/schemas/User';
+import { fail, error } from '@sveltejs/kit';
 import Announcement from '$db/schemas/Annoucement';
 
 export async function load({locals}) {
-	//handle user
-	if (!locals.user) return redirect(302, '/signin');
-	if (locals.user.role !== 'admin') throw error(401, 'Unathorised');
-
-	//find all announcements in organisation
 	try{
 
 		const announcements = await Announcement.find({
-			ID: locals.user.organisation
+			ID: locals.user?.organisation
 
 		}).select('title description date type ID');
 

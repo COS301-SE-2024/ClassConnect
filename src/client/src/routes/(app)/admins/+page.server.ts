@@ -1,8 +1,16 @@
+import { hash } from '@node-rs/argon2';
 import type { Actions } from './$types';
 import { fail, error, redirect } from '@sveltejs/kit';
 import { generateUsername } from '$utils/user';
 import User from '$db/schemas/User';
 import Workspace from '$db/schemas/Workspace';
+
+const HASH_OPTIONS = {
+	timeCost: 2,
+	outputLen: 32,
+	parallelism: 1,
+	memoryCost: 19456
+};
 
 export async function load({ locals }) {
 	//handle user
@@ -56,14 +64,15 @@ export const actions: Actions ={
 			
 			//generate username
 			const username = generateUsername('admin', email);
+			const hashedPassword = await hash(username, HASH_OPTIONS);
 			
 			const newAdmin = new User({
 				name,
 				surname,
 				email,
-				role: 'admin',
-				password: username,
 				username,
+				role: 'admin',
+				password: hashedPassword,
 				organisation: locals.user.organisation,
 				image: image || 'images/profile-placeholder.png'
 			});
