@@ -45,7 +45,8 @@ export const userInfo = writable<any>({
 });
 
 export const screenShareEnabled = writable(false);
-
+export const screenShareParticipant = writable<StreamVideoParticipant | null>(null);
+export const cameraEnabled = writable(false);
 
 export const participantsThere = writable<StreamVideoParticipant[]>([]);
 

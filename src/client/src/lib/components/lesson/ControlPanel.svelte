@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { type Call } from '@stream-io/video-client';
 	import { goto } from '$app/navigation';
-	import { Button } from 'flowbite-svelte';
+	import { Button, DarkMode } from 'flowbite-svelte';
 	import {
 		MicrophoneOutline,
 		MicrophoneSlashOutline,
@@ -10,12 +10,12 @@
 		PhoneHangupOutline
 	} from 'flowbite-svelte-icons';
 	import { writable } from 'svelte/store';
-	import { screenShareEnabled } from '$lib/store/index';
+	import { screenShareEnabled, cameraEnabled } from '$lib/store/index';
 
 	export let call: Call;
 
 	const microphoneEnabled = writable(false);
-	const cameraEnabled = writable(false);
+
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let screenShare;
@@ -45,6 +45,7 @@
 </script>
 
 <div class="flex h-full items-center justify-around bg-gray-300 p-4 dark:bg-gray-800">
+	<DarkMode/>
 	{#if $microphoneEnabled}
 		<Button
 			pill={true}
