@@ -58,7 +58,7 @@
 		<Button
 			pill={true}
 			on:click={toggleMicrophone}
-			class="bg-green-500 text-white hover:bg-green-700"
+			class="bg-gray-500  text-white hover:bg-gray-700  dark:bg-gray-500  dark:hover:bg-gray-700"
 		>
 			<MicrophoneSlashOutline class="h-6 w-6" />
 		</Button>

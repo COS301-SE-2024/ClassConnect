@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { type Call, type StreamVideoParticipant,hasAudio, hasVideo } from '@stream-io/video-client';
+	import { type Call, type StreamVideoParticipant,hasScreenShare, hasVideo } from '@stream-io/video-client';
 
 	import Participant from './Participant.svelte';
 	import ScreenShare from './ScreenShare.svelte';
@@ -52,7 +52,7 @@
 
 <div id="participants" class="flex h-full flex-wrap justify-center">
 	{#each $participantsThere as participant, index}
-	{#if showScreenShare}
+	{#if hasScreenShare(participant)}
 	<div class={`participant w-full h-full flex items-center justify-center p-2`}>
 		<ScreenShare {call} {participant} />
 	</div>
