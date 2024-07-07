@@ -11,15 +11,12 @@
 	import { writable } from 'svelte/store';
 	import { screenShareEnabled, cameraEnabled } from '$lib/store/index';
 
-
 	import ScreenShareIcon from '$lib/images/ScreenShareIcon.svelte';
 	import ScreenShareOffIcon from '$lib/images/ScreenShareOffIcon.svelte';
-
 
 	export let call: Call;
 
 	const microphoneEnabled = writable(false);
-
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let screenShare;
@@ -49,7 +46,7 @@
 </script>
 
 <div class="flex h-full items-center justify-around bg-gray-300 p-4 dark:bg-gray-800">
-	<DarkMode/>
+	<DarkMode />
 	{#if $microphoneEnabled}
 		<Button
 			pill={true}
@@ -92,7 +89,7 @@
 			on:click={toggleScreenShare}
 			class="bg-green-500 text-white hover:bg-green-700"
 		>
-			<ScreenShareIcon/>
+			<ScreenShareIcon />
 		</Button>
 	{:else}
 		<Button
