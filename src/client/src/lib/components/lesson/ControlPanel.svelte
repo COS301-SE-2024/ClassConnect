@@ -6,11 +6,15 @@
 		MicrophoneOutline,
 		MicrophoneSlashOutline,
 		VideoCameraOutline,
-		ArrowUpFromBracketOutline,
 		PhoneHangupOutline
 	} from 'flowbite-svelte-icons';
 	import { writable } from 'svelte/store';
 	import { screenShareEnabled, cameraEnabled } from '$lib/store/index';
+
+
+	import ScreenShareIcon from '$lib/images/ScreenShareIcon.svelte';
+	import ScreenShareOffIcon from '$lib/images/ScreenShareOffIcon.svelte';
+
 
 	export let call: Call;
 
@@ -88,7 +92,7 @@
 			on:click={toggleScreenShare}
 			class="bg-green-500 text-white hover:bg-green-700"
 		>
-			<ArrowUpFromBracketOutline class="h-6 w-6" />
+			<ScreenShareIcon/>
 		</Button>
 	{:else}
 		<Button
@@ -96,7 +100,7 @@
 			on:click={toggleScreenShare}
 			class="bg-gray-500 text-white hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-700"
 		>
-			<ArrowUpFromBracketOutline class="h-6 w-6" />
+			<ScreenShareOffIcon />
 		</Button>
 	{/if}
 	<Button
