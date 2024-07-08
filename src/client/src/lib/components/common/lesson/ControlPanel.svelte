@@ -1,21 +1,22 @@
 <script lang="ts">
 	import { type Call } from '@stream-io/video-client';
 	import { goto } from '$app/navigation';
-	import { Button } from 'flowbite-svelte';
+	import { Button, DarkMode } from 'flowbite-svelte';
 	import {
 		MicrophoneOutline,
 		MicrophoneSlashOutline,
 		VideoCameraOutline,
-		ArrowUpFromBracketOutline,
 		PhoneHangupOutline
 	} from 'flowbite-svelte-icons';
 	import { writable } from 'svelte/store';
-	import { screenShareEnabled } from '$lib/store/index';
+	import { screenShareEnabled, cameraEnabled } from '$lib/store/index';
+
+	import ScreenShareIcon from '$lib/images/ScreenShareIcon.svelte';
+	import ScreenShareOffIcon from '$lib/images/ScreenShareOffIcon.svelte';
 
 	export let call: Call;
 
 	const microphoneEnabled = writable(false);
-	const cameraEnabled = writable(false);
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	let screenShare;
@@ -30,6 +31,7 @@
 
 	function toggleCamera() {
 		call.camera.toggle();
+		cameraEnabled.update((enabled) => !enabled);
 	}
 
 	function toggleScreenShare() {
@@ -44,6 +46,7 @@
 </script>
 
 <div class="flex h-full items-center justify-around bg-gray-300 p-4 dark:bg-gray-800">
+	<DarkMode />
 	{#if $microphoneEnabled}
 		<Button
 			pill={true}
@@ -56,7 +59,7 @@
 		<Button
 			pill={true}
 			on:click={toggleMicrophone}
-			class="bg-green-500 text-white hover:bg-green-700"
+			class="bg-gray-500  text-white hover:bg-gray-700  dark:bg-gray-500  dark:hover:bg-gray-700"
 		>
 			<MicrophoneSlashOutline class="h-6 w-6" />
 		</Button>
@@ -86,7 +89,7 @@
 			on:click={toggleScreenShare}
 			class="bg-green-500 text-white hover:bg-green-700"
 		>
-			<ArrowUpFromBracketOutline class="h-6 w-6" />
+			<ScreenShareIcon />
 		</Button>
 	{:else}
 		<Button
@@ -94,7 +97,7 @@
 			on:click={toggleScreenShare}
 			class="bg-gray-500 text-white hover:bg-gray-700 dark:bg-gray-500 dark:hover:bg-gray-700"
 		>
-			<ArrowUpFromBracketOutline class="h-6 w-6" />
+			<ScreenShareOffIcon />
 		</Button>
 	{/if}
 	<Button
