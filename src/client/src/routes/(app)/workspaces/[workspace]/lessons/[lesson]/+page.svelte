@@ -4,8 +4,8 @@
 	import { StreamVideoClient, type Call } from '@stream-io/video-client';
 
 	import { userInfo } from '$lib/store/index';
-	import Container from '$lib/components/lesson/Container.svelte';
-	import ControlPanel from '$lib/components/lesson/ControlPanel.svelte';
+	import Container from '$lib/components/common/lesson/Container.svelte';
+	import ControlPanel from '$lib/components/common/lesson/ControlPanel.svelte';
 
 	export let data;
 	const { apiKey, token } = data;

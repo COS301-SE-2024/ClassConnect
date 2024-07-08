@@ -11,8 +11,8 @@
 	import { writable } from 'svelte/store';
 	import { screenShareEnabled, cameraEnabled } from '$lib/store/index';
 
-	import ScreenShareIcon from '$lib/images/ScreenShareIcon.svelte';
-	import ScreenShareOffIcon from '$lib/images/ScreenShareOffIcon.svelte';
+	import ScreenShareIcon from '$lib/icons/ScreenShareIcon.svelte';
+	import ScreenShareOffIcon from '$lib/icons/ScreenShareOffIcon.svelte';
 
 	export let call: Call;
 
