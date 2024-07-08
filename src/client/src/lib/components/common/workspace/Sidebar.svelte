@@ -37,7 +37,7 @@
 </script>
 
 <aside
-	class="bg-primary-100 flex h-screen w-64 flex-col overflow-y-auto border-r px-4 py-1 rtl:border-l rtl:border-r-0 dark:border-gray-700 dark:bg-gray-900"
+	class="flex h-screen w-64 flex-col overflow-y-auto border-r bg-primary-100 px-4 py-1 dark:border-gray-700 dark:bg-gray-900 rtl:border-l rtl:border-r-0"
 >
 	<!-- Back button -->
 	<a
@@ -61,7 +61,7 @@
 		<nav>
 			{#each currentLinks as { icon, name, href }}
 				<a
-					class="hover:bg-primary-300 mt-5 flex transform items-center rounded-lg px-4 py-2 text-gray-600 transition-colors duration-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href ===
+					class="mt-5 flex transform items-center rounded-lg px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href ===
 					$page.url.pathname
 						? 'active dark:text-gray-800'
 						: ''}"

@@ -40,7 +40,7 @@
 <div class="flex h-screen items-center justify-center bg-gradient-to-r from-green-300 to-green-600">
 	<div class="rounded-xl bg-white p-8 text-center shadow-lg">
 		<h1 class="mb-4 text-4xl font-bold text-gray-800">👋 Welcome aboard {name}!</h1>
-		
+
 		<p class="mb-6 text-lg text-gray-600">Your account has been successfully created.</p>
 		<p class="mb-6 text-xl text-gray-700">
 			We've sent you an email with your new username and sign in and create your organisation.

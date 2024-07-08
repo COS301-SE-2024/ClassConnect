@@ -4,9 +4,9 @@
 	export let announcements;
 </script>
 
-<main class="bg-lightBgColor h-screen dark:bg-gray-800">
+<main class="h-screen bg-lightBgColor dark:bg-gray-800">
 	<div class="text-center">
-		<h1 class="text-4xl font-semibold capitalize text-gray-800 lg:text-3xl dark:text-white">
+		<h1 class="text-4xl font-semibold capitalize text-gray-800 dark:text-white lg:text-3xl">
 			Announcements
 		</h1>
 	</div>

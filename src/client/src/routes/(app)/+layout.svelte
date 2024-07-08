@@ -13,10 +13,10 @@
 
 	$: ({ role, workspace } = data);
 	$: currentPath = $page.url.pathname;
-	$: isWorkspacePage = /^\/workspaces\/[^\/]+(?:\/|$)/.test(currentPath);
+	$: isWorkspacePage = /^\/workspaces\/[^]+(?:\/|$)/.test(currentPath);
 
 	afterNavigate(() => {
-		isWorkspacePage = /^\/workspaces\/[^\/]+(?:\/|$)/.test($page.url.pathname);
+		isWorkspacePage = /^\/workspaces\/[^]+(?:\/|$)/.test($page.url.pathname);
 	});
 </script>
 
@@ -28,7 +28,7 @@
 			<SideBar {role} />
 		{/if}
 	{/key}
-	
+
 	<div class="flex-1">
 		<Header {data} />
 		<slot />

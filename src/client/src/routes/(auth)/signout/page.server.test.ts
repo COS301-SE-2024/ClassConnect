@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { lucia } from '$lib/server/auth';
 import * as moduleToTest from './+page.server';
-import { error, fail, redirect } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
 
 vi.mock('$lib/server/auth', () => ({
 	lucia: {

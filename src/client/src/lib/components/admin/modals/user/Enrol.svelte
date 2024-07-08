@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Button, Modal, Label, Input } from 'flowbite-svelte';
+	import { Button, Modal, Input } from 'flowbite-svelte';
 
 	export let id: string;
 	export let role: string;
@@ -20,10 +20,9 @@
 		};
 	}
 
-    // Static list of available workspaces with images
-    
+	// Static list of available workspaces with images
 
-    let selectedWorkspaces = [];
+	let selectedWorkspaces = [];
 </script>
 
 <Modal bind:open size="xs" class="w-full">
@@ -36,16 +35,21 @@
 
 		<Input type="hidden" id="id" name="id" value={id} size="md" readonly />
 
-        <fieldset>
-            <legend class="mb-2 mt-2 text-left">Select Workspaces</legend>
-            {#each workspaces as workspace}
-                <label class="flex items-center space-x-2 mb-2">
-                    <input type="checkbox" name="workspaces" value={workspace.id} bind:group={selectedWorkspaces} />
-                    <img src={workspace.image} alt={workspace.name} class="w-8 h-8 rounded-full" />
-                    <span>{workspace.name}</span>
-                </label>
-            {/each}
-        </fieldset>
+		<fieldset>
+			<legend class="mb-2 mt-2 text-left">Select Workspaces</legend>
+			{#each workspaces as workspace}
+				<label class="mb-2 flex items-center space-x-2">
+					<input
+						type="checkbox"
+						name="workspaces"
+						value={workspace.id}
+						bind:group={selectedWorkspaces}
+					/>
+					<img src={workspace.image} alt={workspace.name} class="h-8 w-8 rounded-full" />
+					<span>{workspace.name}</span>
+				</label>
+			{/each}
+		</fieldset>
 
 		<Button type="submit" class="mt-4 w-full">Enrol</Button>
 	</form>

@@ -1,6 +1,6 @@
 import { hash } from '@node-rs/argon2';
 import type { Actions } from './$types';
-import { fail, error, redirect } from '@sveltejs/kit';
+import { fail, error } from '@sveltejs/kit';
 
 import User from '$db/schemas/User';
 import Workspace from '$db/schemas/Workspace';

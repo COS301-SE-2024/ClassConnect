@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { Button, Modal, Label, Input, Textarea } from 'flowbite-svelte';
 
-    export let id: string;
+	export let id: string;
 	export let open: boolean;
 
 	let error: string;

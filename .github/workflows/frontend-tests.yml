@@ -30,9 +30,6 @@ jobs:
       - name: Install dependencies for the frontend
         run: bun install
         working-directory: src/client
-      - name: Boot frontend
-        run: bash boot.sh
-        working-directory: scripts
       - name: Run Frontend Tests
         run: npm run test
         working-directory: src/client

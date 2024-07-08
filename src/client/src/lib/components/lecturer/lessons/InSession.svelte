@@ -69,4 +69,4 @@
 	</Table>
 {/if}
 
-<CancelModal bind:open={isCancelModalOpen} {id}/>
+<CancelModal bind:open={isCancelModalOpen} {id} />
