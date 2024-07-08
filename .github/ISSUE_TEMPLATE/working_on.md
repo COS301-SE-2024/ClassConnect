@@ -17,8 +17,8 @@ labels: enhancement
 
 ## Description
 
-[Provide a description of the task you'll be working on]
-
+- [ ] item 1
+- [ ] item 2
 
 ## Additional Information
 
