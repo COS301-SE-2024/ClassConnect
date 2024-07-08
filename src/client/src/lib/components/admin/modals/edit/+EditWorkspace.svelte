@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
-	import IconEdit from '@tabler/icons-svelte/IconEdit.svelte';
+	import EditOutline from 'flowbite-svelte-icons';
 	export let id;
 	let formModal = false;
 
@@ -28,7 +28,7 @@
 	on:click={() => (formModal = true)}
 	class="transition-colors duration-200 hover:text-green-500 focus:outline-none dark:text-gray-300 dark:hover:text-green-500"
 >
-	<IconEdit stroke={2} />
+	<EditOutline stroke={2} />
 </button>
 
 <Modal bind:open={formModal} size="xs" autoclose={false} class="w-full">
