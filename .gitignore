@@ -10,6 +10,9 @@ yarn-error.log
 .env
 .env.*
 
+.aws.*
+.aws
+
 # IDEs and editors
 /.vscode
 .idea

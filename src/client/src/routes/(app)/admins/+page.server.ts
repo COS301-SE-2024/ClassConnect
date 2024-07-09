@@ -1,6 +1,7 @@
 import { hash } from '@node-rs/argon2';
 import type { Actions } from './$types';
 import { fail, error } from '@sveltejs/kit';
+import { upload } from '$lib/server/s3Bucket';
 
 import User from '$db/schemas/User';
 import { HASH_OPTIONS } from '$src/constants';
@@ -37,8 +38,13 @@ export const actions: Actions = {
 		const data = await request.formData();
 		const name = data.get('name') as string;
 		const email = data.get('email') as string;
-		const image = data.get('image') as string;
+		let image : string = 'https://images.unsplash.com/photo-1719953145985-8fd3b5d69d58?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+		const img = data.get('image') as File;
 		const surname = data.get('surname') as string;
+
+		console.log('here at add')
+
+		image = await upload(img);
 
 		try {
 			const existingUser = await User.findOne({ email });
