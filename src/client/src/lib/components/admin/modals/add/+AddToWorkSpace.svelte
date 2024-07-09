@@ -4,7 +4,7 @@
 	import axios from 'axios';
 	import { wrkspcs } from '$lib/store';
 	import { Checkbox } from 'flowbite-svelte';
-	import IconLibraryPlus from '@tabler/icons-svelte/IconLibraryPlus.svelte';
+	import { CirclePlusOutline } from 'flowbite-svelte-icons';
 	export let id;
 
 	let formModal = false;
@@ -83,7 +83,7 @@
 	on:click={openModal}
 	class="transition-colors duration-200 hover:text-green-500 focus:outline-none dark:text-gray-300 dark:hover:text-green-500"
 >
-	<IconLibraryPlus stroke={2} />
+	<CirclePlusOutline stroke={2} />
 </button>
 
 <Modal bind:open={formModal} size="xs" autoclose={false} class="w-full">
