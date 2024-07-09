@@ -27,6 +27,24 @@ export async function upload(file: File): Promise<string> {
     }
 }
 
+export async function deleteFile(url: string): Promise<void> {
+    const urlObj = new URL(url);
+    const key = urlObj.pathname.slice(1);
+
+    const params = {
+        Bucket: BUCKET,
+        Key: key
+    };
+
+    try {
+        await S3.deleteObject(params).promise();
+        console.log(`Successfully deleted ${key} from ${BUCKET}`);
+    } catch (error) {
+        console.error(`Failed to delete ${key} from ${BUCKET}`, error);
+        throw new Error('Error deleting file');
+    }
+}
+
 async function smallFile(file: File, filename : string, folder : string , contentType : string): Promise<string> {
     console.log('File name for s3: ', filename);
 

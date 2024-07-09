@@ -1,7 +1,7 @@
 import { hash } from '@node-rs/argon2';
 import type { Actions } from './$types';
 import { fail, error } from '@sveltejs/kit';
-import { upload } from '$lib/server/s3Bucket';
+import { upload, deleteFile } from '$lib/server/s3Bucket';
 
 import User from '$db/schemas/User';
 import { HASH_OPTIONS } from '$src/constants';
@@ -111,11 +111,20 @@ export const actions: Actions = {
 		if (!id) return fail(400, { error: 'Admin ID is required' });
 
 		try {
+			const admin = await User.findById(id);
+			let profilePic : string;
+			
+			if(admin){
+				profilePic = admin.image; 
+				await deleteFile(profilePic);
+			}
+
 			const deletedAdmin = await User.findByIdAndDelete(id);
 
 			if (!deletedAdmin) return fail(404, { error: 'Admin not found' });
 
 			return { success: true };
+
 		} catch (err) {
 			console.error('Error removing admin:\n', err);
 			return fail(500, { error: 'Failed to remove admin' });
