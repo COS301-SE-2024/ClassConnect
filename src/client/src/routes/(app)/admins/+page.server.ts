@@ -34,8 +34,12 @@ export async function load({ locals }) {
 		return { admins };
 	} catch (e) {
 		console.error('Failed to load admins:', e);
-		throw error(500, 'Failed to load admins');
+		throw error(500, 'Error occurred while fetching admins');
 	}
+}
+
+function validateAdmin(locals: any) {
+	if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
 }
 
 async function addAdmin(data: FormData, organisation: ObjectId) {
@@ -94,11 +98,12 @@ async function deleteAdmin(id: string) {
 
 export const actions: Actions = {
 	add: async ({ request, locals }) => {
-		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
+		validateAdmin(locals);
 
 		try {
 			const data = await request.formData();
-			return await addAdmin(data, locals.user.organisation);
+
+			return await addAdmin(data, locals.user?.organisation!);
 		} catch (error) {
 			console.error('Error adding admin:', error);
 			return fail(500, { error: 'Failed to add admin' });
@@ -106,10 +111,11 @@ export const actions: Actions = {
 	},
 
 	edit: async ({ request, locals }) => {
-		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
+		validateAdmin(locals);
 
 		try {
 			const data = await request.formData();
+
 			return await editAdmin(data);
 		} catch (err) {
 			console.error('Error updating admin:', err);
@@ -118,11 +124,12 @@ export const actions: Actions = {
 	},
 
 	delete: async ({ request, locals }) => {
-		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
+		validateAdmin(locals);
 
 		try {
 			const data = await request.formData();
 			const id = data.get('id') as string;
+
 			return await deleteAdmin(id);
 		} catch (err) {
 			console.error('Error removing admin:', err);

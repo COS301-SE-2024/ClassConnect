@@ -18,3 +18,11 @@ export interface Admin {
 	surname: string;
 	username: string;
 }
+
+export interface Announcement {
+	title: string;
+	id: string;
+	description: string;
+	date: string;
+	createdBy: string;
+}
