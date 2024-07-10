@@ -10,7 +10,7 @@ export interface SignInData {
 	password: string;
 }
 
-export interface Admin {
+export interface User {
 	id: string;
 	name: string;
 	email: string;
@@ -27,11 +27,9 @@ export interface Announcement {
 	description: string;
 }
 
-export interface Lecturer {
+export interface Workspace {
 	id: string;
 	name: string;
-	email: string;
 	image: string;
-	surname: string;
-	username: string;
+	description: string;
 }

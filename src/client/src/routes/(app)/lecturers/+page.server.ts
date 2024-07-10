@@ -3,12 +3,12 @@ import type { Actions } from './$types';
 import type { ObjectId } from 'mongoose';
 import { fail, error } from '@sveltejs/kit';
 
-import User from '$db/schemas/User';
-import type { Lecturer } from '$src/types';
+import Users from '$db/schemas/User';
+import type { User } from '$src/types';
 import { HASH_OPTIONS } from '$src/constants';
 import { generateUsername } from '$utils/user';
 
-function formatLecturer(lecturer: any): Lecturer {
+function formatLecturer(lecturer: any): User {
 	return {
 		id: lecturer._id.toString(),
 		name: lecturer.name,
@@ -19,8 +19,8 @@ function formatLecturer(lecturer: any): Lecturer {
 	};
 }
 
-async function getLecturers(organisation: ObjectId): Promise<Lecturer[]> {
-	const lecturers = await User.find({ role: 'lecturer', organisation });
+async function getLecturers(organisation: ObjectId): Promise<User[]> {
+	const lecturers = await Users.find({ role: 'lecturer', organisation });
 
 	return lecturers.map(formatLecturer);
 }
@@ -48,13 +48,13 @@ async function addLecturer(data: FormData, organisation: ObjectId) {
 	const image = data.get('image') as string;
 	const surname = data.get('surname') as string;
 
-	const existingUser = await User.findOne({ email });
+	const existingUser = await Users.findOne({ email });
 	if (existingUser) return fail(400, { error: 'Email already in use' });
 
 	const username = generateUsername('lecturer', email);
 	const hashedPassword = await hash(username, HASH_OPTIONS);
 
-	const newLecturer = new User({
+	const newLecturer = new Users({
 		name,
 		email,
 		surname,
@@ -74,15 +74,15 @@ async function editLecturer(data: FormData) {
 	const id = data.get('id') as string;
 	if (!id) return fail(400, { error: 'Lecturer ID is required' });
 
-	const updateData: Partial<Lecturer> = {};
+	const updateData: Partial<User> = {};
 
 	['name', 'email', 'image', 'surname'].forEach((field) => {
 		const value = data.get(field) as string;
 
-		if (value !== '') updateData[field as keyof Partial<Lecturer>] = value;
+		if (value !== '') updateData[field as keyof Partial<User>] = value;
 	});
 
-	const updatedLecturer = await User.findByIdAndUpdate(id, updateData, { new: true });
+	const updatedLecturer = await Users.findByIdAndUpdate(id, updateData, { new: true });
 	if (!updatedLecturer) return fail(404, { error: 'Lecturer not found' });
 
 	return { success: true };
@@ -91,7 +91,7 @@ async function editLecturer(data: FormData) {
 async function deleteLecturer(id: string) {
 	if (!id) return fail(400, { error: 'Lecturer ID is required' });
 
-	const deletedLecturer = await User.findByIdAndDelete(id);
+	const deletedLecturer = await Users.findByIdAndDelete(id);
 	if (!deletedLecturer) return fail(404, { error: 'Lecturer not found' });
 
 	return { success: true };

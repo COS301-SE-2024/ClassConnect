@@ -1,14 +1,14 @@
 import { hash } from '@node-rs/argon2';
 import type { Actions } from './$types';
-import type { Admin } from '$src/types';
 import type { ObjectId } from 'mongoose';
 import { fail, error } from '@sveltejs/kit';
 
-import User from '$db/schemas/User';
+import Users from '$db/schemas/User';
+import type { User } from '$src/types';
 import { HASH_OPTIONS } from '$src/constants';
 import { generateUsername } from '$utils/user';
 
-function formatAdmin(admin: any): Admin {
+function formatAdmin(admin: any): User {
 	return {
 		id: admin._id.toString(),
 		name: admin.name,
@@ -19,8 +19,8 @@ function formatAdmin(admin: any): Admin {
 	};
 }
 
-async function getAdmins(organisation: ObjectId): Promise<Admin[]> {
-	const admins = await User.find({ role: 'admin', organisation });
+async function getAdmins(organisation: ObjectId): Promise<User[]> {
+	const admins = await Users.find({ role: 'admin', organisation });
 
 	return admins.map(formatAdmin);
 }
@@ -48,13 +48,13 @@ async function addAdmin(data: FormData, organisation: ObjectId) {
 	const image = data.get('image') as string;
 	const surname = data.get('surname') as string;
 
-	const existingUser = await User.findOne({ email });
+	const existingUser = await Users.findOne({ email });
 	if (existingUser) return fail(400, { error: 'Email already in use' });
 
 	const username = generateUsername('admin', email);
 	const hashedPassword = await hash(username, HASH_OPTIONS);
 
-	const newAdmin = new User({
+	const newAdmin = new Users({
 		name,
 		email,
 		surname,
@@ -73,15 +73,15 @@ async function editAdmin(data: FormData) {
 	const id = data.get('id') as string;
 	if (!id) return fail(400, { error: 'Admin ID is required' });
 
-	const updateData: Partial<Admin> = {};
+	const updateData: Partial<User> = {};
 
 	['name', 'email', 'image', 'surname'].forEach((field) => {
 		const value = data.get(field) as string;
 
-		if (value !== '') updateData[field as keyof Partial<Admin>] = value;
+		if (value !== '') updateData[field as keyof Partial<User>] = value;
 	});
 
-	const updatedAdmin = await User.findByIdAndUpdate(id, updateData, { new: true });
+	const updatedAdmin = await Users.findByIdAndUpdate(id, updateData, { new: true });
 	if (!updatedAdmin) return fail(404, { error: 'Admin not found' });
 
 	return { success: true };
@@ -90,7 +90,7 @@ async function editAdmin(data: FormData) {
 async function deleteAdmin(id: string) {
 	if (!id) return fail(400, { error: 'Admin ID is required' });
 
-	const deletedAdmin = await User.findByIdAndDelete(id);
+	const deletedAdmin = await Users.findByIdAndDelete(id);
 	if (!deletedAdmin) return fail(404, { error: 'Admin not found' });
 
 	return { success: true };
