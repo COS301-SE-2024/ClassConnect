@@ -55,6 +55,3 @@ export const participantsCount = writable<number>(0);
 participantsThere.subscribe((participants) => {
 	participantsCount.set(participants.length);
 });
-
-export const  temporary = writable<string>("");
-export const useLocalFile = writable(false);
