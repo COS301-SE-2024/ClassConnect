@@ -20,9 +20,18 @@ export interface Admin {
 }
 
 export interface Announcement {
-	title: string;
 	id: string;
-	description: string;
+	title: string;
 	date: string;
 	createdBy: string;
+	description: string;
+}
+
+export interface Lecturer {
+	id: string;
+	name: string;
+	email: string;
+	image: string;
+	surname: string;
+	username: string;
 }
