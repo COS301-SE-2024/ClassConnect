@@ -26,7 +26,7 @@ async function getAdmins(organisation: ObjectId): Promise<Admin[]> {
 }
 
 export async function load({ locals }) {
-	if (locals.user?.role !== 'admin') throw error(401, 'Unauthorised');
+	if (locals.user?.role !== 'admin') throw error(401, 'Only admins can access this page');
 
 	try {
 		const admins = await getAdmins(locals.user.organisation);
