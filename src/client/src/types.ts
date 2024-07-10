@@ -9,3 +9,12 @@ export interface SignInData {
 	username: string;
 	password: string;
 }
+
+export interface Admin {
+	id: string;
+	name: string;
+	email: string;
+	image: string;
+	surname: string;
+	username: string;
+}
