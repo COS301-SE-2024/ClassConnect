@@ -3,8 +3,8 @@ import { fail, error } from '@sveltejs/kit';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import User from '$db/schemas/User';
-import { generateUsername } from '$utils/user';
 import * as adminModule from './+page.server';
+import { generateUsername } from '$utils/user';
 
 vi.mock('$db/schemas/User', () => {
 	const UserMock: any = vi.fn().mockImplementation(() => ({}));
