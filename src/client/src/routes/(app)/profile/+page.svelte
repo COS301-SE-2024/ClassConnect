@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Construction from '$lib/components/common/Construction.svelte';
+	import Profile from '$lib/components/common/Profile.svelte';
 </script>
 
 <main>
-	<Construction />
+	<Profile />
 </main>
