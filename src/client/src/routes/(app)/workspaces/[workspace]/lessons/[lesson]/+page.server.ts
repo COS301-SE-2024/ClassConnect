@@ -1,4 +1,4 @@
-import { username } from '$lib/store';
+import { username } from '$src/lib/store/lessons';
 import { StreamClient } from '@stream-io/node-sdk';
 
 import { STREAM_API_KEY, STREAM_SECRET_KEY } from '$env/static/private';

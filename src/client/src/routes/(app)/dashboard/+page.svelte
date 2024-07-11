@@ -8,7 +8,7 @@
 </script>
 
 {#if role === 'admin'}
-	<AdminDashboard {role} />
+	<AdminDashboard />
 {:else if role === 'student'}
-	<StudentDashboard {role} />
+	<StudentDashboard />
 {/if}
