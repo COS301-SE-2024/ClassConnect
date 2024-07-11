@@ -21,7 +21,7 @@ vi.mock('$db/schemas/User', () => {
 vi.mock('$db/schemas/Workspace', () => {
 	const WorkspaceMock: any = vi.fn().mockImplementation(() => ({}));
 
-	WorkspaceMock.find = vi.fn();;
+	WorkspaceMock.find = vi.fn();
 
 	return { default: WorkspaceMock };
 });
@@ -125,12 +125,14 @@ describe('Student Management', () => {
 					{
 						id: '1',
 						name: 'Workspace1',
+						owner: '',
 						image: 'img1',
 						description: 'Description1'
 					},
 					{
 						id: '2',
 						name: 'Workspace2',
+						owner: '',
 						image: 'img2',
 						description: 'Description2'
 					}

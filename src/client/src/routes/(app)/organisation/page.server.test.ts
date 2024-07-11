@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { fail, error, redirect } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 import User from '$db/schemas/User';
 import Organisation from '$db/schemas/Organisation';
 import * as organisationModule from './+page.server';
@@ -16,10 +16,7 @@ vi.mock('$db/schemas/Organisation', () => ({
 	default: {
 		findOne: vi.fn(),
 		findOneAndUpdate: vi.fn(),
-		findOneAndDelete: vi.fn(),
-		prototype: {
-			save: vi.fn()
-		}
+		findOneAndDelete: vi.fn()
 	}
 }));
 

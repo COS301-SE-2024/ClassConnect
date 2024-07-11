@@ -115,8 +115,8 @@ describe('Workspace Management', () => {
 
 			expect(result).toEqual({
 				workspaces: [
-					{ id: '1', name: 'Workspace1', image: 'img1', description: 'Desc1' },
-					{ id: '2', name: 'Workspace2', image: 'img2', description: 'Desc2' }
+					{ id: '1', name: 'Workspace1', owner: '', image: 'img1', description: 'Desc1' },
+					{ id: '2', name: 'Workspace2', owner: '', image: 'img2', description: 'Desc2' }
 				]
 			});
 		});

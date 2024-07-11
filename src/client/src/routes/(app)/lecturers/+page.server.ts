@@ -42,7 +42,7 @@ function validateAdmin(locals: any) {
 	if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
 }
 
-async function addLecturer(data: FormData, organisation: ObjectId) {
+async function addLecturer(data: FormData, organisation: ObjectId | undefined) {
 	const name = data.get('name') as string;
 	const email = data.get('email') as string;
 	const image = data.get('image') as string;
@@ -104,7 +104,7 @@ export const actions: Actions = {
 		try {
 			const data = await request.formData();
 
-			return await addLecturer(data, locals.user?.organisation!);
+			return await addLecturer(data, locals.user?.organisation);
 		} catch (error) {
 			console.error('Error adding lecturer:', error);
 			return fail(500, { error: 'Failed to add lecturer' });

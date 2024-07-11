@@ -119,7 +119,7 @@ describe('Lesson Management', () => {
 			const locals = { user: { role: 'lecturer' } };
 			const params = { workspace: 'workspace1' };
 
-			const result = await lessonModule.actions.schedule({
+			await lessonModule.actions.schedule({
 				request: mockRequest,
 				locals,
 				params
@@ -177,7 +177,7 @@ describe('Lesson Management', () => {
 			const locals = { user: { role: 'lecturer' } };
 			(Lessons.findByIdAndUpdate as any).mockResolvedValue(null);
 
-			const result = await lessonModule.actions.edit({ request: mockRequest, locals } as any);
+			await lessonModule.actions.edit({ request: mockRequest, locals } as any);
 
 			expect(fail).toHaveBeenCalledWith(404, { error: 'Lesson not found' });
 		});
@@ -212,7 +212,7 @@ describe('Lesson Management', () => {
 			const locals = { user: { role: 'lecturer' } };
 			(Lessons.findByIdAndDelete as any).mockResolvedValue(null);
 
-			const result = await lessonModule.actions.delete({ request: mockRequest, locals } as any);
+			await lessonModule.actions.delete({ request: mockRequest, locals } as any);
 
 			expect(fail).toHaveBeenCalledWith(404, { message: 'Lesson not found' });
 		});
@@ -226,7 +226,7 @@ describe('Lesson Management', () => {
 
 			const locals = { user: { role: 'lecturer' } };
 
-			const result = await lessonModule.actions.delete({ request: mockRequest, locals } as any);
+			await lessonModule.actions.delete({ request: mockRequest, locals } as any);
 
 			expect(fail).toHaveBeenCalledWith(400, { error: 'Lesson ID is required' });
 		});

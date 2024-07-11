@@ -15,7 +15,7 @@ function formatAnnouncement(announcement: any): Announcement {
 	};
 }
 
-async function getAnnouncements(organisation: ObjectId): Promise<Announcement[]> {
+async function getAnnouncements(organisation: ObjectId | undefined): Promise<Announcement[]> {
 	const announcements = await Announcements.find({ owner: organisation });
 
 	return announcements.map(formatAnnouncement);
@@ -23,7 +23,7 @@ async function getAnnouncements(organisation: ObjectId): Promise<Announcement[]>
 
 export async function load({ locals }) {
 	try {
-		const announcements = await getAnnouncements(locals.user?.organisation!);
+		const announcements = await getAnnouncements(locals.user?.organisation);
 
 		return { announcements };
 	} catch (e) {
@@ -35,8 +35,8 @@ export async function load({ locals }) {
 async function createAnnouncement(
 	title: string,
 	description: string,
-	userId: ObjectId,
-	organisation: ObjectId
+	userId: ObjectId | undefined,
+	organisation: ObjectId | undefined
 ) {
 	const newAnnouncement = new Announcements({
 		title,
@@ -80,8 +80,8 @@ export const actions: Actions = {
 			return await createAnnouncement(
 				title,
 				description,
-				locals.user?.id!,
-				locals.user?.organisation!
+				locals.user?.id,
+				locals.user?.organisation
 			);
 		} catch (error) {
 			console.error('Error posting announcement:', error);

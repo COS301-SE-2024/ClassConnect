@@ -1,6 +1,7 @@
-import type { Actions } from '@sveltejs/kit';
 import type { ObjectId } from 'mongoose';
+import type { Actions } from '@sveltejs/kit';
 import { fail, error, redirect } from '@sveltejs/kit';
+
 import Users from '$db/schemas/User';
 import Workspaces from '$db/schemas/Workspace';
 import type { Workspace, User } from '$src/types';
@@ -25,11 +26,14 @@ function formatUser(user: any): Partial<User> {
 
 async function getWorkspaces(organisation: ObjectId): Promise<Workspace[]> {
 	const workspaces = await Workspaces.find({ organisation });
+
 	const formattedWorkspacesPromises = workspaces.map(async (workspace) => {
 		const owner = await Users.findById(workspace.owner).select('name surname');
 		const ownerName = owner ? `${owner.name} ${owner.surname}` : 'Unknown';
+
 		return formatWorkspace(workspace, ownerName);
 	});
+
 	return Promise.all(formattedWorkspacesPromises);
 }
 
@@ -41,11 +45,12 @@ async function getLecturers(organisation: ObjectId): Promise<Partial<User>[]> {
 async function getUserWorkspaces(userId: ObjectId): Promise<Workspace[]> {
 	const user = await Users.findById(userId).select('workspaces');
 	const workspaces = await Workspaces.find({ _id: { $in: user.workspaces } });
+
 	return workspaces.map((workspace) => ({
 		id: workspace._id.toString(),
 		name: workspace.name,
-		owner: workspace.owner,
 		image: workspace.image,
+		owner: workspace.owner?.toString() || '',
 		description: workspace.description || ''
 	}));
 }
@@ -59,9 +64,11 @@ export async function load({ locals }) {
 				getWorkspaces(locals.user.organisation),
 				getLecturers(locals.user.organisation)
 			]);
+
 			return { role: locals.user.role, lecturers, workspaces };
 		} else {
 			const workspaces = await getUserWorkspaces(locals.user.id);
+
 			return { workspaces };
 		}
 	} catch (e) {
@@ -74,7 +81,7 @@ function validateAdmin(locals: any) {
 	if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
 }
 
-async function createWorkspace(data: FormData, organisation: ObjectId) {
+async function createWorkspace(data: FormData, organisation: ObjectId | undefined) {
 	const name = data.get('name') as string;
 	const owner = data.get('owner') as string;
 	const image = data.get('image') as string;
@@ -109,10 +116,12 @@ async function editWorkspace(data: FormData) {
 	if (owner && owner !== workspace.owner.toString()) {
 		await Users.findByIdAndUpdate(workspace.owner, { $pull: { workspaces: workspace._id } });
 		await Users.findByIdAndUpdate(owner, { $push: { workspaces: workspace._id } });
+
 		workspace.owner = owner;
 	}
 
 	await workspace.save();
+
 	return { success: true };
 }
 
@@ -131,9 +140,11 @@ async function deleteWorkspace(id: string) {
 export const actions: Actions = {
 	create: async ({ request, locals }) => {
 		validateAdmin(locals);
+
 		try {
 			const data = await request.formData();
-			return await createWorkspace(data, locals.user?.organisation!);
+
+			return await createWorkspace(data, locals.user?.organisation);
 		} catch (error) {
 			console.error('Server error:', error);
 			return fail(500, { error: 'Failed to add workspace' });
@@ -141,8 +152,10 @@ export const actions: Actions = {
 	},
 	edit: async ({ request, locals }) => {
 		validateAdmin(locals);
+
 		try {
 			const data = await request.formData();
+
 			return await editWorkspace(data);
 		} catch (err) {
 			console.error('Error editing workspace:', err);
@@ -151,9 +164,11 @@ export const actions: Actions = {
 	},
 	delete: async ({ request, locals }) => {
 		validateAdmin(locals);
+
 		try {
 			const data = await request.formData();
 			const id = data.get('id') as string;
+
 			return await deleteWorkspace(id);
 		} catch (err) {
 			console.error('Error removing workspace:', err);
