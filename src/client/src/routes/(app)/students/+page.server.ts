@@ -50,8 +50,8 @@ export async function load({ locals }) {
 
 		return { students, workspaces };
 	} catch (e) {
-		console.error('Failed to load data:', e);
-		throw error(500, 'Error occurred while fetching data');
+		console.error('Failed to load students:', e);
+		throw error(500, 'Error occurred while fetching students');
 	}
 }
 
