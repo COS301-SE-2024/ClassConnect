@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Workspaces from '$lib/components/workspaces/Main.svelte';
-	import AdminWorkspaces from '$lib/components/admin/Workspaces.svelte';
+	import AdminWorkspaces from '$src/lib/components/workspaces/Admin.svelte';
 
 	export let data: any;
 </script>

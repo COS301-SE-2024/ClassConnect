@@ -4,27 +4,26 @@
 		Button,
 		TableBody,
 		TableHead,
-		TableBodyCell,
 		TableBodyRow,
+		TableBodyCell,
 		TableHeadCell
 	} from 'flowbite-svelte';
-	import { page } from '$app/stores';
-	import { goto } from '$app/navigation';
 
-	import CancelModal from '$lib/components/lecturer/modals/lessons/Cancel.svelte';
+	import EditModal from '$src/lib/components/modals/lessons/Edit.svelte';
+	import CancelModal from '$src/lib/components/modals/lessons/Cancel.svelte';
 
 	export let role: string;
 	export let lessons: any[];
 
 	let id: string;
+	let isEditModalOpen = false;
 	let isCancelModalOpen = false;
 
 	const headers = ['Topic', 'Description', 'Date', 'Time'];
 </script>
 
 {#if lessons.length > 0}
-	<p class="text-l font-bold text-gray-800 dark:text-white">In Session</p>
-
+	<p class="text-l font-bold text-gray-800 dark:text-white">Upcoming</p>
 	<Table class="my-2">
 		<TableHead>
 			{#each headers as header}
@@ -46,11 +45,18 @@
 					<TableBodyCell>{lesson.time}</TableBodyCell>
 
 					<TableBodyCell>
-						<Button class="mr-2" size="sm" on:click={() => goto($page.url + '/' + lesson.id)}>
-							Join
-						</Button>
-
 						{#if role === 'lecturer'}
+							<Button
+								class="mr-2"
+								size="sm"
+								on:click={() => {
+									id = lesson.id;
+									isEditModalOpen = true;
+								}}
+							>
+								Edit
+							</Button>
+
 							<Button
 								size="sm"
 								color="red"
@@ -69,4 +75,5 @@
 	</Table>
 {/if}
 
+<EditModal bind:open={isEditModalOpen} {id} />
 <CancelModal bind:open={isCancelModalOpen} {id} />

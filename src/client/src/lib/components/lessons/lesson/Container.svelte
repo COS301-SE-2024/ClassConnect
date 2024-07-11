@@ -4,7 +4,7 @@
 
 	import Participant from './Participant.svelte';
 	import ScreenShare from './ScreenShare.svelte';
-	import { participantsThere, participantsCount } from '$lib/store/index';
+	import { participantsThere, participantsCount } from '$lib/store/lessons';
 
 	export let call: Call;
 
