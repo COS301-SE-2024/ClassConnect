@@ -1,6 +1,6 @@
 <script>
-	import AdminDashboard from '$lib/components/admin/Dashboard.svelte';
-	import StudentDashboard from '$lib/components/student/Dashboard.svelte';
+	import AdminDashboard from '$src/lib/components/dashboards/Admin.svelte';
+	import StudentDashboard from '$src/lib/components/dashboards/Student.svelte';
 
 	export let data;
 

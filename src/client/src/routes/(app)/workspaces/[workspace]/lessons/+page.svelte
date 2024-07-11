@@ -2,9 +2,9 @@
 	import { Button } from 'flowbite-svelte';
 
 	import { formatDate } from '$utils/date';
-	import Upcoming from '$lib/components/lecturer/lessons/Upcoming.svelte';
-	import InSession from '$lib/components/lecturer/lessons/InSession.svelte';
-	import ScheduleModal from '$lib/components/lecturer/modals/lessons/Schedule.svelte';
+	import Upcoming from '$src/lib/components/lessons/Upcoming.svelte';
+	import InSession from '$src/lib/components/lessons/InSession.svelte';
+	import ScheduleModal from '$src/lib/components/modals/lessons/Schedule.svelte';
 
 	export let data: any;
 

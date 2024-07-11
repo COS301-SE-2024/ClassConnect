@@ -9,7 +9,7 @@
 		PhoneHangupOutline
 	} from 'flowbite-svelte-icons';
 	import { writable } from 'svelte/store';
-	import { screenShareEnabled, cameraEnabled } from '$lib/store/index';
+	import { screenShareEnabled, cameraEnabled } from '$lib/store/lessons';
 
 	import ScreenShareIcon from '$lib/icons/ScreenShareIcon.svelte';
 	import ScreenShareOffIcon from '$lib/icons/ScreenShareOffIcon.svelte';

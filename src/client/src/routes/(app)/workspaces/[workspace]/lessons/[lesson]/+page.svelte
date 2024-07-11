@@ -3,9 +3,8 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { StreamVideoClient, type Call } from '@stream-io/video-client';
 
-	import { userInfo } from '$lib/store/index';
-	import Container from '$lib/components/common/lesson/Container.svelte';
-	import ControlPanel from '$lib/components/common/lesson/ControlPanel.svelte';
+	import Container from '$src/lib/components/lessons/lesson/Container.svelte';
+	import ControlPanel from '$src/lib/components/lessons/lesson/ControlPanel.svelte';
 
 	export let data;
 	const { apiKey, token } = data;
@@ -17,7 +16,7 @@
 		client = new StreamVideoClient({
 			apiKey,
 			token,
-			user: { id: $userInfo.username, name: $userInfo.name }
+			user: { id: 'Username', name: 'Name' }
 		});
 
 		call = client.call('default', $page.params.id);
