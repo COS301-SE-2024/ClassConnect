@@ -7,7 +7,7 @@
 	import { enhance } from '$app/forms';
 	import {items} from "./items"
 	import type { ActionResult } from '@sveltejs/kit';
-	import { displayedSandboxObjectURL } from '$src/lib/store';
+	import { displayedSandboxObjectURL } from '$src/lib/store/objects';
 
 	
 

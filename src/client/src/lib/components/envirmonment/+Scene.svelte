@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { T } from '@threlte/core';
 	import { OrbitControls, Sky, GLTF } from '@threlte/extras';
-	import { displayedSandboxObjectURL } from '$src/lib/store';
+	import { displayedSandboxObjectURL } from '$src/lib/store/objects';
 	
 	//Max Zoom Out
 	let objectURL:string
@@ -49,7 +49,7 @@
 	<T.MeshBasicMaterial color="red" />
 </T.Mesh> -->
 
-<GLTF url={objectURL} <!-- scale={0.9} /> -->
+<GLTF url={objectURL} <!-- scale={3.0} /> -->
 
 <Sky />
 <!-- <CashRegister></CashRegister> -->
