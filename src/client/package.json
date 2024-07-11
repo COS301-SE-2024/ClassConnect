@@ -13,7 +13,8 @@
 		"cy:run-ct": "cypress run --e2e",
 		"test": "vitest run",
 		"test:ui": "vitest --ui",
-		"test:watch": "vitest"
+		"test:watch": "vitest",
+		"test:coverage": "vitest run --coverage"
 	},
 	"devDependencies": {
 		"@cypress/code-coverage": "^3.12.41",
@@ -29,6 +30,7 @@
 		"@types/eslint": "^8.56.10",
 		"@typescript-eslint/eslint-plugin": "^7.15.0",
 		"@typescript-eslint/parser": "^7.15.0",
+		"@vitest/coverage-v8": "^1.6.0",
 		"@vitest/ui": "^1.6.0",
 		"autoprefixer": "^10.4.19",
 		"cypress": "^13.13.0",

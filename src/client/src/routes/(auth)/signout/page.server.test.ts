@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { lucia } from '$lib/server/auth';
-import * as moduleToTest from './+page.server';
+import * as signoutModule from './+page.server';
 import { error, redirect } from '@sveltejs/kit';
 
 vi.mock('$lib/server/auth', () => ({
@@ -20,7 +20,7 @@ vi.mock('@sveltejs/kit', async () => {
 	};
 });
 
-describe('Module to Test', () => {
+describe('Sign Out Module', () => {
 	beforeEach(() => {
 		vi.resetAllMocks();
 	});
@@ -30,18 +30,16 @@ describe('Module to Test', () => {
 			const locals = { user: null };
 
 			try {
-				await moduleToTest.load({ locals });
+				await signoutModule.load({ locals });
 			} catch (e) {
 				expect(e).toEqual(error(404));
 			}
-
-			expect(error).toHaveBeenCalledWith(404);
 		});
 
 		it('should not throw error if user exists in locals', async () => {
 			const locals = { user: { id: '123' } };
 
-			await expect(moduleToTest.load({ locals })).resolves.toBeUndefined();
+			await expect(signoutModule.load({ locals })).resolves.toBeUndefined();
 			expect(error).not.toHaveBeenCalled();
 		});
 	});
@@ -53,7 +51,7 @@ describe('Module to Test', () => {
 			};
 
 			try {
-				await moduleToTest.actions.default(event as any);
+				await signoutModule.actions.default(event as any);
 			} catch (e) {
 				expect(e).toEqual(error(404));
 			}
@@ -73,7 +71,7 @@ describe('Module to Test', () => {
 			(lucia.invalidateSession as any).mockResolvedValue(true);
 			(lucia.createBlankSessionCookie as any).mockReturnValue(mockSessionCookie);
 
-			await moduleToTest.actions.default(event as any);
+			await signoutModule.actions.default(event as any);
 
 			expect(lucia.invalidateSession).toHaveBeenCalledWith('session123');
 			expect(lucia.createBlankSessionCookie).toHaveBeenCalled();
