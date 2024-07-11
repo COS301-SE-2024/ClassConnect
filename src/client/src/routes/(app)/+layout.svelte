@@ -4,7 +4,7 @@
 
 	import Header from '$lib/components/common/Header.svelte';
 	import SideBar from '$lib/components/common/SideBar.svelte';
-	import WorkspaceSidebar from '$lib/components/common/workspace/Sidebar.svelte';
+	import WorkspaceSidebar from '$src/lib/components/workspaces/workspace/Sidebar.svelte';
 
 	export let data: any;
 

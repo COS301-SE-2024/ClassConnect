@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Card from '$lib/components/common/materials/Card.svelte';
+	import Card from '$src/lib/components/materials/Card.svelte';
 
 	export let data;
 	let { materials }: any = data;

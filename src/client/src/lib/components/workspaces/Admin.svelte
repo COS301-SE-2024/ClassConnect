@@ -12,9 +12,9 @@
 
 	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 
-	import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
-	import EditModal from '$lib/components/admin/modals/workspace/Edit.svelte';
-	import AddModal from '$lib/components/admin/modals/workspace/Add.svelte';
+	import RemoveModal from '$lib/components/modals/Delete.svelte';
+	import AddModal from '$lib/components/modals/workspace/Add.svelte';
+	import EditModal from '$lib/components/modals/workspace/Edit.svelte';
 
 	export let data: any;
 

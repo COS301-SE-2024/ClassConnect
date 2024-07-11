@@ -2,9 +2,8 @@
 	import { enhance } from '$app/forms';
 	import { Button, Modal, Label, Input, Select } from 'flowbite-svelte';
 
-	export let id: string;
 	export let open: boolean;
-	export let lecturers: [{ id: string; name: string }];
+	export let lecturers: [{ id: string; name: string; surname: string }];
 
 	let error: string;
 
@@ -21,23 +20,15 @@
 </script>
 
 <Modal bind:open size="xs" class="w-full">
-	<form method="POST" action="?/edit" class="flex flex-col" use:enhance={close}>
-		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Edit Workspace</h3>
+	<form method="POST" action="?/create" class="flex flex-col" use:enhance={close}>
+		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Create New Workspace</h3>
 
 		{#if error}
 			<p class="mt-2 text-center text-red-500">{error}</p>
 		{/if}
 
-		<Input type="hidden" id="id" name="id" value={id} />
-
 		<Label for="name" class="mb-2 mt-2 text-left">Name</Label>
-		<Input
-			type="text"
-			id="name"
-			name="name"
-			placeholder="Object Orientated Programming"
-			size="md"
-		/>
+		<Input type="text" id="name" name="name" placeholder="Example University" size="md" required />
 
 		<Label for="description" class="mb-2 mt-2 text-left">Description</Label>
 		<Input
@@ -49,9 +40,9 @@
 		/>
 
 		<Label for="owner" class="mb-2 mt-4 text-left">Owner</Label>
-		<Select id="owner" name="owner">
+		<Select id="owner" name="owner" required>
 			{#each lecturers as lecturer}
-				<option value={lecturer.id}>{lecturer.name}</option>
+				<option value={lecturer.id}>{lecturer.name} {lecturer.surname}</option>
 			{/each}
 		</Select>
 
@@ -64,6 +55,6 @@
 			placeholder="https://example.com/image.png"
 		/>
 
-		<Button type="submit" class="mt-4 w-full">Save</Button>
+		<Button type="submit" class="mt-4 w-full">Create Workspace</Button>
 	</form>
 </Modal>

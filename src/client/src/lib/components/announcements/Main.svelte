@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Card from '$lib/components/common/announcements/Card.svelte';
+	import Card from '$src/lib/components/announcements/Card.svelte';
 
 	export let announcements;
 </script>

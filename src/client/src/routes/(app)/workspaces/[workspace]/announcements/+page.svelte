@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
-	import Announcements from '$lib/components/common/announcements/Main.svelte';
+	import Announcements from '$src/lib/components/announcements/Main.svelte';
 
 	export let data: PageData;
 </script>
