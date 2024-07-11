@@ -49,7 +49,7 @@
 	<T.MeshBasicMaterial color="red" />
 </T.Mesh> -->
 
-<GLTF url={objectURL} <!-- scale={0.05} /> -->
+<GLTF url={objectURL} <!-- scale={0.9} /> -->
 
 <Sky />
 <!-- <CashRegister></CashRegister> -->

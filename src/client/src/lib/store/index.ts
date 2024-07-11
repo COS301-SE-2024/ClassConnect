@@ -57,4 +57,4 @@ participantsThere.subscribe((participants) => {
 });
 
 //TODO: Be weary of this
-export const displayedSandboxObjectURL = writable('/models/cash_register_with_a_counting_machine.glb');
+export const displayedSandboxObjectURL = writable("/models/violin.glb");

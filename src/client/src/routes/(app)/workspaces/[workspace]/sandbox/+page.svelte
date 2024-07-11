@@ -9,6 +9,8 @@
 	import type { ActionResult } from '@sveltejs/kit';
 	import { displayedSandboxObjectURL } from '$src/lib/store';
 
+	
+
 	let autoRotate: boolean = false;
 	let enableDamping: boolean = true;
 	let rotateSpeed: number = 1;
@@ -28,7 +30,8 @@
 	let isValid = true;
 
 	function handleObjectSelect(items:any) {
-		displayedSandboxObjectURL.set(items.url);
+		displayedSandboxObjectURL.set(items.fileURL);
+		
 	}
 
 	const ALLOWED_EXTENSIONS = ['.glb','.gltf'];
