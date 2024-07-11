@@ -31,5 +31,6 @@ export interface Workspace {
 	id: string;
 	name: string;
 	image: string;
+	owner: string;
 	description: string;
 }

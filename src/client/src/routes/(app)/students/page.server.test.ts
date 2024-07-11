@@ -21,7 +21,7 @@ vi.mock('$db/schemas/User', () => {
 vi.mock('$db/schemas/Workspace', () => {
 	const WorkspaceMock: any = vi.fn().mockImplementation(() => ({}));
 
-	WorkspaceMock.find = vi.fn();
+	WorkspaceMock.find = vi.fn();;
 
 	return { default: WorkspaceMock };
 });
