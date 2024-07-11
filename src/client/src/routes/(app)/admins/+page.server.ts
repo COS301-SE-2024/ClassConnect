@@ -38,11 +38,12 @@ export const actions: Actions = {
 		const data = await request.formData();
 		const name = data.get('name') as string;
 		const email = data.get('email') as string;
-		let image : string = 'https://images.unsplash.com/photo-1719953145985-8fd3b5d69d58?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+		let image: string =
+			'https://images.unsplash.com/photo-1719953145985-8fd3b5d69d58?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
 		const img = data.get('image') as File;
 		const surname = data.get('surname') as string;
 
-		console.log('here at add')
+		console.log('here at add');
 
 		image = await upload(img);
 
@@ -112,10 +113,10 @@ export const actions: Actions = {
 
 		try {
 			const admin = await User.findById(id);
-			let profilePic : string;
-			
-			if(admin){
-				profilePic = admin.image; 
+			let profilePic: string;
+
+			if (admin) {
+				profilePic = admin.image;
 				await deleteFile(profilePic);
 			}
 
@@ -124,7 +125,6 @@ export const actions: Actions = {
 			if (!deletedAdmin) return fail(404, { error: 'Admin not found' });
 
 			return { success: true };
-
 		} catch (err) {
 			console.error('Error removing admin:\n', err);
 			return fail(500, { error: 'Failed to remove admin' });
