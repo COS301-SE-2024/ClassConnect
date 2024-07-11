@@ -5,6 +5,7 @@
 	import { Button, Modal, Label, Input, Fileupload, Radio ,Range,  Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Checkbox } from 'flowbite-svelte';
 	import { CirclePlusOutline, CloseCircleOutline, WandMagicSparklesOutline } from 'flowbite-svelte-icons';
 	import { enhance } from '$app/forms';
+	import {items} from "./items"
 	import type { ActionResult } from '@sveltejs/kit';
 
 	let autoRotate: boolean = false;
@@ -16,7 +17,6 @@
 	let sizeRange = 1;
 
 	let experimentModal = false;
-	import {items} from "./items"
 
     let formErrors = {
         title: '',
@@ -26,6 +26,9 @@
     let uploadedFileUrl = '';
 	let isValid = true;
 
+	function handleObjectSelect(items:any) {
+		alert('Row clicked: ' + items.id);
+	}
 
 	const ALLOWED_EXTENSIONS = ['.glb','.gltf']; // Add more extensions if needed
 
@@ -87,7 +90,6 @@ function validateForm(formData: FormData) {
 
 
 
-
 				<Button on:click={() => (experimentModal = true)} color='green' class="flex items-center  space-x-1">
 					<CirclePlusOutline class="h-5 w-5" />
 					<span>Add To Scene</span>
@@ -113,10 +115,10 @@ function validateForm(formData: FormData) {
 						<Button type="submit" class="w-full1">Upload File</Button>
 					</form> -->
 
-					
-	<Table class="my-2">
-		<TableHead>
 
+		
+	<Table class="my-2" hoverable={true}>
+		<TableHead>
 				<TableHeadCell>ID</TableHeadCell>
 				<TableHeadCell>Object</TableHeadCell>
 				<TableHeadCell>Description</TableHeadCell>
@@ -125,7 +127,7 @@ function validateForm(formData: FormData) {
 
 		<TableBody tableBodyClass="divide-y">
 			{#each items as item}
-				<TableBodyRow>
+			<TableBodyRow on:click={() => handleObjectSelect(item)} class="cursor-pointer">
 
 					<TableBodyCell>{item.id}</TableBodyCell>
 
