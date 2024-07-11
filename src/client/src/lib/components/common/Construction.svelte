@@ -1,6 +1,3 @@
-<script lang="ts">
-</script>
-
 <body class="bg-gray-100 dark:bg-gray-800">
 	<div class="flex min-h-screen flex-col items-center justify-center">
 		<img src="https://www.svgrepo.com/show/426192/cogs-settings.svg" alt="Logo" class="mb-8 h-40" />

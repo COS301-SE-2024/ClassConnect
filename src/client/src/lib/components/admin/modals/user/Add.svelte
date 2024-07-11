@@ -20,7 +20,13 @@
 </script>
 
 <Modal bind:open size="xs" class="w-full">
-	<form method="POST" action="?/add" class="flex flex-col" use:enhance={close}>
+	<form
+		method="POST"
+		action="?/add"
+		class="flex flex-col"
+		use:enhance={close}
+		enctype="multipart/form-data"
+	>
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add New {role}</h3>
 
 		{#if error}
@@ -43,14 +49,8 @@
 			placeholder="johndoe@example.com"
 		/>
 
-		<Label for="image" class="mb-2 mt-4 text-left">Profile Picture</Label>
-		<Input
-			type="text"
-			id="image"
-			name="image"
-			size="md"
-			placeholder="https://example.com/logo.png"
-		/>
+		<Label for="upload_image" class="mb-2 mt-2 space-y-2">Upload image:</Label>
+		<Input type="file" id="image" name="image" />
 
 		<Button type="submit" class="mt-4 w-full">Add {role}</Button>
 	</form>
