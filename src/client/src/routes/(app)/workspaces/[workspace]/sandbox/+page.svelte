@@ -7,6 +7,7 @@
 	import { enhance } from '$app/forms';
 	import {items} from "./items"
 	import type { ActionResult } from '@sveltejs/kit';
+	import { displayedSandboxObjectURL } from '$src/lib/store';
 
 	let autoRotate: boolean = false;
 	let enableDamping: boolean = true;
@@ -27,10 +28,10 @@
 	let isValid = true;
 
 	function handleObjectSelect(items:any) {
-		alert('Row clicked: ' + items.id);
+		displayedSandboxObjectURL.set(items.url);
 	}
 
-	const ALLOWED_EXTENSIONS = ['.glb','.gltf']; // Add more extensions if needed
+	const ALLOWED_EXTENSIONS = ['.glb','.gltf'];
 
 function validateForm(formData: FormData) {
 
