@@ -34,3 +34,12 @@ export interface Workspace {
 	owner: string;
 	description: string;
 }
+
+export interface Lesson {
+	id: string;
+	topic: string;
+	time: string;
+	date: string;
+	description: string;
+	workspace: string;
+}
