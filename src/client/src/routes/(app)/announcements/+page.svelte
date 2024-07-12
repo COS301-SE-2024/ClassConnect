@@ -6,6 +6,7 @@
 	import EditModal from '$lib/components/modals/announcement/Edit.svelte';
 
 	export let data: any;
+	export let role: string;
 
 	let id: string;
 	let isAddModalOpen = false;
@@ -31,7 +32,9 @@
 			<h1 class="mb-4 text-2xl font-semibold text-gray-700 dark:text-white">
 				You do not have any Announcements in the organisation
 			</h1>
-			<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
+			{#if role=== "admin" }
+				<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
+			{/if}
 		</div>
 	{:else}
 		<div class="sm:flex sm:items-center sm:justify-between">
