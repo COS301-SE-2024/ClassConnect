@@ -1,12 +1,8 @@
-<!-- PreviewPage.svelte -->
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { onMount, onDestroy } from 'svelte';
 	import { Button, Card, Toggle } from 'flowbite-svelte';
-	import type { StreamVideoClient } from '@stream-io/video-client';
 
-	export let onJoin: () => void;
-	export let client: StreamVideoClient;
+	export let onJoin: (audio: boolean, video: boolean) => void;
 
 	let audioLevel = 0;
 	let isMicOn = true;
@@ -16,8 +12,6 @@
 	let videoStream: MediaStream;
 	let audioContext: AudioContext;
 	let videoElement: HTMLVideoElement;
-
-	let callId = $page.params.lesson;
 
 	onMount(async () => {
 		try {
@@ -60,22 +54,6 @@
 		isCameraOn = !isCameraOn;
 		videoStream.getVideoTracks().forEach((track) => (track.enabled = isCameraOn));
 	}
-
-	async function handleJoin() {
-		if (isCameraOn) {
-			await client.call('default', callId).camera.enable();
-		} else {
-			await client.call('default', callId).camera.disable();
-		}
-
-		if (isMicOn) {
-			await client.call('default', callId).microphone.enable();
-		} else {
-			await client.call('default', callId).microphone.disable();
-		}
-
-		onJoin();
-	}
 </script>
 
 <div class="flex min-h-screen items-center justify-center bg-gray-100">
@@ -108,7 +86,7 @@
 
 			<Toggle checked={isCameraOn} on:change={toggleCamera}>Camera</Toggle>
 
-			<Button on:click={handleJoin}>Join Call</Button>
+			<Button on:click={() => onJoin(isMicOn, isCameraOn)}>Join Call</Button>
 		</div>
 	</Card>
 </div>
