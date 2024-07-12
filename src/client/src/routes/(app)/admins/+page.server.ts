@@ -45,7 +45,7 @@ function validateAdmin(locals: any) {
 async function addAdmin(data: FormData, organisation: ObjectId | undefined) {
 	const name = data.get('name') as string;
 	const email = data.get('email') as string;
-	const image = data.get('image') as string;
+	const image = 'https://class-connect-file-storage.s3.amazonaws.com/pictures/default.svg';
 	const surname = data.get('surname') as string;
 
 	const existingUser = await Users.findOne({ email });

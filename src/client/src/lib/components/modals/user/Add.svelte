@@ -49,9 +49,6 @@
 			placeholder="johndoe@example.com"
 		/>
 
-		<Label for="upload_image" class="mb-2 mt-2 space-y-2">Upload image:</Label>
-		<Input type="file" id="image" name="image" />
-
 		<Button type="submit" class="mt-4 w-full">Add {role}</Button>
 	</form>
 </Modal>
