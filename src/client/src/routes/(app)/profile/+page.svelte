@@ -1,7 +1,7 @@
 <script>
-  import { Chart, Card, A, Button, Dropdown, DropdownItem, Popover } from 'flowbite-svelte';
-  import { InfoCircleSolid, ChevronRightOutline, ChevronDownOutline, FileLinesSolid } from 'flowbite-svelte-icons';
-
+  import { Input, InputAddon, ButtonGroup, Chart, Card, A, Button, Dropdown, DropdownItem, Popover, Modal, Label, Checkbox } from 'flowbite-svelte';
+  import { InfoCircleSolid, ChevronRightOutline, ChevronDownOutline, FileLinesSolid, SearchOutline } from 'flowbite-svelte-icons';
+	let formModal = false;
   let options = {
     chart: {
       height: '400px',
@@ -94,6 +94,21 @@
   };
 </script>
 
+<ButtonGroup class="w-full">
+  <Button color="none" class="flex-shrink-0 text-gray-900 bg-gray-100 border border-gray-300 dark:border-gray-700 dark:text-white hover:bg-gray-200 focus:ring-gray-300 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+    All Assessments<ChevronDownOutline class="w-6 h-6 ms-2" />
+  </Button>
+  <Dropdown>
+    <DropdownItem>Tutorials</DropdownItem>
+    <DropdownItem>Practicals</DropdownItem>
+    <DropdownItem>Semester Tests</DropdownItem>
+  </Dropdown>
+  <Input placeholder="Search" />
+  <Button color="primary" class="!p-2.5" type="submit">
+    <SearchOutline class="w-5 h-5" />
+  </Button>
+</ButtonGroup>
+
 <Card size="lg">
   <div class="flex justify-between mb-5">
     <div class="grid gap-4 grid-cols-2">
@@ -121,6 +136,28 @@
         <FileLinesSolid class="w-3.5 h-3.5 text-white me-2" />
         Edit existing report
       </Button>
+			<Button on:click={() => (formModal = true)} class="px-4 py-2.5 text-sm font-medium text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 rounded-lg text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+        <FileLinesSolid class="w-3.5 h-3.5 text-white me-2" />
+        Add new data
+      </Button>
+			<Modal bind:open={formModal} size="xs" autoclose={false} class="w-full">
+				<form class="flex flex-col space-y-6" action="#">
+					<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add New Tutorial Test Data</h3>
+					<Label class="space-y-2">
+						<span>Class Submitted (%)</span>
+						<Input type="number" name="classSubmitted" required />
+					</Label>
+					<Label class="space-y-2">
+						<span>Class Average (%)</span>
+						<Input type="number" name="classAverage" required />
+					</Label>
+					<Label class="space-y-2">
+						<span>Pass Rate (%)</span>
+						<Input type="number" name="passRate" required />
+					</Label>
+					<Button type="submit" class="w-full1">Submit</Button>
+				</form>
+			</Modal>
     </div>
   </div>
 </Card>
