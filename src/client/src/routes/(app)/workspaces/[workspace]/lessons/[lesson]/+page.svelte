@@ -1,44 +1,24 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import { onMount, onDestroy } from 'svelte';
-	import { StreamVideoClient, type Call } from '@stream-io/video-client';
+	import { StreamVideoClient } from '@stream-io/video-client';
 
-	import Container from '$src/lib/components/lessons/lesson/Container.svelte';
-	import ControlPanel from '$src/lib/components/lessons/lesson/ControlPanel.svelte';
+	import Room from '$lib/components/lessons/lesson/Room.svelte';
+	import Preview from '$lib/components/lessons/lesson/Preview.svelte';
 
-	export let data;
-	const { apiKey, token } = data;
+	export let data: any;
 
-	let call: Call;
+	let showPreview = true;
 	let client: StreamVideoClient;
+	let callId = $page.params.lesson;
 
-	onMount(async () => {
-		client = new StreamVideoClient({
-			apiKey,
-			token,
-			user: { id: 'Username', name: 'Name' }
-		});
+	let { apiKey, token, user } = data;
 
-		call = client.call('default', $page.params.id);
-
-		await call.camera.disable();
-		await call.microphone.disable();
-		await call.join({ create: true });
-	});
-
-	onDestroy((): void => {
-		if (call) call.leave();
-		if (client) client.disconnectUser();
-	});
+	onMount(() => (client = new StreamVideoClient({ apiKey, token, user })));
 </script>
 
-<main class="flex h-screen flex-col">
-	{#if call}
-		<div class="flex-1 overflow-hidden">
-			<Container {call} />
-		</div>
-		<div class="h-20">
-			<ControlPanel {call} />
-		</div>
-	{/if}
-</main>
+{#if showPreview}
+	<Preview {client} onJoin={() => (showPreview = false)} />
+{:else}
+	<Room />
+{/if}

@@ -1,23 +1,34 @@
-import { username } from '$src/lib/store/lessons';
+import { error } from '@sveltejs/kit';
 import { StreamClient } from '@stream-io/node-sdk';
-
 import { STREAM_API_KEY, STREAM_SECRET_KEY } from '$env/static/private';
 
-export const load = async () => {
-	if (!username) throw new Error('User is not authenticated');
-	if (!STREAM_API_KEY) throw new Error('Stream API key secret is missing');
-	if (!STREAM_SECRET_KEY) throw new Error('Stream API secret is missing');
+import Users from '$db/schemas/User';
+import type { User } from '$src/types';
+
+export const load = async ({ locals }) => {
+	if (!STREAM_API_KEY || !STREAM_SECRET_KEY) throw error(403, 'Stream credentials not set');
 
 	const streamClient = new StreamClient(STREAM_API_KEY, STREAM_SECRET_KEY);
 
-	const tokenProvider = async () => {
-		const expirationTime = Math.floor(Date.now() / 1000) + 3600;
+	const user = await Users.findById(locals.user?.id).select('name surname image');
+
+	const formattedUser = {
+		id: locals.user?.id.toString() || '',
+		name: user.name,
+		image: user.image,
+		surname: user.surname
+	} as Partial<User>;
+
+	const id = locals.user?.id.toString() || '';
+
+	async function tokenProvider() {
 		const issuedAt = Math.floor(Date.now() / 1000) - 60;
-		const token = streamClient.createToken(username, expirationTime, issuedAt);
-		return token;
-	};
+		const expirationTime = Math.floor(Date.now() / 1000) + 3600;
+
+		return streamClient.createToken(id, expirationTime, issuedAt);
+	}
 
 	const token = await tokenProvider();
 
-	return { apiKey: STREAM_API_KEY, token };
+	return { apiKey: STREAM_API_KEY, user: formattedUser, token };
 };
