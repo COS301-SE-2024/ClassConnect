@@ -14,9 +14,8 @@ export const load = async ({ locals }) => {
 
 	const formattedUser = {
 		id: locals.user?.id.toString() || '',
-		name: user.name,
 		image: user.image,
-		surname: user.surname
+		name: `${user.name} ${user.surname}`
 	} as Partial<User>;
 
 	const id = locals.user?.id.toString() || '';
