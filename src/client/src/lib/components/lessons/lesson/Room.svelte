@@ -1,10 +1,8 @@
 <script lang="ts">
 	import { writable } from 'svelte/store';
 	import { onMount, onDestroy, setContext } from 'svelte';
-
 	import type { Writable } from 'svelte/store';
 	import type { Call } from '@stream-io/video-client';
-
 	import Controls from './Controls.svelte';
 	import Participants from './Participants.svelte';
 
@@ -23,11 +21,15 @@
 	setContext('call', callStore);
 </script>
 
-<div class="flex h-screen w-full flex-col items-center justify-center bg-gray-100">
+<div
+	class="flex h-screen w-full flex-col items-center justify-center bg-gray-100 transition-colors duration-300 dark:bg-gray-900"
+>
 	{#if $callStore}
 		<Participants />
 		<Controls />
 	{:else}
-		<div class="flex flex-grow items-center justify-center"><p>Connecting...</p></div>
+		<div class="flex flex-grow items-center justify-center">
+			<p class="text-lg font-semibold text-gray-800 dark:text-gray-200">Connecting...</p>
+		</div>
 	{/if}
 </div>
