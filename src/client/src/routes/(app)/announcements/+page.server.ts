@@ -24,8 +24,12 @@ async function getAnnouncements(organisation: ObjectId | undefined): Promise<Ann
 export async function load({ locals }) {
 	try {
 		const announcements = await getAnnouncements(locals.user?.organisation);
-
-		return { announcements };
+		const role= locals.user?.role;
+		console.log("Server Roles:", role);
+		return {
+				announcements,
+				role
+		};
 	} catch (e) {
 		console.error('Failed to load announcements: ', e);
 		throw error(500, 'Error occurred while fetching announcements');
