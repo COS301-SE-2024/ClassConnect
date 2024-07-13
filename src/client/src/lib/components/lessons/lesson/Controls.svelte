@@ -59,7 +59,6 @@
 		color={isScreenShareOn ? 'green' : 'light'}
 		class="mr-4"
 		on:click={toggleScreenShare}
-		disabled
 	>
 		<ArrowUpRightFromSquareOutline />
 	</Button>

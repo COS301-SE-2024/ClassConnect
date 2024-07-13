@@ -5,16 +5,19 @@
 
 	import Participant from './Participant.svelte';
 
-	// import ScreenShare from './ScreenShare.svelte';
-	// import { hasScreenShare } from '@stream-io/video-client';
+	import ScreenShare from './ScreenShare.svelte';
+	import { hasScreenShare } from '@stream-io/video-client';
 
 	let gridClass = '';
 	let participants: StreamVideoParticipant[] = [];
+	let screenSharingParticipant: StreamVideoParticipant | null = null;
+
 	const callStore = getContext<Writable<Call | null>>('call');
 
 	$: {
 		$callStore?.state.participants$.subscribe((newParticipants) => {
 			participants = newParticipants;
+			screenSharingParticipant = newParticipants.find(hasScreenShare) || null;
 			updateGridClass(participants.length);
 		});
 	}
@@ -32,9 +35,13 @@
 </script>
 
 <div class="h-full w-full bg-gray-100 p-4 dark:bg-gray-900">
-	<div class={`grid ${gridClass} h-full w-full gap-4 dark:bg-gray-900`}>
-		{#each participants as participant (participant.sessionId)}
-			<Participant {participant} />
-		{/each}
-	</div>
+	{#if screenSharingParticipant}
+		<ScreenShare participant={screenSharingParticipant} />
+	{:else}
+		<div class={`grid ${gridClass} h-full w-full gap-4 dark:bg-gray-900`}>
+			{#each participants as participant (participant.sessionId)}
+				<Participant {participant} />
+			{/each}
+		</div>
+	{/if}
 </div>

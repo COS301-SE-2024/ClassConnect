@@ -4,7 +4,7 @@
 	import type { Writable } from 'svelte/store';
 	import type { Call } from '@stream-io/video-client';
 	import Controls from './Controls.svelte';
-	import Participants from './Participants.svelte';
+	import Participants from './Grid.svelte';
 
 	export let call: Call;
 	const callStore: Writable<Call | null> = writable(null);
