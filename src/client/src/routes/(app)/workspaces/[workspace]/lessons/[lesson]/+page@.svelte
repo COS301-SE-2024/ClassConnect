@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
-	import type { Call } from '@stream-io/video-client';
+	import { StreamChat } from 'stream-chat';
 	import { StreamVideoClient } from '@stream-io/video-client';
+
+	import type { Channel } from 'stream-chat';
+	import type { Call } from '@stream-io/video-client';
 
 	import Room from '$lib/components/lessons/lesson/Room.svelte';
 	import Preview from '$lib/components/lessons/lesson/Preview.svelte';
@@ -10,21 +13,28 @@
 	export let data: any;
 
 	let call: Call;
-	let client: StreamVideoClient;
+	let channel: Channel;
+	let chatClient: StreamChat;
+	let videoClient: StreamVideoClient;
 
 	let showPreview = true;
 	let callId = $page.params.lesson;
 
 	let { apiKey, token, user } = data;
 
-	onMount(() => (client = new StreamVideoClient({ apiKey, token, user })));
+	onMount(() => {
+		chatClient = StreamChat.getInstance(apiKey);
+		videoClient = new StreamVideoClient({ apiKey, token, user });
+	});
 
-	function handleJoin(audio: boolean, video: boolean) {
+	async function handleJoin(audio: boolean, video: boolean) {
 		showPreview = false;
 
-		call = client.call('default', callId);
+		call = videoClient.call('default', callId);
 
-		console.log('handleJoin', audio, video);
+		await chatClient.connectUser(user, token);
+		channel = chatClient.channel('livestream', callId);
+		await channel.create();
 
 		if (video) call.camera.enable();
 		else call.camera.disable();
@@ -37,5 +47,5 @@
 {#if showPreview}
 	<Preview onJoin={handleJoin} />
 {:else}
-	<Room {call} />
+	<Room {call} {channel} />
 {/if}

@@ -38,7 +38,7 @@
 
 	function endCall() {
 		$callStore?.leave();
-		goto(`workspaces/${$page.params.workspace}/lessons`);
+		goto(`/workspaces/${$page.params.workspace}/lessons`);
 	}
 </script>
 
