@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { getContext } from 'svelte';
+	import { goto } from '$app/navigation';
 	import { Button } from 'flowbite-svelte';
 	import {
 		MicrophoneSolid,
@@ -9,12 +11,14 @@
 		MicrophoneSlashOutline,
 		ArrowUpRightFromSquareOutline
 	} from 'flowbite-svelte-icons';
+
 	import type { Writable } from 'svelte/store';
 	import type { Call } from '@stream-io/video-client';
 
 	const callStore = getContext<Writable<Call | null>>('call');
-	let isMicOn = $callStore?.microphone.state.status === 'enabled' ? true : false;
+
 	let isCameraOn = $callStore?.camera.state.status === 'enabled' ? true : false;
+	let isMicOn = $callStore?.microphone.state.status === 'enabled' ? true : false;
 	let isScreenShareOn = $callStore?.screenShare.state.status === 'enabled' ? true : false;
 
 	function toggleMicrophone() {
@@ -34,11 +38,12 @@
 
 	function endCall() {
 		$callStore?.leave();
+		goto(`workspaces/${$page.params.workspace}/lessons`);
 	}
 </script>
 
-<div class="mb-12 flex w-1/4 items-center justify-center rounded-full bg-gray-400 p-2 shadow-md">
-	<Button pill={true} color={isMicOn ? 'green' : 'red'} class="mr-4" on:click={toggleMicrophone}>
+<div class="mb-12 flex w-1/4 items-center justify-center rounded-full bg-gray-400 shadow-md">
+	<Button pill={true} color={isMicOn ? 'green' : 'red'} class="m-2" on:click={toggleMicrophone}>
 		{#if isMicOn}
 			<MicrophoneSolid />
 		{:else}
@@ -46,7 +51,7 @@
 		{/if}
 	</Button>
 
-	<Button pill={true} color={isCameraOn ? 'green' : 'red'} class="mr-4" on:click={toggleCamera}>
+	<Button pill={true} color={isCameraOn ? 'green' : 'red'} class="m-2" on:click={toggleCamera}>
 		{#if isCameraOn}
 			<VideoCameraSolid />
 		{:else}
@@ -56,9 +61,9 @@
 
 	<Button
 		pill={true}
-		color={isScreenShareOn ? 'green' : 'light'}
-		class="mr-4"
+		class="m-2"
 		on:click={toggleScreenShare}
+		color={isScreenShareOn ? 'green' : 'light'}
 	>
 		<ArrowUpRightFromSquareOutline />
 	</Button>

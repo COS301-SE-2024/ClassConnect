@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
+	import { hasScreenShare } from '@stream-io/video-client';
+	
 	import type { Writable } from 'svelte/store';
 	import type { Call, StreamVideoParticipant } from '@stream-io/video-client';
 
 	import Participant from './Participant.svelte';
-
 	import ScreenShare from './ScreenShare.svelte';
-	import { hasScreenShare } from '@stream-io/video-client';
 
 	let gridClass = '';
 	let participants: StreamVideoParticipant[] = [];

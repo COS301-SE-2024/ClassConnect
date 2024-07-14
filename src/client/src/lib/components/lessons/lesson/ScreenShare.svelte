@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { onMount, getContext } from 'svelte';
+	import { Call } from '@stream-io/video-client';
+
 	import type { Writable } from 'svelte/store';
-	import { Call, type StreamVideoParticipant } from '@stream-io/video-client';
+	import type { StreamVideoParticipant } from '@stream-io/video-client';
 
 	export let participant: StreamVideoParticipant;
 
