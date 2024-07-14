@@ -2,7 +2,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { Button, Card, Toggle } from 'flowbite-svelte';
 
-	export let onJoin: (audio: boolean, video: boolean) => void;
+	export let onJoin;
 
 	let audioLevel = 0;
 	let isMicOn = true;
@@ -27,13 +27,7 @@
 
 			const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
-			function updateAudioLevel() {
-				analyser.getByteFrequencyData(dataArray);
-				audioLevel = Math.max(...dataArray) / 255;
-				requestAnimationFrame(updateAudioLevel);
-			}
-
-			updateAudioLevel();
+			updateAudioLevel(analyser, dataArray);
 		} catch (error) {
 			console.error('Error accessing media devices:', error);
 		}
@@ -44,6 +38,12 @@
 		if (audioStream) audioStream.getTracks().forEach((track) => track.stop());
 		if (videoStream) videoStream.getTracks().forEach((track) => track.stop());
 	});
+
+	function updateAudioLevel(analyser: AnalyserNode, dataArray: Uint8Array) {
+		analyser.getByteFrequencyData(dataArray);
+		audioLevel = Math.max(...dataArray) / 255;
+		requestAnimationFrame(() => updateAudioLevel(analyser, dataArray));
+	}
 
 	function toggleMicrophone() {
 		isMicOn = !isMicOn;

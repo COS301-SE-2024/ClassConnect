@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
 	import { hasScreenShare } from '@stream-io/video-client';
-	
+
 	import type { Writable } from 'svelte/store';
 	import type { Call, StreamVideoParticipant } from '@stream-io/video-client';
 
