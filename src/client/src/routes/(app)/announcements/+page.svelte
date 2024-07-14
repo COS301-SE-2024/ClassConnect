@@ -8,9 +8,7 @@
 	//import { role } from '@stream-io/video-client';
 
 	export let data: any;
-	//export let role: string;
-
-	console.log("Data", data);
+	
 	let id: string;
 	let isAddModalOpen = false;
 	let isEditModalOpen = false;
@@ -28,8 +26,6 @@
 	
 	//$: console.log("Role:", role);
 	$: ({ announcements } = data);
-
-	console.log("Roles:", data.role);
 	
 </script>
 
