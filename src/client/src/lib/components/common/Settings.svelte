@@ -3,18 +3,132 @@
 		Heading,
 		Button,
 		Modal,
-		Input,
 		Gallery,
 		Fileupload,
 		Label,
-		Helper
+		Helper,
+		Input
 	} from 'flowbite-svelte';
-	import { UploadOutline, ExclamationCircleOutline } from 'flowbite-svelte-icons';
+	import {
+		UploadOutline,
+		ExclamationCircleOutline,
+		EyeOutline,
+		EyeSlashOutline
+	} from 'flowbite-svelte-icons';
+	import { change } from '$lib/store';
 
-    async function handleFileUpload(event: Event) {
+	function log() {
+		const timestamp: string = new Date().getTime().toString();
+		const log: string = `change in settings: ${timestamp}`;
+		change.set(log);
+	}
+
+	export let user: any;
+
+	async function handleFileUpload(event: Event) {
 		event.preventDefault();
-		openPreviewModal = true;
-		console.log('Hello');
+
+		const formData = new FormData(event.target as HTMLFormElement);
+		const file = formData.get('file') as File;
+
+		if (file) {
+			ImageFile = file;
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				const url = e.target?.result as string;
+				image1.src = url;
+				image1.alt = file.name;
+				openPreviewModal = true;
+				openUploadModal = false;
+			};
+			reader.readAsDataURL(file);
+		}
+	}
+
+	async function handleFinalUpload(event: Event) {
+		event.preventDefault();
+
+		console.log('Upload is being handled');
+
+		const formData = new FormData(event.currentTarget as HTMLFormElement);
+
+		formData.append('file', ImageFile);
+
+		console.log(formData);
+
+		const response = await fetch('/(app)/settings?/upload_picture', {
+			method: 'POST',
+			body: formData
+		});
+
+		if (response.ok) {
+			log();
+		}
+
+		console.log(response);
+
+		openPreviewModal = false;
+	}
+
+	async function handleFileDelete(event: Event) {
+		event.preventDefault();
+		console.log('Delete is being handled');
+
+		const formData = new FormData(event.currentTarget as HTMLFormElement);
+
+		console.log(formData);
+
+		const response = await fetch('/(app)/settings?/delete_picture', {
+			method: 'POST',
+			body: formData
+		});
+
+		if (response.ok) {
+			log();
+		}
+
+		console.log(response);
+		openDeleteModal = false;
+	}
+
+	async function handleGeneralUpdate(event: Event) {
+		event.preventDefault();
+		console.log('General update is being handled');
+
+		const formData = new FormData(event.currentTarget as HTMLFormElement);
+
+		console.log(formData);
+
+		const response = await fetch('/(app)/settings?/update_general_details', {
+			method: 'POST',
+			body: formData
+		});
+
+		if (response.ok) {
+			log();
+		}
+
+		console.log(response);
+	}
+
+	async function handlePasswordUpdate(event: Event) {
+		event.preventDefault();
+		console.log('Password update is being handled');
+
+		const formData = new FormData(event.currentTarget as HTMLFormElement);
+
+		console.log(formData);
+
+		const response = await fetch('/(app)/settings?/update_password', {
+			method: 'POST',
+			body: formData
+		});
+
+		if (response.ok) {
+			log();
+		}
+
+		console.log(response);
 	}
 
 	const image1 = {
@@ -25,14 +139,25 @@
 	let openDeleteModal = false;
 	let openPreviewModal = false;
 	let openUploadModal = false;
+	let currentShowPassword = false;
+	let newShowPassword = false;
+	let confirmShowPassword = false;
+	let ImageFile: File;
 	let color: any;
+
+	// Watch for changes in the `change` store
+	$: {
+		change.subscribe(() => {
+			location.reload();
+		});
+	}
 </script>
 
 <div class="grid grid-cols-1 px-4 pt-6 dark:bg-gray-900 xl:grid-cols-3 xl:gap-4">
 	<div class="col-span-full mb-4 xl:mb-2">
-		<Heading tag="h1" class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl"
-			>Settings</Heading
-		>
+		<Heading tag="h1" class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
+			Settings
+		</Heading>
 	</div>
 	<div class="col-span-10 items-center">
 		<div
@@ -41,7 +166,7 @@
 			<div class="items-center sm:flex sm:space-x-4 xl:block xl:space-x-0 2xl:flex 2xl:space-x-4">
 				<img
 					class="mb-4 h-28 w-28 rounded-lg sm:mb-0 xl:mb-4 2xl:mb-0"
-					src="https://class-connect-file-storage.s3.amazonaws.com/pictures/default.svg"
+					src={user.image}
 					alt="profile"
 				/>
 				<div>
@@ -75,56 +200,52 @@
 			class="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2"
 		>
 			<h3 class="mb-4 text-xl font-semibold dark:text-white">General information</h3>
-			<form>
+			<form on:submit={handleGeneralUpdate}>
 				<div class="grid grid-cols-6 gap-6">
 					<div class="col-span-6 sm:col-span-3">
-						<label
-							for="first-name"
-							class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">First Name</label
+						<Label for="name" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+							>First Name</Label
 						>
-						<input
+						<Input
 							type="text"
-							name="first-name"
-							id="first-name"
+							name="name"
+							id="name"
 							class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-							placeholder="Bonnie"
-							required
+							placeholder={user.name}
 						/>
 					</div>
 
 					<div class="col-span-6 sm:col-span-3">
-						<label
-							for="last-name"
-							class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Last Name</label
+						<Label
+							for="surname"
+							class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">Last Name</Label
 						>
-						<input
+						<Input
 							type="text"
-							name="last-name"
-							id="last-name"
+							name="surname"
+							id="surname"
 							class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-							placeholder="Green"
-							required
+							placeholder={user.surname}
 						/>
 					</div>
 
 					<div class="col-span-6 sm:col-span-3">
-						<label for="email" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-							>Email</label
+						<Label for="email" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+							>Email</Label
 						>
-						<input
+						<Input
 							type="email"
 							name="email"
 							id="email"
 							class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-							placeholder="example@company.com"
-							required
+							placeholder={user.email}
 						/>
 					</div>
 
 					<div class="sm:col-full col-span-6">
-						<button
+						<Button
 							class="rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-							type="submit">Update</button
+							type="submit">Update</Button
 						>
 					</div>
 				</div>
@@ -134,45 +255,103 @@
 			class="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2"
 		>
 			<h3 class="mb-4 text-xl font-semibold dark:text-white">Password information</h3>
-			<form>
+			<form on:submit={handlePasswordUpdate}>
 				<div class="grid grid-cols-6 gap-6">
 					<div class="col-span-6 sm:col-span-3">
-						<label
-							for="current-password"
+						<Label
+							for="currPassword"
 							class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-							>Current password</label
+							>Current password</Label
 						>
-						<input
-							type="text"
-							autocomplete="off"
-							name="current-password"
-							id="current-password"
-							class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
-							placeholder="••••••••"
-							required
-						/>
+						<div class="relative">
+							<Input
+								type={currentShowPassword ? 'text' : 'password'}
+								autocomplete="off"
+								name="currPassword"
+								id="currPassword"
+								class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+								placeholder="••••••••"
+								required
+							/>
+							<Button
+								type="button"
+								aria-label="Toggle password visibility"
+								class="absolute inset-y-0 right-0 flex items-center pr-3"
+								on:click={() => (currentShowPassword = !currentShowPassword)}
+							>
+								{#if currentShowPassword}
+									<EyeSlashOutline class="text-gray-500" />
+								{:else}
+									<EyeOutline class="text-gray-500" />
+								{/if}
+							</Button>
+						</div>
 					</div>
 					<div class="col-span-6 sm:col-span-3">
-						<label
-							for="password"
+						<Label
+							for="newPassword"
 							class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-							>New password</label
+							>New password</Label
 						>
-						<input
-							data-popover-target="popover-password"
-							autocomplete="off"
-							data-popover-placement="bottom"
-							type="password"
-							id="password"
-							class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-							placeholder="••••••••"
-							required
-						/>
+						<div class="relative">
+							<Input
+								data-popover-target="popover-password"
+								autocomplete="off"
+								data-popover-placement="bottom"
+								type={newShowPassword ? 'text' : 'password'}
+								id="newPassword"
+								name="newPassword"
+								class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+								placeholder="••••••••"
+								required
+							/>
+							<Button
+								type="button"
+								aria-label="Toggle password visibility"
+								class="absolute inset-y-0 right-0 flex items-center pr-3"
+								on:click={() => (newShowPassword = !newShowPassword)}
+							>
+								{#if newShowPassword}
+									<EyeSlashOutline class="text-gray-500" />
+								{:else}
+									<EyeOutline class="text-gray-500" />
+								{/if}
+							</Button>
+						</div>
+					</div>
+					<div class="col-span-6 sm:col-span-3">
+						<Label
+							for="conPassword"
+							class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+							>Confirm password</Label
+						>
+						<div class="relative">
+							<Input
+								type={confirmShowPassword ? 'text' : 'password'}
+								name="conPassword"
+								id="conPassword"
+								class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
+								placeholder="••••••••"
+								required
+							/>
+							<Button
+								type="button"
+								aria-label="Toggle password visibility"
+								class="absolute inset-y-0 right-0 flex items-center pr-3"
+								on:click={() => (confirmShowPassword = !confirmShowPassword)}
+							>
+								{#if confirmShowPassword}
+									<EyeSlashOutline class="text-gray-500" />
+								{:else}
+									<EyeOutline class="text-gray-500" />
+								{/if}
+							</Button>
+						</div>
 					</div>
 					<div class="sm:col-full col-span-6">
-						<button
+						<Button
 							class="rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-							type="submit">Update password</button
+							type="submit">Update password</Button
 						>
 					</div>
 				</div>
@@ -195,7 +374,7 @@
 			Are you sure you want to delete this profile picture?
 		</h3>
 		<div class="flex justify-center gap-4">
-			<Button color="red" on:click={() => (openDeleteModal = false)}>Yes, delete it</Button>
+			<Button color="red" on:click={handleFileDelete}>Yes, delete it</Button>
 			<Button on:click={() => (openDeleteModal = false)}>No, cancel</Button>
 		</div>
 	</div>
@@ -210,16 +389,17 @@
 	placement="center"
 >
 	<div class="p-6 text-center">
-		<ExclamationCircleOutline class="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+		<h3 class="mb-5 text-lg font-normal text-black dark:text-gray-400">
 			Are you sure you want to upload this profile picture?
 		</h3>
-		<Gallery class="gap-4 py-2">
-			<img src={image1.src} alt={image1.alt} class="h-auto max-w-full rounded-lg" />
-		</Gallery>
+		<div class="flex justify-center">
+			<Gallery class="gap-4 py-2">
+				<img class="h-96 w-96 rounded-full" src={image1.src} alt={image1.alt} />
+			</Gallery>
+		</div>
 		<div class="flex justify-center gap-4">
-			<Button color="primary" on:click={() => (openDeleteModal = false)}>Yes, upload it</Button>
-			<Button color="alternative" on:click={() => (openDeleteModal = false)}>No, cancel</Button>
+			<Button color="primary" on:click={handleFinalUpload}>Yes, upload it</Button>
+			<Button color="alternative" on:click={() => (openPreviewModal = false)}>No, cancel</Button>
 		</div>
 	</div>
 </Modal>
@@ -232,11 +412,11 @@
 	size="lg"
 	placement="center"
 >
-	<form class="flex flex-col space-y-6" on:Submit={handleFileUpload}>
+	<form class="flex flex-col space-y-6" on:submit={handleFileUpload}>
 		<Label for="with_helper" class="pb-2">Upload picture</Label>
-		<Fileupload id="with_helper" class="mb-2" />
-		<Helper>SVG, PNG, JPG or GIF (MAX. 1mb).</Helper>
+		<Fileupload id="with_helper" name="file" class="mb-2" />
+		<Helper>SVG, PNG, JPG or GIF (MAX. 1 MB).</Helper>
 
-		<Button type="submit" class="w-full1">Upload Picture</Button>
+		<Button type="submit" class="w-full">Upload Picture</Button>
 	</form>
 </Modal>

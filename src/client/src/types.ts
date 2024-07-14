@@ -19,6 +19,16 @@ export interface User {
 	username: string;
 }
 
+export interface User_Details {
+	id: string;
+	first_name: string;
+	last_name: string;
+	email: string;
+	image: string;
+	surname: string;
+	username: string;
+}
+
 export interface Announcement {
 	id: string;
 	title: string;
