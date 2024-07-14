@@ -20,6 +20,7 @@ vi.mock('$db/schemas/Announcement', () => {
 vi.mock('@sveltejs/kit', async () => {
 	const actual = await vi.importActual('@sveltejs/kit');
 
+	
 	return {
 		...actual,
 		fail: vi.fn(),

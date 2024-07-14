@@ -15,8 +15,9 @@ function formatAnnouncement(announcement: any): Announcement {
 	};
 }
 
-async function getAnnouncements(organisation: ObjectId | undefined): Promise<Announcement[]> {
-	const announcements = await Announcements.find({ owner: organisation });
+async function getAnnouncements(ownerID: ObjectId | undefined, ownerType: string): Promise<Announcement[]> {
+	const filter = { owner: ownerID, ownerType: ownerType };
+	const announcements = await Announcements.find(filter);
 
 	return announcements.map(formatAnnouncement);
 }
@@ -25,7 +26,7 @@ export async function load({ locals }) {
 	try {
 		const announcements = await getAnnouncements(locals.user?.organisation);
 		const role= locals.user?.role;
-		console.log("Server Roles:", role);
+		//console.log("Server Roles:", role);
 		return {
 				announcements,
 				role
@@ -40,13 +41,13 @@ async function createAnnouncement(
 	title: string,
 	description: string,
 	userId: ObjectId | undefined,
-	organisation: ObjectId | undefined
+	ownerID: ObjectId | undefined
 ) {
 	const newAnnouncement = new Announcements({
 		title,
 		description,
 		createdBy: userId,
-		owner: organisation
+		owner: ownerID
 	});
 
 	await newAnnouncement.save();
@@ -70,6 +71,10 @@ async function deleteAnnouncement(id: string) {
 
 function validateAdmin(locals: any) {
 	if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
+}
+
+function validateLecturer(locals: any) {
+	if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorised');
 }
 
 export const actions: Actions = {

@@ -5,7 +5,7 @@
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
 	import AddModal from '$lib/components/modals/announcement/Add.svelte';
 	import EditModal from '$lib/components/modals/announcement/Edit.svelte';
-	import { role } from '@stream-io/video-client';
+	//import { role } from '@stream-io/video-client';
 
 	export let data: any;
 	//export let role: string;
@@ -28,6 +28,8 @@
 	
 	//$: console.log("Role:", role);
 	$: ({ announcements } = data);
+
+	console.log("Roles:", data.role);
 	
 </script>
 
@@ -37,7 +39,7 @@
 			<h1 class="mb-4 text-2xl font-semibold text-gray-700 dark:text-white">
 				You do not have any Announcements in the organisation
 			</h1>
-			{#if announcements.role === "admin"}
+			{#if data.role === "admin"}
 				<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
 			{/if}
 		</div>
@@ -55,7 +57,7 @@
 				</div>
 			</div>
 			<div class="mb-4 flex items-center gap-x-3">
-				{#if announcements.role === "admin"}
+				{#if data.role === "admin"}
 					<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
 				{/if}
 			</div>
@@ -70,7 +72,7 @@
 			>
 			</Card>
 				<div class="flex space-x-2">
-					{#if announcements.role === "admin"}
+					{#if data.role === "admin"}
 						<Button class="mr-2" on:click={() => handleEditModalOpen(announcement.id)}>
 							Edit
 						</Button>
