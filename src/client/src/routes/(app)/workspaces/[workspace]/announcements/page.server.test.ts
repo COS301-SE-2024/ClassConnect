@@ -167,4 +167,52 @@ describe('Announcement Management', () => {
 		});
 	});
 
-	
+	describe('actions.delete', () => {
+		it('should delete an announcement successfully', async () => {
+			const mockFormData = new FormData();
+			mockFormData.append('id', '123');
+
+			const mockRequest = {
+				formData: vi.fn().mockResolvedValue(mockFormData)
+			};
+
+			const locals = { user: { role: 'lecturer' } };
+			(Announcements.findByIdAndDelete as any).mockResolvedValue({});
+
+			const result = await announcementModule.actions.delete({ request: mockRequest, locals } as any);
+
+			expect(result).toEqual({ success: true });
+			expect(Announcements.findByIdAndDelete).toHaveBeenCalledWith('123');
+		});
+
+		it('should fail if announcement not found', async () => {
+			const mockFormData = new FormData();
+			mockFormData.append('id', '123');
+
+			const mockRequest = {
+				formData: vi.fn().mockResolvedValue(mockFormData)
+			};
+
+			const locals = { user: { role: 'lecturer' } };
+			(Announcements.findByIdAndDelete as any).mockResolvedValue(null);
+
+			await announcementModule.actions.delete({ request: mockRequest, locals } as any);
+
+			expect(fail).toHaveBeenCalledWith(404, { error: 'Announcement not found' });
+		});
+
+		it('should fail if announcement ID is not provided', async () => {
+			const mockFormData = new FormData();
+
+			const mockRequest = {
+				formData: vi.fn().mockResolvedValue(mockFormData)
+			};
+
+			const locals = { user: { role: 'lecturer' } };
+
+			await announcementModule.actions.delete({ request: mockRequest, locals } as any);
+
+			expect(fail).toHaveBeenCalledWith(400, { error: 'Announcement ID is required' });
+		});
+	});
+});
