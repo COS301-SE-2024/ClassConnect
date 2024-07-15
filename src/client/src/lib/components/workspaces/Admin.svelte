@@ -1,7 +1,11 @@
 <script>
   import { Card, Button } from 'flowbite-svelte';
   import { ArrowRightOutline } from 'flowbite-svelte-icons';
+
+	
 </script>
+
+
 
 <div class="m-4 custom-card">
   <Card img="https://images.inc.com/uploaded_files/image/1920x1080/getty_517610514_353435.jpg" size="none">
