@@ -133,14 +133,16 @@ export const actions: Actions = {
 	update_general_details: async ({ request, locals }) => {
 		try {
 			const data = await request.formData();
-			const name: string = data.get('name') as string;
-			const surname: string = data.get('surname') as string;
-			const email: string = data.get('email') as string;
-			const GeneralDetails = {
-				name: name,
-				surname: surname,
-				email: email
-			};
+			const name: string | null = data.get('name') as string;
+			const surname: string | null = data.get('surname') as string;
+			const email: string | null = data.get('email') as string;
+			
+			const GeneralDetails: { [key: string]: string } = {};
+			
+			if (name) GeneralDetails.name = name;
+			if (surname) GeneralDetails.surname = surname;
+			if (email) GeneralDetails.email = email;
+			
 			if (locals && locals.user) {
 				await Users.findByIdAndUpdate(locals.user.id, GeneralDetails);
 			}

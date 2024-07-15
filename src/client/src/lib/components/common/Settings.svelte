@@ -16,10 +16,12 @@
 		EyeSlashOutline
 	} from 'flowbite-svelte-icons';
 	import { change } from '$lib/store';
+	import { onDestroy } from 'svelte';
+	import { browser } from '$app/environment'; // Import the browser module
 
-	function log() {
-		const timestamp: string = new Date().getTime().toString();
-		const log: string = `change in settings: ${timestamp}`;
+	function log(){
+		const timestamp : string = new Date().getTime().toString();
+		const log : string = `change in settings: ${timestamp}`;
 		change.set(log);
 	}
 
@@ -50,22 +52,24 @@
 
 		console.log('Upload is being handled');
 
-		const formData = new FormData(event.currentTarget as HTMLFormElement);
+		const formData = new FormData();
 
 		formData.append('file', ImageFile);
 
 		console.log(formData);
 
-		const response = await fetch('/(app)/settings?/upload_picture', {
+		const response = await fetch('/settings?/upload_picture', {
 			method: 'POST',
 			body: formData
 		});
 
-		if (response.ok) {
+		if(response.ok){
 			log();
 		}
 
 		console.log(response);
+
+		reloadPage();
 
 		openPreviewModal = false;
 	}
@@ -74,20 +78,23 @@
 		event.preventDefault();
 		console.log('Delete is being handled');
 
-		const formData = new FormData(event.currentTarget as HTMLFormElement);
+		const formData = new FormData();
 
 		console.log(formData);
 
-		const response = await fetch('/(app)/settings?/delete_picture', {
+		const response = await fetch('/settings?/delete_picture', {
 			method: 'POST',
 			body: formData
 		});
 
-		if (response.ok) {
+		if(response.ok){
 			log();
 		}
 
 		console.log(response);
+
+		reloadPage();
+
 		openDeleteModal = false;
 	}
 
@@ -99,16 +106,18 @@
 
 		console.log(formData);
 
-		const response = await fetch('/(app)/settings?/update_general_details', {
+		const response = await fetch('/settings?/update_general_details', {
 			method: 'POST',
 			body: formData
 		});
 
-		if (response.ok) {
+		if(response.ok){
 			log();
 		}
 
 		console.log(response);
+
+		reloadPage();
 	}
 
 	async function handlePasswordUpdate(event: Event) {
@@ -119,16 +128,18 @@
 
 		console.log(formData);
 
-		const response = await fetch('/(app)/settings?/update_password', {
+		const response = await fetch('/settings?/update_password', {
 			method: 'POST',
 			body: formData
 		});
 
-		if (response.ok) {
+		if(response.ok){
 			log();
 		}
 
 		console.log(response);
+
+		reloadPage();
 	}
 
 	const image1 = {
@@ -145,12 +156,12 @@
 	let ImageFile: File;
 	let color: any;
 
-	// Watch for changes in the `change` store
-	$: {
-		change.subscribe(() => {
+	function reloadPage() {
+		if (browser) {
 			location.reload();
-		});
+		}
 	}
+
 </script>
 
 <div class="grid grid-cols-1 px-4 pt-6 dark:bg-gray-900 xl:grid-cols-3 xl:gap-4">
@@ -273,7 +284,7 @@
 								placeholder="••••••••"
 								required
 							/>
-							<Button
+							<button
 								type="button"
 								aria-label="Toggle password visibility"
 								class="absolute inset-y-0 right-0 flex items-center pr-3"
@@ -284,7 +295,7 @@
 								{:else}
 									<EyeOutline class="text-gray-500" />
 								{/if}
-							</Button>
+							</button>
 						</div>
 					</div>
 					<div class="col-span-6 sm:col-span-3">
@@ -305,7 +316,7 @@
 								placeholder="••••••••"
 								required
 							/>
-							<Button
+							<button
 								type="button"
 								aria-label="Toggle password visibility"
 								class="absolute inset-y-0 right-0 flex items-center pr-3"
@@ -316,7 +327,7 @@
 								{:else}
 									<EyeOutline class="text-gray-500" />
 								{/if}
-							</Button>
+							</button>
 						</div>
 					</div>
 					<div class="col-span-6 sm:col-span-3">
@@ -334,7 +345,7 @@
 								placeholder="••••••••"
 								required
 							/>
-							<Button
+							<button
 								type="button"
 								aria-label="Toggle password visibility"
 								class="absolute inset-y-0 right-0 flex items-center pr-3"
@@ -345,7 +356,7 @@
 								{:else}
 									<EyeOutline class="text-gray-500" />
 								{/if}
-							</Button>
+							</button>
 						</div>
 					</div>
 					<div class="sm:col-full col-span-6">
