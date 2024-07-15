@@ -3,7 +3,7 @@ import Material from '$db/schemas/Material';
 import Workspace from '$db/schemas/Workspace';
 import type { ObjectId } from 'mongoose';
 import { fail, error } from '@sveltejs/kit';
-// import {upload} from '$lib/server/s3Bucket';
+import {upload} from '$lib/server/s3Bucket';
 
 
 async function formatMaterial(material:any){
@@ -24,7 +24,7 @@ async function getMaterials(workspace:string,type:boolean){
 async function uploadMaterials(data:FormData,workspace_id:string,typeSet:boolean){
     const title = data.get('title') as string;
     const description = data.get('description') as string;
-    const file_path = "PERFECT" as string;
+    const file_path = await upload(data.get('file') as File) as string;
     const type = typeSet; //TODO: Should account for differnt types of Materials.
 
     if(!title) return fail(400,{message:'Title is required'});
