@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { Button } from 'flowbite-svelte';
 
-	import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
-	import AddModal from '$lib/components/admin/modals/announcement/Add.svelte';
-	import EditModal from '$lib/components/admin/modals/announcement/Edit.svelte';
+	import RemoveModal from '$lib/components/modals/Delete.svelte';
+	import AddModal from '$lib/components/modals/announcement/Add.svelte';
+	import EditModal from '$lib/components/modals/announcement/Edit.svelte';
 
 	export let data: any;
 
