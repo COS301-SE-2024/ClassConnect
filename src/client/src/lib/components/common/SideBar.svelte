@@ -30,7 +30,6 @@
 		lecturer: [
 			{ icon: BriefcaseSolid, name: 'Workspaces', href: '/workspaces' },
 			{ icon: BullhornSolid, name: 'Announcements', href: '/announcements' },
-			{ icon: ClipboardCheckSolid, name: 'Grades', href: '/grades' }
 		],
 		student: [
 			{ icon: GridSolid, name: 'Dashboard', href: '/dashboard' },

@@ -5,7 +5,10 @@
 		UserCircleOutline,
 		UsersGroupOutline,
 		ChartLineUpOutline,
-		ArrowLeftOutline
+		ArrowLeftOutline,
+
+		ClipboardSolid
+
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
 
@@ -17,6 +20,7 @@
 	const navLinks = {
 		lecturer: [
 			{ icon: BullhornSolid, name: 'Dashboard', href: workspaceURL + '/dashboard' },
+			{ icon: ChartLineUpOutline, name: 'Grades', href: workspaceURL + '/grades' },
 			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
 			{ icon: BriefcaseOutline, name: 'Materials', href: workspaceURL + '/materials' },
 			{ icon: UserCircleOutline, name: 'Lessons', href: workspaceURL + '/lessons' },
