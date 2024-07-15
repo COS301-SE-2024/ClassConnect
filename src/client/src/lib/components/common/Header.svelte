@@ -1,9 +1,10 @@
 <script>
-	import { Avatar, Navbar, DarkMode, Dropdown, DropdownItem } from 'flowbite-svelte';
+	import { Avatar, Navbar, DarkMode, Dropdown, DropdownItem, DropdownHeader, DropdownDivider } from 'flowbite-svelte';
 
 	import BreadCrumbs from '$lib/components/common/Breadcrumbs.svelte';
 
 	export let data;
+	console.log(data)
 	let { name, image } = data;
 </script>
 
@@ -22,5 +23,7 @@
 
 	<Dropdown placement="bottom" triggeredBy="#avatar-menu">
 		<DropdownItem href="/profile">Profile</DropdownItem>
+		<DropdownDivider />
+		<DropdownItem href="/signout">Sign out</DropdownItem>
 	</Dropdown>
 </Navbar>

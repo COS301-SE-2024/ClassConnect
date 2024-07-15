@@ -136,13 +136,13 @@ export const actions: Actions = {
 			const name: string | null = data.get('name') as string;
 			const surname: string | null = data.get('surname') as string;
 			const email: string | null = data.get('email') as string;
-			
+
 			const GeneralDetails: { [key: string]: string } = {};
-			
+
 			if (name) GeneralDetails.name = name;
 			if (surname) GeneralDetails.surname = surname;
 			if (email) GeneralDetails.email = email;
-			
+
 			if (locals && locals.user) {
 				await Users.findByIdAndUpdate(locals.user.id, GeneralDetails);
 			}

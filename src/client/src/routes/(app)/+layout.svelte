@@ -21,16 +21,20 @@
 </script>
 
 <div class="flex">
-	{#key currentPath}
-		{#if isWorkspacePage}
+	{#if isWorkspacePage}
+		<div class="h-screen sticky top-0">
 			<WorkspaceSidebar {role} {workspace} />
-		{:else}
+		</div>
+	{:else}
+		<div class="h-screen sticky top-0">
 			<SideBar {role} />
-		{/if}
-	{/key}
+		</div>
+	{/if}
 
-	<div class="flex-1">
-		<Header {data} />
+	<div class="flex-1 main-content">
+		<div class="sticky top-0">
+			<Header {data} />
+		</div>
 		<slot />
 	</div>
 </div>

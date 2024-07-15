@@ -16,12 +16,11 @@
 		EyeSlashOutline
 	} from 'flowbite-svelte-icons';
 	import { change } from '$lib/store';
-	import { onDestroy } from 'svelte';
 	import { browser } from '$app/environment'; // Import the browser module
 
-	function log(){
-		const timestamp : string = new Date().getTime().toString();
-		const log : string = `change in settings: ${timestamp}`;
+	function log() {
+		const timestamp: string = new Date().getTime().toString();
+		const log: string = `change in settings: ${timestamp}`;
 		change.set(log);
 	}
 
@@ -63,7 +62,7 @@
 			body: formData
 		});
 
-		if(response.ok){
+		if (response.ok) {
 			log();
 		}
 
@@ -87,7 +86,7 @@
 			body: formData
 		});
 
-		if(response.ok){
+		if (response.ok) {
 			log();
 		}
 
@@ -111,7 +110,7 @@
 			body: formData
 		});
 
-		if(response.ok){
+		if (response.ok) {
 			log();
 		}
 
@@ -133,7 +132,7 @@
 			body: formData
 		});
 
-		if(response.ok){
+		if (response.ok) {
 			log();
 		}
 
@@ -154,14 +153,12 @@
 	let newShowPassword = false;
 	let confirmShowPassword = false;
 	let ImageFile: File;
-	let color: any;
 
 	function reloadPage() {
 		if (browser) {
 			location.reload();
 		}
 	}
-
 </script>
 
 <div class="grid grid-cols-1 px-4 pt-6 dark:bg-gray-900 xl:grid-cols-3 xl:gap-4">
@@ -199,7 +196,6 @@
 							color="red"
 							class="px-3 py-2 text-sm font-medium"
 							on:click={() => {
-								color = 'red';
 								openDeleteModal = true;
 							}}>Delete</Button
 						>

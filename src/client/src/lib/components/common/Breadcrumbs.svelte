@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import { afterNavigate } from '$app/navigation';
 	import { Breadcrumb, BreadcrumbItem } from 'flowbite-svelte';
 
 	let breadcrumbItems: any[];
 
 	function updateBreadcrumbs() {
+		console.log('hi')
 		const path = $page.url.pathname.split('/').filter(Boolean);
 
 		breadcrumbItems = path.map((segment, index) => {
@@ -13,16 +15,19 @@
 
 			return { name: segment.charAt(0).toUpperCase() + segment.slice(1), href };
 		});
+		console.log(breadcrumbItems);
 	}
 
-	onMount(() => {
+	afterNavigate(() => {
 		updateBreadcrumbs();
 	});
 
-	$: updateBreadcrumbs();
+	updateBreadcrumbs();
+
 </script>
 
 <Breadcrumb aria-label="Default breadcrumb example">
+	<BreadcrumbItem href="/" home>Home</BreadcrumbItem>
 	{#each breadcrumbItems as item}
 		<BreadcrumbItem href={item.href}>{item.name}</BreadcrumbItem>
 	{/each}
