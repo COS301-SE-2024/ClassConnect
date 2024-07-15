@@ -11,7 +11,6 @@
 	import BreadCrumbs from '$lib/components/common/Breadcrumbs.svelte';
 
 	export let data;
-	console.log(data);
 	let { name, image } = data;
 </script>
 

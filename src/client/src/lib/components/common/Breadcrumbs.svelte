@@ -6,7 +6,6 @@
 	let breadcrumbItems: any[];
 
 	function updateBreadcrumbs() {
-		console.log('hi');
 		const path = $page.url.pathname.split('/').filter(Boolean);
 
 		breadcrumbItems = path.map((segment, index) => {
@@ -14,7 +13,6 @@
 
 			return { name: segment.charAt(0).toUpperCase() + segment.slice(1), href };
 		});
-		console.log(breadcrumbItems);
 	}
 
 	afterNavigate(() => {
