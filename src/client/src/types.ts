@@ -53,3 +53,12 @@ export interface Lesson {
 	description: string;
 	workspace: string;
 }
+
+export interface Material {
+	id: string;
+	title: string;
+	description: string;
+	file_path: string;
+	type: boolean;
+	workspace: string;
+}

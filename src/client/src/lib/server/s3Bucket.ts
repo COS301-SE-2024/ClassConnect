@@ -191,7 +191,7 @@ function determineFolder(file: File): string {
 	}
 
 	const picturesExtensions = ['png', 'jpeg', 'jpg', 'webp'];
-	const objectsExtensions = ['gltf'];
+	const objectsExtensions = ['gltf','glb'];
 	const studyMaterialExtensions = ['pdf', 'pptx', 'epub'];
 
 	if (picturesExtensions.includes(extension)) {
