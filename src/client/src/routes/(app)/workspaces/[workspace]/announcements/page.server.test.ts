@@ -1,3 +1,4 @@
+
 import { fail, error } from '@sveltejs/kit';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import mongoose from 'mongoose';
@@ -60,6 +61,67 @@ describe('Announcement Management', () => {
 			await expect(announcementModule.load({ params } as any)).rejects.toEqual(
 				error(500, 'Error occurred while fetching announcements')
 			);
+		});
+	});
+
+	describe('actions.post', () => {
+		it('should create a new announcement successfully', async () => {
+			const mockFormData = new FormData();
+			mockFormData.append('title', 'New Title');
+			mockFormData.append('description', 'New Description');
+
+			const mockRequest = {
+				formData: vi.fn().mockResolvedValue(mockFormData)
+			};
+
+			const locals = { user: { role: 'lecturer', id: 'user1' } };
+			const params = { workspace: 'workspace1' };
+
+			const mockAnnouncement = { save: vi.fn() };
+			(Announcements as any).mockImplementation(() => mockAnnouncement);
+
+			const result = await announcementModule.actions.post({
+				request: mockRequest,
+				locals,
+				params
+			} as any);
+
+			expect(result).toEqual({ success: true });
+			expect(Announcements).toHaveBeenCalledWith({
+				title: 'New Title',
+				description: 'New Description',
+				createdBy: 'user1',
+				owner: expect.any(mongoose.Types.ObjectId)
+			});
+			expect(mockAnnouncement.save).toHaveBeenCalled();
+		});
+
+		it('should fail if user is not a lecturer', async () => {
+			const locals = { user: { role: 'student' } };
+
+			await expect(announcementModule.actions.post({ locals } as any)).rejects.toEqual(
+				error(401, 'Unauthorised')
+			);
+		});
+
+		it('should fail if required fields are missing', async () => {
+			const mockFormData = new FormData();
+			mockFormData.append('title', 'New Title');
+
+			const mockRequest = {
+				formData: vi.fn().mockResolvedValue(mockFormData)
+			};
+
+			const locals = { user: { role: 'lecturer' } };
+			const params = { workspace: 'workspace1' };
+
+			await announcementModule.actions.post({
+				request: mockRequest,
+				locals,
+				params
+			} as any);
+
+			expect(fail).toHaveBeenCalledWith(500, { error: 'Failed to post announcement' });
 		});
 	});
 
