@@ -25,6 +25,15 @@ export interface Announcement {
 	date: string;
 	createdBy: string;
 	description: string;
+	
+}
+
+export interface Activity {
+	id: string;
+	title: string;
+	date: string;
+	description: string;
+	type: string;
 }
 
 export interface Workspace {

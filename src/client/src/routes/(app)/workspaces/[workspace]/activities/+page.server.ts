@@ -1,6 +1,7 @@
 import { error, redirect } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
-import Activity from '$db/schemas/Activity';
+import type { Activity } from '$src/types';
+import Activities from '$db/schemas/Activity'
 
 function formatActivities(activity: any): Activity {
 	return {
@@ -13,17 +14,17 @@ function formatActivities(activity: any): Activity {
 }
 
 async function getActivity(ownerID: string| undefined): Promise<Activity[]> {
-	const activities = await Activity.find({owner: ownerID}).sort({ date: -1 }).lean();
+	const activities = await Activities.find({owner: ownerID}).sort({ date: -1 }).lean();
 	return activities.map(formatActivities);
 }
 
 export const load: PageServerLoad = async ({ locals, params }) => {
 	if (!locals.user) return redirect(302, '/signin');
 	if (locals.user.role !== 'student') throw error(401, 'Unauthorized');
-	const workspaceID = params.workspace;
+	//const workspaceID = params.workspace;
 
 	try {
-		const activities = await Activity.getActivity(workspaceID);
+		const activities = await getActivity(params.workspace);
 
 		return {
 				activities
