@@ -15,8 +15,8 @@
 		{#each announcements as announcement}
 			<Card
 				date={announcement.date}
-				heading={announcement.heading}
-				announcement={announcement.announcement}
+				title={announcement.title}
+				description={announcement.description}
 			/>
 		{/each}
 	{:else}

@@ -37,6 +37,14 @@ export interface Announcement {
 	description: string;
 }
 
+export interface Activity {
+	id: string;
+	title: string;
+	date: string;
+	description: string;
+	type: string;
+}
+
 export interface Workspace {
 	id: string;
 	name: string;

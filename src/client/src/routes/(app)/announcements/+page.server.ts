@@ -15,17 +15,21 @@ function formatAnnouncement(announcement: any): Announcement {
 	};
 }
 
-async function getAnnouncements(organisation: ObjectId | undefined): Promise<Announcement[]> {
-	const announcements = await Announcements.find({ owner: organisation });
-
+async function getAnnouncements(ownerID: ObjectId | undefined): Promise<Announcement[]> {
+	const announcements = await Announcements.find({ owner: ownerID });
 	return announcements.map(formatAnnouncement);
 }
 
 export async function load({ locals }) {
 	try {
-		const announcements = await getAnnouncements(locals.user?.organisation);
-
-		return { announcements };
+		let announcements;
+		if (locals.user?.organisation) {
+			announcements = await getAnnouncements(locals.user?.organisation);
+			console.log('OrgdIQ', locals.user?.organisation);
+		}
+		return {
+			announcements
+		};
 	} catch (e) {
 		console.error('Failed to load announcements: ', e);
 		throw error(500, 'Error occurred while fetching announcements');
@@ -36,13 +40,13 @@ async function createAnnouncement(
 	title: string,
 	description: string,
 	userId: ObjectId | undefined,
-	organisation: ObjectId | undefined
+	ownerID: ObjectId | undefined
 ) {
 	const newAnnouncement = new Announcements({
 		title,
 		description,
 		createdBy: userId,
-		owner: organisation
+		owner: ownerID
 	});
 
 	await newAnnouncement.save();
