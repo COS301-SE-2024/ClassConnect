@@ -20,9 +20,8 @@ const activitySchema = new mongoose.Schema({
 		ref:  'Workspace',
 		required: true
 	},
-	createdBy: {
-		type: mongoose.Types.ObjectId,
-		ref: 'User',
+	type:{
+		type: String,
 		required: true
 	}
 });
