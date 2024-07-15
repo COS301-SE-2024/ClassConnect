@@ -17,18 +17,18 @@ function formatAnnouncement(announcement: any): Announcement {
 	};
 }
 
-async function getAnnouncements(ownerID: string| undefined): Promise<Announcement[]> {
-	const announcements = await Announcements.find({owner: ownerID});
+async function getAnnouncements(ownerID: string | undefined): Promise<Announcement[]> {
+	const announcements = await Announcements.find({ owner: ownerID });
 	return announcements.map(formatAnnouncement);
 }
 
-export async function load({ locals,params }) {
+export async function load({ params }) {
 	try {
-			const announcements = await getAnnouncements(params.workspace);
-			console.log("Workspace: ",params.workspace);
-		
+		const announcements = await getAnnouncements(params.workspace);
+		console.log('Workspace: ', params.workspace);
+
 		return {
-				announcements
+			announcements
 		};
 	} catch (e) {
 		console.error('Failed to load announcements: ', e);
@@ -68,14 +68,12 @@ async function deleteAnnouncement(id: string) {
 	return { success: true };
 }
 
-
 function validateLecturer(locals: any) {
 	if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorised');
 }
 
 export const actions: Actions = {
 	post: async ({ request, locals, params }) => {
-		
 		validateLecturer(locals);
 
 		try {
@@ -84,13 +82,7 @@ export const actions: Actions = {
 			const description = data.get('description') as string;
 			const workspaceId = new mongoose.Types.ObjectId(params.workspace);
 
-			return await createAnnouncement(
-				title,
-				description,
-				locals.user?.id,
-				workspaceId
-				
-			);
+			return await createAnnouncement(title, description, locals.user?.id, workspaceId);
 		} catch (error) {
 			console.error('Error posting announcement:', error);
 			return fail(500, { error: 'Failed to post announcement' });

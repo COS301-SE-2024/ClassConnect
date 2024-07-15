@@ -1,6 +1,5 @@
 import mongoose from '$lib/server/database/db';
 
-
 const lessonSchema = new mongoose.Schema({
 	topic: {
 		type: String,

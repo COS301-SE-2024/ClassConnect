@@ -1,6 +1,5 @@
 import mongoose from '$lib/server/database/db';
 
-
 const activitySchema = new mongoose.Schema({
 	title: {
 		type: String,
@@ -17,16 +16,15 @@ const activitySchema = new mongoose.Schema({
 	},
 	owner: {
 		type: mongoose.Types.ObjectId,
-		ref:  'Workspace',
+		ref: 'Workspace',
 		required: true
 	},
-	type:{
+	type: {
 		type: String,
 		required: true
 	}
 });
 
-const Activity =
-	mongoose.models.Activity || mongoose.model('Activity', activitySchema);
+const Activity = mongoose.models.Activity || mongoose.model('Activity', activitySchema);
 
 export default Activity;

@@ -8,7 +8,7 @@
 	//import { role } from '@stream-io/video-client';
 
 	export let data: any;
-	
+
 	let id: string;
 	let isAddModalOpen = false;
 	let isEditModalOpen = false;
@@ -23,11 +23,10 @@
 		id = announcementsId;
 		isRemoveModalOpen = true;
 	}
-	
+
 	//$: console.log("Role:", role);
 	$: ({ announcements } = data);
 	console.log(data);
-	
 </script>
 
 <main class="container mx-auto my-2 px-4">
@@ -36,7 +35,7 @@
 			<h1 class="mb-4 text-2xl font-semibold text-gray-700 dark:text-white">
 				You do not have any Announcements in the workspace
 			</h1>
-			{#if data.role === "lecturer"}
+			{#if data.role === 'lecturer'}
 				<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
 			{/if}
 		</div>
@@ -54,36 +53,30 @@
 				</div>
 			</div>
 			<div class="mb-4 flex items-center gap-x-3">
-				{#if data.role === "lecturer"}
+				{#if data.role === 'lecturer'}
 					<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
 				{/if}
 			</div>
 		</div>
 
-		
-			{#each announcements as announcement (announcement.id)}
-			  <Card
+		{#each announcements as announcement (announcement.id)}
+			<Card
 				date={announcement.date}
 				title={announcement.title}
 				description={announcement.description}
-			>
-			</Card>
-				<div class="flex space-x-2">
-					{#if data.role === "lecturer"}
-						<Button class="mr-2" on:click={() => handleEditModalOpen(announcement.id)}>
-							Edit
-						</Button>
+			></Card>
+			<div class="flex space-x-2">
+				{#if data.role === 'lecturer'}
+					<Button class="mr-2" on:click={() => handleEditModalOpen(announcement.id)}>Edit</Button>
 
-						<Button color="red" on:click={() => handleRemoveModalOpen(announcement.id)}>
-							Delete
-						</Button>
-					{/if}
-				</div>
-			{/each}
-		
+					<Button color="red" on:click={() => handleRemoveModalOpen(announcement.id)}>
+						Delete
+					</Button>
+				{/if}
+			</div>
+		{/each}
 	{/if}
 </main>
-
 
 <AddModal bind:open={isAddModalOpen} />
 <EditModal bind:open={isEditModalOpen} {id} />

@@ -16,19 +16,19 @@ function formatAnnouncement(announcement: any): Announcement {
 }
 
 async function getAnnouncements(ownerID: ObjectId | undefined): Promise<Announcement[]> {
-	const announcements = await Announcements.find({owner: ownerID});
+	const announcements = await Announcements.find({ owner: ownerID });
 	return announcements.map(formatAnnouncement);
 }
 
 export async function load({ locals }) {
 	try {
 		let announcements;
-		if(locals.user?.organisation){
+		if (locals.user?.organisation) {
 			announcements = await getAnnouncements(locals.user?.organisation);
-			console.log("OrgdIQ",locals.user?.organisation);
+			console.log('OrgdIQ', locals.user?.organisation);
 		}
 		return {
-				announcements
+			announcements
 		};
 	} catch (e) {
 		console.error('Failed to load announcements: ', e);
@@ -72,13 +72,8 @@ function validateAdmin(locals: any) {
 	if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
 }
 
-function validateLecturer(locals: any) {
-	if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorised');
-}
-
 export const actions: Actions = {
 	post: async ({ request, locals }) => {
-		
 		validateAdmin(locals);
 
 		try {

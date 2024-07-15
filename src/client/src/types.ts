@@ -25,7 +25,6 @@ export interface Announcement {
 	date: string;
 	createdBy: string;
 	description: string;
-	
 }
 
 export interface Activity {
