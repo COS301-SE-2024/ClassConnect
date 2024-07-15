@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import { afterNavigate } from '$app/navigation';
 	import { Breadcrumb, BreadcrumbItem } from 'flowbite-svelte';
@@ -7,7 +6,7 @@
 	let breadcrumbItems: any[];
 
 	function updateBreadcrumbs() {
-		console.log('hi')
+		console.log('hi');
 		const path = $page.url.pathname.split('/').filter(Boolean);
 
 		breadcrumbItems = path.map((segment, index) => {
@@ -23,7 +22,6 @@
 	});
 
 	updateBreadcrumbs();
-
 </script>
 
 <Breadcrumb aria-label="Default breadcrumb example">

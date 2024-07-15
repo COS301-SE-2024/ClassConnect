@@ -2,12 +2,12 @@
 	import { T } from '@threlte/core';
 	import { OrbitControls, Sky, GLTF } from '@threlte/extras';
 	import { displayedSandboxObjectURL } from '$src/lib/store/objects';
-	
+
 	//Max Zoom Out
-	let objectURL:string
-	displayedSandboxObjectURL.subscribe((value:string) => {
-		objectURL=value;
-	})
+	let objectURL: string;
+	displayedSandboxObjectURL.subscribe((value: string) => {
+		objectURL = value;
+	});
 	const maxZoomOutDistance = 100;
 
 	export let autoRotate: boolean;
