@@ -1,7 +1,5 @@
 import type { Actions } from './$types';
 import Material from '$db/schemas/Material';
-import Workspace from '$db/schemas/Workspace';
-import type { ObjectId } from 'mongoose';
 import { fail, error } from '@sveltejs/kit';
 import {upload} from '$lib/server/s3Bucket';
 
