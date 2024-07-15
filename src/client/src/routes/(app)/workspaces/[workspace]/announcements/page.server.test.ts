@@ -125,4 +125,46 @@ describe('Announcement Management', () => {
 		});
 	});
 
+	describe('actions.edit', () => {
+		it('should edit an announcement successfully', async () => {
+			const mockFormData = new FormData();
+			mockFormData.append('id', '123');
+			mockFormData.append('title', 'Updated Title');
+			mockFormData.append('description', 'Updated Description');
+
+			const mockRequest = {
+				formData: vi.fn().mockResolvedValue(mockFormData)
+			};
+
+			const locals = { user: { role: 'lecturer' } };
+
+			(Announcements.findByIdAndUpdate as any).mockResolvedValue({});
+
+			const result = await announcementModule.actions.edit({ request: mockRequest, locals } as any);
+
+			expect(result).toEqual({ success: true });
+			expect(Announcements.findByIdAndUpdate).toHaveBeenCalledWith(
+				'123',
+				{ title: 'Updated Title', description: 'Updated Description' },
+				{ new: true }
+			);
+		});
+
+		it('should fail if announcement not found', async () => {
+			const mockFormData = new FormData();
+			mockFormData.append('id', '123');
+
+			const mockRequest = {
+				formData: vi.fn().mockResolvedValue(mockFormData)
+			};
+
+			const locals = { user: { role: 'lecturer' } };
+			(Announcements.findByIdAndUpdate as any).mockResolvedValue(null);
+
+			await announcementModule.actions.edit({ request: mockRequest, locals } as any);
+
+			expect(fail).toHaveBeenCalledWith(404, { error: 'Announcement not found' });
+		});
+	});
+
 	
