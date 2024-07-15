@@ -3,7 +3,7 @@
 	import Scene from '$lib/components/envirmonment/+Scene.svelte';
 	import ObjectSettings from '$lib/components/envirmonment/models/+ObjectSettings.svelte';
 	import { Button, Modal, Label, Input, Fileupload, Radio ,Range,  Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, Checkbox } from 'flowbite-svelte';
-	import { CirclePlusOutline, CloseCircleOutline, WandMagicSparklesOutline } from 'flowbite-svelte-icons';
+	import { CirclePlusOutline, CloseCircleOutline, WandMagicSparklesOutline, ArrowUpFromBracketOutline, } from 'flowbite-svelte-icons';
 	import { enhance } from '$app/forms';
 	import {items} from "./items"
 	import type { ActionResult } from '@sveltejs/kit';
@@ -20,6 +20,7 @@
 	let sizeRange = 1;
 
 	let experimentModal = false;
+	let uploadModal  = false;
 
     let formErrors = {
         title: '',
@@ -31,6 +32,7 @@
 
 	function handleObjectSelect(items:any) {
 		displayedSandboxObjectURL.set(items.fileURL);
+		experimentModal = false;
 		
 	}
 
@@ -92,15 +94,13 @@ function validateForm(formData: FormData) {
 			<h1 class="text-2xl font-semibold dark:text-gray-200">Sandbox</h1>
 			<div class="flex space-x-2">
 
-
-
-				<Button on:click={() => (experimentModal = true)} color='green' class="flex items-center  space-x-1">
-					<CirclePlusOutline class="h-5 w-5" />
-					<span>Add To Scene</span>
+				<Button on:click={() => (uploadModal = true)} color='blue' class="flex items-center  space-x-1">
+					<ArrowUpFromBracketOutline class="h-5 w-5" />
+					<span>Upload File</span>
 				</Button>
 				<!-- Modal Menu -->
-				<Modal bind:open={experimentModal} size="xs" autoclose={false} class="w-full">
-					<!-- <form class="flex flex-col space-y-6" on:submit={handleTempUpload} use:enhance={handleFormSubmit} method="POST" enctype="multipart/form-data">
+				<Modal bind:open={uploadModal} size="xs" autoclose={false} class="w-full">
+					<form class="flex flex-col space-y-6" on:submit={handleTempUpload} use:enhance={handleFormSubmit} method="POST" action="?/uploadMat" enctype="multipart/form-data" >
 						<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Upload Student Material</h3>
 						<Label class="space-y-2" for="title">
 							<span>Title</span>
@@ -110,14 +110,20 @@ function validateForm(formData: FormData) {
 							<span>Description</span>
 							<Input type="text" placeholder="description" size="lg" id="description" name="description" />
 						</Label>
-						<Label class="space-y-2" for="description">
-							<span>Size: {sizeRange} </span>
-							<Range id="size"color = "green" name="size" min = 0 max =100 bind:value={sizeRange} bgColor="green"  />
-						</Label>
 						<Label class="py-2" for="file">Upload File</Label>
 						<Fileupload id="file" size="lg" name="file" />
 						<Button type="submit" class="w-full1">Upload File</Button>
-					</form> -->
+					</form>
+				</Modal>
+
+
+
+				<Button on:click={() => (experimentModal = true)} color='green' class="flex items-center  space-x-1">
+					<CirclePlusOutline class="h-5 w-5" />
+					<span>Add To Scene</span>
+				</Button>
+				<!-- Modal Menu -->
+				<Modal bind:open={experimentModal} size="xs" autoclose={false} class="w-full">
 
 
 		
