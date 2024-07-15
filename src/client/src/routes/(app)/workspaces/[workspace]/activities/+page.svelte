@@ -1,17 +1,14 @@
 <script lang="ts">
 	import { Timeline, TimelineItem } from 'flowbite-svelte';
 	import { CalendarWeekSolid } from 'flowbite-svelte-icons';
-	import { onMount } from 'svelte';
-	import type { PageData } from './$types';
+	
 
-	export let data: PageData;
-	let activities = data.activities;
+	export let data: any;
+	$: ({ activities } = data);
 	
 	$: console.log("Activities:", activities);
 
-	onMount(() => {
-		console.log('Page mounted. Activities:', activities);
-	});
+	
 </script>
 
 <main class="container mx-auto my-8 px-4">
