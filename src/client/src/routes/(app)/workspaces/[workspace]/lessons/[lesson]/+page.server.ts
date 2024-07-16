@@ -1,23 +1,39 @@
-import { username } from '$src/lib/store/lessons';
+import { error } from '@sveltejs/kit';
 import { StreamClient } from '@stream-io/node-sdk';
-
 import { STREAM_API_KEY, STREAM_SECRET_KEY } from '$env/static/private';
 
-export const load = async () => {
-	if (!username) throw new Error('User is not authenticated');
-	if (!STREAM_API_KEY) throw new Error('Stream API key secret is missing');
-	if (!STREAM_SECRET_KEY) throw new Error('Stream API secret is missing');
+import Users from '$db/schemas/User';
+import type { User } from '$src/types';
 
-	const streamClient = new StreamClient(STREAM_API_KEY, STREAM_SECRET_KEY);
+async function tokenProvider(id: string, streamClient: StreamClient) {
+	const issuedAt = Math.floor(Date.now() / 1000) - 60;
+	const expirationTime = Math.floor(Date.now() / 1000) + 3600;
+	return streamClient.createToken(id, expirationTime, issuedAt);
+}
 
-	const tokenProvider = async () => {
-		const expirationTime = Math.floor(Date.now() / 1000) + 3600;
-		const issuedAt = Math.floor(Date.now() / 1000) - 60;
-		const token = streamClient.createToken(username, expirationTime, issuedAt);
-		return token;
-	};
+export const load = async ({ locals }) => {
+	if (!STREAM_API_KEY || !STREAM_SECRET_KEY) throw error(403, 'Stream credentials not set');
 
-	const token = await tokenProvider();
+	try {
+		const streamClient = new StreamClient(STREAM_API_KEY, STREAM_SECRET_KEY);
 
-	return { apiKey: STREAM_API_KEY, token };
+		const user = await Users.findById(locals.user?.id).select('name surname image');
+
+		if (!user) throw error(404, 'User not found');
+
+		const formattedUser: Partial<User> = {
+			id: locals.user?.id.toString(),
+			image: user.image,
+			name: `${user.name} ${user.surname}`.trim()
+		};
+
+		const id = locals.user?.id.toString() || '';
+
+		const token = await tokenProvider(id, streamClient);
+
+		return { apiKey: STREAM_API_KEY, user: formattedUser, token };
+	} catch (err) {
+		console.error('Error in Lesson load function:', err);
+		throw error(500, 'An unexpected error occurred while loading lesson');
+	}
 };
