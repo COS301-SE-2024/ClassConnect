@@ -33,10 +33,10 @@
 		
 		console.log(`Remove quiz with ID: ${quizId}`);
 	}
-	$:({quizzes:data});
+	
 </script>
 <main class="container mx-auto my-2 px-4">
-	{#if quizzes.length === 0}
+	{#if data.length === 0}
 		<div class="text-center">
 			<h1 class="mb-4 text-2xl font-semibold text-gray-700 dark:text-white">
 				No quizzes available in this workspace.
@@ -49,7 +49,7 @@
 				<div class="flex items-center gap-x-3">
 					<h2 class="text-xl font-bold text-gray-800 dark:text-white">Quizzes</h2>
 					<span class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400">
-						{quizzes.length} {quizzes.length === 1 ? 'quiz' : 'quizzes'}
+						{data.length} {data.length === 1 ? 'quiz' : 'quizzes'}
 					</span>
 				</div>
 			</div>
@@ -66,7 +66,7 @@
 			</TableHead>
 
 			<TableBody tableBodyClass="divide-y">
-				{#each quizzes as quiz (quiz.id)}
+				{#each data as quiz (quiz.id)}
 					<TableBodyRow>
 						<TableBodyCell>{quiz.title}</TableBodyCell>
 						<TableBodyCell>{quiz.graded ? 'Yes' : 'No'}</TableBodyCell>

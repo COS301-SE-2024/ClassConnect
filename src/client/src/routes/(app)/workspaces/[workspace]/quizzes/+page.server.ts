@@ -23,11 +23,11 @@ async function getQuizzes(ownerID: string | undefined): Promise<Quiz[]> {
 
 export async function load({ params }) {
 	try {
-		const Quizzes = await getQuizzes(params.workspace);
+		const quizzes = await getQuizzes(params.workspace);
 		console.log('Workspace: ', params.workspace);
 
 		return {
-			Quizzes
+			quizzes
 		};
 	} catch (e) {
 		console.error('Failed to load Quizzes: ', e);
