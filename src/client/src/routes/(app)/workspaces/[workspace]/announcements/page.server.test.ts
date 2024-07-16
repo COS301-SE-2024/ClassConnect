@@ -75,7 +75,6 @@ describe('Announcement Management', () => {
 	});
 
 	describe('actions.post', () => {
-
 		it('should fail if user is not a lecturer', async () => {
 			const locals = { user: { role: 'student' } };
 

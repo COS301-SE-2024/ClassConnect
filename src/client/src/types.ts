@@ -70,3 +70,14 @@ export interface Material {
 	type: boolean;
 	workspace: string;
 }
+
+export type FAQItem = {
+	question: string;
+	answer: string;
+	isOpen?: boolean;
+};
+
+export type FAQCategory = {
+	category: string;
+	items: FAQItem[];
+};
