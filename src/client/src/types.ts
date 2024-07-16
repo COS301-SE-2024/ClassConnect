@@ -51,3 +51,10 @@ export interface Lesson {
 	description: string;
 	workspace: string;
 }
+
+export interface Quiz {
+	id: string; 
+	title: string;
+	graded: boolean;
+	date: Date;
+}
