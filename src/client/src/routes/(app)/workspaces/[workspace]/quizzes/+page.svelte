@@ -12,10 +12,10 @@
     import { onMount } from 'svelte';
 	import {  EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 
-    let quizzes :any;
+    let data :any;
     let isAddModalOpen= false;
 	onMount(() => {
-		quizzes = [
+		data = [
 			{ id: 1, title: 'Quiz 1', graded: true, dateModified: new Date('2023-07-01') },
 			{ id: 2, title: 'Quiz 2', graded: false, dateModified: new Date('2023-07-10') },
 			{ id: 3, title: 'Quiz 3', graded: true, dateModified: new Date('2023-07-15') }
@@ -33,6 +33,7 @@
 		
 		console.log(`Remove quiz with ID: ${quizId}`);
 	}
+	$:({quizzes:data});
 </script>
 <main class="container mx-auto my-2 px-4">
 	{#if quizzes.length === 0}
