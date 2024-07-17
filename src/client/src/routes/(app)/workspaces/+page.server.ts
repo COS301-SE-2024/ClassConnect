@@ -85,7 +85,7 @@ async function createWorkspace(data: FormData, organisation: ObjectId | undefine
 	const name = data.get('name') as string;
 	const owner = data.get('owner') as string;
 	const image = data.get('image') as string;
-
+	//TODO: NEED TO FIX THE DEFAULT IMAGE AS IT IS CURRENTLY SQUARE
 	const newWorkspace = new Workspaces({
 		name,
 		owner,
