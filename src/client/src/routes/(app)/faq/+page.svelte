@@ -1,7 +1,9 @@
 <script lang="ts">
-	import Construction from '$lib/components/common/Construction.svelte';
+	/** @type {import('./$types').PageData} */
+	export let data;
+	import FAQ from '$lib/components/common/FAQ.svelte';
 </script>
 
 <main>
-	<Construction />
+	<FAQ faqs={data.faq} />
 </main>

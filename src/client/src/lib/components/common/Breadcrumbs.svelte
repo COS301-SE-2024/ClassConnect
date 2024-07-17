@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+	import { afterNavigate } from '$app/navigation';
 	import { Breadcrumb, BreadcrumbItem } from 'flowbite-svelte';
 
 	let breadcrumbItems: any[];
@@ -15,14 +15,15 @@
 		});
 	}
 
-	onMount(() => {
+	afterNavigate(() => {
 		updateBreadcrumbs();
 	});
 
-	$: updateBreadcrumbs();
+	updateBreadcrumbs();
 </script>
 
 <Breadcrumb aria-label="Default breadcrumb example">
+	<BreadcrumbItem href="/" home>Home</BreadcrumbItem>
 	{#each breadcrumbItems as item}
 		<BreadcrumbItem href={item.href}>{item.name}</BreadcrumbItem>
 	{/each}

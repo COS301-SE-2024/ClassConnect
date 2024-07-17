@@ -24,6 +24,7 @@
 		],
 		student: [
 			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
+			{ icon: BullhornSolid, name: 'Activities', href: workspaceURL + '/activities' },
 			{ icon: BriefcaseOutline, name: 'Materials', href: workspaceURL + '/materials' },
 			{ icon: UserCircleOutline, name: 'Lessons', href: workspaceURL + '/lessons' },
 			{ icon: UsersGroupOutline, name: 'Sandbox', href: workspaceURL + '/sandbox' },

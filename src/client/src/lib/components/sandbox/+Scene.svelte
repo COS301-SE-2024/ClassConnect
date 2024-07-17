@@ -1,8 +1,13 @@
 <script lang="ts">
 	import { T } from '@threlte/core';
 	import { OrbitControls, Sky, GLTF } from '@threlte/extras';
+	import { displayedSandboxObjectURL } from '$src/lib/store/objects';
 
 	//Max Zoom Out
+	let objectURL: string;
+	displayedSandboxObjectURL.subscribe((value: string) => {
+		objectURL = value;
+	});
 	const maxZoomOutDistance = 100;
 
 	export let autoRotate: boolean;
@@ -39,12 +44,12 @@
 <!-- Add a directional light to simulate sunlight -->
 <T.DirectionalLight position={[5, 10, 7]} intensity={0.8} castShadow />
 
-<T.Mesh position.y={1}>
+<!-- <T.Mesh position.y={1}>
 	<T.BoxGeometry args={[1, 2, 1]} />
 	<T.MeshBasicMaterial color="red" />
-</T.Mesh>
+</T.Mesh> -->
 
-<GLTF url="/models/cash_register_with_a_counting_machine.glb" <!-- scale={0.05} /> -->
+<GLTF url={objectURL} <!-- scale={3.0} /> -->
 
 <Sky />
 <!-- <CashRegister></CashRegister> -->
