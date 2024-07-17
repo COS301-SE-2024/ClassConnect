@@ -16,7 +16,8 @@
 		EyeSlashOutline
 	} from 'flowbite-svelte-icons';
 	import { change } from '$lib/store';
-	import { browser } from '$app/environment'; // Import the browser module
+	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
 
 	function log() {
 		const timestamp: string = new Date().getTime().toString();
@@ -159,6 +160,18 @@
 			location.reload();
 		}
 	}
+
+	async function getUserDetails(){
+		const response = await fetch('/api/user', {
+			method: 'GET',
+		});
+		console.log(response);
+	}
+
+	onMount(() => {
+		getUserDetails();
+	});
+
 </script>
 
 <div class="grid grid-cols-1 px-4 pt-6 dark:bg-gray-900 xl:grid-cols-3 xl:gap-4">
