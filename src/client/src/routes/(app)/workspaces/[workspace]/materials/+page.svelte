@@ -2,11 +2,11 @@
 	import Card from '$lib/components/common/materials/Card.svelte';
 	import { enhance } from '$app/forms';
 	import type { ActionResult } from '@sveltejs/kit';
-	import {Tabs ,TabItem, Button, Modal, Label, Input, Fileupload, TableSearch, Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell} from 'flowbite-svelte'
-	import { CirclePlusOutline, CloseCircleOutline, WandMagicSparklesOutline, ArrowUpFromBracketOutline, } from 'flowbite-svelte-icons';
+	import {Tabs ,TabItem, Button, Modal, Label, Input, Fileupload, MultiSelect, Table,TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, TableSearch} from 'flowbite-svelte'
+	import {  ArrowUpFromBracketOutline,CircleMinusOutline } from 'flowbite-svelte-icons';
 
-	export let data;
-	let { materials }: any = data;
+	export let data:any;
+	let materialSearchTerm = '';
 
 	let formErrors = {
         title: '',
@@ -14,8 +14,20 @@
         file: ''
     };
 
+	$:({role,materials}= data)
+
+	$: {
+		materials = materials.map((material: any) => ({
+			...material,
+	
+		}));
+	}
+
+	$: filteredItems = materials.filter((material:any) => material.title.toLowerCase().indexOf(materialSearchTerm.toLowerCase()) !== -1);
+
 
 	let uploadModal  = false;
+	let deleteModal  = false;
 
 
 let uploadedFileUrl = '';
@@ -71,7 +83,6 @@ if (!file || file.size === 0) {
 		isValid = false;
 	}
 }
-
 return isValid;
 }
 
@@ -86,11 +97,45 @@ return isValid;
             <TabItem open>
                 <span slot="title">All Materials</span>
                 <div class="flex justify-between items-center mt-4">
+					<Button on:click={() => (deleteModal = true)} color='red' class="flex items-center space-x-1">
+                        <CircleMinusOutline class="h-5 w-5" />
+                        <span>Delete Files</span>
+                    </Button>
                     <Button on:click={() => (uploadModal = true)} color='blue' class="flex items-center space-x-1">
                         <ArrowUpFromBracketOutline class="h-5 w-5" />
                         <span>Upload File</span>
                     </Button>
                 </div>
+				<!-- Modal Menu -->
+				<Modal bind:open={deleteModal} size="xs" autoclose={false} class="w-full">
+
+				<!-- <MultiSelect items ={materials.name} = -->
+		
+					<TableSearch class="my-2"  placeholder='Pick a 3D Object' hoverable={true} bind:inputValue={materialSearchTerm}>
+						<TableHead>
+								<!-- <TableHeadCell>ID</TableHeadCell> -->
+								<TableHeadCell>Document</TableHeadCell>
+								<TableHeadCell>Description</TableHeadCell>
+				
+						</TableHead>
+				
+						<TableBody tableBodyClass="divide-y">
+							{#each filteredItems as item}
+							<TableBodyRow class="cursor-pointer">
+				
+				
+									<TableBodyCell>{item.title}</TableBodyCell>
+				
+									<TableBodyCell>{item.description}</TableBodyCell>
+				
+								</TableBodyRow>
+							{/each}
+						</TableBody>
+					</TableSearch>
+				
+								</Modal>
+				
+
                 <!-- Modal Menu -->
 				<Modal bind:open={uploadModal} size="xs" autoclose={false} class="w-full">
 					<form class="flex flex-col space-y-6" on:submit={handleTempUpload} use:enhance={handleFormSubmit} method="POST" action="?/uploadMat" enctype="multipart/form-data">
@@ -110,8 +155,8 @@ return isValid;
 				</Modal>
                 {#if materials && materials.length > 0}
                     <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mt-4">
-                        {#each materials as material}
-                            <Card title={material.title} description={material.description} />
+                        {#each materials as materials}
+                            <Card title={materials.title} description={materials.description} />
                         {/each}
                     </div>
                 {:else}
@@ -122,12 +167,17 @@ return isValid;
             <TabItem open>
                 <span slot="title">Documents</span>
                 <div class="flex justify-between items-center mt-4">
+					<Button on:click={() => (deleteModal = true)} color='red' class="flex items-center space-x-1">
+                        <CircleMinusOutline class="h-5 w-5" />
+                        <span>Delete Files</span>
+                    </Button>
                     <Button on:click={() => (uploadModal = true)} color='blue' class="flex items-center space-x-1">
                         <ArrowUpFromBracketOutline class="h-5 w-5" />
                         <span>Upload File</span>
                     </Button>
                 </div>
                 <!-- Modal Menu -->
+			
 				<Modal bind:open={uploadModal} size="xs" autoclose={false} class="w-full">
 					<form class="flex flex-col space-y-6" on:submit={handleTempUpload} use:enhance={handleFormSubmit} method="POST" action="?/uploadMat" enctype="multipart/form-data">
 						<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Upload Student Material</h3>
@@ -156,6 +206,11 @@ return isValid;
             </TabItem>
 
             <TabItem open>
+				<Button on:click={() => (deleteModal = true)} color='red' class="flex items-center space-x-1">
+					<CircleMinusOutline class="h-5 w-5" />
+					<span>Delete Files</span>
+				</Button>
+				
                 <span slot="title">3D Materials</span>
                 <div class="flex justify-between items-center mt-4">
                     <Button on:click={() => (uploadModal = true)} color='blue' class="flex items-center space-x-1">

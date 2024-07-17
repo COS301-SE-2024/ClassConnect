@@ -11,23 +11,26 @@
 // }
 
 import type { Actions } from './$types';
-import Material from '$db/schemas/Material';
+import Materials from '$db/schemas/Material';
+import type {Material} from '$src/types';
 import { fail, error } from '@sveltejs/kit';
-import {upload} from '$lib/server/s3Bucket';
+import {upload,deleteFile} from '$lib/server/s3Bucket';
 
 
-async function formatMaterial(material:any){
+function formatMaterial(material:any):Partial<Material>{
     return {
-        id : material._id.toString(),
         title : material.title,
         description : material.description,
-        file_path : material.file_path,
         type : material.type
     };
 }
+ 
+ 
 
-async function getMaterials(workspace:string,type:boolean){
-    const materials = await Material.find({workspace,type});
+
+async function getMaterials(workspace_id:string,type:boolean):Promise<Partial<Material>[]>{
+    const materials = await Materials.find({workspace_id});
+    console.log(materials)
     return materials.map(formatMaterial);
 }
 //Function to Upload Materials
@@ -41,7 +44,7 @@ async function uploadMaterials(data:FormData,workspace_id:string,typeSet:boolean
     if(!description) return fail(400,{message:'Description is required'});
     if(!file_path) return fail(400,{message:'File to upload required'});
 
-    const newMaterial = new Material({
+    const newMaterial = new Materials({
         title,
         description,
         file_path,
@@ -57,7 +60,7 @@ async function uploadMaterials(data:FormData,workspace_id:string,typeSet:boolean
 export async function load({ locals, params }) {
 	try {
 		const materials = await getMaterials(params.workspace,false);
-
+        // console.log(materials)
 		return {
 			role: locals.user?.role,
             materials
@@ -75,7 +78,7 @@ function validateLecturer(locals: any) {
 async function deleteMaterial(id:string){
     if(!id) return fail(400,{message:'Material ID is required'});
 
-    const deletedMaterial = await Material.findByIdAndDelete(id);
+    const deletedMaterial = await Materials.findByIdAndDelete(id);
     if(!deletedMaterial) return fail(404,{message:'Material not found'});
     return {success:true};
 }
