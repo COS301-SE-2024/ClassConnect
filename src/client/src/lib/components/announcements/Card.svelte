@@ -9,10 +9,10 @@
 </script>
 
 <div class=" dark:text-gray-800">
-	<div class="bg-white container max-w-4xl px-2 py-6 rounded-lg shadow-sm">
+	<div class="container max-w-4xl rounded-lg bg-white px-2 py-6 shadow-sm">
 		<div class="flex items-center justify-between">
 			<span class="text-sm dark:text-gray-600">{DATE.toDateString()}</span>
-			<DotsVerticalOutline id="dot-menu" size='xl'/>
+			<DotsVerticalOutline id="dot-menu" size="xl" />
 			<Dropdown placement="bottom" triggeredBy="#dot-menu">
 				<DropdownItem href="/profile">Edit</DropdownItem>
 				<DropdownDivider />
@@ -23,7 +23,7 @@
 			<h1 class="text-2xl font-bold">{title}</h1>
 			<p class="mt-2">{description}</p>
 		</div>
-		<div class="flex items-center justify-between mt-4">
+		<div class="mt-4 flex items-center justify-between">
 			<div>
 				<span class=" dark:text-gray-600">Leroy Jenkins</span>
 			</div>
