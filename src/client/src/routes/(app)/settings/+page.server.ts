@@ -173,5 +173,35 @@ export const actions: Actions = {
 			console.error('Error updating password:', err);
 			return fail(500, { error: 'Failed to update password' });
 		}
+	},
+	get_user_details: async ({ locals }) => {
+		if (locals && locals.user) {
+			const userID: ObjectId = locals.user.id;
+	
+			if (!userID) {
+				fail(400, {error: 'user id not found'});
+			}
+	
+			const USER = await Users.findById(userID);
+	
+			if (!USER) {
+				fail(404, {error: 'user not found'});
+			}
+	
+			const ret_user = {
+				name: USER.name,
+				email: USER.email,
+				image: USER.image,
+				surname: USER.surname
+			};
+	
+			return new Response(JSON.stringify(ret_user), {
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+		} else {
+			fail(401, { error: 'Unauthorized'} );
+		}		
 	}
 };

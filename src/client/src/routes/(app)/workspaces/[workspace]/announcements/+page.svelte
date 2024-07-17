@@ -1,32 +1,12 @@
 <script lang="ts">
 	import { Button } from 'flowbite-svelte';
 	import Card from '$src/lib/components/announcements/Card.svelte';
-
-	import RemoveModal from '$lib/components/modals/Delete.svelte';
 	import AddModal from '$lib/components/modals/announcement/Add.svelte';
-	import EditModal from '$lib/components/modals/announcement/Edit.svelte';
-	//import { role } from '@stream-io/video-client';
 
 	export let data: any;
 
-	let id: string;
 	let isAddModalOpen = false;
-	let isEditModalOpen = false;
-	let isRemoveModalOpen = false;
-
-	function handleEditModalOpen(announcementsId: string) {
-		id = announcementsId;
-		isEditModalOpen = true;
-	}
-
-	function handleRemoveModalOpen(announcementsId: string) {
-		id = announcementsId;
-		isRemoveModalOpen = true;
-	}
-
-	//$: console.log("Role:", role);
 	$: ({ announcements } = data);
-	console.log(data);
 </script>
 
 <main class="container mx-auto my-2 px-4">
@@ -40,10 +20,11 @@
 			{/if}
 		</div>
 	{:else}
+
 		<div class="sm:flex sm:items-center sm:justify-between">
 			<div>
 				<div class="flex items-center gap-x-3">
-					<h2 class="text-xl font-bold text-gray-800 dark:text-white">Announcements</h2>
+					<h2 class="text-3xl font-bold text-gray-800 dark:text-white">Announcements</h2>
 					<span
 						class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
 					>
@@ -54,7 +35,7 @@
 			</div>
 			<div class="mb-4 flex items-center gap-x-3">
 				{#if data.role === 'lecturer'}
-					<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
+					<Button on:click={() => (isAddModalOpen = true)} class='font-bold'>Create Announcement</Button>
 				{/if}
 			</div>
 		</div>
@@ -64,20 +45,11 @@
 				date={announcement.date}
 				title={announcement.title}
 				description={announcement.description}
+				id={announcement.id}
+				role={data.role}
 			></Card>
-			<div class="flex space-x-2">
-				{#if data.role === 'lecturer'}
-					<Button class="mr-2" on:click={() => handleEditModalOpen(announcement.id)}>Edit</Button>
-
-					<Button color="red" on:click={() => handleRemoveModalOpen(announcement.id)}>
-						Delete
-					</Button>
-				{/if}
-			</div>
 		{/each}
 	{/if}
 </main>
 
 <AddModal bind:open={isAddModalOpen} />
-<EditModal bind:open={isEditModalOpen} {id} />
-<RemoveModal bind:open={isRemoveModalOpen} {id} item="announcement" />
