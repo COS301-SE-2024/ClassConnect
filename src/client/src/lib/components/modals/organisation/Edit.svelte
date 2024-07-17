@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Button, Modal, Label, Input } from 'flowbite-svelte';
+	import { Button, Modal, Label, Input, Fileupload, Helper } from 'flowbite-svelte';
 
 	export let id: string;
 	export let open: boolean;
@@ -32,14 +32,9 @@
 		<Label for="name" class="mb-2 mt-2 text-left">New Name</Label>
 		<Input type="text" id="name" name="name" placeholder="Example University" size="md" />
 
-		<Label for="image" class="mb-2 mt-4 text-left">New Logo</Label>
-		<Input
-			type="text"
-			id="image"
-			name="image"
-			size="md"
-			placeholder="https://example.com/logo.png"
-		/>
+		<Label for="with_helper" class="pb-2">New Logo</Label>
+		<Fileupload id="with_helper" name="file" class="mb-2" />
+		<Helper>SVG, PNG or JPG (MAX. 1 MB).</Helper>
 
 		<Button type="submit" class="mt-4 w-full">Save</Button>
 	</form>

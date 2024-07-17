@@ -1,5 +1,6 @@
 import type { Actions } from './$types';
 import { fail, error } from '@sveltejs/kit';
+import { upload, deleteFile } from '$lib/server/s3Bucket';
 
 import User from '$db/schemas/User';
 import type { ObjectId } from 'mongoose';
@@ -15,7 +16,6 @@ function formatOrganisation(org: any) {
 
 async function getOrganisation(userId: ObjectId) {
 	const organisation = await Organisation.findOne({ createdBy: userId });
-
 	return organisation ? formatOrganisation(organisation) : null;
 }
 
@@ -32,9 +32,14 @@ export async function load({ locals }) {
 
 async function createOrganisation(data: FormData, userId: ObjectId) {
 	const name = data.get('name') as string;
-	const image = data.get('image') as string;
+	let image: string = 'images/organisation-placeholder.png';
+	const image_file: File = data.get('file') as File;
 
 	if (!name) return fail(400, { error: 'Organisation Name is required' });
+
+	if (image_file) {
+		image = await upload(image_file);
+	}
 
 	const existingOrg = await Organisation.findOne({ createdBy: userId });
 	if (existingOrg) return fail(400, { error: 'User already has an organisation' });
@@ -42,7 +47,7 @@ async function createOrganisation(data: FormData, userId: ObjectId) {
 	const newOrganisation = new Organisation({
 		name,
 		createdBy: userId,
-		image: image || 'images/organisation-placeholder.png'
+		image: image
 	});
 
 	await newOrganisation.save();
@@ -54,13 +59,24 @@ async function createOrganisation(data: FormData, userId: ObjectId) {
 async function editOrganisation(data: FormData, userId: ObjectId) {
 	const id = data.get('id') as string;
 	const name = data.get('name') as string;
-	const image = data.get('image') as string;
+	const image_file: File = data.get('file') as File;
+
+	const Org = await Organisation.findById(id);
+	let image: string;
 
 	if (!id) return fail(400, { error: 'Organisation ID is required' });
 
 	const updateData: { name?: string; image?: string } = {};
+
 	if (name) updateData.name = name;
-	if (image) updateData.image = image;
+
+	if (image_file && Org) {
+		image = await upload(image_file);
+		if (image) {
+			await deleteFile(Org.image);
+			updateData.image = image;
+		}
+	}
 
 	const updatedOrg = await Organisation.findOneAndUpdate(
 		{ _id: id, createdBy: userId },
@@ -79,6 +95,12 @@ async function deleteOrganisation(data: FormData, userId: ObjectId) {
 	if (!id) return fail(400, { error: 'Organisation ID is required' });
 
 	const deletedOrg = await Organisation.findOneAndDelete({ _id: id, createdBy: userId });
+	if (deletedOrg) {
+		const image_url: string = deletedOrg.image;
+		if (image_url !== 'images/organisation-placeholder.png') {
+			await deleteFile(image_url);
+		}
+	}
 	if (!deletedOrg) return fail(404, { error: 'Organisation not found or not authorised' });
 
 	await User.updateOne({ _id: userId }, { $unset: { organisation: '' } });

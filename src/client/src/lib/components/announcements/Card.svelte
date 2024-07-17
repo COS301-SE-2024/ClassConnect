@@ -1,12 +1,12 @@
 <script lang="ts">
 	export let date;
-	export let heading;
-	export let announcement;
+	export let title;
+	export let description;
 </script>
 
 <div class="task m-2">
 	<div class="tags">
-		<span class="tag">{heading}</span>
+		<span class="tag">{title}</span>
 		<button class="options">
 			<svg
 				xml:space="preserve"
@@ -38,7 +38,7 @@
 			>
 		</button>
 	</div>
-	<p>{announcement}</p>
+	<p>{description}</p>
 	<div class="stats">
 		<div>
 			<div>

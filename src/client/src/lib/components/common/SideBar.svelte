@@ -34,6 +34,7 @@
 			{ icon: GridSolid, name: 'Dashboard', href: '/dashboard' },
 			{ icon: BriefcaseSolid, name: 'Workspaces', href: '/workspaces' },
 			{ icon: BullhornSolid, name: 'Announcements', href: '/announcements' },
+
 			{ icon: ChartLineUpOutline, name: 'Grades', href: '/grades' }
 		]
 	};

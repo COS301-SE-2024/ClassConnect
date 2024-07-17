@@ -171,7 +171,7 @@ describe('Student Management', () => {
 				organisation: 'org1',
 				role: 'student',
 				password: 'hashedPassword',
-				image: 'images/profile-placeholder.png'
+				image: 'https://class-connect-file-storage.s3.amazonaws.com/pictures/default.svg'
 			});
 		});
 
