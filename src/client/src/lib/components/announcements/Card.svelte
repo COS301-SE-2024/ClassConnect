@@ -2,9 +2,35 @@
 	export let date;
 	export let title;
 	export let description;
+	let DATE = new Date(date);
+	import { Dropdown, DropdownItem, DropdownDivider } from 'flowbite-svelte';
+	import { DotsVerticalOutline } from 'flowbite-svelte-icons';
+	console.log('Card', { date, title, description });
 </script>
 
-<div class="task m-2">
+<div class=" dark:text-gray-800">
+	<div class="bg-white container max-w-4xl px-2 py-6 rounded-lg shadow-sm">
+		<div class="flex items-center justify-between">
+			<span class="text-sm dark:text-gray-600">{DATE.toDateString()}</span>
+			<DotsVerticalOutline id="dot-menu" size='xl'/>
+			<Dropdown placement="bottom" triggeredBy="#dot-menu">
+				<DropdownItem href="/profile">Edit</DropdownItem>
+				<DropdownDivider />
+				<DropdownItem href="/signout">Delete</DropdownItem>
+			</Dropdown>
+		</div>
+		<div class="mt-3">
+			<h1 class="text-2xl font-bold">{title}</h1>
+			<p class="mt-2">{description}</p>
+		</div>
+		<div class="flex items-center justify-between mt-4">
+			<div>
+				<span class=" dark:text-gray-600">Leroy Jenkins</span>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- <div class="task m-2">
 	<div class="tags">
 		<span class="tag">{title}</span>
 		<button class="options">
@@ -55,4 +81,4 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
