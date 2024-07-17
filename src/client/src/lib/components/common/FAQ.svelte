@@ -1,6 +1,5 @@
 <script lang="ts">
 	export let faqs: any;
-
 </script>
 
 <section class="bg-white dark:bg-gray-900">
@@ -10,7 +9,7 @@
 		</h1>
 
 		{#each faqs as faq}
-			<h1 class="text-center pt-2 text-2xl font-semibold text-gray-800 dark:text-white lg:text-3xl">
+			<h1 class="pt-2 text-center text-2xl font-semibold text-gray-800 dark:text-white lg:text-3xl">
 				{faq.category}
 			</h1>
 			<div class="mt-12 space-y-8">

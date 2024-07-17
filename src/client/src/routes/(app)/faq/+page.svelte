@@ -5,5 +5,5 @@
 </script>
 
 <main>
-	<FAQ faqs={data.faq}/>
+	<FAQ faqs={data.faq} />
 </main>
