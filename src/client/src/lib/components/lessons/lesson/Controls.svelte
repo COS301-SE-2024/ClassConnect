@@ -4,6 +4,7 @@
 	import { goto } from '$app/navigation';
 	import { Button } from 'flowbite-svelte';
 	import {
+		FlowbiteSolid,
 		MicrophoneSolid,
 		VideoCameraSolid,
 		PhoneHangupSolid,
@@ -15,8 +16,11 @@
 	import type { Writable } from 'svelte/store';
 	import type { Call } from '@stream-io/video-client';
 
+	export let role: string;
+
 	const callStore = getContext<Writable<Call | null>>('call');
 
+	let isEnvironmentOn = false;
 	let isCameraOn = $callStore?.camera.state.status === 'enabled' ? true : false;
 	let isMicOn = $callStore?.microphone.state.status === 'enabled' ? true : false;
 	let isScreenShareOn = $callStore?.screenShare.state.status === 'enabled' ? true : false;
@@ -34,6 +38,11 @@
 	function toggleScreenShare() {
 		isScreenShareOn = !isScreenShareOn;
 		$callStore?.screenShare.toggle();
+	}
+
+	function toggleEnvironment() {
+		isEnvironmentOn = !isEnvironmentOn;
+		$callStore?.update({ custom: { environment: isEnvironmentOn } });
 	}
 
 	function endCall() {
@@ -59,14 +68,25 @@
 		{/if}
 	</Button>
 
-	<Button
-		pill={true}
-		class="m-2"
-		on:click={toggleScreenShare}
-		color={isScreenShareOn ? 'green' : 'light'}
-	>
-		<ArrowUpRightFromSquareOutline />
-	</Button>
+	{#if role === 'lecturer'}
+		<Button
+			pill={true}
+			class="m-2"
+			on:click={toggleScreenShare}
+			color={isScreenShareOn ? 'green' : 'light'}
+		>
+			<ArrowUpRightFromSquareOutline />
+		</Button>
+
+		<Button
+			pill={true}
+			class="m-2"
+			on:click={toggleEnvironment}
+			color={isEnvironmentOn ? 'green' : 'light'}
+		>
+			<FlowbiteSolid />
+		</Button>
+	{/if}
 
 	<Button pill={true} color="red" on:click={endCall}>
 		<PhoneHangupSolid />
