@@ -7,25 +7,24 @@
 		Fileupload,
 		Label,
 		Helper,
-		Input
+		Input,
+		Alert 
 	} from 'flowbite-svelte';
 	import {
 		UploadOutline,
 		ExclamationCircleOutline,
 		EyeOutline,
-		EyeSlashOutline
+		EyeSlashOutline,
+		InfoCircleSolid 
 	} from 'flowbite-svelte-icons';
-	import { change } from '$lib/store';
-	import { browser } from '$app/environment';
-	import { onMount } from 'svelte';
-
-	function log() {
-		const timestamp: string = new Date().getTime().toString();
-		const log: string = `change in settings: ${timestamp}`;
-		change.set(log);
-	}
 
 	export let user: any;
+
+	let updateStatus : any = null;
+	let GeneralDetailsForm : any;
+	let PasswordForm : any;
+
+	let user_det: any
 
 	async function handleFileUpload(event: Event) {
 		event.preventDefault();
@@ -64,10 +63,10 @@
 		});
 
 		if (response.ok) {
-			log();
+			updateStatus = 'success';
+		}else{
+			updateStatus = 'failure';
 		}
-
-		console.log(response);
 
 		reloadPage();
 
@@ -88,10 +87,10 @@
 		});
 
 		if (response.ok) {
-			log();
+			updateStatus = 'success';
+		}else{
+			updateStatus = 'failure';
 		}
-
-		console.log(response);
 
 		reloadPage();
 
@@ -112,10 +111,10 @@
 		});
 
 		if (response.ok) {
-			log();
+			updateStatus = 'success';
+		}else{
+			updateStatus = 'failure';
 		}
-
-		console.log(response);
 
 		reloadPage();
 	}
@@ -134,10 +133,10 @@
 		});
 
 		if (response.ok) {
-			log();
+			updateStatus = 'success';
+		}else{
+			updateStatus = 'failure';
 		}
-
-		console.log(response);
 
 		reloadPage();
 	}
@@ -155,24 +154,44 @@
 	let confirmShowPassword = false;
 	let ImageFile: File;
 
-	function reloadPage() {
-		if (browser) {
-			location.reload();
-		}
-	}
+	async function reloadPage() {
+		fetch('http://localhost:5173/api/user')
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			return response.json();
+		})
+		.then(data => {
+			user_det = data;
 
-	async function getUserDetails(){
-		const response = await fetch('/api/user', {
-			method: 'GET',
+			GeneralDetailsForm.reset()
+			
+			PasswordForm.reset()
+
+			user = user_det;
+
+		})
+		.catch(error => {
+			console.error('There was a problem with your fetch operation:', error);
 		});
-		console.log(response);
 	}
-
-	onMount(() => {
-		getUserDetails();
-	});
 
 </script>
+
+{#if updateStatus === 'failure'}
+<Alert color="red" dismissable>
+    <InfoCircleSolid slot="icon" class="w-5 h-5" />
+    Update has been unsuccessful. Please try again.
+</Alert>
+{/if}
+
+{#if updateStatus === 'success'}
+<Alert color="green" dismissable>
+    <InfoCircleSolid slot="icon" class="w-5 h-5" />
+    Update has been successful.
+</Alert>
+{/if}
 
 <div class="grid grid-cols-1 px-4 pt-6 dark:bg-gray-900 xl:grid-cols-3 xl:gap-4">
 	<div class="col-span-full mb-4 xl:mb-2">
@@ -220,7 +239,7 @@
 			class="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2"
 		>
 			<h3 class="mb-4 text-xl font-semibold dark:text-white">General information</h3>
-			<form on:submit={handleGeneralUpdate}>
+			<form bind:this={GeneralDetailsForm} on:submit={handleGeneralUpdate}>
 				<div class="grid grid-cols-6 gap-6">
 					<div class="col-span-6 sm:col-span-3">
 						<Label for="name" class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -275,7 +294,7 @@
 			class="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2"
 		>
 			<h3 class="mb-4 text-xl font-semibold dark:text-white">Password information</h3>
-			<form on:submit={handlePasswordUpdate}>
+			<form bind:this={PasswordForm}  on:submit={handlePasswordUpdate}>
 				<div class="grid grid-cols-6 gap-6">
 					<div class="col-span-6 sm:col-span-3">
 						<Label

@@ -24,8 +24,12 @@ export async function GET({ locals }) {
             image: USER.image,
             surname: USER.surname
         };
-
-        return new Response(String(ret_user));;
+        
+        return new Response(JSON.stringify(ret_user), {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
     }else{
         error(401, 'Unauthorized');
     }
