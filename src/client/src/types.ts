@@ -19,12 +19,30 @@ export interface User {
 	username: string;
 }
 
+export interface User_Details {
+	id: string;
+	first_name: string;
+	last_name: string;
+	email: string;
+	image: string;
+	surname: string;
+	username: string;
+}
+
 export interface Announcement {
 	id: string;
 	title: string;
 	date: string;
 	createdBy: string;
 	description: string;
+}
+
+export interface Activity {
+	id: string;
+	title: string;
+	date: string;
+	description: string;
+	type: string;
 }
 
 export interface Workspace {
@@ -43,3 +61,23 @@ export interface Lesson {
 	description: string;
 	workspace: string;
 }
+
+export interface Material {
+	id: string;
+	title: string;
+	description: string;
+	file_path: string;
+	type: boolean;
+	workspace: string;
+}
+
+export type FAQItem = {
+	question: string;
+	answer: string;
+	isOpen?: boolean;
+};
+
+export type FAQCategory = {
+	category: string;
+	items: FAQItem[];
+};
