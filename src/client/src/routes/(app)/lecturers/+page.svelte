@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Card, Button, Table, TableHead, TableHeadCell, TableBody, TableBodyRow, TableBodyCell, TableSearch } from 'flowbite-svelte';
   import { ArrowRightOutline, EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
+	import NoLecturerCard from '$lib/components/common/ZeroUsersCard.svelte';
 
 	import AddModal from '$lib/components/modals/user/Add.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
@@ -32,13 +33,12 @@
 
 <div class="m-4">
 	{#if lecturers.length === 0}
-  <Card img="https://www.paulconnollycomms.co.uk/wp-content/uploads/2023/02/shutterstock_1955321449-scaled.jpg" size="none">
-    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Ignite Minds And Inspire Greatness</h5>
-    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">Lecturers are the catalysts who transform classrooms into dynamic hubs of learning and growth, empowering students to reach their full potential.</p>
-    <Button on:click={() => (isAddModalOpen = true)}>
-      Add Your First Lecturer <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
-    </Button>
-  </Card>
+		<NoLecturerCard 
+			imgSrc="https://www.paulconnollycomms.co.uk/wp-content/uploads/2023/02/shutterstock_1955321449-scaled.jpg"
+			title="Ignite Minds And Inspire Greatness!"
+			description="Lecturers are the catalysts who transform classrooms into dynamic hubs of learning and growth, empowering students to reach their full potential."
+			buttonText="Add Your First Lecturer"
+		/>
 	{:else}
 	<div class="sm:flex sm:items-center sm:justify-between">
 		<div>
