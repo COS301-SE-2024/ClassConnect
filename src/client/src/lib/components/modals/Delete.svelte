@@ -4,7 +4,7 @@
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
 
 	export let id: string;
-	export let item: string;
+	//export let item: string;
 	export let open: boolean;
 
 	let error: string;
@@ -29,7 +29,8 @@
 			<p class="mt-2 text-center text-red-500">{error}</p>
 		{/if}
 		<form method="POST" action="?/delete" use:enhance={close}>
-    	<Button color="red" class="me-2">Yes, I'm sure</Button>
+			<Input type="hidden" id="id" name="id" value={id} />
+    	<Button color="red" class="me-2" type="submit">Yes, I'm sure</Button>
 			<Button color="alternative">No, cancel</Button>
 		</form>
   </div>

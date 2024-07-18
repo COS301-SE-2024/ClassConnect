@@ -2,6 +2,7 @@ import { hash } from '@node-rs/argon2';
 import type { Actions } from './$types';
 import type { ObjectId } from 'mongoose';
 import { fail, error } from '@sveltejs/kit';
+import { upload, deleteFile } from '$lib/server/s3Bucket';
 
 import Users from '$db/schemas/User';
 import type { User } from '$src/types';

@@ -38,7 +38,7 @@
 </script>
 
 <div class="m-4 overflow:hidden">
-  {#if workspaces.length === 0}
+  {#if students.length === 0}
 	<NoStudentCard 
 		imgSrc="https://media.wired.com/photos/647e7400d96882f74caa3e5c/16:9/w_2400,h_1350,c_limit/Don't-Want-Students-To-Rely-On-ChatGPT-Ideas-1356557660.jpg"
 		title="Aspiring Minds, Shaping the Future - Students Embark on a Journey of Discovery!"

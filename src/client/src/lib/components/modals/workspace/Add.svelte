@@ -21,9 +21,9 @@
 </script>
 
 <Modal bind:open size="xs" class="w-full">
-	<form method="POST" action="?/create" class="flex flex-col space-y-6" use:enhance={close}>
+	<form method="POST" action="?/create" class="flex flex-col space-y-6" use:enhance={close} enctype="multipart/form-data">
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Create New Workspace</h3>
-
+		
 		{#if error}
 			<p class="mt-2 text-center text-red-500">{error}</p>
 		{/if}
