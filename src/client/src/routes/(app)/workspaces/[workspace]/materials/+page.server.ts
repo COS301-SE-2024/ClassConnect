@@ -60,7 +60,7 @@ async function uploadMaterials(data:FormData,workspace_id:string,typeSet:boolean
 export async function load({ locals, params }) {
 	try {
 		const materials = await getMaterials(params.workspace,false);
-        // console.log(materials)
+        console.log(materials)
 		return {
 			role: locals.user?.role,
             materials
@@ -79,7 +79,9 @@ async function deleteMaterial(id:string){
     if(!id) return fail(400,{message:'Material ID is required'});
 
     const deletedMaterial = await Materials.findByIdAndDelete(id);
+
     if(!deletedMaterial) return fail(404,{message:'Material not found'});
+    console.log("Material:" + deletedMaterial);
     return {success:true};
 }
 
@@ -105,5 +107,18 @@ export const actions: Actions = {
             console.error('Error deleting material:', e);
             return fail(500, { message: 'Failed to delete material' });
         }
+    },
+
+    submitObjects: async({request})=>{
+        const data = await request.formData();
+        const selectedObjects = data.getAll('selectedObjects') as string[];
+        console.log(data);
+
+        console.log('Selected object IDs:', selectedObjects);
+
+        return {
+            success: true,
+            message: 'Objects submitted successfully'
+        };
     }
 };
