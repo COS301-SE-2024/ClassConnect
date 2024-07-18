@@ -31,7 +31,7 @@
   );
 </script>
 
-<div class="m-4">
+<div class="container mx-auto px-4 py-8">
 	{#if lecturers.length === 0}
 		<NoLecturerCard 
 			imgSrc="https://www.paulconnollycomms.co.uk/wp-content/uploads/2023/02/shutterstock_1955321449-scaled.jpg"
@@ -40,57 +40,60 @@
 			buttonText="Add Your First Lecturer"
 		/>
 	{:else}
-	<div class="sm:flex sm:items-center sm:justify-between">
-		<div>
+	<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+		<div class="mb-4 sm:mb-0">
 			<div class="flex items-center gap-x-3">
 				<h2 class="text-xl font-bold text-gray-800 dark:text-white">Lecturers</h2>
-
-				<span
-					class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
-				>
+				<span class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400">
 					{lecturers.length}
-					{lecturers.length === 1 ? 'lecturers' : 'lecturers'}
+					{lecturers.length === 1 ? 'lecturer' : 'lecturers'}
 				</span>
 			</div>
 		</div>
-		<div class="mb-4 flex items-center gap-x-3">
+		<div class="flex items-center gap-x-3">
 			<Button on:click={() => (isAddModalOpen = true)}>Add Lecturer</Button>
 		</div>
 	</div>
-	<TableSearch placeholder="Search by name" hoverable={true} bind:inputValue={searchTerm}>
-		<TableHead>
-			<TableHeadCell>Lecturer</TableHeadCell>
-			<TableHeadCell>Username</TableHeadCell>
-			<TableHeadCell>Actions</TableHeadCell>
-		</TableHead>
-		<TableBody tableBodyClass="divide-y">
-			{#each filteredLecturers as lecturer}
-				<TableBodyRow>
-					<TableBodyCell>
-						<div class="flex items-center">
-							<img src={lecturer.image} alt={`${lecturer.name}`} class="mr-4 h-10 w-10 rounded-full" />
-							<div>
-								<div class="font-semibold">{lecturer.name}</div>
-								<div class="text-sm text-gray-500">{lecturer.email}</div>
+
+	<div class="overflow-x-auto">
+		<TableSearch placeholder="Search by name" hoverable={true} bind:inputValue={searchTerm}>
+			<TableHead>
+				<TableHeadCell class="text-sm sm:text-base">Lecturer</TableHeadCell>
+				<TableHeadCell class="text-sm sm:text-base">Username</TableHeadCell>
+				<TableHeadCell class="text-sm sm:text-base">Actions</TableHeadCell>
+			</TableHead>
+			<TableBody tableBodyClass="divide-y">
+				{#each filteredLecturers as lecturer}
+					<TableBodyRow>
+						<TableBodyCell>
+							<div class="flex items-center">
+								<img src={lecturer.image} alt={`${lecturer.name}`} class="mr-2 sm:mr-4 h-8 w-8 sm:h-10 sm:w-10 rounded-full" />
+								<div>
+									<div class="font-semibold text-sm sm:text-base">{lecturer.name}</div>
+                  <div class="text-xs sm:text-sm text-gray-500">{lecturer.email}</div>
+								</div>
 							</div>
-						</div>
-					</TableBodyCell>
-					<TableBodyCell>{lecturer.username}</TableBodyCell>
-					<TableBodyCell>
-						<div class="flex space-x-4">
-							<Button color="purple" on:click={() => handleEditModalOpen(lecturer.id)}>
-								<EditOutline class="w-5 h-5 me-2"/> Edit Workspace 
-							</Button>
-							<Button color="red" on:click={() => handleRemoveModalOpen(lecturer.id)}>
-								<TrashBinOutline class="w-5 h-5 me-2"/> Delete Workspace
-							</Button>
-						</div>
-					</TableBodyCell>
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</TableSearch>
-	
+						</TableBodyCell>
+						<TableBodyCell>
+                <div class="font-semibold text-sm sm:text-base truncate">{lecturer.username}</div>
+						</TableBodyCell>
+						<TableBodyCell>
+							<div class="flex space-x-2">
+								<Button color="purple" on:click={() => handleEditModalOpen(lecturer.id)} class="p-1.5 sm:p-2">
+									<EditOutline class="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span class="hidden sm:inline ml-2 text-sm">Edit</span>
+								</Button>
+								<Button color="red" on:click={() => handleRemoveModalOpen(lecturer.id)} class="p-1.5 sm:p-2">
+									<TrashBinOutline class="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span class="hidden sm:inline ml-2 text-sm">Delete</span>
+								</Button>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+				{/each}
+			</TableBody>
+		</TableSearch>
+	</div>
   {/if}
 </div>
 

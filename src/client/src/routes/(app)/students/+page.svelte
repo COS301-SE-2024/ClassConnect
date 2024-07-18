@@ -37,7 +37,7 @@
   }
 </script>
 
-<div class="m-4 overflow:hidden">
+<div class="container mx-auto px-2 sm:px-4 py-8">
   {#if students.length === 0}
 	<NoStudentCard 
 		imgSrc="https://media.wired.com/photos/647e7400d96882f74caa3e5c/16:9/w_2400,h_1350,c_limit/Don't-Want-Students-To-Rely-On-ChatGPT-Ideas-1356557660.jpg"
@@ -46,53 +46,59 @@
 		buttonText="Add Your First Student"
 	/>
   {:else}
-    <div class="sm:flex sm:items-center sm:justify-between">
-      <div>
-        <div class="flex items-center gap-x-3">
-          <h2 class="text-xl font-bold text-gray-800 dark:text-white">Students</h2>
-          <span class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400">
-            {students.length}
-            {students.length === 1 ? 'student' : 'students'}
-          </span>
-        </div>
-      </div>
-      <div class="mb-4 flex items-center gap-x-3">
+		<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+			<div class="mb-4 sm:mb-0">
+				<div class="flex items-center gap-x-3">
+					<h2 class="text-xl font-bold text-gray-800 dark:text-white">Students</h2>
+					<span class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400">
+						{students.length}
+						{students.length === 1 ? 'student' : 'students'}
+					</span>
+				</div>
+			</div>
+			<div class="flex items-center gap-x-3">
         <Button on:click={() => (isAddModalOpen = true)}>Add Student</Button>
       </div>
     </div>
-    <TableSearch placeholder="Search by name" hoverable={true} bind:inputValue={searchTerm}>
-      <TableHead>
-        <TableHeadCell>Student</TableHeadCell>
-        <TableHeadCell>Username</TableHeadCell>
-        <TableHeadCell>Actions</TableHeadCell>
-      </TableHead>
-      <TableBody tableBodyClass="divide-y">
-        {#each filteredStudents as student}
-          <TableBodyRow>
-            <TableBodyCell>
-              <div class="flex items-center">
-                <img src={student.image} alt={student.name} class="mr-4 h-10 w-10 rounded-full" />
-                <div>
-                  <div class="font-semibold">{student.name}</div>
-                  <div class="text-sm text-gray-500">{student.email}</div>
-                </div>
-              </div>
-            </TableBodyCell>
-            <TableBodyCell>{student.username}</TableBodyCell>
-            <TableBodyCell>
-              <div class="flex space-x-4">
-                <Button color="purple" on:click={() => handleEditModalOpen(student.id)}>
-                  <EditOutline class="w-5 h-5 me-2"/> Edit Student 
-                </Button>
-                <Button color="red" on:click={() => handleRemoveModalOpen(student.id)}>
-                  <TrashBinOutline class="w-5 h-5 me-2"/> Delete Student
-                </Button>
-              </div>
-            </TableBodyCell>
-          </TableBodyRow>
-        {/each}
-      </TableBody>
-    </TableSearch>
+		<div class="overflow-x-auto">
+    	<TableSearch placeholder="Search by name" hoverable={true} bind:inputValue={searchTerm}>
+    	  <TableHead>
+    	    <TableHeadCell class="text-sm sm:text-base">Student</TableHeadCell>
+    	    <TableHeadCell class="text-sm sm:text-base">Username</TableHeadCell>
+    	    <TableHeadCell class="text-sm sm:text-base">Actions</TableHeadCell>
+    	  </TableHead>
+    	  <TableBody tableBodyClass="divide-y">
+    	    {#each filteredStudents as student}
+    	      <TableBodyRow>
+    	        <TableBodyCell>
+    	          <div class="flex items-center">
+    	            <img src={student.image} alt={student.name} class="mr-2 sm:mr-4 h-8 w-8 sm:h-10 sm:w-10 rounded-full" />
+    	            <div>
+    	              <div class="font-semibold text-sm sm:text-base">{student.name}</div>
+                    <div class="text-xs sm:text-sm text-gray-500">{student.email}</div>
+    	            </div>
+    	          </div>
+    	        </TableBodyCell>
+    	        <TableBodyCell>
+                  <div class="font-semibold text-sm sm:text-base">{student.username}</div>
+							</TableBodyCell>
+    	        <TableBodyCell>
+    	          <div class="flex space-x-2">
+    	            <Button color="purple" on:click={() => handleEditModalOpen(student.id)} class="p-1.5 sm:p-2">
+    	              <EditOutline class="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span class="hidden sm:inline ml-2 text-sm">Edit</span>
+    	            </Button>
+    	            <Button color="red" on:click={() => handleRemoveModalOpen(student.id)} class="p-1.5 sm:p-2">
+    	              <TrashBinOutline class="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span class="hidden sm:inline ml-2 text-sm">Delete</span>
+    	            </Button>
+    	          </div>
+    	        </TableBodyCell>
+    	      </TableBodyRow>
+    	    {/each}
+    	  </TableBody>
+    	</TableSearch>
+		</div>
   {/if}
 </div>
 
