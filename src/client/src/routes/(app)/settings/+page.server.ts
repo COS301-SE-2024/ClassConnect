@@ -194,12 +194,11 @@ export const actions: Actions = {
 				image: USER.image,
 				surname: USER.surname
 			};
+
+			JSON.stringify({user: ret_user});
 	
-			return new Response(JSON.stringify(ret_user), {
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
+			return JSON.stringify({user: ret_user});
+			
 		} else {
 			fail(401, { error: 'Unauthorized'} );
 		}		
