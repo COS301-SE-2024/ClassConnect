@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Heading, Button, Alert } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
-	import { change } from '$lib/store'
+	import { change } from '$lib/store';
 	import { UploadOutline, InfoCircleSolid } from 'flowbite-svelte-icons';
 	import DeleteProfilePic from '$lib/components/modals/settings/DeleteProfilePic.svelte';
 	import UploadPicture from '$lib/components/modals/settings/UploadPicture.svelte';
@@ -17,7 +17,7 @@
 
 	async function getUserData() {
 		try {
-			const formData = new FormData()
+			const formData = new FormData();
 			const response = await fetch('/settings?/get_user_details', {
 				method: 'POST',
 				body: formData
@@ -26,28 +26,27 @@
 				throw new Error('Network response was not ok');
 			}
 			const data = await response.json();
-			if(data.data){
+			if (data.data) {
 				const input = data.data;
 				const innerString = JSON.parse(input)[0];
 				const user_data = JSON.parse(innerString);
-				user = user_data.user
-				console.log(user)
+				user = user_data.user;
+				console.log(user);
 			}
 		} catch (error) {
 			console.error('There was a problem with your fetch operation:', error);
 		}
 	}
 
-	onMount(()=>{
-		getUserData()
+	onMount(() => {
+		getUserData();
 	});
 
 	$: {
 		change.subscribe(() => {
-			getUserData()
+			getUserData();
 		});
 	}
-
 </script>
 
 {#if updateStatus === 'failure'}
@@ -106,7 +105,7 @@
 				</div>
 			</div>
 		</div>
-		<UpdateGeneralDetails name={user.name} email={user.email} surname={user.surname}/>
+		<UpdateGeneralDetails name={user.name} email={user.email} surname={user.surname} />
 		<UpdatePassword />
 	</div>
 </div>
@@ -115,4 +114,4 @@
 <DeleteProfilePic open={openDeleteModal} />
 
 <!-- File Handling Modal -->
-<UploadPicture open = {openFileHandlingModal}/>
+<UploadPicture open={openFileHandlingModal} />

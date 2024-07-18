@@ -177,17 +177,17 @@ export const actions: Actions = {
 	get_user_details: async ({ locals }) => {
 		if (locals && locals.user) {
 			const userID: ObjectId = locals.user.id;
-	
+
 			if (!userID) {
-				fail(400, {error: 'user id not found'});
+				fail(400, { error: 'user id not found' });
 			}
-	
+
 			const USER = await Users.findById(userID);
-	
+
 			if (!USER) {
-				fail(404, {error: 'user not found'});
+				fail(404, { error: 'user not found' });
 			}
-	
+
 			const ret_user = {
 				name: USER.name,
 				email: USER.email,
@@ -195,12 +195,11 @@ export const actions: Actions = {
 				surname: USER.surname
 			};
 
-			JSON.stringify({user: ret_user});
-	
-			return JSON.stringify({user: ret_user});
-			
+			JSON.stringify({ user: ret_user });
+
+			return JSON.stringify({ user: ret_user });
 		} else {
-			fail(401, { error: 'Unauthorized'} );
-		}		
+			fail(401, { error: 'Unauthorized' });
+		}
 	}
 };

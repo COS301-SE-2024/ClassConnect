@@ -20,7 +20,6 @@
 			{/if}
 		</div>
 	{:else}
-
 		<div class="sm:flex sm:items-center sm:justify-between">
 			<div>
 				<div class="flex items-center gap-x-3">
@@ -35,7 +34,9 @@
 			</div>
 			<div class="mb-4 flex items-center gap-x-3">
 				{#if data.role === 'lecturer'}
-					<Button on:click={() => (isAddModalOpen = true)} class='font-bold'>Create Announcement</Button>
+					<Button on:click={() => (isAddModalOpen = true)} class="font-bold"
+						>Create Announcement</Button
+					>
 				{/if}
 			</div>
 		</div>

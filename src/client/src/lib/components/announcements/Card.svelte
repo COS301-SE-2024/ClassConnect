@@ -17,7 +17,7 @@
 	<div class="container rounded-lg bg-white px-2 py-6 shadow-sm">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center">
-				<h1 class="text-2xl font-bold px-3 py-1">{title}</h1>
+				<h1 class="px-3 py-1 text-2xl font-bold">{title}</h1>
 				<span
 					class="rounded-full bg-green-100 px-3 py-1 text-sm text-green-600 dark:bg-gray-800 dark:text-green-400"
 				>
@@ -27,9 +27,9 @@
 			{#if role === 'lecturer'}
 				<DotsVerticalOutline id="dot-menu" size="xl" />
 				<Dropdown placement="bottom" triggeredBy="#dot-menu">
-					<DropdownItem on:click={()=>isEditModalOpen=true}>Edit</DropdownItem>
+					<DropdownItem on:click={() => (isEditModalOpen = true)}>Edit</DropdownItem>
 					<DropdownDivider />
-					<DropdownItem on:click={()=>isRemoveModalOpen=true}>Delete</DropdownItem>
+					<DropdownItem on:click={() => (isRemoveModalOpen = true)}>Delete</DropdownItem>
 				</Dropdown>
 			{/if}
 		</div>

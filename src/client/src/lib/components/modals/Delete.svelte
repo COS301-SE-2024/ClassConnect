@@ -10,7 +10,7 @@
 
 	let error: string;
 	let message: string;
-	let color: string
+	let color: string;
 	let display: boolean = false;
 
 	function close() {
@@ -33,7 +33,7 @@
 </script>
 
 {#if display}
-	<Banner type="Delete" color={color} message={message} />
+	<Banner type="Delete" {color} {message} />
 {/if}
 
 <Modal bind:open size="xs" class="text-center">
