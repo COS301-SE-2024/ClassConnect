@@ -47,7 +47,7 @@
 </script>
 
 {#if display}
-	<Banner type="Delete" color={color} message={message} />
+	<Banner type="Delete" {color} {message} />
 {/if}
 
 <Modal id="previewModal" bind:open size="lg" placement="center">
