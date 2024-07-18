@@ -1,6 +1,7 @@
 import type { ObjectId } from 'mongoose';
 import type { Actions } from '@sveltejs/kit';
 import { fail, error, redirect } from '@sveltejs/kit';
+//import { upload } from '$lib/server/s3Bucket';
 
 import Users from '$db/schemas/User';
 import Workspaces from '$db/schemas/Workspace';
@@ -85,7 +86,7 @@ async function createWorkspace(data: FormData, organisation: ObjectId | undefine
 	const name = data.get('name') as string;
 	const owner = data.get('owner') as string;
 	const image = data.get('image') as string;
-	//TODO: NEED TO FIX THE DEFAULT IMAGE AS IT IS CURRENTLY SQUARE
+	
 	const newWorkspace = new Workspaces({
 		name,
 		owner,
@@ -143,7 +144,7 @@ export const actions: Actions = {
 
 		try {
 			const data = await request.formData();
-
+			console.log(data);
 			return await createWorkspace(data, locals.user?.organisation);
 		} catch (error) {
 			console.error('Server error:', error);
@@ -155,7 +156,7 @@ export const actions: Actions = {
 
 		try {
 			const data = await request.formData();
-
+			
 			return await editWorkspace(data);
 		} catch (err) {
 			console.error('Error editing workspace:', err);

@@ -30,11 +30,11 @@
 
 		<Label for="code" class="space-y-2">
 			<span>Code</span>
-			<Input type="text" id="code" name="code" placeholder="Please enter a workspace code (e.g. PHY 114) required" />
+			<Input type="text" id="code" name="code" placeholder="Please enter a workspace code (e.g. PHY 114)" required/>
 		</Label>
 		<Label for="name" class="space-y-2">
 			<span>Name</span>
-			<Input type="text" id="name" name="name" placeholder="Please enter a workspace name (e.g. Physical Sciences)" />
+			<Input type="text" id="name" name="name" placeholder="Please enter a workspace name (e.g. Physical Sciences)" required/>
 		</Label>
 		<Label for="owner" class="space-y-2">
 			<span>Lecturer</span>
@@ -46,7 +46,7 @@
 		</Label>	
 		<Label for="image" class="space-y-2">
 			<span>Image</span>
-			<Fileupload bind:value />
+			<Fileupload bind:value id="image" name="image"/>
 		</Label>
 		<Button type="submit" class="w-full1">Create Workspace</Button>
 	</form>
