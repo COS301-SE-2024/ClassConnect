@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Button, Modal, Banner, Gallery } from 'flowbite-svelte';
+	import { Button, Modal, Gallery } from 'flowbite-svelte';
+	import Banner from '$lib/components/common/Banner.svelte';
 	import { change } from '$lib/store';
 
 	export let open: boolean;
@@ -46,7 +47,7 @@
 </script>
 
 {#if display}
-	<Banner type="Upload" {color} {message} />
+	<Banner type="Delete" color={color} message={message} />
 {/if}
 
 <Modal id="previewModal" bind:open size="lg" placement="center">

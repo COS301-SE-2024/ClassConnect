@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Button, Label, Input, Banner } from 'flowbite-svelte';
+	import { Button, Label, Input } from 'flowbite-svelte';
 	import { EyeOutline, EyeSlashOutline } from 'flowbite-svelte-icons';
+	import Banner from '$lib/components/common/Banner.svelte';
 
 	let message: string;
 	let color: string;
@@ -29,7 +30,7 @@
 </script>
 
 {#if display}
-	<Banner type="Delete" {color} {message} />
+	<Banner type="Delete" color={color} message={message} />
 {/if}
 
 <div

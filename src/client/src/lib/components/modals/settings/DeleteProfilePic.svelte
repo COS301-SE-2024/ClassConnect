@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Button, Modal, Banner } from 'flowbite-svelte';
+	import { Button, Modal } from 'flowbite-svelte';
+	import Banner from '$lib/components/common/Banner.svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
 
 	export let open: boolean;
@@ -29,7 +30,7 @@
 </script>
 
 {#if display}
-	<Banner type="Delete" {color} {message} />
+	<Banner type="Delete" color={color} message={message} />
 {/if}
 
 <!-- Delete Modal -->
