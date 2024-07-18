@@ -6,9 +6,11 @@
   export let data;
   $: ({ students, workspaces } = data);
   let searchTerm = '';
-  $: filteredStudents = students.filter((student: { name: string; }) => 
-    student.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
-  );
+	$: filteredStudents = students.filter((student) => 
+	  student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+	  student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+	  student.username.toLowerCase().includes(searchTerm.toLowerCase())
+	);
 
   import AddModal from '$lib/components/modals/user/Add.svelte';
   import RemoveModal from '$lib/components/modals/Delete.svelte';
@@ -37,7 +39,7 @@
   }
 </script>
 
-<div class="container mx-auto px-2 sm:px-4 py-8">
+<div class="container mx-auto px-4 py-8">
   {#if students.length === 0}
 	<NoStudentCard 
 		imgSrc="https://media.wired.com/photos/647e7400d96882f74caa3e5c/16:9/w_2400,h_1350,c_limit/Don't-Want-Students-To-Rely-On-ChatGPT-Ideas-1356557660.jpg"

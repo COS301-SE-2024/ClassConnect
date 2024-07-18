@@ -25,10 +25,13 @@
 	}
 
 	$: ({ lecturers } = data);
+
 	let searchTerm = '';
-  $: filteredLecturers = lecturers.filter((lecturer: { name: string; }) => 
-    lecturer.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
-  );
+	$: filteredLecturers = lecturers.filter((lecturer) => 
+	  lecturer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+	  lecturer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+	  lecturer.username.toLowerCase().includes(searchTerm.toLowerCase())
+	);
 </script>
 
 <div class="container mx-auto px-4 py-8">

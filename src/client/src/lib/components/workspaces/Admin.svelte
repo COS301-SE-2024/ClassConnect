@@ -4,10 +4,12 @@
   
   export let data;
   $: ({ lecturers, workspaces } = data);
-  let searchTerm = '';
-  $: filteredWorkspaces = workspaces.filter((workspace: { name: string; }) => 
-    workspace.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
-  );
+
+	let searchTerm = '';
+	$: filteredWorkspaces = workspaces.filter((workspace: { name: string; owner: string; }) => 
+	  workspace.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+	  workspace.owner.toLowerCase().includes(searchTerm.toLowerCase())
+	);
 
   import RemoveModal from '$lib/components/modals/Delete.svelte';
   import AddModal from '$lib/components/modals/workspace/Add.svelte';
@@ -67,10 +69,7 @@
               <TableBodyCell>
                 <div class="flex items-center">
                   <img src={workspace.image} alt={`${workspace.name}`} class="mr-2 sm:mr-4 h-8 w-8 sm:h-10 sm:w-10 rounded-full" />
-                  <div>
-                    <div class="font-semibold text-sm sm:text-base">{workspace.name}</div>
-                    <div class="text-xs sm:text-sm text-gray-500">workspace@email.com</div>
-                  </div>
+                  <div class="font-semibold text-sm sm:text-base">{workspace.name}</div>
                 </div>
               </TableBodyCell>
               <TableBodyCell>
