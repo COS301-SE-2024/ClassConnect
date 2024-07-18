@@ -10,10 +10,22 @@
 		TableBodyCell
 	} from 'flowbite-svelte';
     import { onMount } from 'svelte';
-	import {  EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
+	import {  PlusOutline, EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
+	import AddModal from '$lib/components/modals/quizzes/Add.svelte';
+	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 
-    let data :any;
-    let isAddModalOpen= false;
+
+	interface Quiz {
+        id: number;
+        title: string;
+        graded: boolean;
+        dateModified: Date;
+    }
+	let id: number;
+    let data: Quiz[] = [];
+    let isQuizFormOpen= false;
+	let isEditModalOpen = false;
+	let isAddModalOpen= false;
 	onMount(() => {
 		data = [
 			{ id: 1, title: 'Quiz 1', graded: true, dateModified: new Date('2023-07-01') },
@@ -24,12 +36,17 @@
 
 	const headers = ['Title', 'Graded', 'Date Modified', 'Actions'];
 
-	function handleEditModalOpen(quizId: string) {
-		
-		console.log(`Edit quiz with ID: ${quizId}`);
+	function handleEditModalOpen(quizID: number) {
+		id = quizID;
+		isEditModalOpen = true;
 	}
 
-	function handleRemoveModalOpen(quizId: string) {
+	function handleAddModalOpen(quizID: number) {
+		id = quizID;
+		isAddModalOpen = true;
+	}
+
+	function handleRemoveModalOpen(quizId: number) {
 		
 		console.log(`Remove quiz with ID: ${quizId}`);
 	}
@@ -41,7 +58,7 @@
 			<h1 class="mb-4 text-2xl font-semibold text-gray-700 dark:text-white">
 				No quizzes available in this workspace.
 			</h1>
-			<Button on:click={() => (isAddModalOpen = true)}>Add Quiz</Button>
+			<Button on:click={() => (isQuizFormOpen = true)}>Add Quiz</Button>
 		</div>
 	{:else}
 		<div class="sm:flex sm:items-center sm:justify-between">
@@ -54,7 +71,7 @@
 				</div>
 			</div>
 			<div class="mb-4 flex items-center gap-x-3">
-				<Button on:click={() => (isAddModalOpen = true)}>Add Quiz</Button>
+				<Button on:click={() => (isQuizFormOpen = true)}>Add Quiz</Button>
 			</div>
 		</div>
 
@@ -73,9 +90,11 @@
 						<TableBodyCell>{quiz.dateModified.toLocaleDateString()}</TableBodyCell>
 						<TableBodyCell>
 							<div class="flex items-center gap-x-6">
-								<Button on:click={() => handleEditModalOpen(quiz.id)}>
-									<EditOutline />
-								</Button>
+								{#if quiz.graded===false}
+									<Button on:click={() => handleEditModalOpen(quiz.id)}>
+										<EditOutline />
+									</Button>
+								{/if}
 								<Button color="red" on:click={() => handleRemoveModalOpen(quiz.id)}>
 									<TrashBinOutline />
 								</Button>
@@ -87,3 +106,7 @@
 		</Table>
 	{/if}
 </main>
+
+<AddModal bind:open={isQuizFormOpen} />
+<EditModal bind:open={isEditModalOpen} />
+
