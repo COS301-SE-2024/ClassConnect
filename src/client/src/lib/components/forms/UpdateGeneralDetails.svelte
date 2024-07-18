@@ -29,11 +29,11 @@
 </script>
 
 {#if display}
-	<Banner type="Delete" color={color} message={message} />
+	<Banner type="Delete" {color} {message} />
 {/if}
 
 <div
-class="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2"
+	class="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2"
 >
 	<h3 class="mb-4 text-xl font-semibold dark:text-white">General information</h3>
 	<form method="POST" action="/settings?/update_general_details" use:enhance={updateDet}>
