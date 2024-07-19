@@ -47,5 +47,5 @@
 {#if showPreview}
 	<Preview onJoin={handleJoin} />
 {:else}
-	<Room {call} {channel} {role}/>
+	<Room {call} {channel} {role} />
 {/if}
