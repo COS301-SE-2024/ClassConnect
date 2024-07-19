@@ -1,6 +1,6 @@
 import type { Actions } from './$types';
 import { fail, error } from '@sveltejs/kit';
-import { upload, deleteFile } from '$lib/server/s3Bucket';
+import { upload, deleteFile } from '$src/lib/server/storage';
 
 import User from '$db/schemas/User';
 import type { ObjectId } from 'mongoose';

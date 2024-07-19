@@ -7,12 +7,20 @@
 
 	import Participant from './Participant.svelte';
 	import ScreenShare from './ScreenShare.svelte';
+	import Environment from './Environment.svelte';
 
 	let gridClass = '';
+	let isEnvironmentOn = false;
 	let participants: StreamVideoParticipant[] = [];
 	let screenSharingParticipant: StreamVideoParticipant | null = null;
 
 	const callStore = getContext<Writable<Call | null>>('call');
+
+	$: {
+		$callStore?.state.custom$.subscribe(({ environment }) => {
+			isEnvironmentOn = environment;
+		});
+	}
 
 	$: {
 		$callStore?.state.participants$.subscribe((newParticipants) => {
@@ -35,7 +43,9 @@
 </script>
 
 <div class="h-full w-full bg-gray-100 p-4 dark:bg-gray-900">
-	{#if screenSharingParticipant}
+	{#if isEnvironmentOn}
+		<Environment />
+	{:else if screenSharingParticipant}
 		<ScreenShare participant={screenSharingParticipant} />
 	{:else}
 		<div class={`grid ${gridClass} h-full w-full gap-4 dark:bg-gray-900`}>

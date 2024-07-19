@@ -2,7 +2,7 @@ import Users from '$db/schemas/User';
 import { fail } from '@sveltejs/kit';
 import { HASH_OPTIONS } from '$src/constants';
 import { verify, hash } from '@node-rs/argon2';
-import { upload, deleteFile } from '$lib/server/s3Bucket';
+import { upload, deleteFile } from '$src/lib/server/storage';
 import type { User } from '$src/types';
 import type { ObjectId } from 'mongoose';
 import type { Actions } from './$types';
