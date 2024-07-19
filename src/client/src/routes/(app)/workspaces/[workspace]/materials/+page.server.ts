@@ -13,7 +13,7 @@
 import type { Actions } from './$types';
 import Material from '$db/schemas/Material';
 import { fail, error } from '@sveltejs/kit';
-import { upload } from '$lib/server/s3Bucket';
+import { upload } from '$src/lib/server/storage';
 
 async function formatMaterial(material: any) {
 	return {

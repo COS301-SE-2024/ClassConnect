@@ -12,16 +12,21 @@
 	import AttendanceList from './AttendanceList.svelte';
 
 	export let call: Call;
+	export let role: string;
 	export let channel: Channel;
 	const callStore: Writable<Call | null> = writable(null);
 
 	onMount(async () => {
-		await call.join({ create: true });
+		await call.join({ create: true, data: { custom: { environment: false } } });
 		callStore.set(call);
 	});
 
 	onDestroy(() => {
-		if (call) call.leave();
+		if (call) {
+			call.leave();
+			call.update({ custom: { environment: false } });
+		}
+
 		if (channel) channel.stopWatching();
 	});
 
@@ -34,7 +39,7 @@
 
 		<div class="flex w-full flex-col items-center justify-center">
 			<Participants />
-			<Controls />
+			<Controls {role} />
 		</div>
 
 		<Chat {channel} />
