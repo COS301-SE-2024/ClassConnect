@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Card from '$lib/components/common/materials/Card.svelte';
+	import Card from '$lib/components/materials/Card.svelte';
 	import { enhance } from '$app/forms';
 	import type { ActionResult } from '@sveltejs/kit';
 	import {Tabs ,TabItem, Button,Spinner, Modal, Label, Input, Fileupload,Checkbox, MultiSelect, Table,TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, TableSearch} from 'flowbite-svelte'
