@@ -2,12 +2,13 @@
     import { Canvas } from '@threlte/core';
 	import Scene from '$src/lib/components/sandbox/+Scene.svelte';
 	import { Button, Modal } from 'flowbite-svelte';
-    import { displayedSandboxObjectURL } from '$src/lib/store/objects';
+    import { displayedSandboxObjectURL,ObjInScene } from '$src/lib/store/objects';
 	export let open: boolean;
 
 	async function handleNo(event: Event) {
         event.preventDefault();
         displayedSandboxObjectURL.set('');
+		ObjInScene.set(false);
 		open = false;
 	}
 	let autoRotate: boolean = false;

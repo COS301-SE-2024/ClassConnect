@@ -8,10 +8,8 @@
     import { Button } from 'flowbite-svelte';
     import { onMount } from 'svelte';
 
-    export let items : any;
-	export let key;
 
-    console.log(key)
+    export let items : any;
 
     let autoRotate: boolean = false;
     let enableDamping: boolean = true;
@@ -22,6 +20,7 @@
 	let fullscreen: boolean = false;
     let experimentModal = false;
     let canvasElement : any;
+    let SceneElement : any;
 
     async function handleRemoveObject(event: Event) {
         event.preventDefault();
@@ -31,13 +30,19 @@
 
     onMount(() => {
         canvasElement = document.querySelector('.canvas-container');
+        console.log(SceneElement); // Example usage
     });
+
+    // Reactive statement to react when SceneElement changes
+       $: if (SceneElement) {
+        console.log('SceneElement is now defined', SceneElement);
+    }
 
 </script>
 
 <main class="p-4">
     <div class="flex flex-col space-y-4">
-        <header class="flex items-center justify-between rounded-lg bg-gray-100 p-4 dark:bg-gray-700">
+        <header class="flex items-center justify-between rounded-lg  p-4 ">
             <h1 class="text-2xl font-semibold dark:text-gray-200">Sandbox</h1>
             <div class="flex space-x-2">
                 <Button on:click={() => (experimentModal = true)} color="green" class="flex items-center space-x-1">
@@ -53,12 +58,12 @@
         </header>
         <section class="flex h-[700px] canvas-container flex-col space-y-4 rounded-lg bg-gray-200 p-2 shadow-md ring dark:bg-gray-700">
             <div class="flex-1">
-                <Canvas >
-                    <Scene {enableDamping} {autoRotate} {rotateSpeed} {zoomToCursor} {zoomSpeed} {enableZoom}/>
+                <Canvas>
+                    <Scene bind:this={SceneElement} {enableDamping} {autoRotate} {rotateSpeed} {zoomToCursor} {zoomSpeed} {enableZoom}/>
                 </Canvas>
             </div>
             {#if $displayedSandboxObjectURL !== ''}
-                <ObjectSettings canvasElement={canvasElement} {fullscreen} {enableDamping} {autoRotate} {rotateSpeed} {zoomToCursor} {zoomSpeed} {enableZoom}/>
+                <ObjectSettings SceneElement={SceneElement} canvasElement={canvasElement} {fullscreen} {enableDamping} {autoRotate} {rotateSpeed} {zoomToCursor} {zoomSpeed} {enableZoom}/>
             {/if}
         </section>
     </div>

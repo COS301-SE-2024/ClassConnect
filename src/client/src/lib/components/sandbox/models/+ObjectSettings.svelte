@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Checkbox, Pane, ThemeUtils, Slider } from 'svelte-tweakpane-ui';
-	import { fullscreenlog } from '$src/lib/store/objects';
 	export let autoRotate: boolean;
 	export let enableDamping: boolean;
 	export let rotateSpeed: number;
@@ -9,17 +8,30 @@
 	export let enableZoom: boolean;
 	export let fullscreen: boolean;
 	export let canvasElement: any;
+	export let SceneElement: any;
+
+	let initialWidth: number = 0;
+	let initialHeight: number = 0;
+
+	let sceneWidth: number = 0;
+	let sceneHeight: number = 0;
 
 	function handleFullScreen() {
         if (!document.fullscreenElement && fullscreen) {
+			initialWidth = canvasElement.clientWidth;
+			initialHeight = canvasElement.clientHeight;
+			console.log(initialWidth, initialHeight);
+			console.log(sceneWidth, sceneHeight);
 			canvasElement.requestFullscreen().catch((err: any) => {
                 alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
             });
         } else {
 			if (document.exitFullscreen && !fullscreen && document.fullscreenElement) {
-				document.exitFullscreen().then(() => {
-					const log : string = 'Exited full-screen mode at : ' + Date.now().toString();
-					fullscreenlog.set(log);
+				document.exitFullscreen().then(()=>{
+					canvasElement.style.width = initialWidth + 'px';
+					canvasElement.style.height = initialHeight + 'px';
+					console.log(canvasElement.clientWidth, canvasElement.clientHeight);
+					console.log(SceneElement.clientWidth, SceneElement.clientHeight);
 				}).catch((err) => {
 					alert(`Error attempting to exit full-screen mode: ${err.message} (${err.name})`);
 				});

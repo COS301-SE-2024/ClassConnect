@@ -8,7 +8,7 @@
 		TableHead,
 		TableHeadCell
 	} from 'flowbite-svelte';
-	import { displayedSandboxObjectURL } from '$src/lib/store/objects';
+	import { displayedSandboxObjectURL, ObjInScene } from '$src/lib/store/objects';
     
     export let open: boolean;
     export let items : any;
@@ -21,6 +21,7 @@
 
 	function handleObjectSelect(items: any) {
 		displayedSandboxObjectURL.set(items.fileURL);
+        ObjInScene.set(true);
 		open = false;
 	}
 </script>
