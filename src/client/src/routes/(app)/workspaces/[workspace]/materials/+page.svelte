@@ -23,11 +23,11 @@
     <h1 class="text-2xl font-bold dark:text-white">Materials</h1>
 	<div class="mt-2">
 		<Tabs>
-				<MaterialsTab tabName="All" tabBoolean={true} renderedMaterials={foundMaterials} />
+				<MaterialsTab tabName="All" tabBoolean={true} renderedMaterials={foundMaterials} {role} />
 
-				<MaterialsTab tabName="Documents" tabBoolean={false} renderedMaterials={foundMaterials} />
+				<MaterialsTab tabName="Documents" tabBoolean={false} renderedMaterials={foundMaterials} {role} />
 
-				<MaterialsTab tabName="3D Objects" tabBoolean={false} renderedMaterials={foundMaterials} />
+				<MaterialsTab tabName="3D Objects" tabBoolean={false} renderedMaterials={foundMaterials} {role} />
 		</Tabs>
 	</div>
 </div>

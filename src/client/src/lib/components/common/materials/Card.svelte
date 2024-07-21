@@ -1,18 +1,45 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
+	import RemoveModal from '$lib/components/admin/modals/Delete.svelte'; 
+	import {Button} from 'flowbite-svelte';
+	import { CloseCircleOutline, CloseOutline } from 'flowbite-svelte-icons';
+	import { selectForDelete } from '$lib/store/materials'
+
+
 
 	export let title;
 	export let description;
+	export let id:string;
+	export let role:string
+
+	let removeButtonActivated;
+	
+	let isRemoveModalOpen = false;
+
+	function handleRemoveModalOpen (lectureId :string){
+		isRemoveModalOpen = true;
+		id = lectureId;
+	}
 
 	const handleFileOpening = () => {
 		goto($page.url + '/123');
 	};
 </script>
 
-<div
-	class="flex flex-col rounded-xl border bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:shadow-neutral-700/70"
+<div class="relative flex flex-col rounded-xl border bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:shadow-neutral-700/70">
+<!-- Cancel button -->
+{#if role ==='lecturer'&& $selectForDelete}
+<Button
+color="red"
+class="absolute top-2 right-2  p-2"
+on:click={()=>handleRemoveModalOpen(id)}
 >
+	<CloseOutline />
+</Button>
+{/if}
+
+ 
 	<img class="h-20 w-full rounded-t-xl" src="/images/pdf-icon.svg" alt="PDF preview" />
 	<div class="p-4 md:p-5">
 		<h3 class="text-lg font-bold text-gray-800 dark:text-white">
@@ -30,3 +57,5 @@
 		</button>
 	</div>
 </div>
+
+<RemoveModal bind:open={isRemoveModalOpen} {id} item="material" />
