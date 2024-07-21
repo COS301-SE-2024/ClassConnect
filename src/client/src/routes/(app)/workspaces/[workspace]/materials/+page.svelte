@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { Tabs } from 'flowbite-svelte'
-	import MaterialsTab from '$src/lib/components/common/materials/MaterialsTab.svelte';
+	import MaterialsTab from '$src/lib/components/materials/MaterialsTab.svelte';
 	
 	export let data: any;
 	let foundMaterials : any[] = [];
-
-	$:({role,materials}= data)
+	let DocumentMaterials : any[] = [];
+	let ObjectMaterials : any[] = [];
+	$:({materials}= data)
 
 	$: {
 		materials = materials.map((material: any) => ({
@@ -13,21 +14,23 @@
 	
 		}));
 		foundMaterials = materials;
-
-		
+		for (let i = 0; i < materials.length; i++) {
+			if (!materials[i].type) {
+				DocumentMaterials.push(materials[i]);
+			} else {
+				ObjectMaterials.push(materials[i]);
+			}
+		}
 	}
 
 </script>
 
-<div class="p-4">
-    <h1 class="text-2xl font-bold dark:text-white">Materials</h1>
-	<div class="mt-2">
-		<Tabs>
-				<MaterialsTab tabName="All" tabBoolean={true} renderedMaterials={foundMaterials} />
+<div class="mt-2">
+	<Tabs>
+		<MaterialsTab tabName="All" tabBoolean={true} renderedMaterials={foundMaterials} />
 
-				<MaterialsTab tabName="Documents" tabBoolean={false} renderedMaterials={foundMaterials} />
+		<MaterialsTab tabName="Documents" tabBoolean={false} renderedMaterials={DocumentMaterials} />
 
-				<MaterialsTab tabName="3D Objects" tabBoolean={false} renderedMaterials={foundMaterials} />
-		</Tabs>
-	</div>
+		<MaterialsTab tabName="3D Objects" tabBoolean={false} renderedMaterials={ObjectMaterials} />
+	</Tabs>
 </div>

@@ -1,5 +1,11 @@
 <script lang="ts">
+	import { objURL } from '$src/lib/store/objects';
 	let pdf_data = 'https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210101201653/PDF.pdf';
+	
+	if($objURL !== ''){
+		pdf_data = $objURL;
+	}
+
 </script>
 
 <main class="flex h-[calc(100vh-64px)] flex-col">

@@ -1,32 +1,42 @@
 <script lang="ts">
+	import { objURL,displayedSandboxObjectURL} from '$src/lib/store/objects';
+	import { Card, Button } from 'flowbite-svelte';
+	import { ArrowRightOutline } from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 
 	export let title;
 	export let description;
+	export let thumbnail: string;
+	export let id : string;
+	export let url: string;
+	export let type: boolean;
+
+	console.log(id);
 
 	const handleFileOpening = () => {
-		goto($page.url + '/123');
+		if(!type){
+			objURL.set(url);
+			goto($page.url+'/material');
+		}else{
+			displayedSandboxObjectURL.set(url);
+			let curr_url : string = $page.url.toString();
+			curr_url = curr_url.replace('materials','sandbox');
+			goto(curr_url);
+		}
 	};
 </script>
 
-<div
-	class="flex flex-col rounded-xl border bg-white shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:shadow-neutral-700/70"
->
-	<img class="h-20 w-full rounded-t-xl" src="/images/pdf-icon.svg" alt="PDF preview" />
-	<div class="p-4 md:p-5">
-		<h3 class="text-lg font-bold text-gray-800 dark:text-white">
-			{title}
-		</h3>
-		<p class="mt-1 text-gray-500 dark:text-neutral-400">
-			{description}
-		</p>
-		<button
-			type="button"
-			class="mt-2 inline-flex items-center justify-center gap-x-2 rounded-lg border border-transparent bg-green-600 px-3 py-2 text-sm font-semibold text-white hover:bg-green-700 disabled:pointer-events-none disabled:opacity-50"
-			on:click={handleFileOpening}
-		>
-			Open PDF
-		</button>
-	</div>
+<div  class="space-y-4">
+	<Card img={thumbnail} >
+	  <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+		{ title }
+	  </h5>
+	  <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
+		{description}
+	  </p>
+	  <Button on:click={handleFileOpening}>
+		Open File <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
+	  </Button>
+	</Card>
 </div>
