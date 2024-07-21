@@ -7,12 +7,34 @@ import {upload,deleteFile} from '$lib/server/s3Bucket';
 
 function formatMaterial(material:any):Partial<Material>{
     return {
+        id : material._id.toString(),
         title : material.title,
         description : material.description,
         type : material.type
     };
 }
  
+function determineFolder(file: File): string {
+	const extension = file.name.split('.').pop()?.toLowerCase();
+
+	if (!extension) {
+		throw new Error('File has no extension');
+	}
+
+	const picturesExtensions = ['png', 'jpeg', 'jpg', 'webp'];
+	const objectsExtensions = ['gltf','glb'];
+	const studyMaterialExtensions = ['pdf', 'pptx', 'epub'];
+
+	if (picturesExtensions.includes(extension)) {
+		return 'image';
+	} else if (objectsExtensions.includes(extension)) {
+		return '3d-object';
+	} else if (studyMaterialExtensions.includes(extension)) {
+		return 'study-material';
+	} else {
+		throw new Error('Unsupported file format');
+	}
+}
  
 
 
@@ -68,8 +90,10 @@ async function deleteMaterial(id:string){
 
     const deletedMaterial = await Materials.findByIdAndDelete(id);
 
+
     if(!deletedMaterial) return fail(404,{message:'Material not found'});
     console.log("Material:" + deletedMaterial);
+    deleteFile(deletedMaterial.file_path);
     return {success:true};
 }
 
@@ -85,7 +109,7 @@ export const actions: Actions = {
             return fail(500, { message: 'Failed to upload material' });
         }
     },
-    deleteMat: async ({request,locals}) => {
+    delete: async ({request,locals}) => {
         validateLecturer(locals);
         try{
             const data = await request.formData();
