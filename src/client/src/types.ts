@@ -81,3 +81,11 @@ export type FAQCategory = {
 	category: string;
 	items: FAQItem[];
 };
+
+export interface Quiz {
+	id: string; 
+	instructions: string;
+	title: string;
+	graded: string;
+	date: Date;
+}

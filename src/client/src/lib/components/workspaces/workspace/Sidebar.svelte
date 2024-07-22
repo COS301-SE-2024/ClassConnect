@@ -20,6 +20,7 @@
 			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
 			{ icon: BriefcaseOutline, name: 'Materials', href: workspaceURL + '/materials' },
 			{ icon: UserCircleOutline, name: 'Lessons', href: workspaceURL + '/lessons' },
+			{ icon: UserCircleOutline, name: 'Quizzes', href: workspaceURL + '/quizzes' },
 			{ icon: UsersGroupOutline, name: 'Sandbox', href: workspaceURL + '/sandbox' }
 		],
 		student: [
