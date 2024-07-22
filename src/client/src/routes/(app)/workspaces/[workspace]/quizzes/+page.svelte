@@ -30,7 +30,7 @@
 		data = [
 			{ id: 1, title: 'Quiz 1', graded: 'Yes', dateModified: new Date('2023-07-01') },
 			{ id: 2, title: 'Quiz 2', graded: 'No', dateModified: new Date('2023-07-10') },
-			{ id: 3, title: 'Quiz 3', graded: 'Yes', dateModified: new Date('2023-07-15') }
+			{ id: 3, title: 'Quiz 3', graded: 'Partially', dateModified: new Date('2023-07-15') }
 		];
 	});
 
