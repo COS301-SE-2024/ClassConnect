@@ -10,7 +10,7 @@ const materialSchema = new mongoose.Schema({
 		required: true
 	},
 	type: {
-		type: Boolean,
+		type: String,
 		required: true
 	},
 	file_path: {

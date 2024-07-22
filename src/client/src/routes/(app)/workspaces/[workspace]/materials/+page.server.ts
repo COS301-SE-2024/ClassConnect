@@ -28,7 +28,7 @@ function determineFolder(file: File): string {
 	if (picturesExtensions.includes(extension)) {
 		return 'image';
 	} else if (objectsExtensions.includes(extension)) {
-		return '3d-object';
+		return 'object';
 	} else if (studyMaterialExtensions.includes(extension)) {
 		return 'study-material';
 	} else {
@@ -38,17 +38,17 @@ function determineFolder(file: File): string {
  
 
 
-async function getMaterials(workspace_id:string,type:boolean):Promise<Partial<Material>[]>{
+async function getMaterials(workspace_id:string):Promise<Partial<Material>[]>{
     const materials = await Materials.find({workspace_id});
     console.log(materials)
     return materials.map(formatMaterial);
 }
 //Function to Upload Materials
-async function uploadMaterials(data:FormData,workspace_id:string,typeSet:boolean){
+async function uploadMaterials(data:FormData,workspace_id:string){
     const title = data.get('title') as string;
     const description = data.get('description') as string;
     const file_path = await upload(data.get('file') as File) as string;
-    const type = typeSet; //TODO: Should account for differnt types of Materials.
+    const type = determineFolder(data.get('file') as File);
 
     if(!title) return fail(400,{message:'Title is required'});
     if(!description) return fail(400,{message:'Description is required'});
@@ -69,7 +69,8 @@ async function uploadMaterials(data:FormData,workspace_id:string,typeSet:boolean
 
 export async function load({ locals, params }) {
 	try {
-		const materials = await getMaterials(params.workspace,false);
+
+		const materials = await getMaterials(params.workspace);
         console.log(materials)
 		return {
 			role: locals.user?.role,
@@ -103,7 +104,7 @@ export const actions: Actions = {
     
         try{
         const data = await request.formData();
-        return await uploadMaterials(data,params.workspace,true);
+        return await uploadMaterials(data,params.workspace);
         }catch(e){
             console.error('Error uploading material:', e);
             return fail(500, { message: 'Failed to upload material' });

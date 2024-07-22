@@ -23,7 +23,6 @@
 
 	function deleteOption() {
 		selectForDelete.update((n) => !n);
-		console.log($selectForDelete);
 	}
 
 	$: filteredItems = renderedMaterials.filter((material:any) => material.title.toLowerCase().indexOf(materialSearchTerm.toLowerCase()) !== -1);

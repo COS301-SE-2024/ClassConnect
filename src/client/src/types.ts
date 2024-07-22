@@ -49,6 +49,6 @@ export interface Material {
 	title: string;
 	description: string;
 	file_path: string;
-	type: boolean;
+	type: string;
 	workspace: string;
 }
