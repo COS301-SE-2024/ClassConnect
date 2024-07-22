@@ -50,6 +50,10 @@ async function createQuiz(
 
 	return { success: true };
 }
+
+function validateLecturer(locals: any) {
+	if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorised');
+}
 // import { error, redirect } from '@sveltejs/kit';
 
 // export async function load({ locals }) {
