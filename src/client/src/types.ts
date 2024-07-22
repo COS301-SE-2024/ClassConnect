@@ -55,6 +55,6 @@ export interface Lesson {
 export interface Quiz {
 	id: string; 
 	title: string;
-	graded: boolean;
+	graded: string;
 	date: Date;
 }

@@ -6,7 +6,7 @@ const quizsSchema = new mongoose.Schema({
 		required: true
 	},
 	graded: {
-		type: Boolean,
+		type: String,
 		required: true
 	},
 	date: {
