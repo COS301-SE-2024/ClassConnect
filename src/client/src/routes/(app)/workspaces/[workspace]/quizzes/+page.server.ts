@@ -68,8 +68,8 @@ export const actions: Actions = {
 
 			return await createQuiz(title, graded, workspaceId);
 		} catch (error) {
-			console.error('Error posting announcement:', error);
-			return fail(500, { error: 'Failed to post announcement' });
+			console.error('Error posting quiz:', error);
+			return fail(500, { error: 'Failed to post quiz' });
 		}
 	}
 }

@@ -15,38 +15,37 @@
 	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 
 
-	interface Quiz {
-        id: number;
-        title: string;
-        graded: string;
-        dateModified: Date;
-    }
-	let id: number;
-    let data: Quiz[] = [];
+	
+	export let data: any;
+
+	let id: string;
+    // let data: Quiz[] = [];
     let isQuizFormOpen= false;
 	let isEditModalOpen = false;
 	let isAddModalOpen= false;
-	onMount(() => {
-		data = [
-			{ id: 1, title: 'Quiz 1', graded: 'Yes', dateModified: new Date('2023-07-01') },
-			{ id: 2, title: 'Quiz 2', graded: 'No', dateModified: new Date('2023-07-10') },
-			{ id: 3, title: 'Quiz 3', graded: 'Partially', dateModified: new Date('2023-07-15') }
-		];
-	});
+	// onMount(() => {
+	// 	data = [
+	// 		{ id: 1, title: 'Quiz 1', graded: 'Yes', dateModified: new Date('2023-07-01') },
+	// 		{ id: 2, title: 'Quiz 2', graded: 'No', dateModified: new Date('2023-07-10') },
+	// 		{ id: 3, title: 'Quiz 3', graded: 'Partially', dateModified: new Date('2023-07-15') }
+	// 	];
+	// });
 
+	$: ({ quizzes } = data);
+	console.log(data);
 	const headers = ['Title', 'Graded', 'Date Modified', 'Actions'];
 
-	function handleEditModalOpen(quizID: number) {
+	function handleEditModalOpen(quizID: string) {
 		id = quizID;
 		isEditModalOpen = true;
 	}
 
-	function handleAddModalOpen(quizID: number) {
+	function handleAddModalOpen(quizID: string) {
 		id = quizID;
 		isAddModalOpen = true;
 	}
 
-	function handleRemoveModalOpen(quizId: number) {
+	function handleRemoveModalOpen(quizId: string) {
 		
 		console.log(`Remove quiz with ID: ${quizId}`);
 	}
