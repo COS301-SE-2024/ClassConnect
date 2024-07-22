@@ -10,6 +10,7 @@ import Quizzes from '$db/schemas/Quiz';
 function formatQuiz(quiz: any): Quiz {
 	return {
 		title: quiz.title,
+		instructions: quiz.instructions,
 		id: quiz._id.toString(),
 		graded: quiz.graded,
 		date: quiz.date.toISOString(),
@@ -38,11 +39,13 @@ export async function load({ params }) {
 async function createQuiz(
 	title: string,
 	graded: string,
+	instructions: string,
 	ownerID: ObjectId | undefined
 ) {
 	const newQuiz = new Quizzes({
 		title,
 		graded,
+		instructions,
 		owner: ownerID
 	});
 
@@ -63,10 +66,11 @@ export const actions: Actions = {
 		try {
 			const data = await request.formData();
 			const title = data.get('title') as string;
-			const graded = data.get('graded') as string;
-			const workspaceId = new mongoose.Schema.Types.ObjectId(params.workspace);
+			const instructions = data.get('instructions') as string;
+			const graded = 'No';
+			const workspaceId = new mongoose.Types.ObjectId(params.workspace);
 
-			return await createQuiz(title, graded, workspaceId);
+			return await createQuiz(title, graded, instructions, workspaceId);
 		} catch (error) {
 			console.error('Error posting quiz:', error);
 			return fail(500, { error: 'Failed to post quiz' });

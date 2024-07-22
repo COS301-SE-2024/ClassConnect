@@ -5,7 +5,11 @@ const quizsSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	graded: {
+	instructions: {
+		type: String,
+		required: true
+	},
+	graded:{
 		type: String,
 		required: true
 	},

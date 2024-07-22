@@ -30,8 +30,8 @@
 		<Label for="title" class="mb-2 mt-2 text-left">Title</Label>
 		<Input type="text" id="title" name="title" placeholder="Fire Drill" size="md" required />
 
-		<Label for="title" class="mb-2 mt-2 text-left">Add Instructions</Label>
-		<Textarea id="editor" rows="8" class="mb-4" placeholder="Write a comment">
+		<Label for="instructions" class="mb-2 mt-2 text-left">Add Instructions</Label>
+		<Textarea id="instructions" name="instructions" rows="8" class="mb-4" placeholder="Write a comment">
 			<Toolbar slot="header" embedded>
 			<ToolbarGroup>
 				<ToolbarButton name="Attach file"><PaperClipOutline class="w-6 h-6 rotate-45" /></ToolbarButton>
@@ -44,14 +44,6 @@
 			</ToolbarGroup>
 			</Toolbar>
 		</Textarea>
-
-        <Label for="title" class="mb-2 mt-2 text-left">Auto-Grade</Label>
-		<Radio name="grading">No</Radio>
-        <Radio name="grading" checked={true}>Yes</Radio>
-
-        <Label for="title" class="mb-2 mt-2 text-left">Allow Backtracking</Label>
-		<Radio name="backtrack">No</Radio>
-        <Radio name="backtrack" checked={true}>Yes</Radio>
 
 		<Button type="submit" class="mt-4 w-full">Create</Button>
 	</form>

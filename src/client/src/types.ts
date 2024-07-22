@@ -54,6 +54,7 @@ export interface Lesson {
 
 export interface Quiz {
 	id: string; 
+	instructions: string;
 	title: string;
 	graded: string;
 	date: Date;
