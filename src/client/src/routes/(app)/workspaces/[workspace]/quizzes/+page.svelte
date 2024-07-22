@@ -9,8 +9,8 @@
 		TableHeadCell,
 		TableBodyCell
 	} from 'flowbite-svelte';
-    import { onMount } from 'svelte';
-	import {  PlusOutline, EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
+    
+	import {  EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 	import AddModal from '$lib/components/modals/quizzes/Add.svelte';
 	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 
@@ -23,13 +23,7 @@
     let isQuizFormOpen= false;
 	let isEditModalOpen = false;
 	let isAddModalOpen= false;
-	// onMount(() => {
-	// 	data = [
-	// 		{ id: 1, title: 'Quiz 1', graded: 'Yes', dateModified: new Date('2023-07-01') },
-	// 		{ id: 2, title: 'Quiz 2', graded: 'No', dateModified: new Date('2023-07-10') },
-	// 		{ id: 3, title: 'Quiz 3', graded: 'Partially', dateModified: new Date('2023-07-15') }
-	// 	];
-	// });
+	
 
 	$: ({ quizzes } = data);
 	console.log(data);
