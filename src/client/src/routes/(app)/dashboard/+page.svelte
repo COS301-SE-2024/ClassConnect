@@ -1,6 +1,6 @@
 <script>
-	import AdminDashboard from '$lib/components/admin/Dashboard.svelte';
-	import StudentDashboard from '$lib/components/student/Dashboard.svelte';
+	import AdminDashboard from '$src/lib/components/dashboards/Admin.svelte';
+	import StudentDashboard from '$src/lib/components/dashboards/Student.svelte';
 
 	export let data;
 
@@ -8,7 +8,7 @@
 </script>
 
 {#if role === 'admin'}
-	<AdminDashboard {role} />
+	<AdminDashboard />
 {:else if role === 'student'}
-	<StudentDashboard {role} />
+	<StudentDashboard />
 {/if}

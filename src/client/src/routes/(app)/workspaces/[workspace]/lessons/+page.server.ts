@@ -1,23 +1,32 @@
+import type { Actions } from './$types';
 import { error, fail } from '@sveltejs/kit';
-import type { Actions } from '@sveltejs/kit';
+import Activities from '$db/schemas/Activity';
+import type { Lesson } from '$src/types';
+import Lessons from '$db/schemas/Lesson';
 
-import Lesson from '$db/schemas/Lesson';
+function formatLesson(lesson: any): Partial<Lesson> {
+	return {
+		id: lesson._id.toString(),
+		date: lesson.date,
+		time: lesson.time,
+		topic: lesson.topic,
+		description: lesson.description
+	};
+}
+
+async function getLessons(workspace: string): Promise<Partial<Lesson>[]> {
+	const lessons = await Lessons.find({ workspace });
+
+	return lessons.map(formatLesson);
+}
 
 export async function load({ locals, params }) {
 	try {
-		const lessons = await Lesson.find({ workspace: params.workspace });
-
-		const formattedLessons = lessons.map((lesson) => ({
-			date: lesson.date,
-			time: lesson.time,
-			topic: lesson.topic,
-			id: lesson._id.toString(),
-			description: lesson.description
-		}));
+		const lessons = await getLessons(params.workspace);
 
 		return {
 			role: locals.user?.role,
-			lessons: formattedLessons
+			lessons
 		};
 	} catch (e) {
 		console.error('Server error:', e);
@@ -25,96 +34,115 @@ export async function load({ locals, params }) {
 	}
 }
 
+function validateLecturer(locals: any) {
+	if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorized');
+}
+
+async function scheduleLesson(data: FormData, workspace: string) {
+	const topic = data.get('topic') as string;
+	const date = data.get('date') as string;
+	const time = data.get('time') as string;
+	const description = data.get('description') as string;
+
+	if (!topic) return fail(400, { message: 'Topic is required' });
+	if (!date) return fail(400, { message: 'Date is required' });
+	if (!time) return fail(400, { message: 'Time is required' });
+
+	const newLesson = new Lessons({
+		time,
+		topic,
+		description,
+		workspace,
+		date: new Date(`${date}T${time}`)
+	});
+
+	await newLesson.save();
+	//create activity
+	const newActivity = new Activities({
+		title: `New Lesson: ${topic}`,
+		description: description || '',
+		date: new Date(`${date}T${time}`),
+		owner: workspace,
+		type: 'lesson'
+	});
+
+	await newActivity.save();
+
+	return { success: true };
+}
+
+async function editLesson(data: FormData) {
+	const id = data.get('id') as string;
+	const date = data.get('date') as string;
+	const time = data.get('time') as string;
+	const topic = data.get('topic') as string;
+	const description = data.get('description') as string;
+
+	const updateData: { [key: string]: string | Date } = {};
+
+	if (time !== '') updateData.time = time;
+	if (topic !== '') updateData.topic = topic;
+	if (description !== '') updateData.description = description;
+
+	if (date !== '' && time !== '') {
+		updateData.date = new Date(`${date}T${time}`);
+	} else if (date !== '' || time !== '') {
+		const lesson = await Lessons.findById(id);
+		const currentDate = lesson.date.toISOString().split('T')[0];
+		const currentTime = lesson.date.toTimeString().split(' ')[0];
+
+		updateData.date = new Date(`${date || currentDate}T${time || currentTime}`);
+	}
+
+	const updatedLesson = await Lessons.findByIdAndUpdate(id, updateData, { new: true });
+
+	if (!updatedLesson) return fail(404, { error: 'Lesson not found' });
+
+	return { success: true };
+}
+
+async function deleteLesson(id: string) {
+	if (!id) return fail(400, { error: 'Lesson ID is required' });
+
+	const deletedLesson = await Lessons.findByIdAndDelete(id);
+	if (!deletedLesson) return fail(404, { message: 'Lesson not found' });
+
+	return { success: true };
+}
+
 export const actions: Actions = {
 	schedule: async ({ request, locals, params }) => {
-		if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorized');
-
-		const formData = await request.formData();
-		const topic = formData.get('topic');
-		const description = formData.get('description');
-		const date = formData.get('date') as string;
-		const time = formData.get('time') as string;
-
-		if (!topic) return fail(400, { message: 'Topic is required' });
-		if (!date) return fail(400, { message: 'Date is required' });
-		if (!time) return fail(400, { message: 'Time is required' });
+		validateLecturer(locals);
 
 		try {
-			const newLesson = new Lesson({
-				time,
-				topic,
-				description,
-				workspace: params.workspace,
-				date: new Date(`${date}T${time}`)
-			});
+			const data = await request.formData();
 
-			await newLesson.save();
-
-			return { success: true };
+			return await scheduleLesson(data, params.workspace);
 		} catch (e) {
 			console.error('Error creating lesson:', e);
 			return fail(500, { message: 'Failed to create lesson' });
 		}
 	},
-
 	edit: async ({ request, locals }) => {
-		if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorized');
-
-		const data = await request.formData();
-		const id = data.get('id') as string;
-		const date = data.get('date') as string;
-		const time = data.get('time') as string;
-		const topic = data.get('topic') as string;
-		const description = data.get('description') as string;
+		validateLecturer(locals);
 
 		try {
-			const updateData: { [key: string]: string | Date } = {};
+			const data = await request.formData();
 
-			if (time !== '') updateData.time = time;
-			if (topic !== '') updateData.topic = topic;
-			if (description !== '') updateData.description = description;
-
-			if (date !== '' && time !== '') {
-				updateData.date = new Date(`${date}T${time}`);
-			} else if (date !== '') {
-				const lesson = await Lesson.findById(id);
-				const currentTime = lesson.date.toTimeString().split(' ')[0];
-
-				updateData.date = new Date(`${date}T${currentTime}`);
-			} else if (time !== '') {
-				const lesson = await Lesson.findById(id);
-				const currentDate = lesson.date.toISOString().split('T')[0];
-
-				updateData.date = new Date(`${currentDate}T${time}`);
-			}
-
-			const updatedLesson = await Lesson.findByIdAndUpdate(id, updateData, {
-				new: true
-			});
-
-			if (!updatedLesson) return fail(404, { error: 'Lesson not found' });
-
-			return { success: true };
+			return await editLesson(data);
 		} catch (err) {
 			console.error('Error updating lesson:', err);
 			return fail(500, { error: 'Failed to update lesson' });
 		}
 	},
-
 	delete: async ({ request, locals }) => {
-		if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorized');
-
-		const data = await request.formData();
-		const id = data.get('id') as string;
-
-		if (!id) return fail(400, { error: 'Lesson ID is required' });
+		validateLecturer(locals);
 
 		try {
-			const deletedLesson = await Lesson.findByIdAndDelete(id);
+			const data = await request.formData();
+			const id = data.get('id') as string;
 
-			if (!deletedLesson) return fail(404, { message: 'Lesson not found' });
-
-			return { success: true };
+			return await deleteLesson(id);
 		} catch (e) {
 			console.error('Error deleting lesson:', e);
 			return fail(500, { message: 'Failed to delete lesson' });

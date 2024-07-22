@@ -1,32 +1,29 @@
-<script>
-	import { Breadcrumb, BreadcrumbItem } from 'flowbite-svelte';
-	import { onMount } from 'svelte';
+<script lang="ts">
 	import { page } from '$app/stores';
+	import { afterNavigate } from '$app/navigation';
+	import { Breadcrumb, BreadcrumbItem } from 'flowbite-svelte';
 
-	/**
-	 * @type {any[]}
-	 */
-	let breadcrumbItems = [];
+	let breadcrumbItems: any[];
 
-	// Function to update breadcrumb items based on the current URL
 	function updateBreadcrumbs() {
 		const path = $page.url.pathname.split('/').filter(Boolean);
+
 		breadcrumbItems = path.map((segment, index) => {
 			const href = '/' + path.slice(0, index + 1).join('/');
+
 			return { name: segment.charAt(0).toUpperCase() + segment.slice(1), href };
 		});
 	}
 
-	// Call updateBreadcrumbs when the component is first mounted
-	onMount(() => {
+	afterNavigate(() => {
 		updateBreadcrumbs();
 	});
 
-	// Call updateBreadcrumbs whenever the URL changes
-	$: updateBreadcrumbs();
+	updateBreadcrumbs();
 </script>
 
 <Breadcrumb aria-label="Default breadcrumb example">
+	<BreadcrumbItem href="/" home>Home</BreadcrumbItem>
 	{#each breadcrumbItems as item}
 		<BreadcrumbItem href={item.href}>{item.name}</BreadcrumbItem>
 	{/each}

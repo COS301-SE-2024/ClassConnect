@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { Button } from 'flowbite-svelte';
+	import Card from '$src/lib/components/announcements/Card.svelte';
 
-	import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
-	import AddModal from '$lib/components/admin/modals/announcement/Add.svelte';
-	import EditModal from '$lib/components/admin/modals/announcement/Edit.svelte';
+	import RemoveModal from '$lib/components/modals/Delete.svelte';
+	import AddModal from '$lib/components/modals/announcement/Add.svelte';
+	import EditModal from '$lib/components/modals/announcement/Edit.svelte';
+	//import { role } from '@stream-io/video-client';
 
 	export let data: any;
 
@@ -22,6 +24,7 @@
 		isRemoveModalOpen = true;
 	}
 
+	//$: console.log("Role:", role);
 	$: ({ announcements } = data);
 </script>
 
@@ -31,7 +34,9 @@
 			<h1 class="mb-4 text-2xl font-semibold text-gray-700 dark:text-white">
 				You do not have any Announcements in the organisation
 			</h1>
-			<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
+			{#if data.role === 'admin'}
+				<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
+			{/if}
 		</div>
 	{:else}
 		<div class="sm:flex sm:items-center sm:justify-between">
@@ -47,69 +52,28 @@
 				</div>
 			</div>
 			<div class="mb-4 flex items-center gap-x-3">
-				<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
+				{#if data.role === 'admin'}
+					<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
+				{/if}
 			</div>
 		</div>
 
-		<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-			{#each announcements as announcement (announcement.id)}
-				<div class="task m-2 rounded-lg bg-white p-4 shadow-md">
-					<div class="tags flex items-center justify-between">
-						<span class="tag text-lg font-bold">{announcement.title}</span>
-						<button class="options">
-							<svg
-								xml:space="preserve"
-								viewBox="0 0 41.915 41.916"
-								xmlns:xlink="http://www.w3.org/1999/xlink"
-								xmlns="http://www.w3.org/2000/svg"
-								fill="#000000"
-								width="24"
-								height="24"
-							>
-								<g>
-									<path
-										d="M11.214,20.956c0,3.091-2.509,5.589-5.607,5.589C2.51,26.544,0,24.046,0,20.956c0-3.082,2.511-5.585,5.607-5.585 C8.705,15.371,11.214,17.874,11.214,20.956z"
-									></path>
-									<path
-										d="M26.564,20.956c0,3.091-2.509,5.589-5.606,5.589c-3.097,0-5.607-2.498-5.607-5.589c0-3.082,2.511-5.585,5.607-5.585 C24.056,15.371,26.564,17.874,26.564,20.956z"
-									></path>
-									<path
-										d="M41.915,20.956c0,3.091-2.509,5.589-5.607,5.589c-3.097,0-5.606-2.498-5.606-5.589c0-3.082,2.511-5.585,5.606-5.585 C39.406,15.371,41.915,17.874,41.915,20.956z"
-									></path>
-								</g>
-							</svg>
-						</button>
-					</div>
-					<p class="my-2">{announcement.description}</p>
-					<div class="stats flex items-center justify-between">
-						<div class="flex items-center">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								fill="none"
-								viewBox="0 0 24 24"
-								width="24"
-								height="24"
-							>
-								<g>
-									<path stroke-linecap="round" stroke-width="2" d="M12 8V12L15 15"></path>
-									<circle stroke-width="2" r="9" cy="12" cx="12"></circle>
-								</g>
-							</svg>
-							<span class="ml-2">{announcement.date}</span>
-						</div>
-						<div>
-							<Button class="mr-2" on:click={() => handleEditModalOpen(announcement.id)}>
-								Edit
-							</Button>
+		{#each announcements as announcement (announcement.id)}
+			<Card
+				date={announcement.date}
+				title={announcement.title}
+				description={announcement.description}
+			></Card>
+			<div class="flex space-x-2">
+				{#if data.role === 'admin'}
+					<Button class="mr-2" on:click={() => handleEditModalOpen(announcement.id)}>Edit</Button>
 
-							<Button color="red" on:click={() => handleRemoveModalOpen(announcement.id)}>
-								Delete
-							</Button>
-						</div>
-					</div>
-				</div>
-			{/each}
-		</div>
+					<Button color="red" on:click={() => handleRemoveModalOpen(announcement.id)}>
+						Delete
+					</Button>
+				{/if}
+			</div>
+		{/each}
 	{/if}
 </main>
 

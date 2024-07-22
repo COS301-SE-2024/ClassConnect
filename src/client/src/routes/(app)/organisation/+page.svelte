@@ -1,12 +1,11 @@
 <script lang="ts">
-	import type { PageData } from './$types';
 	import { Button } from 'flowbite-svelte';
 
-	import DeleteModal from '$lib/components/admin/modals/Delete.svelte';
-	import EditModal from '$lib/components/admin/modals/organisation/Edit.svelte';
-	import CreateModal from '$lib/components/admin/modals/organisation/Add.svelte';
+	import DeleteModal from '$lib/components/modals/Delete.svelte';
+	import EditModal from '$lib/components/modals/organisation/Edit.svelte';
+	import CreateModal from '$lib/components/modals/organisation/Add.svelte';
 
-	export let data: PageData;
+	export let data: any;
 
 	let isEditModalOpen = false;
 	let isCreateModalOpen = false;
