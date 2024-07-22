@@ -54,6 +54,25 @@ async function createQuiz(
 function validateLecturer(locals: any) {
 	if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorised');
 }
+
+
+export const actions: Actions = {
+	post: async ({ request, locals, params }) => {
+		validateLecturer(locals);
+
+		try {
+			const data = await request.formData();
+			const title = data.get('title') as string;
+			const graded = data.get('graded') as string;
+			const workspaceId = new mongoose.Schema.Types.ObjectId(params.workspace);
+
+			return await createQuiz(title, graded, workspaceId);
+		} catch (error) {
+			console.error('Error posting announcement:', error);
+			return fail(500, { error: 'Failed to post announcement' });
+		}
+	}
+}
 // import { error, redirect } from '@sveltejs/kit';
 
 // export async function load({ locals }) {
