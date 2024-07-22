@@ -3,6 +3,7 @@ import Materials from '$db/schemas/Material';
 import type { Material } from '$src/types';
 import type { UploadData } from '$src/types';
 import { fail, error } from '@sveltejs/kit';
+import { deleteFile } from '$lib/server/s3Bucket';
 import { uploadFile } from '$lib/server/UploadHandler';
 
 function formatMaterial(material:any):Partial<Material>{
@@ -42,10 +43,35 @@ function validateLecturer(locals: any) {
 async function deleteMaterial(id: string) {
 	if (!id) return fail(400, { message: 'Material ID is required' });
 
+    const material = await Materials.findById(id);
+
+    if(material){
+        const file_path = material.file_path;
+        const thumbnail = material.thumbnail;
+
+        if(file_path){
+            try{
+                await deleteFile(file_path);
+            }catch(e){
+                console.error('Error deleting file:', e);
+            }
+        }
+
+        if(thumbnail){
+            try{
+                await deleteFile(thumbnail);
+            }catch(e){
+                console.error('Error deleting thumbnail:', e);
+            }
+        }
+    }else{
+        return fail(404,{message:'Material not found'});
+    }
+
     const deletedMaterial = await Materials.findByIdAndDelete(id);
 
     if(!deletedMaterial) return fail(404,{message:'Material not found'});
-    console.log("Material:" + deletedMaterial);
+
     return {success:true};
 }
 
@@ -82,7 +108,6 @@ export const actions: Actions = {
             return fail(500, { message: 'Failed to delete material' });
         }
     },
-
     submitObjects: async({request})=>{
         const data = await request.formData();
         const selectedObjects = data.getAll('selectedObjects') as string[];

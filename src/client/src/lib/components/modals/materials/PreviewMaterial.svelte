@@ -1,10 +1,8 @@
 <script lang="ts">
     import { displayedSandboxObjectURL,ObjInScene } from '$src/lib/store/objects';
-	import { onMount } from 'svelte';
 	import * as htmlToImage from 'html-to-image';
-	import { toPng, toJpeg, toBlob, toPixelData, toSvg } from 'html-to-image';
 	import Scene from '$src/lib/components/sandbox/+Scene.svelte';
-    import Banner from '$lib/components/common/Banner.svelte';
+	import toast, { Toaster } from 'svelte-french-toast';
 	import { Button, Modal } from 'flowbite-svelte';
     import { Canvas } from '@threlte/core';
 	
@@ -16,10 +14,6 @@
     export let description: string;
 	let thumbnail: File;
 
-    let message: string;
-	let color: string;
-	let display: boolean = false;
-
 	async function handleNo(event: Event) {
         event.preventDefault();
         displayedSandboxObjectURL.set('');
@@ -29,6 +23,8 @@
 
     async function handleYes(event: Event) {
         event.preventDefault();
+		open = false;
+		
         displayedSandboxObjectURL.set('');
         ObjInScene.set(false);
 
@@ -42,23 +38,15 @@
         formData.append('description', description);
 		formData.append('thumbnail', thumbnail);
 
-		const response = await fetch('?/uploadMat', {
+		toast.promise(fetch('?/uploadMat', {
 			method: 'POST',
 			body: formData
+		}), {
+			loading: 'Uploading material...',
+			success: 'Material uploaded successfully!',
+			error: 'Failed to upload material!'
 		});
 
-		if (response.ok) {
-			message = 'Uploaded material successfully';
-			color = 'green';
-			display = true;
-			open = false;
-		} else {
-			message = 'Upload failed: ' + response.status + " : " + response.statusText ;
-			color = 'red';
-			display = true;
-			open = false;
-		}
-		open = false;
     }
     // 3D Object Preview
 	let autoRotate: boolean = false;
@@ -87,9 +75,7 @@
 	}
 </script>
 
-{#if display}
-	<Banner type="Delete" {color} {message} />
-{/if}
+<Toaster />
 
 {#if type === 'object'}
 <Modal id="previewModal" bind:open size="lg" placement="center">

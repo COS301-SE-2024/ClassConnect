@@ -84,6 +84,7 @@
 		"pdfjs-dist": "^4.4.168",
 		"sharp": "^0.33.4",
 		"stream-chat": "^8.37.0",
+		"svelte-french-toast": "^1.2.0",
 		"svelte-tweakpane-ui": "^1.3.0",
 		"tailwind-merge": "^2.4.0",
 		"three": "^0.165.0",
