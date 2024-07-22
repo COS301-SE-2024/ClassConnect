@@ -34,6 +34,22 @@ export async function load({ params }) {
 		throw error(500, 'Error occurred while fetching Quizzes');
 	}
 }
+
+async function createQuiz(
+	title: string,
+	graded: string,
+	ownerID: ObjectId | undefined
+) {
+	const newQuiz = new Quizzes({
+		title,
+		graded,
+		owner: ownerID
+	});
+
+	await newQuiz.save();
+
+	return { success: true };
+}
 // import { error, redirect } from '@sveltejs/kit';
 
 // export async function load({ locals }) {
