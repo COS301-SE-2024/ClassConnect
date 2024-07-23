@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import RemoveModal from '$lib/components/admin/modals/Delete.svelte';
+	import RemoveModal from '$lib/components/modals/Delete.svelte';
 	import { Button } from 'flowbite-svelte';
 	import { CloseOutline } from 'flowbite-svelte-icons';
 	import { selectForDelete } from '$lib/store/materials';
