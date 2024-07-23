@@ -49,6 +49,6 @@
 			<span>Image</span>
 			<Fileupload bind:value id="image" name="image"/>
 		</Label>
-		<Button type="submit" class="w-full1">Create Workspace</Button>
+		<Button type="submit" class="w-full1">Edit Workspace</Button>
 	</form>
 </Modal>
