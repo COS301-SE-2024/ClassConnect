@@ -4,13 +4,12 @@
 	import { goto } from '$app/navigation';
 	import { Button } from 'flowbite-svelte';
 	import {
-		FlowbiteSolid,
+		RocketSolid,
 		MicrophoneSolid,
 		VideoCameraSolid,
 		PhoneHangupSolid,
-		VideoCameraOutline,
-		MicrophoneSlashOutline,
-		ArrowUpRightFromSquareOutline
+		MicrophoneSlashSolid,
+		WindowRestoreSolid
 	} from 'flowbite-svelte-icons';
 
 	import type { Writable } from 'svelte/store';
@@ -51,44 +50,40 @@
 	}
 </script>
 
-<div class="mb-12 flex w-1/4 items-center justify-center rounded-full bg-gray-400 shadow-md">
-	<Button pill={true} color={isMicOn ? 'green' : 'red'} class="m-2" on:click={toggleMicrophone}>
-		{#if isMicOn}
-			<MicrophoneSolid />
-		{:else}
-			<MicrophoneSlashOutline />
-		{/if}
-	</Button>
-
-	<Button pill={true} color={isCameraOn ? 'green' : 'red'} class="m-2" on:click={toggleCamera}>
-		{#if isCameraOn}
-			<VideoCameraSolid />
-		{:else}
-			<VideoCameraOutline />
-		{/if}
-	</Button>
-
-	{#if role === 'lecturer'}
+<div class="mb-4 flex w-1/4 items-center justify-center">
+	<div class="flex space-x-4">
 		<Button
-			pill={true}
-			class="m-2"
-			on:click={toggleScreenShare}
-			color={isScreenShareOn ? 'green' : 'light'}
+			color={isMicOn ? 'primary' : 'red'}
+			class="rounded-full p-2"
+			on:click={toggleMicrophone}
 		>
-			<ArrowUpRightFromSquareOutline />
+			<svelte:component this={isMicOn ? MicrophoneSolid : MicrophoneSlashSolid} class="h-6 w-6" />
 		</Button>
 
-		<Button
-			pill={true}
-			class="m-2"
-			on:click={toggleEnvironment}
-			color={isEnvironmentOn ? 'green' : 'light'}
-		>
-			<FlowbiteSolid />
+		<Button color={isCameraOn ? 'primary' : 'red'} class="rounded-full p-2" on:click={toggleCamera}>
+			<svelte:component this={isCameraOn ? VideoCameraSolid : VideoCameraSolid} class="h-6 w-6" />
 		</Button>
-	{/if}
 
-	<Button pill={true} color="red" on:click={endCall}>
-		<PhoneHangupSolid />
-	</Button>
+		{#if role === 'lecturer'}
+			<Button
+				color={isScreenShareOn ? 'primary' : 'light'}
+				class="rounded-full p-2"
+				on:click={toggleScreenShare}
+			>
+				<WindowRestoreSolid class="h-6 w-6" />
+			</Button>
+
+			<Button
+				color={isEnvironmentOn ? 'primary' : 'light'}
+				class="rounded-full p-2"
+				on:click={toggleEnvironment}
+			>
+				<RocketSolid class="h-6 w-6" />
+			</Button>
+		{/if}
+
+		<Button color="red" class="rounded-full p-2" on:click={endCall}>
+			<PhoneHangupSolid class="h-6 w-6" />
+		</Button>
+	</div>
 </div>

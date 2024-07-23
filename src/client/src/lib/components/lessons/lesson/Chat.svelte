@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { Button, Input, Avatar, Listgroup, ListgroupItem } from 'flowbite-svelte';
+	import { Button, Input, Avatar } from 'flowbite-svelte';
 	import type { Channel, FormatMessageResponse } from 'stream-chat';
+	import AttendanceList from './AttendanceList.svelte';
 
 	export let channel: Channel;
 
 	let state: any;
 	let newMessage = '';
 	let messages: FormatMessageResponse[];
+	let activeTab = 'Chat';
 
 	onMount(async () => {
 		state = await channel.watch();
@@ -33,28 +35,59 @@
 	</div>
 {:else}
 	<div class="flex h-full flex-col">
-		<Listgroup class="flex-1 space-y-4 overflow-y-auto p-4">
-			<h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">Chat</h2>
-
-			{#each messages as message (message.id)}
-				<ListgroupItem class="align-center flex items-start items-center justify-start">
-					<Avatar src={message.user?.image} alt={message.user?.name} />
-
-					<div class="ml-2 w-full rounded-lg bg-green-100 p-3 lg:max-w-md">
-						<p class="text-sm font-semibold">{message.user?.name}</p>
-						<p>{message.text}</p>
-					</div>
-
-					<hr />
-				</ListgroupItem>
-			{/each}
-		</Listgroup>
-
-		<div class="border-t p-4">
-			<form on:submit|preventDefault={sendMessage} class="flex space-x-2">
-				<Input bind:value={newMessage} placeholder="Type a message..." class="flex-1" />
-				<Button type="submit">Send</Button>
-			</form>
+		<div class="mb-4 flex space-x-4">
+			<Button
+				color={activeTab === 'Chat' ? 'primary' : 'light'}
+				on:click={() => (activeTab = 'Chat')}
+				class="flex-1"
+			>
+				Chat
+			</Button>
+			<Button
+				color={activeTab === 'Participants' ? 'primary' : 'light'}
+				on:click={() => (activeTab = 'Participants')}
+				class="flex-1"
+			>
+				Participants
+			</Button>
 		</div>
+
+		{#if activeTab === 'Chat'}
+			<div class="flex-1 overflow-hidden rounded-lg border border-gray-300 dark:border-gray-600">
+				<div class="h-full overflow-y-auto p-4" style="width: 100%; transition: height 0.3s;">
+					{#each messages as message (message.id)}
+						<div class="mb-6 last:mb-0">
+							<div class="flex items-start">
+								<Avatar src={message.user?.image} alt={message.user?.name} class="mr-2" />
+								<div
+									class="flex-grow rounded-bl-lg rounded-br-lg rounded-tr-lg bg-gray-200 p-3 dark:bg-gray-700"
+								>
+									<div class="mb-2 flex items-center">
+										<p class="text-sm font-semibold text-gray-900 dark:text-white">
+											{message.user?.name}
+										</p>
+										<span class="ml-2 text-xs text-gray-500 dark:text-gray-400">
+											{new Date(message.created_at).toLocaleTimeString([], {
+												hour: '2-digit',
+												minute: '2-digit'
+											})}
+										</span>
+									</div>
+									<p class="text-sm text-gray-800 dark:text-gray-200">{message.text}</p>
+								</div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+			<div class="mt-4">
+				<form on:submit|preventDefault={sendMessage} class="flex space-x-2">
+					<Input bind:value={newMessage} placeholder="Type a message..." class="flex-1" />
+					<Button type="submit">Send</Button>
+				</form>
+			</div>
+		{:else}
+			<AttendanceList />
+		{/if}
 	</div>
 {/if}
