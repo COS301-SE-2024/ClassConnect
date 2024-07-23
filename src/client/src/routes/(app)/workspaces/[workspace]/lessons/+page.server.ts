@@ -1,6 +1,6 @@
 import type { Actions } from './$types';
 import { error, fail } from '@sveltejs/kit';
-
+import Activities from '$db/schemas/Activity';
 import type { Lesson } from '$src/types';
 import Lessons from '$db/schemas/Lesson';
 
@@ -57,6 +57,16 @@ async function scheduleLesson(data: FormData, workspace: string) {
 	});
 
 	await newLesson.save();
+	//create activity
+	const newActivity = new Activities({
+		title: `New Lesson: ${topic}`,
+		description: description || '',
+		date: new Date(`${date}T${time}`),
+		owner: workspace,
+		type: 'lesson'
+	});
+
+	await newActivity.save();
 
 	return { success: true };
 }
