@@ -26,7 +26,7 @@
 	});
 </script>
 
-<Listgroup active class= "p-4 h-dvh">
+<Listgroup active class="h-dvh p-4">
 	<h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
 		Participants ({participants.length})
 	</h2>
