@@ -13,6 +13,7 @@
 	import {  EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 	import AddModal from '$lib/components/modals/quizzes/Add.svelte';
 	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
+	import RemoveModal from '$lib/components/modals/Delete.svelte';
 
 
 	
@@ -23,10 +24,11 @@
     let isQuizFormOpen= false;
 	let isEditModalOpen = false;
 	let isAddModalOpen= false;
+	let isRemoveModalOpen=false;
 	
 
 	$: ({ quizzes } = data);
-	console.log(data);
+	//console.log(data);
 	const headers = ['Title', 'Graded', 'Date Modified', 'Actions'];
 
 	function handleEditModalOpen(quizID: string) {
@@ -40,8 +42,8 @@
 	}
 
 	function handleRemoveModalOpen(quizId: string) {
-		
-		console.log(`Remove quiz with ID: ${quizId}`);
+		id = quizId;
+		isRemoveModalOpen=true;
 	}
 	
 </script>
@@ -102,4 +104,5 @@
 
 <AddModal bind:open={isQuizFormOpen} />
 <EditModal bind:open={isEditModalOpen} />
+<RemoveModal bind:open={isRemoveModalOpen} {id} item="quiz" />
 

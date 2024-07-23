@@ -25,7 +25,7 @@ async function getQuizzes(ownerID: string | undefined): Promise<Quiz[]> {
 export async function load({ params }) {
 	try {
 		const quizzes = await getQuizzes(params.workspace);
-		console.log('Workspace: ', params.workspace);
+		//console.log('Workspace: ', params.workspace);
 
 		return {
 			quizzes

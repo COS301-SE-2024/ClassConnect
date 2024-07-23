@@ -6,11 +6,13 @@
   
     export let open = false;
     let selectedType = '';
+    let isMCQ=false;
+    let is3dSelect=false;
   
     const questionTypes = [
       { value: 'multiple-choice', name: 'Multiple Choice' },
-      { value: 'true-false', name: 'True/False' },
-      { value: 'short-answer', name: 'Short Answer' }
+      { value: '3d select', name: '3D Select' },
+      
     ];
   
     function confirmSelection() {
@@ -29,7 +31,7 @@
         <Select class="mt-2" items={questionTypes} bind:value={selectedType} />
       </Label>
       <div class="mt-4 flex justify-end">
-        <Button on:click={confirmSelection} disabled={!selectedType}>Confirm</Button>
+        <Button on:click={confirmSelection} disabled={!selectedType}>Add Question</Button>
       </div>
     </div>
   </Modal>
