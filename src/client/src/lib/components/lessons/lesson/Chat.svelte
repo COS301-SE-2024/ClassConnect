@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { Button, Input, Avatar, Listgroup, ListgroupItem } from 'flowbite-svelte';
   import type { Channel, FormatMessageResponse } from 'stream-chat';
+	import AttendanceList from './AttendanceList.svelte';
 
   export let channel: Channel;
 
@@ -79,9 +80,7 @@
         </form>
       </div>
     {:else}
-      <div class="flex-1 p-4">
-        <p>Participants list goes here</p>
-      </div>
+        <AttendanceList />
     {/if}
   </div>
 {/if}

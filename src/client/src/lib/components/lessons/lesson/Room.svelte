@@ -9,7 +9,6 @@
 	import Chat from './Chat.svelte';
 	import Controls from './Controls.svelte';
 	import Participants from './Layout.svelte';
-	//import AttendanceList from './AttendanceList.svelte';
 
 	export let call: Call;
 	export let role: string;

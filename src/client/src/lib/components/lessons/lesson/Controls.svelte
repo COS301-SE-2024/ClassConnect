@@ -51,22 +51,22 @@
   }
 </script>
 
-<div class="fixed bottom-8 left-1/2 transform -translate-x-1/2">
+<div class="fixed bottom-4 left-1/2 transform -translate-x-1/2">
 	<div class="flex space-x-4">
-			<Button color={isMicOn ? 'green' : 'red'} class="rounded-full p-3" on:click={toggleMicrophone}>
+			<Button color={isMicOn ? 'primary' : 'red'} class="rounded-full p-3" on:click={toggleMicrophone}>
 					<svelte:component this={isMicOn ? MicrophoneSolid : MicrophoneSlashSolid} class="w-6 h-6" />
 			</Button>
 
-			<Button color={isCameraOn ? 'green' : 'red'} class="rounded-full p-3" on:click={toggleCamera}>
+			<Button color={isCameraOn ? 'primary' : 'red'} class="rounded-full p-3" on:click={toggleCamera}>
 					<svelte:component this={isCameraOn ? VideoCameraSolid : VideoCameraSolid} class="w-6 h-6" />
 			</Button>
 
 			{#if role === 'lecturer'}
-					<Button color={isScreenShareOn ? 'green' : 'light'} class="rounded-full p-3" on:click={toggleScreenShare}>
+					<Button color={isScreenShareOn ? 'primary' : 'light'} class="rounded-full p-3" on:click={toggleScreenShare}>
 							<WindowRestoreSolid class="w-6 h-6" />
 					</Button>
 
-					<Button color={isEnvironmentOn ? 'green' : 'light'} class="rounded-full p-3" on:click={toggleEnvironment}>
+					<Button color={isEnvironmentOn ? 'primary' : 'light'} class="rounded-full p-3" on:click={toggleEnvironment}>
 							<RocketSolid class="w-6 h-6" />
 					</Button>
 			{/if}

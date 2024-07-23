@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { Canvas } from '@threlte/core';
+	import { Button, Dropdown, DropdownItem, Avatar } from 'flowbite-svelte';
+  import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import Scene from './Scene.svelte';
 
 	let selectedObject = 'box';
@@ -9,7 +11,7 @@
 	}
 </script>
 
-<div class="relative h-full w-full">
+<div class="relative h-full w-full overflow-hidden rounded-lg border border-gray-300 dark:border-gray-600">
 	<div class="object-selector">
 		<label for="object-select">Select 3D Object:</label>
 		<select id="object-select" bind:value={selectedObject} on:change={handleObjectChange}>
