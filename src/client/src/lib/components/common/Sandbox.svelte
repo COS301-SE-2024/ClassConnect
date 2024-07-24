@@ -61,8 +61,7 @@
 		<section
 			class="canvas-container flex h-[700px] flex-col space-y-4 rounded-lg bg-gray-200 p-2 shadow-md ring dark:bg-gray-700"
 		>
-			<div class="flex-1">
-				<Canvas>
+				<Canvas >
 					<Scene
 						bind:this={SceneElement}
 						{enableDamping}
@@ -73,7 +72,7 @@
 						{enableZoom}
 					/>
 				</Canvas>
-			</div>
+
 			{#if $displayedSandboxObjectURL !== ''}
 				<ObjectSettings
 					{SceneElement}
