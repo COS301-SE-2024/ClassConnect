@@ -3,7 +3,7 @@ import Materials from '$db/schemas/Material';
 import type { Material } from '$src/types';
 import type { UploadData } from '$src/types';
 import { fail, error } from '@sveltejs/kit';
-import { deleteFile } from '$lib/server/s3Bucket';
+import { deleteFile } from '$lib/server/storage';
 import { uploadFile } from '$lib/server/UploadHandler';
 
 function formatMaterial(material: any): Partial<Material> {

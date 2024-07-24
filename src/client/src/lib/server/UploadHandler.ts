@@ -1,4 +1,4 @@
-import { upload, determineFolder } from '$lib/server/s3Bucket';
+import { upload, determineFolder } from '$lib/server/storage';
 import { THUMBNAIL_API_KEY, THUMBNAIL_URL } from '$env/static/private';
 import type { UploadData } from '$src/types';
 import Material from '$db/schemas/Material';
