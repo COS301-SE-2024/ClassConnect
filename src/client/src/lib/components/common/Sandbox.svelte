@@ -78,12 +78,12 @@
 					{SceneElement}
 					{canvasElement}
 					{fullscreen}
-					{enableDamping}
-					{autoRotate}
-					{rotateSpeed}
-					{zoomToCursor}
-					{zoomSpeed}
-					{enableZoom}
+					bind:enableDamping
+					bind:autoRotate
+					bind:rotateSpeed
+					bind:zoomToCursor
+					bind:zoomSpeed
+					bind:enableZoom
 				/>
 			{/if}
 		</section>
