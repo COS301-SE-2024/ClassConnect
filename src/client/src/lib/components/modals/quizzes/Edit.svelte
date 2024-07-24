@@ -11,7 +11,7 @@
   
     const questionTypes = [
       { value: 'multiple-choice', name: 'Multiple Choice' },
-      { value: '3d select', name: '3D Select' },
+      { value: '3d-hotspot', name: '3D Hot Spot' },
       
     ];
   
