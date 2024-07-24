@@ -2,6 +2,7 @@ import { hash } from '@node-rs/argon2';
 import type { Actions } from './$types';
 import type { ObjectId } from 'mongoose';
 import { fail, error } from '@sveltejs/kit';
+import { upload, deleteFile } from '$lib/server/s3Bucket';
 
 import Users from '$db/schemas/User';
 import type { User } from '$src/types';
@@ -45,12 +46,16 @@ function validateAdmin(locals: any) {
 async function addAdmin(data: FormData, organisation: ObjectId | undefined) {
 	const name = data.get('name') as string;
 	const email = data.get('email') as string;
-	const image = 'https://class-connect-file-storage.s3.amazonaws.com/pictures/default.svg';
+	const image_file = data.get('image') as File;
+	let image: string = 'https://class-connect-file-storage.s3.amazonaws.com/pictures/default.svg';
 	const surname = data.get('surname') as string;
 
 	const existingUser = await Users.findOne({ email });
 	if (existingUser) return fail(400, { error: 'Email already in use' });
 
+	if (image_file && image_file.size !== 0) {
+		image = await upload(image_file)
+	}
 	const username = generateUsername('admin', email);
 	const hashedPassword = await hash(username, HASH_OPTIONS);
 
@@ -62,7 +67,7 @@ async function addAdmin(data: FormData, organisation: ObjectId | undefined) {
 		organisation,
 		role: 'admin',
 		password: hashedPassword,
-		image: image || '/images/profile-placeholder.png'
+		image
 	});
 
 	await newAdmin.save();
@@ -70,21 +75,43 @@ async function addAdmin(data: FormData, organisation: ObjectId | undefined) {
 }
 
 async function editAdmin(data: FormData) {
-	const id = data.get('id') as string;
-	if (!id) return fail(400, { error: 'Admin ID is required' });
+  const id = data.get('id') as string;
+  if (!id) return fail(400, { error: 'Admin ID is required' });
 
-	const updateData: Partial<User> = {};
+  const existingUser = await Users.findById(id);
+  if (!existingUser) return fail(404, { error: 'Admin not found' });
 
-	['name', 'email', 'image', 'surname'].forEach((field) => {
-		const value = data.get(field) as string;
+  const updateData: Partial<User> = {};
 
-		if (value !== '') updateData[field as keyof Partial<User>] = value;
-	});
+  const name = data.get('name') as string;
+  const email = data.get('email') as string;
+  const image_file: File = data.get('file') as File;
+  let image: string | undefined;
+  const surname = data.get('surname') as string;
+  
+  if (name !== '' && email !== '' && surname !== '') {
+    updateData.name = name;
+    updateData.email = email;
+    updateData.surname = surname;
+  }
 
-	const updatedAdmin = await Users.findByIdAndUpdate(id, updateData, { new: true });
-	if (!updatedAdmin) return fail(404, { error: 'Admin not found' });
+  if (image_file && image_file.size !== 0) {
+    console.log("Image File Details: " + image_file);
+    image = await upload(image_file);
+    console.log("Image details: " + image);
+    if (image) {
+      // Delete the existing image if it's not the default image
+      if (existingUser.image && existingUser.image !== 'https://class-connect-file-storage.s3.amazonaws.com/pictures/default.svg') {
+        await deleteFile(existingUser.image);
+      }
+      updateData.image = image;
+    }
+  }
 
-	return { success: true };
+  const updatedAdmin = await Users.findByIdAndUpdate(id, updateData, { new: true });
+  if (!updatedAdmin) return fail(404, { error: 'Admin not found' });
+
+  return { success: true };
 }
 
 async function deleteAdmin(id: string) {

@@ -88,7 +88,7 @@ async function createWorkspace(data: FormData, organisation: ObjectId | undefine
 	const image_file = data.get('image') as File;
 	let image: string = '/images/organisation-placeholder.png';
 
-	if (image_file) {
+	if (image_file && image_file.size !== 0) {
 		image = await upload(image_file);
 	}
 	const newWorkspace = new Workspaces({
@@ -120,8 +120,10 @@ async function editWorkspace(data: FormData) {
 	const updateData: { name?: string; owner?: string; image?: string } = {};
 
 	if (name) workspace.name = name;
-	if (image_file && workspace) {
+	if (image_file && workspace && image_file.size !== 0) {
+		console.log("Image File Details: " + image_file);
 		image = await upload(image_file);
+		console.log("Image details: " + image);
 		if (image) {
 			await deleteFile(workspace.image);
 			updateData.image = image;
