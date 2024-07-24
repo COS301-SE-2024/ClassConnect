@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { Avatar } from 'flowbite-svelte';
+	import { Avatar, Badge } from 'flowbite-svelte';
 	import { hasAudio, hasVideo } from '@stream-io/video-client';
-	import { MicrophoneSlashOutline } from 'flowbite-svelte-icons';
+	import { MicrophoneSlashSolid } from 'flowbite-svelte-icons';
 	import { onMount, onDestroy, getContext, afterUpdate } from 'svelte';
 
 	import type { Writable } from 'svelte/store';
@@ -61,11 +61,18 @@
 </script>
 
 <div
-	class="relative h-full w-full overflow-hidden rounded-lg bg-gray-200 shadow-md dark:bg-gray-700"
+	class="relative h-full w-full overflow-hidden rounded-lg bg-gray-100 shadow-lg transition-all duration-300 hover:shadow-xl dark:bg-gray-800"
 >
 	{#if isVideoOff}
-		<div class="absolute inset-0 flex items-center justify-center bg-gray-300 dark:bg-gray-600">
-			<Avatar size="xl" src={participant.image} alt={participant.name} />
+		<div
+			class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800"
+		>
+			<Avatar
+				size="xl"
+				src={participant.image}
+				alt={participant.name}
+				class="ring-4 ring-white dark:ring-gray-900"
+			/>
 		</div>
 	{:else}
 		<video
@@ -80,13 +87,19 @@
 	<audio bind:this={audioElement} autoplay playsinline />
 
 	<div
-		class="absolute bottom-0 left-0 right-0 flex items-center justify-between bg-black bg-opacity-50 p-2"
+		class="absolute bottom-0 left-0 right-0 flex items-center justify-between bg-gradient-to-t p-3"
 	>
-		<p class="text-sm font-medium text-white">{participant.name}</p>
+		<div class="flex items-center space-x-2">
+			<Badge large color="dark" class="px-2 py-1 font-semibold ">
+				{participant.name}
+			</Badge>
+		</div>
 
 		<div class="flex space-x-2">
 			{#if isMuted}
-				<MicrophoneSlashOutline color="red" />
+				<div class="rounded-full bg-red-700 p-1">
+					<MicrophoneSlashSolid class="h-5 w-5 text-white" />
+				</div>
 			{/if}
 		</div>
 	</div>
