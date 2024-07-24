@@ -65,7 +65,7 @@ async function editOrganisation(data: FormData, userId: ObjectId) {
 
 	const Org = await Organisation.findById(id);
 	let image: string;
-	
+
 	const updateData: { name?: string; image?: string } = {};
 
 	if (name) updateData.name = name;

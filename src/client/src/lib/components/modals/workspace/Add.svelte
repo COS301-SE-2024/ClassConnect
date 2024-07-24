@@ -21,20 +21,38 @@
 </script>
 
 <Modal bind:open size="xs" class="w-full">
-	<form method="POST" action="?/create" class="flex flex-col space-y-6" use:enhance={close} enctype="multipart/form-data">
+	<form
+		method="POST"
+		action="?/create"
+		class="flex flex-col space-y-6"
+		use:enhance={close}
+		enctype="multipart/form-data"
+	>
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Create New Workspace</h3>
-		
+
 		{#if error}
 			<p class="mt-2 text-center text-red-500">{error}</p>
 		{/if}
 
 		<Label for="code" class="space-y-2">
 			<span>Code</span>
-			<Input type="text" id="code" name="code" placeholder="Please enter a workspace code (e.g. PHY 114)" required/>
+			<Input
+				type="text"
+				id="code"
+				name="code"
+				placeholder="Please enter a workspace code (e.g. PHY 114)"
+				required
+			/>
 		</Label>
 		<Label for="name" class="space-y-2">
 			<span>Name</span>
-			<Input type="text" id="name" name="name" placeholder="Please enter a workspace name (e.g. Physical Sciences)" required/>
+			<Input
+				type="text"
+				id="name"
+				name="name"
+				placeholder="Please enter a workspace name (e.g. Physical Sciences)"
+				required
+			/>
 		</Label>
 		<Label for="owner" class="space-y-2">
 			<span>Lecturer</span>
@@ -43,10 +61,10 @@
 					<option value={lecturer.id}>{lecturer.name} {lecturer.surname}</option>
 				{/each}
 			</Select>
-		</Label>	
+		</Label>
 		<Label for="image" class="space-y-2">
 			<span>Image</span>
-			<Fileupload bind:value id="image" name="image"/>
+			<Fileupload bind:value id="image" name="image" />
 		</Label>
 		<Button type="submit" class="w-full1">Create Workspace</Button>
 	</form>

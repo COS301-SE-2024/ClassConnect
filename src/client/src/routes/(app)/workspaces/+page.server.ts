@@ -87,8 +87,10 @@ async function createWorkspace(data: FormData, organisation: ObjectId | undefine
 	const owner = data.get('owner') as string;
 	const image_file = data.get('image') as File;
 	let image: string = '/images/organisation-placeholder.png';
-	
-	if (image_file) { image = await upload(image_file) };
+
+	if (image_file) {
+		image = await upload(image_file);
+	}
 	const newWorkspace = new Workspaces({
 		name,
 		owner,
@@ -104,7 +106,7 @@ async function createWorkspace(data: FormData, organisation: ObjectId | undefine
 
 async function editWorkspace(data: FormData) {
 	const id = data.get('id') as string;
-	
+
 	if (!id) return fail(400, { error: 'Workspace ID is required' });
 
 	const workspace = await Workspaces.findById(id);
@@ -168,7 +170,7 @@ export const actions: Actions = {
 
 		try {
 			const data = await request.formData();
-			
+
 			return await editWorkspace(data);
 		} catch (err) {
 			console.error('Error editing workspace:', err);
