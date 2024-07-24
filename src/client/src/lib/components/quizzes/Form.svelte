@@ -1,52 +1,43 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
-    import { Input, Radio, Button } from 'flowbite-svelte';
+  import { NumberInput, Input, Textarea, Button, Label } from 'flowbite-svelte';
   
-    let title: string = '';
-    let graded: boolean = false;
-    const dispatch = createEventDispatcher();
+  let questionNumber = '';
+  let questionContent = '';
+  let options = ['', '', ''];  
+  let points = [0, 0, 0];  
   
-    function handleSubmit(event: Event) {
-      event.preventDefault();
-      dispatch('submit', { title, graded });
-    }
-  </script>
-  
-  <form on:submit={handleSubmit} class="space-y-4">
-    <div>
-      <label for="title" class="block text-sm font-medium text-gray-700">Title</label>
-      <Input
-        id="title"
-        bind:value={title}
-        placeholder="Enter quiz title"
-        required
-        class="mt-1"
-      />
+  function handleSubmit() {
+    console.log('Question Number:', questionNumber);
+    console.log('Question Content:', questionContent);
+    console.log('Options:', options);
+    console.log('Points:', points);
+  }
+</script>
+
+<main class="container mx-auto my-4 px-4">
+  <form on:submit|preventDefault={handleSubmit}>
+    <div class="mb-4">
+      <Label for="questionNumber">Question Number</Label>
+      <Input id="questionNumber" bind:value={questionNumber} type="text" placeholder="Enter question number" required />
     </div>
-  
-    <div>
-        <div class="mt-2">
-        <label class="block text-sm font-medium text-gray-700">Auto-Grade</label>
-        <Radio
-          id="graded-yes"
-          name="graded"
-          value="true"
-          
-          label="Yes"
-          class="mr-4"
-        />
-        <Radio
-          id="graded-no"
-          name="graded"
-          value="false"
-          
-          label="No"
-        />
+    <div class="mb-4">
+      <Label for="editor">Question Content</Label>
+      <Textarea id="editor" rows="8" bind:value={questionContent} placeholder="Write the question content" required />
+    </div>
+
+    {#each options as option, index}
+      <div class="mb-4">
+        <Label>
+          Option {index + 1}
+          <Input type="text" bind:value={options[index]} placeholder="Write answer option" size="lg" />
+        </Label>
       </div>
-    </div>
-  
-    <div>
-      <Button type="submit" class="w-full">Submit</Button>
-    </div>
+      <Label class="space-y-2 mb-4">
+        <span>Points</span>
+        <NumberInput bind:value={points[index]} />
+      </Label>
+    {/each}
+
+    <Button type="submit">Submit Question</Button>
   </form>
-  
+</main>
