@@ -6,9 +6,7 @@
 	export let open: boolean;
 
 	let openPreviewModal: boolean = false;
-	let objFile: File;
 	let fileSRC: string;
-	let fileALT: string;
 
 	async function handleFileUpload(event: Event) {
 		event.preventDefault();
@@ -17,13 +15,11 @@
 		const file = formData.get('file') as File;
 
 		if (file) {
-			objFile = file;
 			const reader = new FileReader();
 			reader.onload = (e) => {
 				const url = e.target?.result as string;
 				fileSRC = url;
 				displayedSandboxObjectURL.set(fileSRC);
-				fileALT = file.name;
 				openPreviewModal = true;
 				open = false;
 			};
