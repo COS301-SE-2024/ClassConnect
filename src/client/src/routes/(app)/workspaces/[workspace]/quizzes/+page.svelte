@@ -14,6 +14,7 @@
 	import AddModal from '$lib/components/modals/quizzes/Add.svelte';
 	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
+	import Question from '$routes/(app)/workspace/[workspace]/question/page.svelte';
 
 
 	
@@ -25,6 +26,8 @@
 	let isEditModalOpen = false;
 	let isAddModalOpen= false;
 	let isRemoveModalOpen=false;
+
+	let selectedQuestionType = '';
 	
 
 	$: ({ quizzes } = data);
@@ -45,6 +48,11 @@
 		id = quizId;
 		isRemoveModalOpen=true;
 	}
+
+	function handleQuestionTypeSelect(event) {
+		selectedQuestionType = event.detail.type;
+		isQuizFormOpen = true;
+  }
 	
 </script>
 <main class="container mx-auto my-2 px-4">
@@ -105,4 +113,6 @@
 <AddModal bind:open={isQuizFormOpen} />
 <EditModal bind:open={isEditModalOpen} />
 <RemoveModal bind:open={isRemoveModalOpen} {id} item="quiz" />
-
+{#if selectedQuestionType === 'multiple-choice'}
+    <Question />
+{/if}

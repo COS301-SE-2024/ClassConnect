@@ -89,3 +89,15 @@ export interface Quiz {
 	graded: string;
 	date: Date;
 }
+
+export interface Option {
+	content: string;
+	points: number;
+  }
+  
+export interface Question {
+	questionNumber: number;
+	questionContent: string;
+	questionType: string;
+	options: Option[];
+}
