@@ -44,7 +44,7 @@
 			error: 'Failed to upload material!'
 		});
 		// Invalidate URLs containing "materials" to re-run the load function
-		await invalidate("http://localhost:5173/workspaces/66970973a41de89f0dd7fab5/materials");
+		await invalidate((url) => url.pathname.includes('materials'));
     }
     // 3D Object Preview
 	let autoRotate: boolean = false;
