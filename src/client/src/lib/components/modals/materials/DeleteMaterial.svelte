@@ -4,7 +4,6 @@
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { Button, Modal, Input } from 'flowbite-svelte';
 	import { createEventDispatcher } from 'svelte';
-	import { invalidate } from '$app/navigation';
 	import { change } from '$lib/store/'
 
 	const dispatch = createEventDispatcher();
@@ -12,6 +11,8 @@
 	export let id: string;
 	export let open: boolean;
 	export let name: string;
+
+	
 
 	async function close() {
 		open = false;
@@ -21,7 +22,7 @@
 				await update();
 				toast.dismiss(toastId);
 				toast.success("Delete was successfully!");
-				await invalidate((url) => url.pathname.includes('materials'));
+				change.set('Material deleted at: '+Date.now().toString())
 			} else {
 				toast.dismiss(toastId);
 				toast.error("Delete Failed!");
@@ -30,7 +31,8 @@
 	}
 	
     function closeModal() {
-        open = false;
+        console.log('Delete Material: This is the id and name passed in: ',name,id);
+		open = false;
         dispatch('close');
     }
 

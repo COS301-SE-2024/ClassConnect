@@ -25,7 +25,6 @@ async function getMaterials(workspace_id:string):Promise<Partial<Material>[]>{
 export async function load({ locals, params }) {
 	try {
 		const materials = await getMaterials(params.workspace);
-        console.log(materials)
 		return {
 			role: locals.user?.role,
 			materials

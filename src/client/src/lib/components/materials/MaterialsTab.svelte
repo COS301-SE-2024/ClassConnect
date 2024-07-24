@@ -9,11 +9,14 @@
     export let renderedMaterials : any[] = [];
 
     let materialSearchTerm = '';
+    let filteredItems = renderedMaterials;
 
     $: filteredItems = renderedMaterials.filter((material:any) =>
         material.title.toLowerCase().includes(materialSearchTerm.toLowerCase()) ||
         material.description.toLowerCase().includes(materialSearchTerm.toLowerCase())
     );
+
+    console.log(renderedMaterials)
 
     let uploadModal  = false;
 
@@ -33,7 +36,7 @@
                     <path d="m21 21-4.3-4.3"></path>
                   </svg>
                 </div>
-                <input bind:value={materialSearchTerm} class="py-3 ps-10 pe-4 block w-full border-gray-200 rounded-lg text-lg focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" type="text" placeholder="Type a name" data-hs-combo-box-input="">
+                <input bind:value={materialSearchTerm} class="py-3 ps-10 pe-4 block w-full border-gray-200 rounded-lg text-lg focus:border-green-500 focus:ring-green-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600" type="text" placeholder="Search" data-hs-combo-box-input="">
               </div>
             </div>
             <!-- End SearchBox -->

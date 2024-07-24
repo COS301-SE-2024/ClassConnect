@@ -1,7 +1,7 @@
 <script lang="ts">
     import { displayedSandboxObjectURL,ObjInScene } from '$src/lib/store/objects';
 	import Scene from '$src/lib/components/sandbox/+Scene.svelte';
-	import { invalidate } from '$app/navigation';
+	import { change } from '$lib/store/';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { Button, Modal } from 'flowbite-svelte';
     import { Canvas } from '@threlte/core';
@@ -35,7 +35,7 @@
         formData.append('title', title);
         formData.append('description', description);
 
-		toast.promise(fetch('?/uploadMat', {
+		await toast.promise(fetch('?/uploadMat', {
 			method: 'POST',
 			body: formData
 		}), {
@@ -43,8 +43,7 @@
 			success: 'Material uploaded successfully!',
 			error: 'Failed to upload material!'
 		});
-		// Invalidate URLs containing "materials" to re-run the load function
-		await invalidate((url) => url.pathname.includes('materials'));
+		change.set('Material deleted at: '+Date.now().toString())
     }
     // 3D Object Preview
 	let autoRotate: boolean = false;

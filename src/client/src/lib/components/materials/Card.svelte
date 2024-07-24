@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { ArrowRightOutline, DotsVerticalOutline, EyeOutline, ShareNodesOutline, TrashBinOutline } from 'flowbite-svelte-icons';
-	import { Card, Button, Dropdown, DropdownItem, DropdownDivider } from 'flowbite-svelte';
+	import { Button, Dropdown, DropdownItem, DropdownDivider } from 'flowbite-svelte';
 	import DeleteMaterial from '$src/lib/components/modals/materials/DeleteMaterial.svelte';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { objURL,displayedSandboxObjectURL } from '$src/lib/store/objects';
@@ -19,7 +19,7 @@
 	let openPreviewModal = false;
 	let openDeleteModal = false;
 
-	console.log(id);
+	console.log('This is the id and title: ',title,id);
 
 	const handleFileOpening = () => {
 		if(!type){
@@ -35,7 +35,7 @@
 
 	onMount(() => {
 		// Ensure that the subscription happens within the component's lifecycle
-		const unsubscribe = page.subscribe(($page) => {
+		const unsubscribe = page.subscribe(() => {
 
 		});
 
@@ -65,7 +65,7 @@
 	  <img
 		class="rounded-t-lg"
 		src={thumbnail}
-		alt="" />
+		alt={title} />
 	</div>
 	<div class="flex items-center justify-between px-6">
 		<h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">

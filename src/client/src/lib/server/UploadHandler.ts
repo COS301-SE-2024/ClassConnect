@@ -9,15 +9,15 @@ export async function uploadFile( fileData : UploadData ){
     const file = fileData.file;
     const folder = determineFolder(file);
     if(folder === 'study-material'){
-        return materialUpload(fileData);
+        return materialUpload(fileData,false);
     }else if(folder === 'objects'){
-        return materialUpload(fileData);
+        return materialUpload(fileData,true);
     }else{
         throw new Error('file not suported')
     }
 }
 
-async function materialUpload(fileData : UploadData){
+async function materialUpload(fileData : UploadData,file_type : boolean){
 
     const file_path = await upload(fileData.file);
 
@@ -57,7 +57,7 @@ async function materialUpload(fileData : UploadData){
         description: fileData.description,
         file_path,
         thumbnail: thumbnail_path,
-        type: false,
+        type: file_type,
         workspace_id: workspace._id
     });
 
