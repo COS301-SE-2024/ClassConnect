@@ -18,19 +18,18 @@
 			if (result.type === 'success') {
 				await update();
 				toast.dismiss(toastId);
-				toast.success("Delete was successfully!");
+				toast.success('Delete was successfully!');
 			} else {
 				toast.dismiss(toastId);
-				toast.error("Delete Failed!");
+				toast.error('Delete Failed!');
 			}
 		};
 	}
-	
-    function closeModal() {
-        open = false;
-        dispatch('close');
-    }
 
+	function closeModal() {
+		open = false;
+		dispatch('close');
+	}
 </script>
 
 <Toaster />

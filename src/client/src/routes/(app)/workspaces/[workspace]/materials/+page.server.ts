@@ -3,7 +3,7 @@ import Materials from '$db/schemas/Material';
 import type { Material } from '$src/types';
 import type { UploadData } from '$src/types';
 import { fail, error } from '@sveltejs/kit';
-import { upload, deleteFile } from '$lib/server/s3Bucket';
+import { deleteFile } from '$lib/server/s3Bucket';
 import { uploadFile } from '$lib/server/UploadHandler';
 
 function formatMaterial(material: any): Partial<Material> {
@@ -15,53 +15,10 @@ function formatMaterial(material: any): Partial<Material> {
 	};
 }
 
-function determineFolder(file: File): string {
-	const extension = file.name.split('.').pop()?.toLowerCase();
-
-	if (!extension) {
-		throw new Error('File has no extension');
-	}
-
-	const picturesExtensions = ['png', 'jpeg', 'jpg', 'webp'];
-	const objectsExtensions = ['gltf', 'glb'];
-	const studyMaterialExtensions = ['pdf', 'pptx', 'epub'];
-
-	if (picturesExtensions.includes(extension)) {
-		return 'image';
-	} else if (objectsExtensions.includes(extension)) {
-		return 'object';
-	} else if (studyMaterialExtensions.includes(extension)) {
-		return 'study-material';
-	} else {
-		throw new Error('Unsupported file format');
-	}
-}
-
 async function getMaterials(workspace_id: string): Promise<Partial<Material>[]> {
 	const materials = await Materials.find({ workspace_id });
 	console.log(materials);
 	return materials.map(formatMaterial);
-}
-//Function to Upload Materials
-async function uploadMaterials(data: FormData, workspace_id: string) {
-	const title = data.get('title') as string;
-	const description = data.get('description') as string;
-	const file_path = (await upload(data.get('file') as File)) as string;
-	const type = determineFolder(data.get('file') as File);
-
-	if (!title) return fail(400, { message: 'Title is required' });
-	if (!description) return fail(400, { message: 'Description is required' });
-	if (!file_path) return fail(400, { message: 'File to upload required' });
-
-	const newMaterial = new Materials({
-		title,
-		description,
-		file_path,
-		type,
-		workspace_id
-	});
-	await newMaterial.save();
-	return { success: true };
 }
 
 export async function load({ locals, params }) {
@@ -71,7 +28,6 @@ export async function load({ locals, params }) {
 		return {
 			role: locals.user?.role,
 			materials
-
 		};
 	} catch (e) {
 		console.error('Server error:', e);
@@ -86,30 +42,30 @@ function validateLecturer(locals: any) {
 async function deleteMaterial(id: string) {
 	if (!id) return fail(400, { message: 'Material ID is required' });
 
-    const material = await Materials.findById(id);
+	const material = await Materials.findById(id);
 
-    if(material){
-        const file_path = material.file_path;
-        const thumbnail = material.thumbnail;
+	if (material) {
+		const file_path = material.file_path;
+		const thumbnail = material.thumbnail;
 
-        if(file_path){
-            try{
-                await deleteFile(file_path);
-            }catch(e){
-                console.error('Error deleting file:', e);
-            }
-        }
+		if (file_path) {
+			try {
+				await deleteFile(file_path);
+			} catch (e) {
+				console.error('Error deleting file:', e);
+			}
+		}
 
-        if(thumbnail){
-            try{
-                await deleteFile(thumbnail);
-            }catch(e){
-                console.error('Error deleting thumbnail:', e);
-            }
-        }
-    }else{
-        return fail(404,{message:'Material not found'});
-    }
+		if (thumbnail) {
+			try {
+				await deleteFile(thumbnail);
+			} catch (e) {
+				console.error('Error deleting thumbnail:', e);
+			}
+		}
+	} else {
+		return fail(404, { message: 'Material not found' });
+	}
 
 	const deletedMaterial = await Materials.findByIdAndDelete(id);
 
@@ -120,42 +76,42 @@ async function deleteMaterial(id: string) {
 }
 
 export const actions: Actions = {
-    uploadMat: async ({request,locals,params}) => {
-        validateLecturer(locals);
-        try{
-            const data = await request.formData();
+	uploadMat: async ({ request, locals, params }) => {
+		validateLecturer(locals);
+		try {
+			const data = await request.formData();
 
-            const upload_data : UploadData = {
-                file: data.get('file') as File,
-                title: data.get('title') as string,
-                description: data.get('description') as string,
-                workspace: params.workspace,
-                thumbnail: data.get('thumbnail') as File
-            }
+			const upload_data: UploadData = {
+				file: data.get('file') as File,
+				title: data.get('title') as string,
+				description: data.get('description') as string,
+				workspace: params.workspace,
+				thumbnail: data.get('thumbnail') as File
+			};
 
-            const mat = await uploadFile(upload_data);
+			const mat = await uploadFile(upload_data);
 
-            console.log(mat);
-        }catch(e){
-            console.error('Error uploading material:', e);
-            return fail(500, { message: 'Failed to upload material' });
-        }
-    },
-    deleteMat: async ({request,locals}) => {
-        validateLecturer(locals);
-        try{
-            const data = await request.formData();
-            const id = data.get('id') as string;
-            return await deleteMaterial(id);
-        }catch(e){
-            console.error('Error deleting material:', e);
-            return fail(500, { message: 'Failed to delete material' });
-        }
-    },
-    submitObjects: async({request})=>{
-        const data = await request.formData();
-        const selectedObjects = data.getAll('selectedObjects') as string[];
-        console.log(data);
+			console.log(mat);
+		} catch (e) {
+			console.error('Error uploading material:', e);
+			return fail(500, { message: 'Failed to upload material' });
+		}
+	},
+	deleteMat: async ({ request, locals }) => {
+		validateLecturer(locals);
+		try {
+			const data = await request.formData();
+			const id = data.get('id') as string;
+			return await deleteMaterial(id);
+		} catch (e) {
+			console.error('Error deleting material:', e);
+			return fail(500, { message: 'Failed to delete material' });
+		}
+	},
+	submitObjects: async ({ request }) => {
+		const data = await request.formData();
+		const selectedObjects = data.getAll('selectedObjects') as string[];
+		console.log(data);
 
 		console.log('Selected object IDs:', selectedObjects);
 

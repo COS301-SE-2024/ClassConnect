@@ -17,27 +17,30 @@
 	let sceneHeight: number = 0;
 
 	function handleFullScreen() {
-        if (!document.fullscreenElement && fullscreen) {
+		if (!document.fullscreenElement && fullscreen) {
 			initialWidth = canvasElement.clientWidth;
 			initialHeight = canvasElement.clientHeight;
 			console.log(initialWidth, initialHeight);
 			console.log(sceneWidth, sceneHeight);
 			canvasElement.requestFullscreen().catch((err: any) => {
-                alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-            });
-        } else {
+				alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+			});
+		} else {
 			if (document.exitFullscreen && !fullscreen && document.fullscreenElement) {
-				document.exitFullscreen().then(()=>{
-					canvasElement.style.width = initialWidth + 'px';
-					canvasElement.style.height = initialHeight + 'px';
-					console.log(canvasElement.clientWidth, canvasElement.clientHeight);
-					console.log(SceneElement.clientWidth, SceneElement.clientHeight);
-				}).catch((err) => {
-					alert(`Error attempting to exit full-screen mode: ${err.message} (${err.name})`);
-				});
+				document
+					.exitFullscreen()
+					.then(() => {
+						canvasElement.style.width = initialWidth + 'px';
+						canvasElement.style.height = initialHeight + 'px';
+						console.log(canvasElement.clientWidth, canvasElement.clientHeight);
+						console.log(SceneElement.clientWidth, SceneElement.clientHeight);
+					})
+					.catch((err) => {
+						alert(`Error attempting to exit full-screen mode: ${err.message} (${err.name})`);
+					});
 			}
-        }
-    }
+		}
+	}
 </script>
 
 <Pane theme={ThemeUtils.presets.light} title="Object Settings">
