@@ -86,7 +86,6 @@ export const actions: Actions = {
                 title: data.get('title') as string,
                 description: data.get('description') as string,
                 workspace: params.workspace,
-                thumbnail: data.get('thumbnail') as File
             }
 
             const mat = await uploadFile(upload_data);

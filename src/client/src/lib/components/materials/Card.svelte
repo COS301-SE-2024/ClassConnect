@@ -7,6 +7,7 @@
 	import Preview from '$src/lib/components/modals/materials/Preview.svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
 
 	export let title;
 	export let description;
@@ -32,6 +33,17 @@
 		}
 	};
 
+	onMount(() => {
+		// Ensure that the subscription happens within the component's lifecycle
+		const unsubscribe = page.subscribe(($page) => {
+
+		});
+
+		return () => {
+			unsubscribe();
+		};
+	});
+
 	const copyToClipboard = () => {
 		console.log(url);
 		try{
@@ -47,37 +59,48 @@
 <Toaster />
 
 <div  class="space-y-4">
-	<Card img={thumbnail} >
-		<div class="flex items-center justify-between">
-			<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-				{ title }
-			</h5>
-			<div>
-				<DotsVerticalOutline id="card-dot-menu" size="xl" />
-				<Dropdown placement="bottom" triggeredBy="#card-dot-menu">
-					<DropdownItem class='flex' on:click={copyToClipboard}>
-						<ShareNodesOutline class="me-2" />
-						Share
-					</DropdownItem>
-					<DropdownItem class='flex' on:click={()=>openPreviewModal=true}>
-						<EyeOutline class="me-2" />
-						Preview
-					</DropdownItem>
-					<DropdownDivider />
-					<DropdownItem class='flex' on:click={()=>openDeleteModal=true}>
-						<TrashBinOutline color='red' class="me-2" />
-						Delete
-					</DropdownItem>
-				</Dropdown>
-			</div> 
-		</div>
-	  <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-		{description}
-	  </p>
-	  <Button on:click={handleFileOpening}>
-		Open File <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
-	  </Button>
-	</Card>
+	<div
+		class="block max-w-[18rem] rounded-lg bg-white text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white">
+	<div class="relative overflow-hidden bg-cover bg-no-repeat">
+	  <img
+		class="rounded-t-lg"
+		src={thumbnail}
+		alt="" />
+	</div>
+	<div class="flex items-center justify-between px-6">
+		<h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+			{ title }
+		</h5>
+		<div>
+			<DotsVerticalOutline id="card-dot-menu" size="xl" />
+			<Dropdown placement="bottom" triggeredBy="#card-dot-menu">
+				<DropdownItem class='flex' on:click={copyToClipboard}>
+					<ShareNodesOutline class="me-2" />
+					Share
+				</DropdownItem>
+				<DropdownItem class='flex' on:click={()=>openPreviewModal=true}>
+					<EyeOutline class="me-2" />
+					Preview
+				</DropdownItem>
+				<DropdownDivider />
+				<DropdownItem class='flex' on:click={()=>openDeleteModal=true}>
+					<TrashBinOutline color='red' class="me-2" />
+					Delete
+				</DropdownItem>
+			</Dropdown>
+		</div> 
+	</div>
+	<div class="px-6 py-2">
+		<p class="font-normal text-gray-700 dark:text-gray-400 leading-tight">
+			{description}
+		</p>
+	</div>
+	<div class="px-6 py-2">
+		<Button on:click={handleFileOpening}>
+			Open File <ArrowRightOutline class="w-6 h-6 ms-2 text-white" />
+		</Button>
+	</div>
+  </div>
 </div>
 
 <Preview open={openPreviewModal} url={url} name={title} type={type ? 'object' : 'material'} on:close={()=>openPreviewModal=false}/>

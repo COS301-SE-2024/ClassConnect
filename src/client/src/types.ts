@@ -77,7 +77,6 @@ export interface UploadData {
 	description: string;
 	workspace: string;
 	file: File;
-	thumbnail: File;
 }
 
 export type FAQItem = {

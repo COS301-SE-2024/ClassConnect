@@ -1,7 +1,7 @@
 <script lang="ts">
     import { displayedSandboxObjectURL,ObjInScene } from '$src/lib/store/objects';
-	import * as htmlToImage from 'html-to-image';
 	import Scene from '$src/lib/components/sandbox/+Scene.svelte';
+	import { invalidate } from '$app/navigation';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { Button, Modal } from 'flowbite-svelte';
     import { Canvas } from '@threlte/core';
@@ -12,16 +12,15 @@
     export let type: string;
     export let title: string;
     export let description: string;
-	let thumbnail: File;
 
-	async function handleNo(event: Event) {
+	async function handleNo(event : Event) {
         event.preventDefault();
         displayedSandboxObjectURL.set('');
 		ObjInScene.set(false);
 		open = false;
 	}
 
-    async function handleYes(event: Event) {
+    async function handleYes(event : Event) {
         event.preventDefault();
 		open = false;
 		
@@ -29,14 +28,12 @@
         ObjInScene.set(false);
 
         console.log('Upload is being handled');
-		await generateThumbnail();
 
         const formData = new FormData();
 
         formData.append('file', file);
         formData.append('title', title);
         formData.append('description', description);
-		formData.append('thumbnail', thumbnail);
 
 		toast.promise(fetch('?/uploadMat', {
 			method: 'POST',
@@ -46,7 +43,8 @@
 			success: 'Material uploaded successfully!',
 			error: 'Failed to upload material!'
 		});
-
+		// Invalidate URLs containing "materials" to re-run the load function
+		await invalidate("http://localhost:5173/workspaces/66970973a41de89f0dd7fab5/materials");
     }
     // 3D Object Preview
 	let autoRotate: boolean = false;
@@ -56,23 +54,6 @@
 	let zoomSpeed: number = 1;
 	let enableZoom: boolean = true;
 
-	async function generateThumbnail(){
-		console.log('Hello from thumbnail creaetion');
-		const targetElement = document.getElementById('pdf-file');
-		if(targetElement){
-			await htmlToImage.toBlob(targetElement)
-			.then(function (blob) {
-				if(blob){
-					console.log(blob)
-					thumbnail = new File([blob], 'thumbnail.png', { type: 'image/png' });
-				}else{
-					console.log('No blob found');
-				}
-			});
-		}else{
-			console.log('No target element found');
-		}
-	}
 </script>
 
 <Toaster />

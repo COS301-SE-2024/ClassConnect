@@ -1,7 +1,9 @@
 import { upload , determineFolder } from '$lib/server/s3Bucket';
+import { THUMBNAIL_API_KEY, THUMBNAIL_URL } from '$env/static/private';
 import type { UploadData } from '$src/types';
 import Material from '$db/schemas/Material';
 import Workspace from '$db/schemas/Workspace';
+import axios from 'axios';
 
 export async function uploadFile( fileData : UploadData ){
     const file = fileData.file;
@@ -9,27 +11,40 @@ export async function uploadFile( fileData : UploadData ){
     if(folder === 'study-material'){
         return materialUpload(fileData);
     }else if(folder === 'objects'){
-        return objectUpload(fileData);
+        return materialUpload(fileData);
     }else{
         throw new Error('file not suported')
-    }
-
-}
-
-async function objectUpload(fileData : UploadData){
-    try{
-        console.log(fileData);
-        generateObjectThumbnail(fileData.file);
-    }catch(e){
-        console.error(e);
-        throw new Error('Error uploading object');
     }
 }
 
 async function materialUpload(fileData : UploadData){
 
     const file_path = await upload(fileData.file);
-    const thumbnail_path = await upload(fileData.thumbnail);
+
+    let thumbnail_path = 'https://class-connect-file-storage.s3.amazonaws.com/pictures/default-file.svg'
+
+    const body = {
+        url: file_path,
+        height: 300,
+        width: 250
+    };
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'x-api-key': THUMBNAIL_API_KEY
+    };
+
+    const response = await axios.post(THUMBNAIL_URL, body, { headers });
+
+    // Parse the response body JSON
+    const responseBody = JSON.parse(response.data.body);
+
+    // Get the thumbnail URL from the response body
+    if(responseBody.thumbnail_url){
+        thumbnail_path = responseBody.thumbnail_url;
+    }
+
+    console.log('This is the thumbnail path:', thumbnail_path)
 
     const workspace =  await Workspace.findById(fileData.workspace);
     
@@ -48,10 +63,4 @@ async function materialUpload(fileData : UploadData){
 
     await newMaterial.save();
     return newMaterial;
-}
-
-async function generateObjectThumbnail(object : File) : Promise<File>{
-    console.log('Generating thumbnail for object');
-    console.log(object);
-    return object;
 }
