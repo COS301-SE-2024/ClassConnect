@@ -1,6 +1,6 @@
 <script>
-  import { Input, InputAddon, ButtonGroup, Chart, Card, A, Button, Dropdown, DropdownItem, Popover, Modal, Label, Checkbox } from 'flowbite-svelte';
-  import { InfoCircleSolid, ChevronRightOutline, ChevronDownOutline, FileLinesSolid, SearchOutline } from 'flowbite-svelte-icons';
+  import { Input, ButtonGroup, Chart, Card, A, Button, Dropdown, DropdownItem, Modal, Label } from 'flowbite-svelte';
+  import { ChevronDownOutline, FileLinesSolid, SearchOutline } from 'flowbite-svelte-icons';
 	let formModal = false;
   let options = {
     chart: {

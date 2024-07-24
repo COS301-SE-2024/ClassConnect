@@ -1,10 +1,10 @@
 <script lang="ts">
 	import {
 		BullhornSolid,
-		BriefcaseOutline,
-		UserCircleOutline,
-		UsersGroupOutline,
-		ChartLineUpOutline,
+		BriefcaseSolid,
+		UserCircleSolid,
+		UsersGroupSolid,
+		ChartPieSolid,
 		ArrowLeftOutline,
 
 		ClipboardSolid
@@ -20,19 +20,19 @@
 	const navLinks = {
 		lecturer: [
 			{ icon: BullhornSolid, name: 'Dashboard', href: workspaceURL + '/dashboard' },
-			{ icon: ChartLineUpOutline, name: 'Grades', href: workspaceURL + '/grades' },
+			{ icon: ChartPieSolid, name: 'Grades', href: workspaceURL + '/grades' },
 			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
-			{ icon: BriefcaseOutline, name: 'Materials', href: workspaceURL + '/materials' },
-			{ icon: UserCircleOutline, name: 'Lessons', href: workspaceURL + '/lessons' },
-			{ icon: UsersGroupOutline, name: 'Sandbox', href: workspaceURL + '/sandbox' }
+			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
+			{ icon: UserCircleSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
+			{ icon: UsersGroupSolid, name: 'Sandbox', href: workspaceURL + '/sandbox' }
 		],
 		student: [
 			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
 			{ icon: BullhornSolid, name: 'Activities', href: workspaceURL + '/activities' },
-			{ icon: BriefcaseOutline, name: 'Materials', href: workspaceURL + '/materials' },
-			{ icon: UserCircleOutline, name: 'Lessons', href: workspaceURL + '/lessons' },
-			{ icon: UsersGroupOutline, name: 'Sandbox', href: workspaceURL + '/sandbox' },
-			{ icon: ChartLineUpOutline, name: 'Grades', href: workspaceURL + '/grades' }
+			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
+			{ icon: UserCircleSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
+			{ icon: UsersGroupSolid, name: 'Sandbox', href: workspaceURL + '/sandbox' },
+			{ icon: ChartPieSolid, name: 'Grades', href: workspaceURL + '/grades' }
 		]
 	};
 
