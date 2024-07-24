@@ -80,10 +80,10 @@ async function smallFile(
 }
 
 export async function uploadThumbnail(fileContent: Buffer): Promise<string> {
-	const filename: string = generateFileName(Date.now.toString()+' thumbnail.png');
+	const filename: string = generateFileName(Date.now.toString() + ' thumbnail.png');
 	const folder: string = 'pictures';
 	const contentType: string = 'image/png';
-	
+
 	const BUCKET_NAME: string = BUCKET;
 	const s3Key: string = `${folder}/${filename}`;
 	const contentDisposition = `inline; filename="${filename}"`;
