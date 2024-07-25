@@ -79,6 +79,31 @@ async function smallFile(
 	return fileUrl;
 }
 
+export async function uploadThumbnail(fileContent: Buffer): Promise<string> {
+	const filename: string = generateFileName(Date.now.toString() + ' thumbnail.png');
+	const folder: string = 'pictures';
+	const contentType: string = 'image/png';
+
+	const BUCKET_NAME: string = BUCKET;
+	const s3Key: string = `${folder}/${filename}`;
+	const contentDisposition = `inline; filename="${filename}"`;
+
+	// Upload the small file to S3
+	const params = {
+		Bucket: BUCKET_NAME,
+		Key: s3Key,
+		Body: fileContent,
+		ContentType: contentType,
+		ContentDisposition: contentDisposition
+	};
+
+	await S3.putObject(params).promise();
+
+	const fileUrl = `https://${BUCKET_NAME}.s3.amazonaws.com/${s3Key}`;
+
+	return fileUrl;
+}
+
 async function bigFile(
 	file: File,
 	filename: string,
@@ -183,7 +208,7 @@ function generateFileName(originalFileName: string): string {
 	return `${objectId}${extension}`;
 }
 
-function determineFolder(file: File): string {
+export function determineFolder(file: File): string {
 	const extension = file.name.split('.').pop()?.toLowerCase();
 
 	if (!extension) {

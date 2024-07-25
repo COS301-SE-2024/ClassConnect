@@ -3,9 +3,11 @@
 		BullhornSolid,
 		BriefcaseOutline,
 		UserCircleOutline,
-		UsersGroupOutline,
 		ChartLineUpOutline,
-		ArrowLeftOutline
+		ArrowLeftOutline,
+		DesktopPcOutline,
+		GlobeOutline,
+		LayersOutline
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
 
@@ -16,18 +18,18 @@
 
 	const navLinks = {
 		lecturer: [
-			{ icon: BullhornSolid, name: 'Dashboard', href: workspaceURL + '/dashboard' },
+			{ icon: DesktopPcOutline, name: 'Dashboard', href: workspaceURL + '/dashboard' },
 			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
 			{ icon: BriefcaseOutline, name: 'Materials', href: workspaceURL + '/materials' },
 			{ icon: UserCircleOutline, name: 'Lessons', href: workspaceURL + '/lessons' },
-			{ icon: UsersGroupOutline, name: 'Sandbox', href: workspaceURL + '/sandbox' }
+			{ icon: LayersOutline, name: 'Sandbox', href: workspaceURL + '/sandbox' }
 		],
 		student: [
-			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
+			{ icon: GlobeOutline, name: 'Announcements', href: workspaceURL + '/announcements' },
 			{ icon: BullhornSolid, name: 'Activities', href: workspaceURL + '/activities' },
 			{ icon: BriefcaseOutline, name: 'Materials', href: workspaceURL + '/materials' },
 			{ icon: UserCircleOutline, name: 'Lessons', href: workspaceURL + '/lessons' },
-			{ icon: UsersGroupOutline, name: 'Sandbox', href: workspaceURL + '/sandbox' },
+			{ icon: LayersOutline, name: 'Sandbox', href: workspaceURL + '/sandbox' },
 			{ icon: ChartLineUpOutline, name: 'Grades', href: workspaceURL + '/grades' }
 		]
 	};
@@ -64,7 +66,7 @@
 				<a
 					class="mt-5 flex transform items-center rounded-lg px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href ===
 					$page.url.pathname
-						? 'active dark:text-gray-800'
+						? 'active_sidebar dark:text-gray-800'
 						: ''}"
 					{href}
 				>

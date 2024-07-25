@@ -1,22 +1,37 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import Banner from '$lib/components/common/Banner.svelte';
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 
 	export let open: boolean;
 
 	let error: string;
+	let message: string;
+	let color: string;
+	let display: boolean = false;
 
 	function close() {
 		return async ({ result, update }: any) => {
 			if (result.type === 'success') {
 				await update();
+				message = 'Addition was successfull';
+				color = 'green';
 				open = false;
+				display = true;
 			} else {
 				error = result.data?.error;
+				message = 'Addition failed';
+				color = 'red';
+				open = false;
+				display = true;
 			}
 		};
 	}
 </script>
+
+{#if display}
+	<Banner type="Add" {color} {message} />
+{/if}
 
 <Modal bind:open size="xs" class="w-full">
 	<form method="POST" action="?/post" class="flex flex-col" use:enhance={close}>

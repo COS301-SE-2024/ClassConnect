@@ -17,6 +17,10 @@ const materialSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
+	thumbnail: {
+		type: String,
+		required: true
+	},
 	workspace_id: {
 		type: mongoose.Types.ObjectId,
 		ref: 'Workspace',
