@@ -42,7 +42,7 @@
 </Modal>
 
 <!-- Local File Modal -->
-<LocalFile open={openLocalFileModal} />
+<LocalFile bind:open={openLocalFileModal} />
 
 <!-- Uploaded File Modal -->
-<UploadedFile open={openLocalUploadedFileModal} {items} />
+<UploadedFile bind:open={openLocalUploadedFileModal} {items} />
