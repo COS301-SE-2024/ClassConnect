@@ -10,8 +10,7 @@
 		UsersGroupSolid,
 		ChartLineUpOutline,
 		ArrowLeftToBracketOutline,
-		AdjustmentsHorizontalSolid,
-		ClipboardCheckSolid
+		AdjustmentsHorizontalSolid
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
 
@@ -29,7 +28,7 @@
 		],
 		lecturer: [
 			{ icon: BriefcaseSolid, name: 'Workspaces', href: '/workspaces' },
-			{ icon: BullhornSolid, name: 'Announcements', href: '/announcements' },
+			{ icon: BullhornSolid, name: 'Announcements', href: '/announcements' }
 		],
 		student: [
 			{ icon: GridSolid, name: 'Dashboard', href: '/dashboard' },

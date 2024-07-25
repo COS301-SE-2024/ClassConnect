@@ -5,10 +5,7 @@
 		UserCircleSolid,
 		UsersGroupSolid,
 		ChartPieSolid,
-		ArrowLeftOutline,
-
-		ClipboardSolid
-
+		ArrowLeftOutline
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
 
