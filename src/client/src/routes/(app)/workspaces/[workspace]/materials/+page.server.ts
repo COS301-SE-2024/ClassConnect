@@ -1,60 +1,30 @@
-// export async function load() {
-// 	return {
-// 		materials: [
-// 			{
-// 				title: 'DSA',
-// 				description: 'Introduction to data structures and algorithms',
-// 				link: '$lib/files/study-notes-one.pdf'
-// 			}
-// 		]
-// 	};
-// }
-
 import type { Actions } from './$types';
-import Material from '$db/schemas/Material';
+import Materials from '$db/schemas/Material';
+import type { Material } from '$src/types';
+import type { UploadData } from '$src/types';
 import { fail, error } from '@sveltejs/kit';
-import { upload } from '$src/lib/server/storage';
+import { deleteFile } from '$lib/server/storage';
+import { uploadFile } from '$lib/server/UploadHandler';
 
-async function formatMaterial(material: any) {
+function formatMaterial(material: any): Partial<Material> {
 	return {
-		id: material._id.toString(),
 		title: material.title,
 		description: material.description,
 		file_path: material.file_path,
-		type: material.type
+		thumbnail: material.thumbnail,
+		type: material.type,
+		id: material._id.toString()
 	};
 }
 
-async function getMaterials(workspace: string, type: boolean) {
-	const materials = await Material.find({ workspace, type });
+async function getMaterials(workspace_id: string): Promise<Partial<Material>[]> {
+	const materials = await Materials.find({ workspace_id });
 	return materials.map(formatMaterial);
-}
-//Function to Upload Materials
-async function uploadMaterials(data: FormData, workspace_id: string, typeSet: boolean) {
-	const title = data.get('title') as string;
-	const description = data.get('description') as string;
-	const file_path = (await upload(data.get('file') as File)) as string;
-	const type = typeSet; //TODO: Should account for differnt types of Materials.
-
-	if (!title) return fail(400, { message: 'Title is required' });
-	if (!description) return fail(400, { message: 'Description is required' });
-	if (!file_path) return fail(400, { message: 'File to upload required' });
-
-	const newMaterial = new Material({
-		title,
-		description,
-		file_path,
-		type,
-		workspace_id
-	});
-	await newMaterial.save();
-	return { success: true };
 }
 
 export async function load({ locals, params }) {
 	try {
-		const materials = await getMaterials(params.workspace, false);
-
+		const materials = await getMaterials(params.workspace);
 		return {
 			role: locals.user?.role,
 			materials
@@ -68,22 +38,58 @@ export async function load({ locals, params }) {
 function validateLecturer(locals: any) {
 	if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorized');
 }
-//Deleting a Material
+
 async function deleteMaterial(id: string) {
 	if (!id) return fail(400, { message: 'Material ID is required' });
 
-	const deletedMaterial = await Material.findByIdAndDelete(id);
+	const material = await Materials.findById(id);
+
+	if (material) {
+		const file_path = material.file_path;
+		const thumbnail = material.thumbnail;
+
+		if (file_path) {
+			try {
+				await deleteFile(file_path);
+			} catch (e) {
+				console.error('Error deleting file:', e);
+			}
+		}
+
+		if (thumbnail) {
+			try {
+				await deleteFile(thumbnail);
+			} catch (e) {
+				console.error('Error deleting thumbnail:', e);
+			}
+		}
+	} else {
+		return fail(404, { message: 'Material not found' });
+	}
+
+	const deletedMaterial = await Materials.findByIdAndDelete(id);
+
 	if (!deletedMaterial) return fail(404, { message: 'Material not found' });
+
 	return { success: true };
 }
 
 export const actions: Actions = {
 	uploadMat: async ({ request, locals, params }) => {
 		validateLecturer(locals);
-
 		try {
 			const data = await request.formData();
-			return await uploadMaterials(data, params.workspace, true);
+
+			const upload_data: UploadData = {
+				file: data.get('file') as File,
+				title: data.get('title') as string,
+				description: data.get('description') as string,
+				workspace: params.workspace
+			};
+
+			const mat = await uploadFile(upload_data);
+
+			console.log(mat);
 		} catch (e) {
 			console.error('Error uploading material:', e);
 			return fail(500, { message: 'Failed to upload material' });
@@ -99,5 +105,17 @@ export const actions: Actions = {
 			console.error('Error deleting material:', e);
 			return fail(500, { message: 'Failed to delete material' });
 		}
+	},
+	submitObjects: async ({ request }) => {
+		const data = await request.formData();
+		const selectedObjects = data.getAll('selectedObjects') as string[];
+		console.log(data);
+
+		console.log('Selected object IDs:', selectedObjects);
+
+		return {
+			success: true,
+			message: 'Objects submitted successfully'
+		};
 	}
 };
