@@ -3,7 +3,7 @@
 	import Scene from './Scene.svelte';
 </script>
 
-<main class="h-screen">
+<main class="h-screen bg-black">
 	<Canvas>
 		<Scene />
 	</Canvas>
