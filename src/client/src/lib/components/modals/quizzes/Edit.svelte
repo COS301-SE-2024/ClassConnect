@@ -16,6 +16,7 @@
     if (selectedType) {
       dispatch('select', { type: selectedType });
       open = false;
+      
     }
   }
 </script>

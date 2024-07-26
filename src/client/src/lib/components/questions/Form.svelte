@@ -1,51 +1,57 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-  import { NumberInput, Input, Textarea, Button, Label } from 'flowbite-svelte';
+  import { enhance } from '$app/forms';
+  import { Button, Input, Textarea, NumberInput, Label } from 'flowbite-svelte';
+
 
   export let open: boolean;
-  const dispatch = createEventDispatcher();
 
-  let questionNumber = '';
-  let questionContent = '';
-  let options = ['', '', ''];  
-  let points = [0, 0, 0];  
-  
-  function handleSubmit() {
-    const formData = {
-      questionNumber,
-      questionContent,
-      options,
-      points,
-    };
+	let error: string;
 
-    dispatch('submit', formData);
-  }
+	function close() {
+		return async ({ result, update }: any) => {
+			if (result.type === 'success') {
+				await update();
+				open = false;
+			} else {
+				error = result.data?.error;
+			}
+		};
+	}
 </script>
 
 <main class="container mx-auto my-4 px-4">
-  <form on:submit|preventDefault={handleSubmit}>
+  <h1 class="text-2xl font-bold mb-4">Create a New Question</h1>
+
+  <form method="POST" action="?/post" class="flex flex-col" use:enhance={close}>
+
+    {#if error}
+      <p class="mt-2 text-center text-red-500">{error}</p>
+    {/if}
+    
     <div class="mb-4">
       <Label for="questionNumber">Question Number</Label>
-      <Input id="questionNumber" bind:value={questionNumber} type="text" placeholder="Enter question number" required />
-    </div>
-    <div class="mb-4">
-      <Label for="editor">Question Content</Label>
-      <Textarea id="editor" rows="8" bind:value={questionContent} placeholder="Write the question content" required />
+      <Input id="questionNumber" name="questionNumber" type="text" placeholder="Enter question number" required />
     </div>
 
-    {#each options as option, index}
+    <div class="mb-4">
+      <Label for="questionContent">Question Content</Label>
+      <Textarea id="questionContent" name="questionContent" rows="8" placeholder="Write the question content" required />
+    </div>
+
+    {#each [0, 1, 2] as index}
       <div class="mb-4">
         <Label>
           Option {index + 1}
-          <Input type="text" bind:value={options[index]} placeholder="Write answer option" size="lg" />
+          <Input type="text" name="options" placeholder="Write answer option" size="lg" />
+        </Label>
+        <Label class="space-y-2 mb-4">
+          <span>Points</span>
+          <NumberInput name="points" />
         </Label>
       </div>
-      <Label class="space-y-2 mb-4">
-        <span>Points</span>
-        <NumberInput bind:value={points[index]} />
-      </Label>
     {/each}
 
-    <Button type="submit">Submit Question</Button>
+    <Button type="submit" class="mt-4 w-full">Submit Question</Button>
   </form>
+
 </main>
