@@ -24,11 +24,12 @@ async function getQuizzes(ownerID: string | undefined): Promise<Quiz[]> {
 
 export async function load({ params }) {
 	try {
+		const workspaceID=params.workspace;
 		const quizzes = await getQuizzes(params.workspace);
 		//console.log('Workspace: ', params.workspace);
 
 		return {
-			quizzes
+			workspaceID,quizzes
 		};
 	} catch (e) {
 		console.error('Failed to load Quizzes: ', e);
@@ -40,7 +41,7 @@ async function createQuiz(
 	title: string,
 	graded: string,
 	instructions: string,
-	ownerID: ObjectId | undefined
+	ownerID: ObjectId 
 ) {
 	const newQuiz = new Quizzes({
 		title,
@@ -69,8 +70,9 @@ export const actions: Actions = {
 			const instructions = data.get('instructions') as string;
 			const graded = 'No';
 			const workspaceId = new mongoose.Types.ObjectId(params.workspace);
+			console.log('Quiz Workspace Id:', workspaceId);
 
-			return await createQuiz(title, graded, instructions, workspaceId);
+			return await createQuiz(title, graded, instructions,workspaceId);
 		} catch (error) {
 			console.error('Error posting quiz:', error);
 			return fail(500, { error: 'Failed to post quiz' });

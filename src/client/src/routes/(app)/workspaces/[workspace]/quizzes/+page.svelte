@@ -19,6 +19,7 @@
 
 	
 	export let data: any;
+	console.log(data);
 
 	let id: string;
     // let data: Quiz[] = [];
@@ -30,12 +31,18 @@
 	let selectedQuestionType = '';
 	
 	
-	$: ({ quizzes } = data);
 	function openQuiz(quizID: string) {
-		goto(`/workspaces/${quizzes.owner}/quizzes/${quizzes.id}`);
-	}
+        const workspaceId = data.workspaceID; 
+        console.log('Workspace ID:', workspaceId);
+        if (workspaceId) {
+            goto(`/workspaces/${workspaceId}/quizzes/${quizID}`);
+        } else {
+            console.error('Workspace ID is missing or undefined');
+        }
+    }
 	//console.log(data);
 	const headers = ['Title', 'Graded', 'Date Modified', 'Actions'];
+	$: ({ quizzes } = data);
 
 	function handleEditModalOpen(quizID: string) {
 		id = quizID;
