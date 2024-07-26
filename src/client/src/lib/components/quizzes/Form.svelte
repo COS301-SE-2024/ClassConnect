@@ -1,6 +1,7 @@
 <script lang="ts">
   import { NumberInput, Input, Textarea, Button, Label } from 'flowbite-svelte';
-  
+  export let open: boolean;
+
   let questionNumber = '';
   let questionContent = '';
   let options = ['', '', ''];  

@@ -1,7 +1,7 @@
 
-import { error, redirect } from '@sveltejs/kit';
+import type { Actions, PageServerLoad } from './$types';
+import { fail, error } from '@sveltejs/kit';
+import mongoose from 'mongoose';
+import Question from '$lib/server/database/schemas/Question';
+import Quiz from '$lib/server/database/schemas/Quiz';
 
-export async function load({ locals }) {
-	if (!locals.user) return redirect(302, '/signin');
-	if (locals.user.role !== 'lecturer') throw error(401, 'Unauthorized');
-}

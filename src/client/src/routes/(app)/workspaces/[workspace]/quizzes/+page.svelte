@@ -113,6 +113,6 @@
 <AddModal bind:open={isQuizFormOpen} />
 <EditModal bind:open={isEditModalOpen} on:select={handleQuestionTypeSelect} />
 {#if selectedQuestionType === 'multiple-choice'}
-<Question />
+<Question bind:open={isRemoveModalOpen} />
 {/if}
 <RemoveModal bind:open={isRemoveModalOpen} {id} item="quiz" />
