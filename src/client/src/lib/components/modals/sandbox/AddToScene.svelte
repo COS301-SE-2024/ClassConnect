@@ -44,4 +44,4 @@
 <LocalFile bind:open={openLocalFileModal} />
 
 <!-- Uploaded File Modal -->
-<UploadedFile bind:open={openLocalUploadedFileModal} items={items} />
+<UploadedFile bind:open={openLocalUploadedFileModal} {items} />

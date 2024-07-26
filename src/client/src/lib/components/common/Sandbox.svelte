@@ -61,17 +61,17 @@
 		<section
 			class="canvas-container flex h-[700px] flex-col space-y-4 rounded-lg bg-gray-200 p-2 shadow-md ring dark:bg-gray-700"
 		>
-				<Canvas >
-					<Scene
-						bind:this={SceneElement}
-						{enableDamping}
-						{autoRotate}
-						{rotateSpeed}
-						{zoomToCursor}
-						{zoomSpeed}
-						{enableZoom}
-					/>
-				</Canvas>
+			<Canvas>
+				<Scene
+					bind:this={SceneElement}
+					{enableDamping}
+					{autoRotate}
+					{rotateSpeed}
+					{zoomToCursor}
+					{zoomSpeed}
+					{enableZoom}
+				/>
+			</Canvas>
 
 			{#if $displayedSandboxObjectURL !== ''}
 				<ObjectSettings
@@ -89,4 +89,3 @@
 		</section>
 	</div>
 </main>
-
