@@ -7,8 +7,8 @@ import Quiz from '$lib/server/database/schemas/Quiz';
 
 export const load: PageServerLoad = async ({ params }) => {
 	try {
-	  const quizId = params.quizId; 
-	  const questions = await Question.find({ quiz: quizId });
+	  const quizId = params.quiz; 
+	  const questions = await Question.find({ quizId});
   
 	  return {
 		questions: questions.map((q) => ({
@@ -24,3 +24,8 @@ export const load: PageServerLoad = async ({ params }) => {
 	  throw error(500, 'Error occurred while fetching Questions');
 	}
   };
+
+
+function validateLecturer(locals: any) {
+	if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorised');
+}
