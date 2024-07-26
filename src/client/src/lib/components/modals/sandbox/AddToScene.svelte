@@ -23,7 +23,7 @@
 	}
 	function closeModal() {
 		open = false;
-		dispatch('close'); 
+		dispatch('close');
 	}
 </script>
 

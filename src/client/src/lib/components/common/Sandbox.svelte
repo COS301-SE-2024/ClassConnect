@@ -82,7 +82,7 @@
 					bind:autoRotate
 					bind:rotateSpeed
 					bind:zoomToCursor
-					bind:zoomSpeed 
+					bind:zoomSpeed
 					bind:enableZoom
 				/>
 			{/if}
