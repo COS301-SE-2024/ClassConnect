@@ -32,11 +32,7 @@
 	
 	$: ({ quizzes } = data);
 	function openQuiz(quizID: string) {
-		if (data.role === 'student') {
-			goto(`/workspaces/${id}/quizzes/${quizzes.id}`);
-		} else {
-			goto(`/workspaces/${id}/announcements`);
-		}
+		goto(`/workspaces/${quizzes.owner}/quizzes/${quizzes.id}`);
 	}
 	//console.log(data);
 	const headers = ['Title', 'Graded', 'Date Modified', 'Actions'];
