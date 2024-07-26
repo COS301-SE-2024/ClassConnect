@@ -9,12 +9,15 @@
 	export let renderedMaterials: any[] = [];
 
 	let materialSearchTerm = '';
+	let filteredItems = renderedMaterials;
 
 	$: filteredItems = renderedMaterials.filter(
 		(material: any) =>
 			material.title.toLowerCase().includes(materialSearchTerm.toLowerCase()) ||
 			material.description.toLowerCase().includes(materialSearchTerm.toLowerCase())
 	);
+
+	console.log(renderedMaterials);
 
 	let uploadModal = false;
 </script>
@@ -47,7 +50,7 @@
 						bind:value={materialSearchTerm}
 						class="block w-full rounded-lg border-gray-200 py-3 pe-4 ps-10 text-lg focus:border-green-500 focus:ring-green-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
 						type="text"
-						placeholder="Type a name"
+						placeholder="Search"
 						data-hs-combo-box-input=""
 					/>
 				</div>

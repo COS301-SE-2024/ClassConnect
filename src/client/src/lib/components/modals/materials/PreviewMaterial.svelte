@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { displayedSandboxObjectURL, ObjInScene } from '$src/lib/store/objects';
-	import * as htmlToImage from 'html-to-image';
 	import Scene from '$src/lib/components/sandbox/+Scene.svelte';
+	import { change } from '$lib/store/';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { Button, Modal } from 'flowbite-svelte';
 	import { Canvas } from '@threlte/core';
@@ -12,7 +12,6 @@
 	export let type: string;
 	export let title: string;
 	export let description: string;
-	let thumbnail: File;
 
 	async function handleNo(event: Event) {
 		event.preventDefault();
@@ -29,16 +28,14 @@
 		ObjInScene.set(false);
 
 		console.log('Upload is being handled');
-		await generateThumbnail();
 
 		const formData = new FormData();
 
 		formData.append('file', file);
 		formData.append('title', title);
 		formData.append('description', description);
-		formData.append('thumbnail', thumbnail);
 
-		toast.promise(
+		await toast.promise(
 			fetch('?/uploadMat', {
 				method: 'POST',
 				body: formData
@@ -49,6 +46,7 @@
 				error: 'Failed to upload material!'
 			}
 		);
+		change.set('Material deleted at: ' + Date.now().toString());
 	}
 	// 3D Object Preview
 	let autoRotate: boolean = false;
@@ -57,23 +55,6 @@
 	let zoomToCursor: boolean = false;
 	let zoomSpeed: number = 1;
 	let enableZoom: boolean = true;
-
-	async function generateThumbnail() {
-		console.log('Hello from thumbnail creaetion');
-		const targetElement = document.getElementById('pdf-file');
-		if (targetElement) {
-			await htmlToImage.toBlob(targetElement).then(function (blob) {
-				if (blob) {
-					console.log(blob);
-					thumbnail = new File([blob], 'thumbnail.png', { type: 'image/png' });
-				} else {
-					console.log('No blob found');
-				}
-			});
-		} else {
-			console.log('No target element found');
-		}
-	}
 </script>
 
 <Toaster />

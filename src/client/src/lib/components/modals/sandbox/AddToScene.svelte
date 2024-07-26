@@ -15,7 +15,6 @@
 	async function handleLocalFile(event: Event) {
 		event.preventDefault();
 		openLocalFileModal = true;
-		open = false;
 	}
 	async function handleUploadedFile(event: Event) {
 		event.preventDefault();
@@ -45,4 +44,4 @@
 <LocalFile bind:open={openLocalFileModal} />
 
 <!-- Uploaded File Modal -->
-<UploadedFile bind:open={openLocalUploadedFileModal} {items} />
+<UploadedFile bind:open={openLocalUploadedFileModal} items={items} />

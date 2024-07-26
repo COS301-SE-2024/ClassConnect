@@ -3,28 +3,28 @@ import Materials from '$db/schemas/Material';
 import type { Material } from '$src/types';
 import type { UploadData } from '$src/types';
 import { fail, error } from '@sveltejs/kit';
-import { deleteFile } from '$lib/server/s3Bucket';
+import { deleteFile } from '$lib/server/storage';
 import { uploadFile } from '$lib/server/UploadHandler';
 
 function formatMaterial(material: any): Partial<Material> {
 	return {
-		id: material._id.toString(),
 		title: material.title,
 		description: material.description,
-		type: material.type
+		file_path: material.file_path,
+		thumbnail: material.thumbnail,
+		type: material.type,
+		id: material._id.toString()
 	};
 }
 
 async function getMaterials(workspace_id: string): Promise<Partial<Material>[]> {
 	const materials = await Materials.find({ workspace_id });
-	console.log(materials);
 	return materials.map(formatMaterial);
 }
 
 export async function load({ locals, params }) {
 	try {
 		const materials = await getMaterials(params.workspace);
-		console.log(materials);
 		return {
 			role: locals.user?.role,
 			materials
@@ -70,8 +70,7 @@ async function deleteMaterial(id: string) {
 	const deletedMaterial = await Materials.findByIdAndDelete(id);
 
 	if (!deletedMaterial) return fail(404, { message: 'Material not found' });
-	console.log('Material:' + deletedMaterial);
-	deleteFile(deletedMaterial.file_path);
+
 	return { success: true };
 }
 
@@ -85,8 +84,7 @@ export const actions: Actions = {
 				file: data.get('file') as File,
 				title: data.get('title') as string,
 				description: data.get('description') as string,
-				workspace: params.workspace,
-				thumbnail: data.get('thumbnail') as File
+				workspace: params.workspace
 			};
 
 			const mat = await uploadFile(upload_data);
