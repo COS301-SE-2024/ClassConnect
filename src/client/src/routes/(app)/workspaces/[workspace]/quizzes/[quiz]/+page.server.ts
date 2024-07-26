@@ -6,8 +6,9 @@ import type { ObjectId } from 'mongoose';
 import type { Question } from '$src/types';
 import Questions from '$db/schemas/Announcement';
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load: PageServerLoad = async ({ params,locals }) => {
 	try {
+	  const role=locals.user?.role;
 	  const quizId = params.quiz; 
 	  const questions = await Questions.find({ quizId});
   
@@ -19,6 +20,7 @@ export const load: PageServerLoad = async ({ params }) => {
 		  questionType: q.questionType,
 		  options: q.options,
 		})),
+		role
 	  };
 	} catch (e) {
 	  console.error('Failed to load Questions: ', e);

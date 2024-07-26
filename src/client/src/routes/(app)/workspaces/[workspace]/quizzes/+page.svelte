@@ -40,7 +40,7 @@
             console.error('Workspace ID is missing or undefined');
         }
     }
-	//console.log(data);
+	
 	const headers = ['Title', 'Graded', 'Date Modified', 'Actions'];
 	$: ({ quizzes } = data);
 
@@ -132,6 +132,6 @@
 <AddModal bind:open={isQuizFormOpen} />
 <EditModal bind:open={isEditModalOpen} on:select={handleQuestionTypeSelect} />
 {#if selectedQuestionType === 'multiple-choice'}
-<Question bind:open={isRemoveModalOpen} />
+	<Question bind:open={isRemoveModalOpen}/>
 {/if}
 <RemoveModal bind:open={isRemoveModalOpen} {id} item="quiz" />

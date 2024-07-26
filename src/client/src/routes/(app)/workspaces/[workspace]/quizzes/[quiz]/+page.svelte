@@ -3,8 +3,13 @@
   import { CalendarWeekSolid } from 'flowbite-svelte-icons';
 
   export let data: any;
-  $: ({ questions } = data);
-
+  $: ({ questions, role } = data);
+  let isCreatingQuestion = false;
+  
+  if(role==='lecturer' ){
+    isCreatingQuestion=true;
+  }
+  
   $: console.log('Questions:', questions);
 </script>
 

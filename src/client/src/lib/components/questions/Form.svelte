@@ -1,6 +1,9 @@
 <script lang="ts">
+  import { createEventDispatcher } from 'svelte';
   import { NumberInput, Input, Textarea, Button, Label } from 'flowbite-svelte';
+
   export let open: boolean;
+  const dispatch = createEventDispatcher();
 
   let questionNumber = '';
   let questionContent = '';
@@ -8,10 +11,14 @@
   let points = [0, 0, 0];  
   
   function handleSubmit() {
-    console.log('Question Number:', questionNumber);
-    console.log('Question Content:', questionContent);
-    console.log('Options:', options);
-    console.log('Points:', points);
+    const formData = {
+      questionNumber,
+      questionContent,
+      options,
+      points,
+    };
+
+    dispatch('submit', formData);
   }
 </script>
 

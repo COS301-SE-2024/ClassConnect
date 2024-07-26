@@ -28,7 +28,7 @@
       <Select class="mt-2" items={questionTypes} bind:value={selectedType} />
     </Label>
     <div class="mt-4 flex justify-end">
-      <Button on:click={confirmSelection} disabled={!selectedType}>Add Question</Button>
+      <Button on:click={confirmSelection} disabled={!selectedType}>Add </Button>
     </div>
   </div>
 </Modal>
