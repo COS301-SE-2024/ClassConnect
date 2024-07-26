@@ -1,13 +1,21 @@
 <script lang="ts">
 	import { T } from '@threlte/core';
 	import { Box3, Vector3 } from 'three';
-	import { GLTF, OrbitControls } from '@threlte/extras';
+	import { GLTF, OrbitControls, Sky } from '@threlte/extras';
+	import { Checkbox, Pane, ThemeUtils, Slider } from 'svelte-tweakpane-ui';
 
 	import type { Object3D } from 'three';
 
 	import Menu from './Menu.svelte';
 
 	export let currentModel: string;
+
+	let zoomSpeed: number = 1;
+	let rotateSpeed: number = 1;
+	let enableZoom: boolean = true;
+	let autoRotate: boolean = false;
+	let enableDamping: boolean = true;
+	let zoomToCursor: boolean = false;
 
 	const normalizeModel = (object: Object3D) => {
 		const box = new Box3().setFromObject(object);
@@ -38,9 +46,28 @@
 	on:create={({ ref }) => ref.lookAt(0, 0, 0)}
 >
 	<Menu />
-	<OrbitControls autoRotate enableDamping />
+
+	<OrbitControls
+		{zoomSpeed}
+		{rotateSpeed}
+		{autoRotate}
+		{enableZoom}
+		{zoomToCursor}
+		{enableDamping}
+	/>
 </T.PerspectiveCamera>
+
+<Sky />
 
 <T.AmbientLight intensity={1} />
 
 <GLTF url={currentModel} on:create={handleModelCreate} />
+
+<Pane position="fixed" theme={ThemeUtils.presets.light} title="Object Settings">
+	<Checkbox bind:value={autoRotate} label="autoRotate" />
+	<Checkbox bind:value={enableZoom} label="enableZoom" />
+	<Checkbox bind:value={zoomToCursor} label="zoomToCursor" />
+	<Checkbox bind:value={enableDamping} label="enableDamping" />
+	<Slider label="zoomSpeed" bind:value={zoomSpeed} min={0.1} max={4} step={0.1} />
+	<Slider label="rotateSpeed" bind:value={rotateSpeed} min={0.1} max={8} step={0.1} />
+</Pane>

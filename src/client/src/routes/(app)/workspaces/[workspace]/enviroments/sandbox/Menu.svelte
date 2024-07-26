@@ -34,7 +34,7 @@
 		<div class="flex">
 			<h1 class="text-xl font-bold text-white">Menu</h1>
 
-			<CloseButton on:click={() => (isClosed = false)} class="mb-4 text-white" />
+			<CloseButton on:click={() => (isClosed = true)} class="mb-4 text-white" />
 		</div>
 
 		<Listgroup class="bg-transparent bg-opacity-30 backdrop-blur-md">
