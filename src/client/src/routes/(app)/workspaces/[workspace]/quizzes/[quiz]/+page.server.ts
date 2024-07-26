@@ -47,3 +47,24 @@ async function createQuestion(
 	  quiz: quizId
 	});
   }
+
+//actions
+export const actions: Actions = {
+	post: async ({ request, locals, params }) => {
+	  validateLecturer(locals);
+  
+	  try {
+		const data = await request.formData();
+		const questionNumber = parseInt(data.get('questionNumber') as string, 10);
+		const questionContent = data.get('questionContent') as string;
+		const questionType = data.get('questionType') as string;
+		const options = JSON.parse(data.get('options') as string);
+		const quizId = new mongoose.Types.ObjectId(params.quiz);
+  
+		return await createQuestion(questionNumber, questionContent, questionType, options, quizId);
+	  } catch (error) {
+		console.error('Error creating question:', error);
+		return fail(500, { error: 'Failed to create question' });
+	  }
+	}
+  };
