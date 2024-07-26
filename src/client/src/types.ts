@@ -104,6 +104,7 @@ export interface Option {
   }
   
 export interface Question {
+	id: string;
 	questionNumber: number;
 	questionContent: string;
 	questionType: string;

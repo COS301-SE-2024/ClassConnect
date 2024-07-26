@@ -2,13 +2,14 @@
 import type { Actions, PageServerLoad } from './$types';
 import { fail, error } from '@sveltejs/kit';
 import mongoose from 'mongoose';
-import Question from '$lib/server/database/schemas/Question';
-import Quiz from '$lib/server/database/schemas/Quiz';
+import type { ObjectId } from 'mongoose';
+import type { Question } from '$src/types';
+import Questions from '$db/schemas/Announcement';
 
 export const load: PageServerLoad = async ({ params }) => {
 	try {
 	  const quizId = params.quiz; 
-	  const questions = await Question.find({ quizId});
+	  const questions = await Questions.find({ quizId});
   
 	  return {
 		questions: questions.map((q) => ({
@@ -25,7 +26,24 @@ export const load: PageServerLoad = async ({ params }) => {
 	}
   };
 
-
+//lecture validation
 function validateLecturer(locals: any) {
 	if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorised');
 }
+
+//Question creation
+async function createQuestion(
+	questionNumber: number,
+	questionContent: string,
+	questionType: string,
+	options: { content: string, points: number }[],
+	quizId: ObjectId | undefined
+  ) {
+	const newQuestion = new Questions({
+	  questionNumber,
+	  questionContent,
+	  questionType,
+	  options,
+	  quiz: quizId
+	});
+  }
