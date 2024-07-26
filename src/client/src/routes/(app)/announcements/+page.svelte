@@ -1,30 +1,10 @@
 <script lang="ts">
 	import { Button } from 'flowbite-svelte';
 	import Card from '$src/lib/components/announcements/Card.svelte';
-
-	import RemoveModal from '$lib/components/modals/Delete.svelte';
 	import AddModal from '$lib/components/modals/announcement/Add.svelte';
-	import EditModal from '$lib/components/modals/announcement/Edit.svelte';
-	//import { role } from '@stream-io/video-client';
-
 	export let data: any;
 
-	let id: string;
 	let isAddModalOpen = false;
-	let isEditModalOpen = false;
-	let isRemoveModalOpen = false;
-
-	function handleEditModalOpen(announcementsId: string) {
-		id = announcementsId;
-		isEditModalOpen = true;
-	}
-
-	function handleRemoveModalOpen(announcementsId: string) {
-		id = announcementsId;
-		isRemoveModalOpen = true;
-	}
-
-	//$: console.log("Role:", role);
 	$: ({ announcements } = data);
 </script>
 
@@ -63,20 +43,11 @@
 				date={announcement.date}
 				title={announcement.title}
 				description={announcement.description}
+				id={announcement.id}
+				role={data.role}
 			></Card>
-			<div class="flex space-x-2">
-				{#if data.role === 'admin'}
-					<Button class="mr-2" on:click={() => handleEditModalOpen(announcement.id)}>Edit</Button>
-
-					<Button color="red" on:click={() => handleRemoveModalOpen(announcement.id)}>
-						Delete
-					</Button>
-				{/if}
-			</div>
 		{/each}
 	{/if}
 </main>
 
 <AddModal bind:open={isAddModalOpen} />
-<EditModal bind:open={isEditModalOpen} {id} />
-<RemoveModal bind:open={isRemoveModalOpen} {id} item="announcement" />

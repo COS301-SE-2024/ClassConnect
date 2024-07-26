@@ -67,8 +67,16 @@ export interface Material {
 	title: string;
 	description: string;
 	file_path: string;
+	thumbnail: string;
 	type: boolean;
 	workspace: string;
+}
+
+export interface UploadData {
+	title: string;
+	description: string;
+	workspace: string;
+	file: File;
 }
 
 export type FAQItem = {
