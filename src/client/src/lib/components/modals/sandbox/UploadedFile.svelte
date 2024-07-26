@@ -20,7 +20,7 @@
 	);
 
 	function handleObjectSelect(items: any) {
-		displayedSandboxObjectURL.set(items.fileURL);
+		displayedSandboxObjectURL.set(items.file_path);
 		ObjInScene.set(true);
 		open = false;
 	}
@@ -34,7 +34,7 @@
 		bind:inputValue={objectSearchTerm}
 	>
 		<TableHead>
-			<TableHeadCell>ID</TableHeadCell>
+			<!-- <TableHeadCell>ID</TableHeadCell> -->
 			<TableHeadCell>Object</TableHeadCell>
 			<TableHeadCell>Description</TableHeadCell>
 		</TableHead>
@@ -42,7 +42,7 @@
 		<TableBody tableBodyClass="divide-y">
 			{#each filteredItems as item}
 				<TableBodyRow on:click={() => handleObjectSelect(item)} class="cursor-pointer">
-					<TableBodyCell>{item.id}</TableBodyCell>
+					<!-- <TableBodyCell>{item.id}</TableBodyCell> -->
 
 					<TableBodyCell>{item.title}</TableBodyCell>
 
