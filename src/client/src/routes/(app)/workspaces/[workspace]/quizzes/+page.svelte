@@ -9,12 +9,12 @@
 		TableHeadCell,
 		TableBodyCell
 	} from 'flowbite-svelte';
-    
+	import { goto } from '$app/navigation';
 	import {  EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 	import AddModal from '$lib/components/modals/quizzes/Add.svelte';
 	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
-	import Question from '$lib/components/quizzes/Form.svelte';
+	import Question from '$src/lib/components/questions/Form.svelte';
 
 
 	
@@ -29,8 +29,15 @@
 
 	let selectedQuestionType = '';
 	
-
+	
 	$: ({ quizzes } = data);
+	function openQuiz(quizID: string) {
+		if (data.role === 'student') {
+			goto(`/workspaces/${id}/quizzes/${quizzes.id}`);
+		} else {
+			goto(`/workspaces/${id}/announcements`);
+		}
+	}
 	//console.log(data);
 	const headers = ['Title', 'Graded', 'Date Modified', 'Actions'];
 
@@ -73,8 +80,11 @@
 					</span>
 				</div>
 			</div>
+			
 			<div class="mb-4 flex items-center gap-x-3">
-				<Button on:click={() => (isQuizFormOpen = true)}>Add Quiz</Button>
+				{#if data.role === 'lecturer'}
+					<Button on:click={() => (isQuizFormOpen = true)}>Add Quiz</Button>
+				{/if}
 			</div>
 		</div>
 
@@ -93,6 +103,7 @@
 						<TableBodyCell>{quiz.date}</TableBodyCell>
 						<TableBodyCell>
 							<div class="flex items-center gap-x-6">
+							{#if data.role==='lecturer'}
 								{#if quiz.graded==='No'}
 									<Button on:click={() => handleEditModalOpen(quiz.id)}>
 										<EditOutline />
@@ -101,8 +112,13 @@
 								<Button color="red" on:click={() => handleRemoveModalOpen(quiz.id)}>
 									<TrashBinOutline />
 								</Button>
+							{:else if data.role === 'student'}
+									<Button on:click={() => openQuiz(quiz.id)}>
+										Start
+									</Button>
+							{/if}
 							</div>
-						</TableBodyCell>
+							</TableBodyCell>
 					</TableBodyRow>
 				{/each}
 			</TableBody>
