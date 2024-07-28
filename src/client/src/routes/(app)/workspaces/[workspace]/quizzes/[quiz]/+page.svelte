@@ -15,10 +15,29 @@
   
   
   let selectedAnswers: { [key: string]: string } = {};
+  let submitModalOpen = false;
+  let submissionMessage = '';
+  let totalPoints = 0;
   
   function handleSelection(questionId: string, optionContent: string) {
       selectedAnswers[questionId] = optionContent;
       //goto(`/workspaces/${data.workspaceId}/quizzes/${data.quizID}`)
+  }
+
+  function handleSubmit() {
+  
+    totalPoints = questions.reduce((total, question) => {
+      const selectedOption = question.options.find(
+        option => option.content === selectedAnswers[question.id]
+      );
+      return total + (selectedOption ? selectedOption.points : 0);
+    }, 0);
+
+    // Generate submission message
+    submissionMessage = `You have successfully submitted the quiz. You answered ${Object.keys(selectedAnswers).length} out of ${questions.length} questions.`;
+
+    // Open the submit modal
+    submitModalOpen = true;
   }
   </script>
   
@@ -50,6 +69,7 @@
                           </div>
                       </Card>
                   {/each}
+                  <Button on:click={handleSubmit}>Submit Quiz</Button>
               </div>
           {/if}
       {:else if role === 'lecturer'}
