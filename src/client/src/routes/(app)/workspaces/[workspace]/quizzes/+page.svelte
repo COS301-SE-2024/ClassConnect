@@ -27,6 +27,7 @@
 	let isEditModalOpen = false;
 	let isAddModalOpen= false;
 	let isRemoveModalOpen=false;
+	let i
 
 	let selectedQuestionType = '';
 	
@@ -61,6 +62,9 @@
 
 	function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {
 		selectedQuestionType = event.detail.type;
+		const quizID = id; // Get the current quiz ID
+
+		openQuiz(quizID);
 		isQuizFormOpen = true;
   }
 	
@@ -132,6 +136,6 @@
 <AddModal bind:open={isQuizFormOpen} />
 <EditModal bind:open={isEditModalOpen} on:select={handleQuestionTypeSelect} />
 {#if selectedQuestionType === 'multiple-choice'}
-	<Question bind:open={isRemoveModalOpen}/>
+  <Question bind:open={isQuizFormOpen} />
 {/if}
 <RemoveModal bind:open={isRemoveModalOpen} {id} item="quiz" />

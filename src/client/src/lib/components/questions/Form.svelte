@@ -17,6 +17,7 @@
 			}
 		};
 	}
+  
 </script>
 
 <main class="container mx-auto my-4 px-4">
@@ -39,18 +40,17 @@
     </div>
 
     {#each [0, 1, 2] as index}
-      <div class="mb-4">
-        <Label>
-          Option {index + 1}
-          <Input type="text" name="options" placeholder="Write answer option" size="lg" />
-        </Label>
-        <Label class="space-y-2 mb-4">
-          <span>Points</span>
-          <NumberInput name="points" />
-        </Label>
-      </div>
+    <div class="mb-4">
+      <Label>
+        Option {index + 1}
+        <Input type="text" name="options[{index}].content" placeholder="Write answer option" size="lg" />
+      </Label>
+      <Label class="space-y-2 mb-4">
+        <span>Points</span>
+        <NumberInput name="options[{index}].points" />
+      </Label>
+    </div>
     {/each}
-
     <Button type="submit" class="mt-4 w-full">Submit Question</Button>
   </form>
 

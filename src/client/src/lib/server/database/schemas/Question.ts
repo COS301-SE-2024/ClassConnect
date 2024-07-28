@@ -3,6 +3,7 @@ import mongoose from '$lib/server/database/db';
 const optionSchema = new mongoose.Schema({
   content: { type: String, required: true },
   points: { type: Number, required: true },
+  _id: {type: mongoose.Types.ObjectId, required: false}
 });
 
 const questionSchema = new mongoose.Schema({
@@ -25,6 +26,7 @@ const questionSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId, 
         ref: 'Quiz', 
         required: true },
+
 });
 
 const Question = mongoose.models.Question || mongoose.model('Question', questionSchema);
