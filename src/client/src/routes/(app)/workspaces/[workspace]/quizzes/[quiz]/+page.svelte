@@ -1,6 +1,7 @@
 <script lang="ts">
   import { Button, Radio, Card } from 'flowbite-svelte';
   import Form from '$lib/components/questions/Form.svelte';
+  import Submission from '$lib/components/modals/quizzes/Submission.svelte';
   import { goto } from '$app/navigation';
   
   export let data: any;
@@ -26,7 +27,7 @@
 
   function handleSubmit() {
   
-    totalPoints = questions.reduce((total, question) => {
+    totalPoints = questions.reduce((total: any, question: { options: any[]; id: string | number; }) => {
       const selectedOption = question.options.find(
         option => option.content === selectedAnswers[question.id]
       );
@@ -83,3 +84,4 @@
           <p class="text-gray-700 dark:text-gray-300">You do not have permission to view this content.</p>
       {/if}
   </main>
+  <Submission bind:open={submitModalOpen} {submissionMessage} {totalPoints} />
