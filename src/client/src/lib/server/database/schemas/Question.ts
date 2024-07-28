@@ -3,7 +3,7 @@ import mongoose from '$lib/server/database/db';
 const optionSchema = new mongoose.Schema({
   content: { type: String, required: true },
   points: { type: Number, required: true },
-  _id: {type: mongoose.Types.ObjectId, required: false}
+  _id: {type: mongoose.Types.ObjectId}
 });
 
 const questionSchema = new mongoose.Schema({

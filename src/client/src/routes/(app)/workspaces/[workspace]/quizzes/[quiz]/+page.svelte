@@ -12,7 +12,7 @@
   }
   
   $: ({ questions, role } = data);
-  $: console.log('Questions:', questions);
+  $: console.log(questions.map(q => ({ id: q.id, number: q.questionNumber })));
   
   
   let selectedAnswers: { [key: string]: string } = {};
