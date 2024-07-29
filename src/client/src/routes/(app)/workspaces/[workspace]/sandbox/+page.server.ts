@@ -21,7 +21,6 @@ export async function load({ locals, params }) {
 	try {
 		const materials = await getMaterials(params.workspace,true);
 		return {
-			role: locals.user?.role,
 			materials
 		};
 	} catch (e) {
