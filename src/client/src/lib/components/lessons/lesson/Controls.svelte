@@ -62,16 +62,20 @@
 			}
 		} else {
 			if ($callStore) {
-				await toast.promise($callStore?.stopRecording(), {
-					loading: 'Stopping recording...',
-					success: 'Recording stopped successfully!',
-					error: 'Failed to stop recording!'
-				});
-				try {
-					const record = await $callStore?.queryRecordings($callStore?.cid);
-					console.log(record);
-				} catch (e) {
-					console.log(e);
+				if ($callStore?.permissionsContext.hasPermission(OwnCapability.STOP_RECORD_CALL)) {
+					await toast.promise($callStore?.stopRecording(), {
+						loading: 'Stopping recording...',
+						success: 'Recording stopped successfully!',
+						error: 'Failed to stop recording!'
+					});
+					try {
+						const record = await $callStore?.queryRecordings($callStore?.cid);
+						console.log(record);
+					} catch (e) {
+						console.log(e);
+					}
+				} else {
+					toast.error('You are not allowed to stop recording');
 				}
 			} else {
 				toast.error('No call to stop recording');
