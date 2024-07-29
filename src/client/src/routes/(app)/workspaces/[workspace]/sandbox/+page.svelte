@@ -6,8 +6,7 @@
 
 	onMount(() => {
 		items = data.materials;
-	})
-
+	});
 </script>
 
 <main>
