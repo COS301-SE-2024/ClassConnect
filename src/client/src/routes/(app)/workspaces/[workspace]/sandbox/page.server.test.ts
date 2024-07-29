@@ -46,6 +46,16 @@ describe('Material Management', () => {
             expect(Materials.find).toHaveBeenCalledWith({ workspace_id: 'workspace1', type: true });
         });
 
+        it('should return an empty array when no materials match the type', async () => {
+            const params = { workspace: 'workspace1' };
+            (Materials.find as any).mockResolvedValue([]);
+            
+            const result = await materialModule.load({ params } as any);
+            
+            expect(result).toEqual({ materials: [] });
+            expect(Materials.find).toHaveBeenCalledWith({ workspace_id: 'workspace1', type: true });
+        });
+
         it('should throw error on server error', async () => {
             const params = { workspace: 'workspace1' };
             (Materials.find as any).mockRejectedValue(new Error('Database error'));
