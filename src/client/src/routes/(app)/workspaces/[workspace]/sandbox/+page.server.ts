@@ -10,14 +10,14 @@ function formatMaterial(material: any): Partial<Material> {
 	};
 }
 
-async function getMaterials(workspace_id: string, type: boolean): Promise<Partial<Material>[]> {
+async function get3DMaterials(workspace_id: string, type: boolean): Promise<Partial<Material>[]> {
 	const materials = await Materials.find({ workspace_id, type });
 	return materials.map(formatMaterial);
 }
 
 export async function load({ params }) {
 	try {
-		const materials = await getMaterials(params.workspace, true);
+		const materials = await get3DMaterials(params.workspace, true);
 		return {
 			materials
 		};
