@@ -26,23 +26,23 @@ export async function load({ locals, params }) {
 
 		const recordings = [
 			{
-				"id": "lesson1",
-				"topic": "Introduction to Svelte",
-				"description": "An introductory lesson on Svelte framework.",
-				"date": "2024-08-01",
-				"time": "10:00 AM",
-				"url": "https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4"
+				id: 'lesson1',
+				topic: 'Introduction to Svelte',
+				description: 'An introductory lesson on Svelte framework.',
+				date: '2024-08-01',
+				time: '10:00 AM',
+				url: 'https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4'
 			},
 			{
-				"id": "lesson2",
-				"topic": "Advanced Svelte Techniques",
-				"description": "A lesson on advanced techniques in Svelte.",
-				"date": "2024-08-02",
-				"time": "2:00 PM",
-				"url": "https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4"
+				id: 'lesson2',
+				topic: 'Advanced Svelte Techniques',
+				description: 'A lesson on advanced techniques in Svelte.',
+				date: '2024-08-02',
+				time: '2:00 PM',
+				url: 'https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4'
 			}
-		]
-		  
+		];
+
 		return {
 			role: locals.user?.role,
 			lessons,

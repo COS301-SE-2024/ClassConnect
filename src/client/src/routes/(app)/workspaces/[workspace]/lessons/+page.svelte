@@ -27,7 +27,6 @@
 		upcomingLessons = lessons.filter((lesson: any) => lesson.unformattedDate > now);
 		inSessionLessons = lessons.filter((lesson: any) => lesson.unformattedDate <= now);
 	}
-	
 </script>
 
 <Tabs>
@@ -49,7 +48,7 @@
 				{/if}
 			</div>
 			<br />
-		
+
 			{#if lessons.length === 0}
 				<p class="text-l text-gray-800 dark:text-white">
 					There are no lessons scheduled at the moment.
@@ -75,13 +74,13 @@
 				</div>
 			</div>
 			<br />
-		
+
 			{#if recordings.length === 0}
 				<p class="text-l text-gray-800 dark:text-white">
 					There are no recordings of the lessons at the moment.
 				</p>
 			{:else}
-				<Recordings role={role} lessons={recordings} />
+				<Recordings {role} lessons={recordings} />
 			{/if}
 		</main>
 	</TabItem>

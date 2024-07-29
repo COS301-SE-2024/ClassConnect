@@ -50,37 +50,31 @@
 
 	async function toggleRecording() {
 		isRecording = !isRecording;
-		if(isRecording === true){
+		if (isRecording === true) {
 			if ($callStore?.permissionsContext.hasPermission(OwnCapability.START_RECORD_CALL)) {
-				await toast.promise(
-					$callStore?.startRecording(),
-					{
-						loading: 'Starting recording...',
-						success: 'Recording started successfully!',
-						error: 'Failed to stop recording!'
-					}
-				);
+				await toast.promise($callStore?.startRecording(), {
+					loading: 'Starting recording...',
+					success: 'Recording started successfully!',
+					error: 'Failed to stop recording!'
+				});
 			} else {
-				toast.error("Recording is not allowed for this call");
+				toast.error('Recording is not allowed for this call');
 			}
-		}else{
-			if($callStore){
-				await toast.promise(
-					$callStore?.stopRecording(),
-					{
-						loading: 'Stopping recording...',
-						success: 'Recording stopped successfully!',
-						error: 'Failed to stop recording!'
-					}
-				);
-				try{
+		} else {
+			if ($callStore) {
+				await toast.promise($callStore?.stopRecording(), {
+					loading: 'Stopping recording...',
+					success: 'Recording stopped successfully!',
+					error: 'Failed to stop recording!'
+				});
+				try {
 					const record = await $callStore?.queryRecordings($callStore?.cid);
 					console.log(record);
-				}catch(e){
+				} catch (e) {
 					console.log(e);
 				}
-			}else{
-				toast.error("No call to stop recording");
+			} else {
+				toast.error('No call to stop recording');
 			}
 		}
 	}
@@ -131,7 +125,6 @@
 			>
 				<CameraPhotoOutline class="h-6 w-6" />
 			</Button>
-
 		{/if}
 
 		<Button color="red" class="rounded-full p-2" on:click={endCall}>
