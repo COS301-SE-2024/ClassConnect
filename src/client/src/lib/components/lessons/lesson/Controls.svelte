@@ -9,17 +9,21 @@
 		VideoCameraSolid,
 		PhoneHangupSolid,
 		MicrophoneSlashSolid,
-		WindowRestoreSolid
+		WindowRestoreSolid,
+		CameraPhotoOutline
 	} from 'flowbite-svelte-icons';
 
 	import type { Writable } from 'svelte/store';
+	import { OwnCapability } from '@stream-io/video-client';
 	import type { Call } from '@stream-io/video-client';
+	import toast, { Toaster } from 'svelte-french-toast';
 
 	export let role: string;
 
 	const callStore = getContext<Writable<Call | null>>('call');
 
 	let isEnvironmentOn = false;
+	let isRecording = false;
 	let isCameraOn = $callStore?.camera.state.status === 'enabled' ? true : false;
 	let isMicOn = $callStore?.microphone.state.status === 'enabled' ? true : false;
 	let isScreenShareOn = $callStore?.screenShare.state.status === 'enabled' ? true : false;
@@ -44,11 +48,50 @@
 		$callStore?.update({ custom: { environment: isEnvironmentOn } });
 	}
 
+	async function toggleRecording() {
+		isRecording = !isRecording;
+		if(isRecording === true){
+			if ($callStore?.permissionsContext.hasPermission(OwnCapability.START_RECORD_CALL)) {
+				await toast.promise(
+					$callStore?.startRecording(),
+					{
+						loading: 'Starting recording...',
+						success: 'Recording started successfully!',
+						error: 'Failed to stop recording!'
+					}
+				);
+			} else {
+				toast.error("Recording is not allowed for this call");
+			}
+		}else{
+			if($callStore){
+				await toast.promise(
+					$callStore?.stopRecording(),
+					{
+						loading: 'Stopping recording...',
+						success: 'Recording stopped successfully!',
+						error: 'Failed to stop recording!'
+					}
+				);
+				try{
+					const record = await $callStore?.queryRecordings($callStore?.cid);
+					console.log(record);
+				}catch(e){
+					console.log(e);
+				}
+			}else{
+				toast.error("No call to stop recording");
+			}
+		}
+	}
+
 	function endCall() {
 		$callStore?.leave();
 		goto(`/workspaces/${$page.params.workspace}/lessons`);
 	}
 </script>
+
+<Toaster />
 
 <div class="mb-4 flex w-1/4 items-center justify-center">
 	<div class="flex space-x-4">
@@ -80,6 +123,15 @@
 			>
 				<RocketSolid class="h-6 w-6" />
 			</Button>
+
+			<Button
+				color={isRecording ? 'primary' : 'light'}
+				class="rounded-full p-2"
+				on:click={toggleRecording}
+			>
+				<CameraPhotoOutline class="h-6 w-6" />
+			</Button>
+
 		{/if}
 
 		<Button color="red" class="rounded-full p-2" on:click={endCall}>
