@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Banner from '$lib/components/common/Banner.svelte';
 	import { Button, Modal, Input } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
 
@@ -9,6 +8,7 @@
 	export let open: boolean;
 
 	let error: string;
+	/* Message, Colour & Display are saying that they are assigned a valye but never used. I am just commenting it out in the meantime.
 	let message: string;
 	let color: string;
 	let display: boolean = false;
@@ -30,6 +30,7 @@
 			}
 		};
 	}
+		*/
 </script>
 
 <Modal bind:open size="xs">

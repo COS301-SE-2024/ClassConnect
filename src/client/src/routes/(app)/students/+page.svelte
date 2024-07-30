@@ -1,8 +1,6 @@
 <script lang="ts">
 	import {
-		Card,
 		Button,
-		Table,
 		TableHead,
 		TableHeadCell,
 		TableBody,
@@ -10,7 +8,7 @@
 		TableBodyCell,
 		TableSearch
 	} from 'flowbite-svelte';
-	import { ArrowRightOutline, EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
+	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 	import NoStudentCard from '$lib/components/common/ZeroUsersCard.svelte';
 
 	export let data;
@@ -39,11 +37,12 @@
 		isEditModalOpen = true;
 	}
 
+	/*
 	function handleEnrolModalOpen(studentId: string) {
 		id = studentId;
 		isEnrolModalOpen = true;
 	}
-
+	*/
 	function handleRemoveModalOpen(studentId: string) {
 		id = studentId;
 		isRemoveModalOpen = true;

@@ -1,8 +1,6 @@
 <script lang="ts">
 	import {
-		Card,
 		Button,
-		Table,
 		TableHead,
 		TableHeadCell,
 		TableBody,
@@ -10,7 +8,7 @@
 		TableBodyCell,
 		TableSearch
 	} from 'flowbite-svelte';
-	import { ArrowRightOutline, EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
+	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 	import NoLecturerCard from '$lib/components/common/ZeroUsersCard.svelte';
 
 	import AddModal from '$lib/components/modals/user/Add.svelte';

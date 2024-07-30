@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Card, Img } from 'flowbite-svelte';
+	import { Button, Card } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
 	import AddModal from '$lib/components/modals/user/Add.svelte';
 

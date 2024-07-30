@@ -2,7 +2,6 @@
 	import {
 		Card,
 		Button,
-		Table,
 		TableHead,
 		TableHeadCell,
 		TableBody,
