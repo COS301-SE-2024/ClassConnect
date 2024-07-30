@@ -75,6 +75,13 @@ function validateLecturer(locals: any) {
 	if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorised');
 }
 
+async function deleteQuiz(id: string) {
+	const deletedQuiz = await Quizzes.findByIdAndDelete(id);
+	if (!deletedQuiz) throw new Error('Quiz not found');
+
+	return { success: true };
+}
+
 export const actions: Actions = {
 	post: async ({ request, locals, params }) => {
 		validateLecturer(locals);
@@ -93,6 +100,23 @@ export const actions: Actions = {
 			console.error('Error posting quiz:', error);
 			return fail(500, { error: 'Failed to post quiz' });
 		}
+	},
+
+	delete: async ({ request, locals }) => {
+		validateLecturer(locals);
+
+		try {
+			const data = await request.formData();
+			const id = data.get('id') as string;
+			if (!id) return fail(400, { error: 'Quiz ID is required' });
+
+			return await deleteQuiz(id);
+		} catch (err) {
+			console.error('Error removing quiz:', err);
+			return fail(500, { error: 'Failed to remove quiz' });
+		}
 	}
+
+
 };
 

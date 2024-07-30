@@ -1,34 +1,53 @@
 <script lang="ts">
-	import { Button, Radio, Card } from 'flowbite-svelte';
+	import { Progressbar, Button, Radio, Card } from 'flowbite-svelte';
 	import Form from '$lib/components/questions/Form.svelte';
 	import Submission from '$lib/components/modals/quizzes/Submission.svelte';
-	//import { goto } from '$app/navigation';
+	import { browser } from '$app/environment';
+	import { onMount, onDestroy } from 'svelte';
+	import { act } from '@testing-library/svelte';
 
 	export let data: any;
-	import { onDestroy } from 'svelte';
-
 	let elapsed = 0;
 	let isFormOpen = false;
-
+	let activeTimer = false;
+	
 	function toggleForm() {
-		isFormOpen = !isFormOpen;
+	isFormOpen = !isFormOpen;
 	}
 
 	$: ({ questions, role, duration } = data);
-	$: console.log(questions);
+	$: (activeTimer=role==='student');
 
-	let last_time = window.performance.now();
-	let frame;
+	let last_time: number;
+	let frame: number;
 
-	(function update() {
-		frame = requestAnimationFrame(update);
+	function update() {
+		if(activeTimer){
+			frame = requestAnimationFrame(update);
+			const time = performance.now();
+			elapsed += Math.min(time - last_time, duration - elapsed);
+			last_time = time;
+	
+			// Check if time has run out
+			if (elapsed >= duration) {
+				cancelAnimationFrame(frame);
+				handleTimeOutSubmission();
+			}
+		}
+	}
 
-		const time = window.performance.now();
-		elapsed += Math.min(time - last_time, duration - elapsed);
+	onMount(() => {
+	if (browser && activeTimer) {
+		last_time = performance.now();
+		update();
+	}
+	});
 
-		last_time = time;
-	})();
-
+	onDestroy(() => {
+	if (browser && frame && activeTimer) {
+		cancelAnimationFrame(frame);
+	}
+	});
 	let selectedAnswers: { [key: string]: string } = {};
 	let submitModalOpen = false;
 	let submissionMessage = '';
@@ -39,24 +58,36 @@
 	}
 
 	function handleQuizSubmission() {
-		console.log('handleQuizSubmission is called');
 		try {
-			console.log('Calculating total points...');
 			totalPoints = questions.reduce((total: number, question: any) => {
 				const selectedOption = question.options.find(
 					(option: any) => option.content === selectedAnswers[question.questionNumber]
 				);
 				return total + (selectedOption ? selectedOption.points : 0);
 			}, 0);
-			console.log('Total points calculated:', totalPoints);
 			submissionMessage = `You have successfully submitted the quiz. Your score is ${totalPoints} points.`;
 			submitModalOpen = true;
-			// Optionally, you can navigate to a results page or perform other actions here
-			// goto(`/workspaces/${workspaceId}/quizzes/${quizID}/results`);
+			
 		} catch (error) {
 			console.error('Error in handleQuizSubmission:', error);
 		}
 	}
+
+	function handleTimeOutSubmission() {
+		try {
+			// Calculate points as in handleQuizSubmission
+			totalPoints = questions.reduce((total: number, question: any) => {
+			const selectedOption = question.options.find(
+				(option: any) => option.content === selectedAnswers[question.questionNumber]
+			);
+			return total + (selectedOption ? selectedOption.points : 0);
+			}, 0);
+			submissionMessage = `Your time has run out for the quiz submission. Your score is ${totalPoints} points.`;
+			submitModalOpen = true;
+		} catch (error) {
+			console.error('Error in handleTimeOutSubmission:', error);
+		}
+}
 </script>
 
 <main class="container mx-auto my-8 px-4">
@@ -65,6 +96,14 @@
 		{#if questions.length === 0}
 			<p class="text-gray-700 dark:text-gray-300">No questions available for this quiz.</p>
 		{:else}
+		<p class="text-gray-700 dark:text-gray-300">Elapsed time to complete quiz:</p>
+		<Progressbar 
+			progress={100 * (1 - elapsed / duration)} 
+			size="h-4"
+			color={elapsed / duration > 0.75 ? "red" : elapsed / duration > 0.5 ? "yellow" : "green"}
+		/>
+		
+		<div>{(elapsed / 1000).toFixed(1)}s</div>
 			<div class="space-y-6">
 				{#each questions as question (question.id)}
 					<Card>
