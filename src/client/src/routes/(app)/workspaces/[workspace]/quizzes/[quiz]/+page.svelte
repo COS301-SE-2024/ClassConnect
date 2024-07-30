@@ -2,7 +2,7 @@
     import { Button, Radio, Card } from 'flowbite-svelte';
     import Form from '$lib/components/questions/Form.svelte';
     import Submission from '$lib/components/modals/quizzes/Submission.svelte';
-    import { goto } from '$app/navigation';
+    //import { goto } from '$app/navigation';
    
     export let data: any;
     let isFormOpen = false;
@@ -11,7 +11,7 @@
       isFormOpen = !isFormOpen;
     }
    
-    $: ({ questions, role, quizID, workspaceId } = data);
+    $: ({ questions, role } = data);
     $: console.log(questions);
    
     let selectedAnswers: { [key: string]: string } = {};
