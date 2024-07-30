@@ -1,7 +1,7 @@
 import type { ObjectId } from 'mongoose';
 import type { Actions } from '@sveltejs/kit';
 import { fail, error, redirect } from '@sveltejs/kit';
-import { upload, deleteFile } from '$lib/server/s3Bucket';
+import { upload, deleteFile } from '$lib/server/storage';
 
 import Users from '$db/schemas/User';
 import Workspaces from '$db/schemas/Workspace';
