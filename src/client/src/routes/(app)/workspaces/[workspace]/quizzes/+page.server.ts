@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import type { ObjectId } from 'mongoose';
 import type { Quiz } from '$src/types';
 import Quizzes from '$db/schemas/Quiz';
+import Activities from '$db/schemas/Activity';
 
 function formatQuiz(quiz: any): Quiz {
 	return {
@@ -51,6 +52,17 @@ async function createQuiz(
 	});
 
 	await newQuiz.save();
+
+	//create activity
+	const newActivity = new Activities({
+		title: `New Quiz: ${title}`,
+		description: instructions || '',
+		date: new Date(),
+		owner: ownerID,
+		type: 'quiz'
+	});
+
+	await newActivity.save();
 
 	return { success: true };
 }
