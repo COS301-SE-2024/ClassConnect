@@ -2,7 +2,7 @@ import Users from '$db/schemas/User';
 import { fail } from '@sveltejs/kit';
 import { HASH_OPTIONS } from '$src/constants';
 import { verify, hash } from '@node-rs/argon2';
-import { upload, deleteFile } from '$lib/server/s3Bucket';
+import { upload, deleteFile } from '$src/lib/server/storage';
 import type { User } from '$src/types';
 import type { ObjectId } from 'mongoose';
 import type { Actions } from './$types';
@@ -172,6 +172,34 @@ export const actions: Actions = {
 		} catch (err) {
 			console.error('Error updating password:', err);
 			return fail(500, { error: 'Failed to update password' });
+		}
+	},
+	get_user_details: async ({ locals }) => {
+		if (locals && locals.user) {
+			const userID: ObjectId = locals.user.id;
+
+			if (!userID) {
+				fail(400, { error: 'user id not found' });
+			}
+
+			const USER = await Users.findById(userID);
+
+			if (!USER) {
+				fail(404, { error: 'user not found' });
+			}
+
+			const ret_user = {
+				name: USER.name,
+				email: USER.email,
+				image: USER.image,
+				surname: USER.surname
+			};
+
+			JSON.stringify({ user: ret_user });
+
+			return JSON.stringify({ user: ret_user });
+		} else {
+			fail(401, { error: 'Unauthorized' });
 		}
 	}
 };

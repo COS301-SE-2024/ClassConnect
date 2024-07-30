@@ -9,19 +9,23 @@
 	import Chat from './Chat.svelte';
 	import Controls from './Controls.svelte';
 	import Participants from './Layout.svelte';
-	import AttendanceList from './AttendanceList.svelte';
 
 	export let call: Call;
+	export let role: string;
 	export let channel: Channel;
 	const callStore: Writable<Call | null> = writable(null);
 
 	onMount(async () => {
-		await call.join({ create: true });
+		await call.join({ create: true, data: { custom: { environment: false } } });
 		callStore.set(call);
 	});
 
 	onDestroy(() => {
-		if (call) call.leave();
+		if (call) {
+			call.leave();
+			call.update({ custom: { environment: false } });
+		}
+
 		if (channel) channel.stopWatching();
 	});
 
@@ -30,14 +34,14 @@
 
 {#if $callStore}
 	<div class="flex h-screen">
-		<AttendanceList />
-
-		<div class="flex w-full flex-col items-center justify-center">
+		<div class="flex w-3/4 flex-col items-center justify-center">
 			<Participants />
-			<Controls />
+			<Controls {role} />
 		</div>
 
-		<Chat {channel} />
+		<div class="mb-4 mr-4 mt-4 w-1/4">
+			<Chat {channel} />
+		</div>
 	</div>
 {:else}
 	<div class="flex h-screen flex-grow items-center justify-center">

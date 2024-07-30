@@ -31,7 +31,7 @@ export const load = async ({ locals }) => {
 
 		const token = await tokenProvider(id, streamClient);
 
-		return { apiKey: STREAM_API_KEY, user: formattedUser, token };
+		return { token, apiKey: STREAM_API_KEY, user: formattedUser, role: locals.user?.role };
 	} catch (err) {
 		console.error('Error in Lesson load function:', err);
 		throw error(500, 'An unexpected error occurred while loading lesson');

@@ -52,4 +52,3 @@
 <GLTF url={objectURL} <!-- scale={3.0} /> -->
 
 <Sky />
-<!-- <CashRegister></CashRegister> -->
