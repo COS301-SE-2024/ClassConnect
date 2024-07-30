@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button, Modal, Label, Fileupload, Helper, Input } from 'flowbite-svelte';
 	import PreviewMaterial from '$lib/components/modals/materials/PreviewMaterial.svelte';
+	import { displayedSandboxObjectURL } from '$src/lib/store/objects';
 	import { createEventDispatcher } from 'svelte';
 
 	export let open: boolean;
@@ -16,7 +17,7 @@
 	const objectsExtensions = ['gltf', 'glb'];
 	const MaterialExtensions = ['pdf', 'pptx', 'epub'];
 
-	async function handleFileUpload(event: Event) {
+	function handleFileUpload(event: Event) {
 		event.preventDefault();
 
 		const formData = new FormData(event.target as HTMLFormElement);
@@ -48,8 +49,14 @@
 			reader.onload = (e) => {
 				const url = e.target?.result as string;
 				fileUrl = url;
-				open = false;
-				openPreviewModal = true;
+				console.log(fileUrl);
+                if (fileUrl) {
+                    open = false;
+                    openPreviewModal = true;
+					displayedSandboxObjectURL.set(fileUrl);
+                } else {
+                    console.log('Failed to read file URL');
+                }
 			};
 
 			reader.readAsDataURL(file);
@@ -87,11 +94,14 @@
 </Modal>
 
 <!-- Preview Modal -->
-<PreviewMaterial
-	open={openPreviewModal}
-	file={inputFile}
-	url={fileUrl}
-	{type}
-	{title}
-	{description}
-/>
+{#if openPreviewModal}
+	<PreviewMaterial
+		open={openPreviewModal}
+		file={inputFile}
+		url={fileUrl}
+		type={type}
+		title={title}
+		description={description}
+		on:close={() => (openPreviewModal = false)} 
+	/>
+{/if}
