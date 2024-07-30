@@ -39,6 +39,14 @@
 		}
 	};
 
+	// Emit a custom event when the delete button is clicked
+	const handleDelete = () => {
+		const event = new CustomEvent('delete', {
+			detail: { id }
+		});
+		dispatchEvent(event);
+	};
+
 	onMount(() => {
 		// Ensure that the subscription happens within the component's lifecycle
 		const unsubscribe = page.subscribe(() => {});
@@ -84,7 +92,7 @@
 						Preview
 					</DropdownItem>
 					<DropdownDivider />
-					<DropdownItem class="flex" on:click={() => (openDeleteModal = true)}>
+					<DropdownItem class="flex" on:click={handleDelete}>
 						<TrashBinOutline color="red" class="me-2" />
 						Delete
 					</DropdownItem>
