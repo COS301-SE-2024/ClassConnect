@@ -121,9 +121,9 @@ async function editWorkspace(data: FormData) {
 
 	if (name) workspace.name = name;
 	if (image_file && workspace && image_file.size !== 0) {
-		console.log("Image File Details: " + image_file);
+		console.log('Image File Details: ' + image_file);
 		image = await upload(image_file);
-		console.log("Image details: " + image);
+		console.log('Image details: ' + image);
 		if (image) {
 			await deleteFile(workspace.image);
 			updateData.image = image;
