@@ -4,21 +4,26 @@ import mongoose from 'mongoose';
 import type { ObjectId } from 'mongoose';
 import Quizzes from '$db/schemas/Quiz';
 import Questions from '$db/schemas/Question';
+import Grade from '$db/schemas/Grades';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	try {
 		const role = locals.user?.role;
+		const studentID= locals.user?.id.toString();
 		const quizId = params.quiz;
 		const questions = await Questions.find({ quiz: quizId });
-
+		
 		const quiz = await Quizzes.findById(quizId);
 		if (!quiz) {
 			throw error(404, 'Quiz not found');
 		}
 		const duration = quiz.duration;
-
-		console.log('Quiz', quiz);
+		const workspaceID=quiz.owner.toString();
+		const quizID=quiz.id;
+		
 		return {
+			role,
+			duration,
 			questions: questions.map((q) => ({
 				id: q._id.toString(),
 				questionNumber: q.questionNumber,
@@ -28,9 +33,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 					content: option.content,
 					points: option.points
 				}))
-			})),
-			role,
-			duration
+			}))
+			
 		};
 	} catch (e) {
 		console.error('Failed to load Questions: ', e);
@@ -63,6 +67,19 @@ async function createQuestion(
 	return { success: true };
 }
 
+//saving marks
+async function saveGrade(studentID: ObjectId, quizID: ObjectId, workspaceID: ObjectId, mark: number) {
+	const newGrade = new Grade({
+		studentID,
+		quizID,
+		workspaceID,
+		mark,
+	});
+	console.log(newGrade);
+	await newGrade.save();
+	return { success: true };
+}
+
 //actions
 export const actions: Actions = {
 	post: async ({ request, locals, params }) => {
@@ -91,5 +108,25 @@ export const actions: Actions = {
 			console.error('Error creating question:', error);
 			return fail(500, { error: 'Failed to create question' });
 		}
+	},
+	submitQuiz: async ({ request, locals, params }) => {
+		try {
+			const data = await request.json();
+			const { studentID, quizID, workspaceID, mark } = data;
+
+			const savedGrade = await saveGrade(
+				studentID,
+				workspaceID,
+				quizID,
+				mark
+			);
+
+			return savedGrade;
+		} catch (error) {
+			console.error('Error saving grade:', error);
+			return fail(500, { error: 'Failed to save grade' });
+		}
 	}
+
+
 };

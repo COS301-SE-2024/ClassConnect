@@ -22,6 +22,6 @@ const gradesSchema = new mongoose.Schema({
     },
 });
 
-const Grades = mongoose.models.Grades || mongoose.model('Quiz', gradesSchema);
+const Grades = mongoose.models.Grades || mongoose.model('Grades', gradesSchema);
 
 export default Grades;

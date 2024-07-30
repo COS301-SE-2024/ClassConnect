@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Progressbar, Button, Radio, Card } from 'flowbite-svelte';
 	import Form from '$lib/components/questions/Form.svelte';
+	
 	import Submission from '$lib/components/modals/quizzes/Submission.svelte';
 	import { browser } from '$app/environment';
 	import { onMount, onDestroy } from 'svelte';
@@ -14,7 +15,7 @@
 		isFormOpen = !isFormOpen;
 	}
 
-	$: ({ questions, role, duration } = data);
+	$: ({ questions, role, duration, studentID, workspaceID, quizID } = data);
 	$: activeTimer = role === 'student';
 
 	let last_time: number;
@@ -61,7 +62,7 @@
 		selectedAnswers[questionId] = optionContent;
 	}
 
-	function handleQuizSubmission() {
+	async function handleQuizSubmission() {
 		try {
 			stopTimer();
 			totalPoints = questions.reduce((total: number, question: any) => {
@@ -72,6 +73,7 @@
 			}, 0);
 			submissionMessage = `You have successfully submitted the quiz. Your score is ${totalPoints} points.`;
 			submitModalOpen = true;
+			await saveGrade(studentID, quizID, workspaceID, totalPoints);
 		} catch (error) {
 			console.error('Error in handleQuizSubmission:', error);
 		}
@@ -92,6 +94,9 @@
 			console.error('Error in handleTimeOutSubmission:', error);
 		}
 	}
+
+	
+
 </script>
 
 <main class="container mx-auto my-8 px-4">
