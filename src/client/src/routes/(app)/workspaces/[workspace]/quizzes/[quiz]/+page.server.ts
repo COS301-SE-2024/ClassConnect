@@ -11,17 +11,18 @@ export const load: PageServerLoad = async ({ params,locals }) => {
 	  const role=locals.user?.role;
 	  const quizId = params.quiz; 
 	  const questions = await Questions.find({ quiz: quizId});
-		console.log('questions arr', questions);
+		//console.log('questions arr', questions);
 	  return {
 		questions: questions.map((q) => ({
 		  id: q._id.toString(),
 		  questionNumber: q.questionNumber,
 		  questionContent: q.questionContent,
 		  questionType: q.questionType,
-		  options: q.options.map((option: { content: any; points: any; _id: { toString: () => any; }; }) => ({
+		  quiz:q.quiz.toString(),
+		  options: q.options.map((option: { content: any; points: any;  }) => ({
 			content: option.content,
-			points: option.points,
-			id: option._id.toString() 
+			points: option.points
+			
 		  }))
 		})),
 		role
