@@ -99,6 +99,14 @@ export interface Quiz {
 	duration: number;
 }
 
+export interface Grades {
+	id: string;
+	studentID: string;
+	workspaceID: string;
+	quizID: string;
+	mark:number;
+}
+
 export interface Option {
 	content: string;
 	points: number;
