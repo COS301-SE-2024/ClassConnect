@@ -108,6 +108,7 @@
 						<TableBodyCell>{quiz.title}</TableBodyCell>
 						<TableBodyCell>{quiz.graded }</TableBodyCell>
 						<TableBodyCell>{quiz.date}</TableBodyCell>
+						<TableBodyCell>{quiz.duration}</TableBodyCell>
 						<TableBodyCell>
 							<div class="flex items-center gap-x-6">
 							{#if data.role==='lecturer'}
