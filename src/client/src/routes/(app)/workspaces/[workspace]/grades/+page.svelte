@@ -1,12 +1,12 @@
-<script>
-	import { Button, Modal } from 'flowbite-svelte';
+<script lang="ts">
+	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 	import AssessmentTable from '$lib/components/common/AsessmentTable.svelte';
 	import LineChart from '$lib/components/common/LineChart.svelte';
 
-	/**
-	 * @type {any[]}
-	 */
-	let assessments = [];
+	let formModal = false;
+
+	
+	let assessments: any[] = [];
 	let showModal = false;
 	let newAssessmentName = '';
 
@@ -16,10 +16,7 @@
 		showModal = false;
 	}
 
-	/**
-	 * @param {number} index
-	 */
-	function removeAssessment(index) {
+	function removeAssessment(index: number) {
 		assessments = assessments.filter((_, i) => i !== index);
 	}
 </script>
@@ -38,16 +35,18 @@
 		</div>
 	{/each}
 
-	<Modal bind:open={showModal} size="xs">
-		<div class="p-6">
-			<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add New Assessment</h3>
-			<input
-				type="text"
-				bind:value={newAssessmentName}
-				placeholder="Assessment Name"
-				class="mb-4 w-full rounded border p-2"
-			/>
-			<Button on:click={addAssessment}>Add</Button>
-		</div>
-	</Modal>
+	<Modal bind:open={showModal} size="xs" autoclose={false} class="w-full">
+    <div>
+        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+            Add New Assessment Type
+        </h3>
+        <input
+            type="text"
+            bind:value={newAssessmentName}
+            placeholder="Assessment Type"
+            class="mb-4 w-full rounded border"
+        />
+        <Button on:click={addAssessment} class="w-full">Add</Button>
+    </div>
+</Modal>
 </main>
