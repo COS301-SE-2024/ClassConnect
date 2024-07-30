@@ -15,6 +15,7 @@ function formatQuiz(quiz: any): Quiz {
 		id: quiz._id.toString(),
 		graded: quiz.graded,
 		date: quiz.date.toISOString(),
+		duration: quiz.duration
 	};
 }
 
@@ -42,13 +43,15 @@ async function createQuiz(
 	title: string,
 	graded: string,
 	instructions: string,
-	ownerID: ObjectId 
+	ownerID: ObjectId,
+	duration: number,
 ) {
 	const newQuiz = new Quizzes({
 		title,
 		graded,
 		instructions,
-		owner: ownerID
+		owner: ownerID,
+		duration
 	});
 
 	await newQuiz.save();
@@ -79,12 +82,13 @@ export const actions: Actions = {
 		try {
 			const data = await request.formData();
 			const title = data.get('title') as string;
+			const duration= 5000;
 			const instructions = data.get('instructions') as string;
 			const graded = 'No';
 			const workspaceId = new mongoose.Types.ObjectId(params.workspace);
 			console.log('Quiz Workspace Id:', workspaceId);
 
-			return await createQuiz(title, graded, instructions,workspaceId);
+			return await createQuiz(title, graded, instructions,workspaceId, duration);
 		} catch (error) {
 			console.error('Error posting quiz:', error);
 			return fail(500, { error: 'Failed to post quiz' });

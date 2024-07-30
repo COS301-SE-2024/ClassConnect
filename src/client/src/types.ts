@@ -96,6 +96,7 @@ export interface Quiz {
 	title: string;
 	graded: string;
 	date: Date;
+	duration: number;
 }
 
 export interface Option {

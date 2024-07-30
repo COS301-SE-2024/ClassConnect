@@ -22,6 +22,10 @@ const quizsSchema = new mongoose.Schema({
 		type: mongoose.Types.ObjectId,
 		ref: 'Workspace',
 		required: true
+	},
+	duration:{
+		type: Number,
+		required: true
 	}
 });
 
