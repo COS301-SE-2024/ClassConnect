@@ -6,6 +6,7 @@
 
 	import type { Object3D } from 'three';
 
+	import VR from './VR.svelte';
 	import Menu from './Menu.svelte';
 
 	export let currentModel: string;
@@ -39,6 +40,8 @@
 	};
 </script>
 
+<VR />
+
 <T.PerspectiveCamera
 	fov={25}
 	makeDefault
@@ -68,6 +71,7 @@
 	<Checkbox bind:value={enableZoom} label="enableZoom" />
 	<Checkbox bind:value={zoomToCursor} label="zoomToCursor" />
 	<Checkbox bind:value={enableDamping} label="enableDamping" />
+	
 	<Slider label="zoomSpeed" bind:value={zoomSpeed} min={0.1} max={4} step={0.1} />
 	<Slider label="rotateSpeed" bind:value={rotateSpeed} min={0.1} max={8} step={0.1} />
 </Pane>
