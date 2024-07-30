@@ -9,7 +9,11 @@
 		TableBodyCell
 	} from 'flowbite-svelte';
 	import { goto } from '$app/navigation';
-	import { EditOutline, TrashBinOutline , ArrowUpRightFromSquareOutline} from 'flowbite-svelte-icons';
+	import {
+		EditOutline,
+		TrashBinOutline,
+		ArrowUpRightFromSquareOutline
+	} from 'flowbite-svelte-icons';
 	import AddModal from '$lib/components/modals/quizzes/Add.svelte';
 	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
@@ -21,7 +25,7 @@
 	let id: string;
 	let isQuizFormOpen = false;
 	let isEditModalOpen = false;
-	let isPreviewOpen=false;
+	//let isPreviewOpen = false;
 	let isRemoveModalOpen = false;
 
 	let selectedQuestionType = '';
@@ -57,7 +61,6 @@
 	function handlePreview(quizId: string) {
 		id = quizId;
 		openQuiz(id);
-		isPreviewOpen = true;
 	}
 
 	function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {

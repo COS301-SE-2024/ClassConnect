@@ -4,31 +4,28 @@
 	import Submission from '$lib/components/modals/quizzes/Submission.svelte';
 	import { browser } from '$app/environment';
 	import { onMount, onDestroy } from 'svelte';
-	import { act } from '@testing-library/svelte';
 
 	export let data: any;
 	let elapsed = 0;
 	let isFormOpen = false;
 	let activeTimer = false;
-	
+
 	function toggleForm() {
-	isFormOpen = !isFormOpen;
+		isFormOpen = !isFormOpen;
 	}
 
 	$: ({ questions, role, duration } = data);
-	$: (activeTimer=role==='student');
+	$: activeTimer = role === 'student';
 
 	let last_time: number;
 	let frame: number;
 
 	function update() {
-		if(activeTimer){
+		if (activeTimer) {
 			frame = requestAnimationFrame(update);
 			const time = performance.now();
 			elapsed += Math.min(time - last_time, duration - elapsed);
 			last_time = time;
-	
-			// Check if time has run out
 			if (elapsed >= duration) {
 				cancelAnimationFrame(frame);
 				handleTimeOutSubmission();
@@ -36,17 +33,24 @@
 		}
 	}
 
-	onMount(() => {
-	if (browser && activeTimer) {
-		last_time = performance.now();
-		update();
+	function stopTimer() {
+		if (browser && frame) {
+			cancelAnimationFrame(frame);
+			activeTimer = false;
+		}
 	}
+
+	onMount(() => {
+		if (browser && activeTimer) {
+			last_time = performance.now();
+			update();
+		}
 	});
 
 	onDestroy(() => {
-	if (browser && frame && activeTimer) {
-		cancelAnimationFrame(frame);
-	}
+		if (browser && frame && activeTimer) {
+			cancelAnimationFrame(frame);
+		}
 	});
 	let selectedAnswers: { [key: string]: string } = {};
 	let submitModalOpen = false;
@@ -59,6 +63,7 @@
 
 	function handleQuizSubmission() {
 		try {
+			stopTimer();
 			totalPoints = questions.reduce((total: number, question: any) => {
 				const selectedOption = question.options.find(
 					(option: any) => option.content === selectedAnswers[question.questionNumber]
@@ -67,7 +72,6 @@
 			}, 0);
 			submissionMessage = `You have successfully submitted the quiz. Your score is ${totalPoints} points.`;
 			submitModalOpen = true;
-			
 		} catch (error) {
 			console.error('Error in handleQuizSubmission:', error);
 		}
@@ -77,17 +81,17 @@
 		try {
 			// Calculate points as in handleQuizSubmission
 			totalPoints = questions.reduce((total: number, question: any) => {
-			const selectedOption = question.options.find(
-				(option: any) => option.content === selectedAnswers[question.questionNumber]
-			);
-			return total + (selectedOption ? selectedOption.points : 0);
+				const selectedOption = question.options.find(
+					(option: any) => option.content === selectedAnswers[question.questionNumber]
+				);
+				return total + (selectedOption ? selectedOption.points : 0);
 			}, 0);
 			submissionMessage = `Your time has run out for the quiz submission. Your score is ${totalPoints} points.`;
 			submitModalOpen = true;
 		} catch (error) {
 			console.error('Error in handleTimeOutSubmission:', error);
 		}
-}
+	}
 </script>
 
 <main class="container mx-auto my-8 px-4">
@@ -96,14 +100,14 @@
 		{#if questions.length === 0}
 			<p class="text-gray-700 dark:text-gray-300">No questions available for this quiz.</p>
 		{:else}
-		<p class="text-gray-700 dark:text-gray-300">Elapsed time to complete quiz:</p>
-		<Progressbar 
-			progress={100 * (1 - elapsed / duration)} 
-			size="h-4"
-			color={elapsed / duration > 0.75 ? "red" : elapsed / duration > 0.5 ? "yellow" : "green"}
-		/>
-		
-		<div>{(elapsed / 1000).toFixed(1)}s</div>
+			<p class="text-gray-700 dark:text-gray-300">Elapsed time to complete quiz:</p>
+			<Progressbar
+				progress={100 * (1 - elapsed / duration)}
+				size="h-4"
+				color={elapsed / duration > 0.75 ? 'red' : elapsed / duration > 0.5 ? 'yellow' : 'green'}
+			/>
+
+			<div>{(elapsed / 1000).toFixed(1)}s</div>
 			<div class="space-y-6">
 				{#each questions as question (question.id)}
 					<Card>

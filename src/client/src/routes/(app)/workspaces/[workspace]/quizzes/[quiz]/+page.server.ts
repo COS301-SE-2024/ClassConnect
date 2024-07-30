@@ -10,12 +10,12 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		const role = locals.user?.role;
 		const quizId = params.quiz;
 		const questions = await Questions.find({ quiz: quizId });
-		
-		const quiz = await Quizzes.findById( quizId );
+
+		const quiz = await Quizzes.findById(quizId);
 		if (!quiz) {
-		throw error(404, 'Quiz not found');
+			throw error(404, 'Quiz not found');
 		}
-    	const duration = quiz.duration;
+		const duration = quiz.duration;
 
 		console.log('Quiz', quiz);
 		return {
@@ -23,7 +23,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 				id: q._id.toString(),
 				questionNumber: q.questionNumber,
 				questionContent: q.questionContent,
-				questionType: q.questionType,	
+				questionType: q.questionType,
 				options: q.options.map((option: { content: any; points: any }) => ({
 					content: option.content,
 					points: option.points
@@ -75,7 +75,6 @@ export const actions: Actions = {
 
 			const options = [];
 			for (let i = 0; i < 3; i++) {
-			
 				const optionContent = data.get(`options[${i}].content`);
 				const optionPoints = data.get(`options[${i}].points`);
 				if (optionContent && optionPoints) {
