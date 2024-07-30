@@ -91,7 +91,7 @@ export type FAQCategory = {
 };
 
 export interface Quiz {
-	id: string; 
+	id: string;
 	instructions: string;
 	title: string;
 	graded: string;
@@ -102,8 +102,8 @@ export interface Quiz {
 export interface Option {
 	content: string;
 	points: number;
-  }
-  
+}
+
 export interface Question {
 	id: string;
 	questionNumber: number;

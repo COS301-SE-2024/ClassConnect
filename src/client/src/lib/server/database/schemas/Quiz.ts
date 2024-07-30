@@ -9,7 +9,7 @@ const quizsSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	graded:{
+	graded: {
 		type: String,
 		required: true
 	},
@@ -23,13 +23,12 @@ const quizsSchema = new mongoose.Schema({
 		ref: 'Workspace',
 		required: true
 	},
-	duration:{
+	duration: {
 		type: Number,
 		required: true
 	}
 });
 
-const Quiz =
-	mongoose.models.Quiz || mongoose.model('Quiz', quizsSchema);
+const Quiz = mongoose.models.Quiz || mongoose.model('Quiz', quizsSchema);
 
 export default Quiz;

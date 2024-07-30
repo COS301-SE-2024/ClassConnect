@@ -26,12 +26,13 @@ async function getQuizzes(ownerID: string | undefined): Promise<Quiz[]> {
 
 export async function load({ params }) {
 	try {
-		const workspaceID=params.workspace;
+		const workspaceID = params.workspace;
 		const quizzes = await getQuizzes(params.workspace);
 		//console.log('Workspace: ', params.workspace);
 
 		return {
-			workspaceID,quizzes
+			workspaceID,
+			quizzes
 		};
 	} catch (e) {
 		console.error('Failed to load Quizzes: ', e);
@@ -44,7 +45,7 @@ async function createQuiz(
 	graded: string,
 	instructions: string,
 	ownerID: ObjectId,
-	duration: number,
+	duration: number
 ) {
 	const newQuiz = new Quizzes({
 		title,
@@ -74,7 +75,6 @@ function validateLecturer(locals: any) {
 	if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorised');
 }
 
-
 export const actions: Actions = {
 	post: async ({ request, locals, params }) => {
 		validateLecturer(locals);
@@ -82,19 +82,19 @@ export const actions: Actions = {
 		try {
 			const data = await request.formData();
 			const title = data.get('title') as string;
-			const duration= 5000;
+			const duration = 5000;
 			const instructions = data.get('instructions') as string;
 			const graded = 'No';
 			const workspaceId = new mongoose.Types.ObjectId(params.workspace);
 			console.log('Quiz Workspace Id:', workspaceId);
 
-			return await createQuiz(title, graded, instructions,workspaceId, duration);
+			return await createQuiz(title, graded, instructions, workspaceId, duration);
 		} catch (error) {
 			console.error('Error posting quiz:', error);
 			return fail(500, { error: 'Failed to post quiz' });
 		}
 	}
-}
+};
 // import { error, redirect } from '@sveltejs/kit';
 
 // export async function load({ locals }) {

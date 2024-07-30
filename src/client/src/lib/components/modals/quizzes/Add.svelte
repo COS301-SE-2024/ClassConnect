@@ -1,7 +1,22 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Textarea, Toolbar, ToolbarGroup, ToolbarButton,Button, Modal, Radio, Label, Input } from 'flowbite-svelte';
-	import { PaperClipOutline, MapPinAltSolid, ImageOutline, CodeOutline, FaceGrinOutline, PaperPlaneOutline } from 'flowbite-svelte-icons';
+	import {
+		Textarea,
+		Toolbar,
+		ToolbarGroup,
+		ToolbarButton,
+		Button,
+		Modal,
+		Label,
+		Input
+	} from 'flowbite-svelte';
+	import {
+		PaperClipOutline,
+		MapPinAltSolid,
+		ImageOutline,
+		CodeOutline,
+		FaceGrinOutline
+	} from 'flowbite-svelte-icons';
 
 	export let open: boolean;
 
@@ -31,17 +46,25 @@
 		<Input type="text" id="title" name="title" placeholder="Fire Drill" size="md" required />
 
 		<Label for="instructions" class="mb-2 mt-2 text-left">Add Instructions</Label>
-		<Textarea id="instructions" name="instructions" rows="8" class="mb-4" placeholder="Write a comment">
+		<Textarea
+			id="instructions"
+			name="instructions"
+			rows="8"
+			class="mb-4"
+			placeholder="Write a comment"
+		>
 			<Toolbar slot="header" embedded>
-			<ToolbarGroup>
-				<ToolbarButton name="Attach file"><PaperClipOutline class="w-6 h-6 rotate-45" /></ToolbarButton>
-				<ToolbarButton name="Embed map"><MapPinAltSolid class="w-6 h-6" /></ToolbarButton>
-				<ToolbarButton name="Upload image"><ImageOutline class="w-6 h-6" /></ToolbarButton>
-			</ToolbarGroup>
-			<ToolbarGroup>
-				<ToolbarButton name="Format code"><CodeOutline class="w-6 h-6" /></ToolbarButton>
-				<ToolbarButton name="Add emoji"><FaceGrinOutline class="w-6 h-6" /></ToolbarButton>
-			</ToolbarGroup>
+				<ToolbarGroup>
+					<ToolbarButton name="Attach file"
+						><PaperClipOutline class="h-6 w-6 rotate-45" /></ToolbarButton
+					>
+					<ToolbarButton name="Embed map"><MapPinAltSolid class="h-6 w-6" /></ToolbarButton>
+					<ToolbarButton name="Upload image"><ImageOutline class="h-6 w-6" /></ToolbarButton>
+				</ToolbarGroup>
+				<ToolbarGroup>
+					<ToolbarButton name="Format code"><CodeOutline class="h-6 w-6" /></ToolbarButton>
+					<ToolbarButton name="Add emoji"><FaceGrinOutline class="h-6 w-6" /></ToolbarButton>
+				</ToolbarGroup>
 			</Toolbar>
 		</Textarea>
 
