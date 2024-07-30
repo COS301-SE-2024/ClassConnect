@@ -20,7 +20,13 @@
 </script>
 
 <Modal bind:open size="xs" class="w-full">
-	<form method="POST" action="?/edit" class="flex flex-col" use:enhance={close} enctype="multipart/form-data">
+	<form
+		method="POST"
+		action="?/edit"
+		class="flex flex-col"
+		use:enhance={close}
+		enctype="multipart/form-data"
+	>
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Edit Organisation</h3>
 
 		{#if error}
