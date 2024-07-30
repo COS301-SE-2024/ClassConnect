@@ -1,14 +1,12 @@
-<script>
+<script lang="ts">
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 	import AssessmentTable from '$lib/components/common/AsessmentTable.svelte';
 	import LineChart from '$lib/components/common/LineChart.svelte';
 
 	let formModal = false;
 
-	/**
-	 * @type {any[]}
-	 */
-	let assessments = [];
+	
+	let assessments: any[] = [];
 	let showModal = false;
 	let newAssessmentName = '';
 
@@ -18,10 +16,7 @@
 		showModal = false;
 	}
 
-	/**
-	 * @param {number} index
-	 */
-	function removeAssessment(index) {
+	function removeAssessment(index: number) {
 		assessments = assessments.filter((_, i) => i !== index);
 	}
 </script>

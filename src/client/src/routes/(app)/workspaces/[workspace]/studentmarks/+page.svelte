@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, TableSearch, Button, Dropdown, DropdownItem, Checkbox, ButtonGroup } from 'flowbite-svelte';
+  import { Indicator, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, TableSearch, Button, Dropdown, DropdownItem, Checkbox, ButtonGroup } from 'flowbite-svelte';
   import { Section } from 'flowbite-svelte-blocks';
   import paginationData from '$lib/components/common/advancedTable.json'
   import { PlusOutline, ChevronDownOutline, FilterSolid, ChevronRightOutline, ChevronLeftOutline } from 'flowbite-svelte-icons';
@@ -68,9 +68,9 @@
   $: filteredItems = paginationData.filter((item) => item.student_name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
 
   function getColor(score: number): string {
-  if (score <= 40) {
+  if (score <= 39) {
     return '#FFCCCB'; // Light red
-  } else if (score <= 65) {
+  } else if (score <= 69) {
     return '#FFFFA1'; // Light yellow
   } else {
     return '#BBF7D0'; // Light green
@@ -78,10 +78,13 @@
 }
 </script>
 
-<Section name="advancedTable" classSection='bg-gray-50 dark:bg-gray-900 p-3 sm:p-5'>
+<Section name="advancedTable" classSection='bg-gray-50 dark:bg-gray-900 p-2 sm:p-5'>
     <TableSearch placeholder="Search" hoverable={true} bind:inputValue={searchTerm} {divClass} {innerDivClass} {searchClass} {classInput} >
 
     <div slot="header" class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+      <Button>
+        <PlusOutline class="h-3.5 w-3.5 mr-2" />Add Student
+      </Button>
       <Button>
         <PlusOutline class="h-3.5 w-3.5 mr-2" />Add Student
       </Button>
@@ -108,31 +111,31 @@
         </Dropdown>
     </div>
       <TableHead>
-        <TableHeadCell padding="px-4 py-3" scope="col">Student</TableHeadCell>
-        <TableHeadCell padding="px-4 py-3" scope="col">Assignment 1</TableHeadCell>
-        <TableHeadCell padding="px-4 py-3" scope="col">Assignment 2</TableHeadCell>
-        <TableHeadCell padding="px-4 py-3" scope="col">Assignment 3</TableHeadCell>
-        <TableHeadCell padding="px-4 py-3" scope="col">Assignment 4</TableHeadCell>
+        <TableHeadCell padding="px-4 py-2" scope="col">Student</TableHeadCell>
+        <TableHeadCell padding="px-4 py-2" scope="col">Assignment 1</TableHeadCell>
+        <TableHeadCell padding="px-4 py-2" scope="col">Assignment 2</TableHeadCell>
+        <TableHeadCell padding="px-4 py-2" scope="col">Assignment 3</TableHeadCell>
+        <TableHeadCell padding="px-4 py-2" scope="col">Assignment 4</TableHeadCell>
       </TableHead>
       <TableBody class="divide-y">
         {#if searchTerm !== ''}
           {#each filteredItems as item (item.id)}
             <TableBodyRow>
-              <TableBodyCell tdClass="px-4 py-3">{item.student_name}</TableBodyCell>
-              <TableBodyCell tdClass="px-4 py-3" style="background-color: {getColor(item.assignment_1)}">{item.assignment_1}</TableBodyCell>
-              <TableBodyCell tdClass="px-4 py-3" style="background-color: {getColor(item.assignment_2)}">{item.assignment_2}</TableBodyCell>
-              <TableBodyCell tdClass="px-4 py-3" style="background-color: {getColor(item.assignment_3)}">{item.assignment_3}</TableBodyCell>
-              <TableBodyCell tdClass="px-4 py-3" style="background-color: {getColor(item.assignment_4)}">{item.assignment_4}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-2">{item.student_name}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-2" style="background-color: {getColor(item.assignment_1)}">{item.assignment_1}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-2" style="background-color: {getColor(item.assignment_2)}">{item.assignment_2}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-2" style="background-color: {getColor(item.assignment_3)}">{item.assignment_3}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-2" style="background-color: {getColor(item.assignment_4)}">{item.assignment_4}</TableBodyCell>
             </TableBodyRow>
           {/each}
         {:else}
           {#each currentPageItems as item (item.id)}
             <TableBodyRow>
-              <TableBodyCell tdClass="px-4 py-3">{item.student_name}</TableBodyCell>
-              <TableBodyCell tdClass="px-4 py-3" style="background-color: {getColor(item.assignment_1)}">{item.assignment_1}</TableBodyCell>
-              <TableBodyCell tdClass="px-4 py-3" style="background-color: {getColor(item.assignment_2)}">{item.assignment_2}</TableBodyCell>
-              <TableBodyCell tdClass="px-4 py-3" style="background-color: {getColor(item.assignment_3)}">{item.assignment_3}</TableBodyCell>
-              <TableBodyCell tdClass="px-4 py-3" style="background-color: {getColor(item.assignment_4)}">{item.assignment_4}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-2">{item.student_name}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-2" style="background-color: {getColor(item.assignment_1)}">{item.assignment_1}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-2" style="background-color: {getColor(item.assignment_2)}">{item.assignment_2}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-2" style="background-color: {getColor(item.assignment_3)}">{item.assignment_3}</TableBodyCell>
+              <TableBodyCell tdClass="px-4 py-2" style="background-color: {getColor(item.assignment_4)}">{item.assignment_4}</TableBodyCell>
             </TableBodyRow>
           {/each}
         {/if}
