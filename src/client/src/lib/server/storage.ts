@@ -28,28 +28,28 @@ export async function upload(file: File): Promise<string> {
 }
 
 export async function deleteFile(url: string): Promise<void> {
-    const urlObj = new URL(url);
-    const key = urlObj.pathname.slice(1);
+	const urlObj = new URL(url);
+	const key = urlObj.pathname.slice(1);
 
-    const params = {
-        Bucket: BUCKET,
-        Key: key
-    };
+	const params = {
+		Bucket: BUCKET,
+		Key: key
+	};
 
-    // Check if the key contains the word 'default'
-    const defaultRegex = /default/;
-    if (defaultRegex.test(key)) {
-        console.log(`File could not be deleted as it is a default file: ${key}`);
-        return;
-    }
+	// Check if the key contains the word 'default'
+	const defaultRegex = /default/;
+	if (defaultRegex.test(key)) {
+		console.log(`File could not be deleted as it is a default file: ${key}`);
+		return;
+	}
 
-    try {
-        await S3.deleteObject(params).promise();
-        console.log(`Successfully deleted ${key} from ${BUCKET}`);
-    } catch (error) {
-        console.error(`Failed to delete ${key} from ${BUCKET}`, error);
-        throw new Error('Error deleting file');
-    }
+	try {
+		await S3.deleteObject(params).promise();
+		console.log(`Successfully deleted ${key} from ${BUCKET}`);
+	} catch (error) {
+		console.error(`Failed to delete ${key} from ${BUCKET}`, error);
+		throw new Error('Error deleting file');
+	}
 }
 
 async function smallFile(

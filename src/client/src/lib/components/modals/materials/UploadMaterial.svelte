@@ -50,13 +50,13 @@
 				const url = e.target?.result as string;
 				fileUrl = url;
 				console.log(fileUrl);
-                if (fileUrl) {
-                    open = false;
-                    openPreviewModal = true;
+				if (fileUrl) {
+					open = false;
+					openPreviewModal = true;
 					displayedSandboxObjectURL.set(fileUrl);
-                } else {
-                    console.log('Failed to read file URL');
-                }
+				} else {
+					console.log('Failed to read file URL');
+				}
 			};
 
 			reader.readAsDataURL(file);
@@ -99,9 +99,9 @@
 		open={openPreviewModal}
 		file={inputFile}
 		url={fileUrl}
-		type={type}
-		title={title}
-		description={description}
-		on:close={() => (openPreviewModal = false)} 
+		{type}
+		{title}
+		{description}
+		on:close={() => (openPreviewModal = false)}
 	/>
 {/if}
