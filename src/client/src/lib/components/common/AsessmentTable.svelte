@@ -1,5 +1,13 @@
 <script lang="ts">
-	import { Table, TableHead, TableHeadCell, TableBody, TableBodyRow, TableBodyCell, Button } from 'flowbite-svelte';
+	import {
+		Table,
+		TableHead,
+		TableHeadCell,
+		TableBody,
+		TableBodyRow,
+		TableBodyCell,
+		Button
+	} from 'flowbite-svelte';
 
 	interface ColumnData {
 		name: string;
@@ -34,7 +42,7 @@
 	}
 </script>
 
-<Table striped={true} hoverable={true} >
+<Table striped={true} hoverable={true}>
 	<TableHead>
 		<TableHeadCell>Name</TableHeadCell>
 		<TableHeadCell>Submitted (%)</TableHeadCell>
@@ -50,7 +58,7 @@
 						type="text"
 						value={column.name}
 						on:input={(e) => handleInput(e, index, 'name')}
-						class="w-full rounded border p-2 bg-transparent"
+						class="w-full rounded border bg-transparent p-2"
 					/>
 				</TableBodyCell>
 				<TableBodyCell>
@@ -58,7 +66,7 @@
 						type="number"
 						value={column.submitted}
 						on:input={(e) => handleInput(e, index, 'submitted')}
-						class="w-full rounded border p-2 bg-transparent"
+						class="w-full rounded border bg-transparent p-2"
 					/>
 				</TableBodyCell>
 				<TableBodyCell>
@@ -66,7 +74,7 @@
 						type="number"
 						value={column.average}
 						on:input={(e) => handleInput(e, index, 'average')}
-						class="w-full rounded border p-2 bg-transparent"
+						class="w-full rounded border bg-transparent p-2"
 					/>
 				</TableBodyCell>
 				<TableBodyCell>
@@ -74,7 +82,7 @@
 						type="number"
 						value={column.passRate}
 						on:input={(e) => handleInput(e, index, 'passRate')}
-						class="w-full rounded border p-2 bg-transparent"
+						class="w-full rounded border bg-transparent p-2"
 					/>
 				</TableBodyCell>
 				<TableBodyCell>

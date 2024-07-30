@@ -6,7 +6,11 @@ const config = {
 		'./node_modules/flowbite-svelte-blocks/**/*.{html,js,svelte,ts}'
 	],
 
-	plugins: [require('@tailwindcss/typography'), require('flowbite/plugin'), require('flowbite-typography')],
+	plugins: [
+		require('@tailwindcss/typography'),
+		require('flowbite/plugin'),
+		require('flowbite-typography')
+	],
 
 	darkMode: 'class',
 

@@ -1,11 +1,8 @@
 <script lang="ts">
-	import { Button, Modal, Label, Input } from 'flowbite-svelte';
+	import { Button, Modal } from 'flowbite-svelte';
 	import AssessmentTable from '$lib/components/common/AsessmentTable.svelte';
 	import LineChart from '$lib/components/common/LineChart.svelte';
 
-	let formModal = false;
-
-	
 	let assessments: any[] = [];
 	let showModal = false;
 	let newAssessmentName = '';
@@ -36,17 +33,17 @@
 	{/each}
 
 	<Modal bind:open={showModal} size="xs" autoclose={false} class="w-full">
-    <div>
-        <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
-            Add New Assessment Type
-        </h3>
-        <input
-            type="text"
-            bind:value={newAssessmentName}
-            placeholder="Assessment Type"
-            class="mb-4 w-full rounded border"
-        />
-        <Button on:click={addAssessment} class="w-full">Add</Button>
-    </div>
-</Modal>
+		<div>
+			<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">
+				Add New Assessment Type
+			</h3>
+			<input
+				type="text"
+				bind:value={newAssessmentName}
+				placeholder="Assessment Type"
+				class="mb-4 w-full rounded border"
+			/>
+			<Button on:click={addAssessment} class="w-full">Add</Button>
+		</div>
+	</Modal>
 </main>
