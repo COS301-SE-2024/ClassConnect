@@ -5,14 +5,29 @@
 	//import { goto } from '$app/navigation';
 
 	export let data: any;
+	import { onDestroy } from 'svelte';
+
+	let elapsed = 0;
 	let isFormOpen = false;
 
 	function toggleForm() {
 		isFormOpen = !isFormOpen;
 	}
 
-	$: ({ questions, role } = data);
+	$: ({ questions, role, duration } = data);
 	$: console.log(questions);
+
+	let last_time = window.performance.now();
+	let frame;
+
+	(function update() {
+		frame = requestAnimationFrame(update);
+
+		const time = window.performance.now();
+		elapsed += Math.min(time - last_time, duration - elapsed);
+
+		last_time = time;
+	})();
 
 	let selectedAnswers: { [key: string]: string } = {};
 	let submitModalOpen = false;

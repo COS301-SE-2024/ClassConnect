@@ -13,7 +13,7 @@
 	import AddModal from '$lib/components/modals/quizzes/Add.svelte';
 	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
-	import Question from '$src/lib/components/questions/Form.svelte';
+	import Question from '$lib/components/questions/Form.svelte';
 
 	export let data: any;
 	console.log(data);

@@ -2,7 +2,7 @@ import type { Actions, PageServerLoad } from './$types';
 import { fail, error } from '@sveltejs/kit';
 import mongoose from 'mongoose';
 import type { ObjectId } from 'mongoose';
-
+import Quizzes from '$db/schemas/Quiz';
 import Questions from '$db/schemas/Question';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
@@ -11,19 +11,26 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		const quizId = params.quiz;
 		const questions = await Questions.find({ quiz: quizId });
 		
-		//console.log('questions arr', questions);
+		const quiz = await Quizzes.findById( quizId );
+		if (!quiz) {
+		throw error(404, 'Quiz not found');
+		}
+    	const duration = quiz.duration;
+
+		console.log('Quiz', quiz);
 		return {
 			questions: questions.map((q) => ({
 				id: q._id.toString(),
 				questionNumber: q.questionNumber,
 				questionContent: q.questionContent,
-				questionType: q.questionType,
+				questionType: q.questionType,	
 				options: q.options.map((option: { content: any; points: any }) => ({
 					content: option.content,
 					points: option.points
 				}))
 			})),
-			role
+			role,
+			duration
 		};
 	} catch (e) {
 		console.error('Failed to load Questions: ', e);
@@ -68,7 +75,7 @@ export const actions: Actions = {
 
 			const options = [];
 			for (let i = 0; i < 3; i++) {
-				// We know there are 3 options
+			
 				const optionContent = data.get(`options[${i}].content`);
 				const optionPoints = data.get(`options[${i}].points`);
 				if (optionContent && optionPoints) {
