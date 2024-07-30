@@ -59,7 +59,7 @@
 		<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
 			<div class="mb-4 sm:mb-0">
 				<div class="flex items-center gap-x-3">
-					<h2 class="text-xl font-bold text-gray-800 dark:text-white">Workspaces</h2>
+					<h2 class="text-xl font-bold text-gray-800 dark:text-white">Administrators</h2>
 					<span
 						class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
 					>

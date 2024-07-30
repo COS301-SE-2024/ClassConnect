@@ -21,4 +21,5 @@
 	</div>
 </Card>
 
+<!--This needs to be updated depending on the user-->
 <AddModal bind:open={isAddModalOpen} role="Lecturer" />
