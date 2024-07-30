@@ -10,7 +10,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		const role = locals.user?.role;
 		const quizId = params.quiz;
 		const questions = await Questions.find({ quiz: quizId });
-		
+
 		//console.log('questions arr', questions);
 		return {
 			questions: questions.map((q) => ({
