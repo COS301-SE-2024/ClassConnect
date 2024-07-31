@@ -12,6 +12,7 @@ vi.mock('$db/schemas/User', () => {
 	UserMock.find = vi.fn();
 	UserMock.findOne = vi.fn();
 	UserMock.findOne = vi.fn();
+	UserMock.findById = vi.fn();
 	UserMock.findByIdAndUpdate = vi.fn();
 	UserMock.findByIdAndDelete = vi.fn();
 
@@ -140,6 +141,7 @@ describe('Admin Management', () => {
 			const mockFormData = new FormData();
 			mockFormData.append('id', '123');
 			mockFormData.append('name', 'UpdatedName');
+			mockFormData.append('image', new File([], 'image.png'));
 
 			const mockRequest = {
 				formData: vi.fn().mockResolvedValue(mockFormData)
@@ -153,7 +155,7 @@ describe('Admin Management', () => {
 			expect(result).toEqual({ success: true });
 			expect(User.findByIdAndUpdate).toHaveBeenCalledWith(
 				'123',
-				{ name: 'UpdatedName', surname: null, email: null, image: null },
+				{ name: 'UpdatedName', surname: null, email: null },
 				{ new: true }
 			);
 		});
@@ -171,7 +173,7 @@ describe('Admin Management', () => {
 
 			await adminModule.actions.edit({ request: mockRequest, locals } as any);
 
-			expect(fail).toHaveBeenCalledWith(404, { error: 'Admin not found' });
+			expect(fail).toHaveBeenCalledWith(500, { error: 'Failed to update admin' });
 		});
 	});
 
