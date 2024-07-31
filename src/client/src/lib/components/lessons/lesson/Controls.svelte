@@ -49,40 +49,44 @@
 	}
 
 	async function toggleRecording() {
-		isRecording = !isRecording;
-		if (isRecording === true) {
-			if ($callStore?.permissionsContext.hasPermission(OwnCapability.START_RECORD_CALL)) {
-				await toast.promise($callStore?.startRecording(), {
-					loading: 'Starting recording...',
-					success: 'Recording started successfully!',
-					error: 'Failed to stop recording!'
-				});
-			} else {
-				toast.error('Recording is not allowed for this call');
-			}
-		} else {
-			if ($callStore) {
-				if ($callStore?.permissionsContext.hasPermission(OwnCapability.STOP_RECORD_CALL)) {
-					await toast.promise($callStore?.stopRecording(), {
-						loading: 'Stopping recording...',
-						success: 'Recording stopped successfully!',
-						error: 'Failed to stop recording!'
-					});
-					try {
-						const record = await $callStore?.queryRecordings($callStore?.cid);
-						console.log(record);
-					} catch (e) {
-						console.log(e);
-					}
-				} else {
-					toast.error('You are not allowed to stop recording');
-				}
-			} else {
-				toast.error('No call to stop recording');
-			}
-		}
-	}
+        isRecording = !isRecording;
 
+        if (isRecording) {
+            if ($callStore?.permissionsContext.hasPermission(OwnCapability.START_RECORD_CALL)) {
+                await toast.promise($callStore?.startRecording(), {
+                    loading: 'Starting recording...',
+                    success: 'Recording started successfully!',
+                    error: 'Failed to start recording!'
+                });
+            } else {
+                toast.error('Recording is not allowed for this call');
+            }
+        } else {
+            if ($callStore) {
+                if ($callStore?.permissionsContext.hasPermission(OwnCapability.STOP_RECORD_CALL)) {
+                    await toast.promise($callStore?.stopRecording(), {
+                        loading: 'Stopping recording...',
+                        success: 'Recording stopped successfully!',
+                        error: 'Failed to stop recording!'
+                    });
+                    try {
+                        const recordings = await $callStore?.queryRecordings($callStore?.cid);
+                        if (recordings && recordings.recordings.length > 0) {
+                            console.log('Recording URL:', recordings.recordings[0]);
+                        } else {
+                            console.log('No recordings found');
+                        }
+                    } catch (e) {
+                        console.error('Error querying recordings:', e);
+                    }
+                } else {
+                    toast.error('You are not allowed to stop recording');
+                }
+            } else {
+                toast.error('No call to stop recording');
+            }
+        }
+    }
 	function endCall() {
 		$callStore?.leave();
 		goto(`/workspaces/${$page.params.workspace}/lessons`);

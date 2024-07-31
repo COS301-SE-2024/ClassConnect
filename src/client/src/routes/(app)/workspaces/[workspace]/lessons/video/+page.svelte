@@ -1,7 +1,5 @@
 <script lang="ts">
-	const urlParams = new URLSearchParams(window.location.search);
-	const videoLink = urlParams.get('link') as string;
-	console.log(videoLink);
+	const videoLink = 'https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4';
 </script>
 
 <video

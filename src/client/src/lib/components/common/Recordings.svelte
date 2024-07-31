@@ -42,7 +42,7 @@
 					<Button
 						class="mr-2"
 						size="sm"
-						on:click={() => goto($page.url + '/video?link=' + lesson.url)}
+						on:click={() => goto($page.url + '/video')}
 					>
 						Open
 					</Button>
