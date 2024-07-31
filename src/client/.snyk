@@ -1,0 +1,6 @@
+version: v1.21.0
+ignore:
+  "SNYK-JS-WS-7266574":
+    - "*":
+        reason: "Ignoring this issue because it is not relevant to our current project setup."
+        expires: "2025-07-07T00:00:00Z"

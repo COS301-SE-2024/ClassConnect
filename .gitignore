@@ -3,12 +3,17 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
+package-lock.json
+
 # SvelteKit
 /build
 
 # NestJS
 .env
 .env.*
+
+.aws.*
+.aws
 
 # IDEs and editors
 /.vscode
