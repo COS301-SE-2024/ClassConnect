@@ -1,13 +1,12 @@
 <script lang="ts">
 	import {
 		BullhornSolid,
-		BriefcaseOutline,
-		UserCircleOutline,
-		ChartLineUpOutline,
+		BriefcaseSolid,
+		UserCircleSolid,
+		UsersGroupSolid,
+		ChartPieSolid,
 		ArrowLeftOutline,
-		DesktopPcOutline,
-		GlobeOutline,
-		LayersOutline
+		GlobeOutline
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
 
@@ -18,19 +17,21 @@
 
 	const navLinks = {
 		lecturer: [
-			{ icon: DesktopPcOutline, name: 'Dashboard', href: workspaceURL + '/dashboard' },
+			{ icon: BullhornSolid, name: 'Dashboard', href: workspaceURL + '/dashboard' },
+			{ icon: ChartPieSolid, name: 'Grades', href: workspaceURL + '/grades' },
+			{ icon: ChartPieSolid, name: 'Student Marks', href: workspaceURL + '/studentmarks' },
 			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
-			{ icon: BriefcaseOutline, name: 'Materials', href: workspaceURL + '/materials' },
-			{ icon: UserCircleOutline, name: 'Lessons', href: workspaceURL + '/lessons' },
-			{ icon: LayersOutline, name: 'Sandbox', href: workspaceURL + '/sandbox' }
+			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
+			{ icon: UserCircleSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
+			{ icon: UsersGroupSolid, name: 'Sandbox', href: workspaceURL + '/sandbox' }
 		],
 		student: [
 			{ icon: GlobeOutline, name: 'Announcements', href: workspaceURL + '/announcements' },
 			{ icon: BullhornSolid, name: 'Activities', href: workspaceURL + '/activities' },
-			{ icon: BriefcaseOutline, name: 'Materials', href: workspaceURL + '/materials' },
-			{ icon: UserCircleOutline, name: 'Lessons', href: workspaceURL + '/lessons' },
-			{ icon: LayersOutline, name: 'Sandbox', href: workspaceURL + '/sandbox' },
-			{ icon: ChartLineUpOutline, name: 'Grades', href: workspaceURL + '/grades' }
+			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
+			{ icon: UserCircleSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
+			{ icon: UsersGroupSolid, name: 'Sandbox', href: workspaceURL + '/sandbox' },
+			{ icon: ChartPieSolid, name: 'Grades', href: workspaceURL + '/grades' }
 		]
 	};
 

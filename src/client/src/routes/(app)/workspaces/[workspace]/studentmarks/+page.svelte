@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import {
 		Tabs,
 		TabItem,
@@ -34,10 +34,20 @@
 			]
 		}
 	];
+
+	// Calculate total items - this resolves the "unused variable" issue
+	const totalItems = modules.reduce((sum, module) => sum + module.grades.length, 0);
+
+	// Function to format date
+	function formatDate(dateString: string | number | Date) {
+		const date = new Date(dateString);
+		return date.toLocaleString();
+	}
 </script>
 
 <main class="container mx-auto p-4">
 	<h1 class="mb-4 text-3xl font-bold">Student Grades</h1>
+	<p class="mb-4">Total number of assessments: {totalItems}</p>
 
 	<Tabs style="underline">
 		{#each modules as module}
@@ -53,7 +63,7 @@
 						{#each module.grades as grade}
 							<TableBodyRow>
 								<TableBodyCell>{grade.assessment}</TableBodyCell>
-								<TableBodyCell>{grade.date}</TableBodyCell>
+								<TableBodyCell>{formatDate(grade.date)}</TableBodyCell>
 								<TableBodyCell>{grade.score}</TableBodyCell>
 								<TableBodyCell>{grade.average}</TableBodyCell>
 							</TableBodyRow>

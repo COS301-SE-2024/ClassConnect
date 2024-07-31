@@ -19,7 +19,13 @@
 </script>
 
 <Modal bind:open size="xs" class="w-full">
-	<form method="POST" action="?/create" class="flex flex-col" use:enhance={close}>
+	<form
+		method="POST"
+		action="?/create"
+		class="flex flex-col"
+		use:enhance={close}
+		enctype="multipart/form-data"
+	>
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Create New Organisation</h3>
 
 		{#if error}

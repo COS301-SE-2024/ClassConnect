@@ -61,30 +61,29 @@
 		<section
 			class="canvas-container flex h-[700px] flex-col space-y-4 rounded-lg bg-gray-200 p-2 shadow-md ring dark:bg-gray-700"
 		>
-			<div class="flex-1">
-				<Canvas>
-					<Scene
-						bind:this={SceneElement}
-						{enableDamping}
-						{autoRotate}
-						{rotateSpeed}
-						{zoomToCursor}
-						{zoomSpeed}
-						{enableZoom}
-					/>
-				</Canvas>
-			</div>
-			{#if $displayedSandboxObjectURL !== ''}
-				<ObjectSettings
-					{SceneElement}
-					{canvasElement}
-					{fullscreen}
+			<Canvas>
+				<Scene
+					bind:this={SceneElement}
 					{enableDamping}
 					{autoRotate}
 					{rotateSpeed}
 					{zoomToCursor}
 					{zoomSpeed}
 					{enableZoom}
+				/>
+			</Canvas>
+
+			{#if $displayedSandboxObjectURL !== ''}
+				<ObjectSettings
+					{SceneElement}
+					{canvasElement}
+					{fullscreen}
+					bind:enableDamping
+					bind:autoRotate
+					bind:rotateSpeed
+					bind:zoomToCursor
+					bind:zoomSpeed
+					bind:enableZoom
 				/>
 			{/if}
 		</section>

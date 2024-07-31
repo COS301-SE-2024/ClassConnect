@@ -36,6 +36,13 @@ export async function deleteFile(url: string): Promise<void> {
 		Key: key
 	};
 
+	// Check if the key contains the word 'default'
+	const defaultRegex = /default/;
+	if (defaultRegex.test(key)) {
+		console.log(`File could not be deleted as it is a default file: ${key}`);
+		return;
+	}
+
 	try {
 		await S3.deleteObject(params).promise();
 		console.log(`Successfully deleted ${key} from ${BUCKET}`);
