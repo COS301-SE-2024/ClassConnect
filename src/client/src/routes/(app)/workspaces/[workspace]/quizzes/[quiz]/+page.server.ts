@@ -110,23 +110,45 @@ export const actions: Actions = {
 		}
 	},
 	submitQuiz: async ({ request, locals, params }) => {
-		try {
-			const data = await request.json();
-			const { studentID, quizID, workspaceID, mark } = data;
-
-			const savedGrade = await saveGrade(
-				studentID,
-				workspaceID,
-				quizID,
-				mark
-			);
-
-			return savedGrade;
-		} catch (error) {
-			console.error('Error saving grade:', error);
-			return fail(500, { error: 'Failed to save grade' });
+		if (!locals.user) {
+		  throw error(401, 'Unauthorized');
 		}
-	}
+	  
+		try {
+		  const data = await request.formData();
+		  const studentID = locals.user.id;
+		  const mark = data.get('mark');
+		  const quiz = await Quizzes.findById(params.quiz);
+			if (!quiz) {
+				throw error(404, 'Quiz not found');
+			}
+			const workspaceID=quiz.owner
+			const quizID=quiz.id;
+		
+
+	  
+		  console.log(data);
+		  if (!quizID || !workspaceID ) {
+			return fail(400, { error: 'Invalid submission data' });
+		  }
+	  
+		  const savedGrade = await saveGrade(
+			studentID,
+			quizID,
+			workspaceID,
+			mark
+		  );
+	  
+		  if (savedGrade.success) {
+			return { success: true, message: 'Quiz submitted successfully' };
+		  } else {
+			return fail(500, { error: 'Failed to save grade' });
+		  }
+		} catch (error) {
+		  console.error('Error saving grade:', error);
+		  return fail(500, { error: 'Failed to save grade' });
+		}
+	  }
 
 
 };
