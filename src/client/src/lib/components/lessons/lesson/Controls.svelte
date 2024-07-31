@@ -53,11 +53,13 @@
 
         if (isRecording) {
             if ($callStore?.permissionsContext.hasPermission(OwnCapability.START_RECORD_CALL)) {
-                await toast.promise($callStore?.startRecording(), {
+				const response = $callStore?.startRecording();
+                await toast.promise(response, {
                     loading: 'Starting recording...',
                     success: 'Recording started successfully!',
                     error: 'Failed to start recording!'
                 });
+				console.log('Recording response:', response);
             } else {
                 toast.error('Recording is not allowed for this call');
             }
@@ -70,7 +72,8 @@
                         error: 'Failed to stop recording!'
                     });
                     try {
-                        const recordings = await $callStore?.queryRecordings($callStore?.cid);
+                        const recordings = await $callStore?.queryRecordings();
+						console.log('Recordings:', recordings);
                         if (recordings && recordings.recordings.length > 0) {
                             console.log('Recording URL:', recordings.recordings[0]);
                         } else {
