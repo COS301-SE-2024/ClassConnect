@@ -5,7 +5,6 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import User from '$db/schemas/User';
 import * as adminModule from './+page.server';
 import { generateUsername } from '$utils/user';
-import { upload, deleteFile } from '$lib/server/storage';
 
 vi.mock('$db/schemas/User', () => {
 	const UserMock: any = vi.fn().mockImplementation(() => ({}));
@@ -26,11 +25,6 @@ vi.mock('@node-rs/argon2', () => ({
 
 vi.mock('$utils/user', () => ({
 	generateUsername: vi.fn()
-}));
-
-vi.mock('$lib/server/storage', () => ({
-	upload: vi.fn(),
-	deleteFile: vi.fn()
 }));
 
 vi.mock('@sveltejs/kit', async () => {

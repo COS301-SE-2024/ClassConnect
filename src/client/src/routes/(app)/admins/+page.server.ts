@@ -85,10 +85,10 @@ async function editAdmin(data: FormData) {
 		const value = data.get(field) as string;
 		if (value !== '') updateData[field as keyof Partial<User>] = value;
 	});
-	
+
 	if (image.size !== 0) {
 		const { image: userImage } = await Users.findById(id).select('image');
-		
+
 		if (userImage !== '/images/profile-placeholder.png') await deleteFile(userImage);
 
 		updateData.image = await upload(image);
