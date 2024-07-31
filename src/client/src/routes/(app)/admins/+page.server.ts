@@ -47,8 +47,9 @@ async function addAdmin(data: FormData, organisation: ObjectId | undefined) {
 	const name = data.get('name') as string;
 	const email = data.get('email') as string;
 	const image_file = data.get('image') as File;
-	let image: string = 'https://class-connect-file-storage.s3.amazonaws.com/pictures/default.svg';
 	const surname = data.get('surname') as string;
+
+	let image: string = '/images/profile-placeholder.png';
 
 	const existingUser = await Users.findOne({ email });
 	if (existingUser) return fail(400, { error: 'Email already in use' });
@@ -76,44 +77,25 @@ async function addAdmin(data: FormData, organisation: ObjectId | undefined) {
 
 async function editAdmin(data: FormData) {
 	const id = data.get('id') as string;
-	if (!id) return fail(400, { error: 'Admin ID is required' });
-
-	const existingUser = await Users.findById(id);
-	if (!existingUser) return fail(404, { error: 'Admin not found' });
+	const image = data.get('image') as File;
 
 	const updateData: Partial<User> = {};
 
-	const name = data.get('name') as string;
-	const email = data.get('email') as string;
-	const image_file: File = data.get('file') as File;
-	let image: string | undefined;
-	const surname = data.get('surname') as string;
+	['name', 'email', 'surname'].forEach((field) => {
+		const value = data.get(field) as string;
+		if (value !== '') updateData[field as keyof Partial<User>] = value;
+	});
+	
+	if (image.size !== 0) {
+		const { image: userImage } = await Users.findById(id).select('image');
+		
+		if (userImage !== '/images/profile-placeholder.png') await deleteFile(userImage);
 
-	if (name !== '' && email !== '' && surname !== '') {
-		updateData.name = name;
-		updateData.email = email;
-		updateData.surname = surname;
+		updateData.image = await upload(image);
 	}
 
-	if (image_file && image_file.size !== 0) {
-		console.log('Image File Details: ' + image_file);
-		image = await upload(image_file);
-		console.log('Image details: ' + image);
-		if (image) {
-			// Delete the existing image if it's not the default image
-			if (
-				existingUser.image &&
-				existingUser.image !==
-					'https://class-connect-file-storage.s3.amazonaws.com/pictures/default.svg'
-			) {
-				await deleteFile(existingUser.image);
-			}
-			updateData.image = image;
-		}
-	}
-
-	const updatedAdmin = await Users.findByIdAndUpdate(id, updateData, { new: true });
-	if (!updatedAdmin) return fail(404, { error: 'Admin not found' });
+	const updatedStudent = await Users.findByIdAndUpdate(id, updateData, { new: true });
+	if (!updatedStudent) return fail(404, { error: 'Student not found' });
 
 	return { success: true };
 }

@@ -37,15 +37,15 @@
 		<Input type="hidden" id="id" name="id" value={id} />
 		<Label for="name" class="space-y-2">
 			<span>Name</span>
-			<Input type="text" id="name" name="name" placeholder="John" required />
+			<Input type="text" id="name" name="name" placeholder="John" />
 		</Label>
 		<Label for="surname" class="space-y-2">
 			<span>Surname</span>
-			<Input type="text" id="surname" name="surname" placeholder="Doe" required />
+			<Input type="text" id="surname" name="surname" placeholder="Doe" />
 		</Label>
 		<Label for="email" class="space-y-2">
 			<span>Email</span>
-			<Input type="email" id="email" name="email" placeholder="johndoe@email.com" required />
+			<Input type="email" id="email" name="email" placeholder="johndoe@email.com" />
 		</Label>
 		<Label for="image" class="space-y-2">
 			<span>Profile Picture</span>

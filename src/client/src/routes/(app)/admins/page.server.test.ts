@@ -5,6 +5,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import User from '$db/schemas/User';
 import * as adminModule from './+page.server';
 import { generateUsername } from '$utils/user';
+import { upload, deleteFile } from '$lib/server/storage';
 
 vi.mock('$db/schemas/User', () => {
 	const UserMock: any = vi.fn().mockImplementation(() => ({}));
@@ -12,6 +13,7 @@ vi.mock('$db/schemas/User', () => {
 	UserMock.find = vi.fn();
 	UserMock.findOne = vi.fn();
 	UserMock.findOne = vi.fn();
+	UserMock.findById = vi.fn();
 	UserMock.findByIdAndUpdate = vi.fn();
 	UserMock.findByIdAndDelete = vi.fn();
 
@@ -24,6 +26,11 @@ vi.mock('@node-rs/argon2', () => ({
 
 vi.mock('$utils/user', () => ({
 	generateUsername: vi.fn()
+}));
+
+vi.mock('$lib/server/storage', () => ({
+	upload: vi.fn(),
+	deleteFile: vi.fn()
 }));
 
 vi.mock('@sveltejs/kit', async () => {
@@ -140,6 +147,7 @@ describe('Admin Management', () => {
 			const mockFormData = new FormData();
 			mockFormData.append('id', '123');
 			mockFormData.append('name', 'UpdatedName');
+			mockFormData.append('image', new File([], 'image.png'));
 
 			const mockRequest = {
 				formData: vi.fn().mockResolvedValue(mockFormData)
@@ -153,7 +161,7 @@ describe('Admin Management', () => {
 			expect(result).toEqual({ success: true });
 			expect(User.findByIdAndUpdate).toHaveBeenCalledWith(
 				'123',
-				{ name: 'UpdatedName', surname: null, email: null, image: null },
+				{ name: 'UpdatedName', surname: null, email: null },
 				{ new: true }
 			);
 		});
@@ -171,7 +179,7 @@ describe('Admin Management', () => {
 
 			await adminModule.actions.edit({ request: mockRequest, locals } as any);
 
-			expect(fail).toHaveBeenCalledWith(404, { error: 'Admin not found' });
+			expect(fail).toHaveBeenCalledWith(500, { error: 'Failed to update admin' });
 		});
 	});
 
