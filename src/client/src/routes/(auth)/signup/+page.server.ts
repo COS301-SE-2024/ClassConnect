@@ -7,7 +7,7 @@ import { SENDGRID_API_KEY, FROM_EMAIL } from '$env/static/private';
 import User from '$db/schemas/User';
 import type { SignUpData } from '$src/types';
 import { HASH_OPTIONS } from '$src/constants';
-import { generateUsername } from '$utils/user';
+import { generateUsername } from '$utils/auth';
 
 sgMail.setApiKey(SENDGRID_API_KEY);
 
