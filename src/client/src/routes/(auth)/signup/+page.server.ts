@@ -1,15 +1,13 @@
-import sgMail from '@sendgrid/mail';
 import { hash } from '@node-rs/argon2';
-import type { Actions } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
-import { SENDGRID_API_KEY, FROM_EMAIL } from '$env/static/private';
+
+import type { Actions } from './$types';
+import type { SignUpData } from '$src/types';
 
 import User from '$db/schemas/User';
-import type { SignUpData } from '$src/types';
 import { HASH_OPTIONS } from '$src/constants';
 import { generateUsername } from '$utils/auth';
-
-sgMail.setApiKey(SENDGRID_API_KEY);
+import { sendWelcomeEmail } from '$utils/email';
 
 export async function load({ locals }) {
 	if (locals.user) redirect(302, '/home');
@@ -42,27 +40,6 @@ function validatePassword(
 	if (password !== confirmPassword) throw new Error('Passwords do not match');
 
 	return password;
-}
-
-async function sendWelcomeEmail(to: string, name: string, username: string) {
-	const msg = {
-		to,
-		from: `ClassConnect <${FROM_EMAIL}>`,
-		subject: 'Welcome to ClassConnect!',
-		html: `
-      <h1>Welcome, ${name}!</h1>
-      <p>Thank you for joining ClassConnect. We're excited to have you on board!</p>
-      <p>Your generated username is: <strong>${username}</strong></p>
-      <p>You can use this username to <a href="http://localhost:5173/signin">Log in</a> to your account.</p>`
-	};
-
-	try {
-		await sgMail.send(msg);
-
-		console.log('Email sent successfully.');
-	} catch (error) {
-		console.error('Error sending email: ', error);
-	}
 }
 
 async function checkEmailExists(email: string): Promise<boolean> {
