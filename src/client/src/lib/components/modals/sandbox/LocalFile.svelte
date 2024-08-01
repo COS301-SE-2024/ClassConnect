@@ -23,7 +23,7 @@
 				throw new Error('File has no extension');
 			}
 
-			if(file.size > 100000000) {
+			if (file.size > 100000000) {
 				toast.error('The size of file should be less than 100 MB!');
 				throw new Error('File is too big');
 			}
