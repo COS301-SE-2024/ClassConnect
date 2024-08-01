@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk';
+import AWS from '$lib/server/aws.config';
 import { BUCKET } from '$env/static/private';
 
 const S3 = new AWS.S3();
