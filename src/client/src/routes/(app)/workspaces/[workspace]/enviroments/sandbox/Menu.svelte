@@ -20,8 +20,8 @@
 	let viewModalOpen = false;
 
 	const transitionParams = { x: -320, duration: 200, easing: sineIn };
-	const models = getContext('models') as [{ name: string; url: string }];
 	const loadModel = getContext('loadModel') as (modelUrl: string) => void;
+	const models = getContext('models') as [{ name: string; file_path: string; description: string }];
 
 	onMount(() => {
 		canvas = document.querySelector('.webgl') as HTMLCanvasElement;
@@ -70,11 +70,15 @@
 				<ListgroupItem
 					class="flex w-full items-center p-2 text-lg text-white transition-colors hover:bg-gray-700"
 				>
-					<span>{model.name}</span>
+					<div>
+						<span>{model.name}</span>
 
-					<Button on:click={() => loadModel(model.url)} color="light" class="ml-auto p-2">
-						Load
-					</Button>
+						<Button on:click={() => loadModel(model.file_path)} color="light" class="ml-auto p-2">
+							Load
+						</Button>
+					</div>
+
+					<p>{model.description}</p>
 				</ListgroupItem>
 			{/each}
 		</Listgroup>

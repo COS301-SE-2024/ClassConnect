@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { VRButton } from '@threlte/xr'
+	import { VRButton } from '@threlte/xr';
 	import { Canvas } from '@threlte/core';
 	import { tweened } from 'svelte/motion';
 	import { fade } from 'svelte/transition';
@@ -7,9 +7,13 @@
 
 	import Scene from './Scene.svelte';
 
+	export let data: any;
+
+	let { models } = data;
+
 	const { progress } = useProgress();
 	const tweenedProgress = tweened($progress, { duration: 800 });
-	
+
 	$: tweenedProgress.set($progress);
 </script>
 
@@ -28,8 +32,8 @@
 
 <main class="webgl h-screen bg-black">
 	<Canvas>
-		<Scene />
+		<Scene {models} />
 	</Canvas>
-	
+
 	<VRButton />
 </main>
