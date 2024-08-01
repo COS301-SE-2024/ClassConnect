@@ -48,6 +48,8 @@
 		);
 		change.set('Material deleted at: ' + Date.now().toString());
 	}
+
+	console.log('This is the url: ', url);
 	// 3D Object Preview
 	let autoRotate: boolean = false;
 	let enableDamping: boolean = true;
