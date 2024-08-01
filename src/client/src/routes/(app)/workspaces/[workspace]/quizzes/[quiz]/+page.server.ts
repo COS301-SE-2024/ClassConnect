@@ -9,18 +9,16 @@ import Grade from '$db/schemas/Grades';
 export const load: PageServerLoad = async ({ params, locals }) => {
 	try {
 		const role = locals.user?.role;
-		const studentID= locals.user?.id.toString();
+
 		const quizId = params.quiz;
 		const questions = await Questions.find({ quiz: quizId });
-		
+
 		const quiz = await Quizzes.findById(quizId);
 		if (!quiz) {
 			throw error(404, 'Quiz not found');
 		}
 		const duration = quiz.duration;
-		const workspaceID=quiz.owner.toString();
-		const quizID=quiz.id;
-		
+
 		return {
 			role,
 			duration,
@@ -34,7 +32,6 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 					points: option.points
 				}))
 			}))
-			
 		};
 	} catch (e) {
 		console.error('Failed to load Questions: ', e);
@@ -68,12 +65,17 @@ async function createQuestion(
 }
 
 //saving marks
-async function saveGrade(studentID: ObjectId, quizID: ObjectId, workspaceID: ObjectId, mark: number) {
+async function saveGrade(
+	studentID: ObjectId,
+	quizID: ObjectId,
+	workspaceID: ObjectId,
+	mark: number
+) {
 	const newGrade = new Grade({
 		studentID,
 		quizID,
 		workspaceID,
-		mark,
+		mark
 	});
 	console.log(newGrade);
 	await newGrade.save();
@@ -111,44 +113,35 @@ export const actions: Actions = {
 	},
 	submitQuiz: async ({ request, locals, params }) => {
 		if (!locals.user) {
-		  throw error(401, 'Unauthorized');
+			throw error(401, 'Unauthorized');
 		}
-	  
+
 		try {
-		  const data = await request.formData();
-		  const studentID = locals.user.id;
-		  const mark = data.get('mark');
-		  const quiz = await Quizzes.findById(params.quiz);
+			const data = await request.formData();
+			const studentID = locals.user.id;
+			const mark = data.get('mark');
+			const quiz = await Quizzes.findById(params.quiz);
 			if (!quiz) {
 				throw error(404, 'Quiz not found');
 			}
-			const workspaceID=quiz.owner
-			const quizID=quiz.id;
-		
+			const workspaceID = quiz.owner;
+			const quizID = quiz.id;
 
-	  
-		  console.log(data);
-		  if (!quizID || !workspaceID ) {
-			return fail(400, { error: 'Invalid submission data' });
-		  }
-	  
-		  const savedGrade = await saveGrade(
-			studentID,
-			quizID,
-			workspaceID,
-			mark
-		  );
-	  
-		  if (savedGrade.success) {
-			return { success: true, message: 'Quiz submitted successfully' };
-		  } else {
-			return fail(500, { error: 'Failed to save grade' });
-		  }
+			console.log(data);
+			if (!quizID || !workspaceID) {
+				return fail(400, { error: 'Invalid submission data' });
+			}
+
+			const savedGrade = await saveGrade(studentID, quizID, workspaceID, mark);
+
+			if (savedGrade.success) {
+				return { success: true, message: 'Quiz submitted successfully' };
+			} else {
+				return fail(500, { error: 'Failed to save grade' });
+			}
 		} catch (error) {
-		  console.error('Error saving grade:', error);
-		  return fail(500, { error: 'Failed to save grade' });
+			console.error('Error saving grade:', error);
+			return fail(500, { error: 'Failed to save grade' });
 		}
-	  }
-
-
+	}
 };

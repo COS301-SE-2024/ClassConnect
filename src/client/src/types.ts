@@ -104,7 +104,7 @@ export interface Grades {
 	studentID: string;
 	workspaceID: string;
 	quizID: string;
-	mark:number;
+	mark: number;
 }
 
 export interface Option {
