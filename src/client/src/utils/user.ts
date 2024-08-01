@@ -27,7 +27,9 @@ export async function getUsers(role: string, organisation: ObjectId | undefined)
 
 export function validateUser(locals: any, requiredRole: string) {
 	if (!locals.user || locals.user.role !== requiredRole) {
-        console.log('#################################################################################');
+		console.log(
+			'#################################################################################'
+		);
 		throw error(401, `Only ${requiredRole}s can access this page`);
 	}
 }

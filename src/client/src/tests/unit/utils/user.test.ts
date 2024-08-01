@@ -4,8 +4,8 @@ import { error, fail } from '@sveltejs/kit';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import Users from '$db/schemas/User';
+import { upload } from '$lib/server/storage';
 import { generateUsername } from '$utils/auth';
-import { upload, deleteFile } from '$lib/server/storage';
 import { addUser, getUsers, formatUser, editUser, deleteUser, validateUser } from '$utils/user';
 
 vi.mock('@node-rs/argon2', () => ({
