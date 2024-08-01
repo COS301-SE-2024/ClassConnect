@@ -47,51 +47,50 @@
 		isEnvironmentOn = !isEnvironmentOn;
 		$callStore?.update({ custom: { environment: isEnvironmentOn } });
 	}
-
 	async function toggleRecording() {
-        isRecording = !isRecording;
-
-        if (isRecording) {
-            if ($callStore?.permissionsContext.hasPermission(OwnCapability.START_RECORD_CALL)) {
+		if (!isRecording) {
+			if ($callStore?.permissionsContext.hasPermission(OwnCapability.START_RECORD_CALL)) {
 				const response = $callStore?.startRecording();
-                await toast.promise(response, {
-                    loading: 'Starting recording...',
-                    success: 'Recording started successfully!',
-                    error: 'Failed to start recording!'
-                });
+				await toast.promise(response, {
+					loading: 'Starting recording...',
+					success: 'Recording started successfully!',
+					error: 'Failed to start recording!'
+				});
 				console.log('Recording response:', response);
-            } else {
-                toast.error('Recording is not allowed for this call');
-            }
-        } else {
-            if ($callStore) {
-                if ($callStore?.permissionsContext.hasPermission(OwnCapability.STOP_RECORD_CALL)) {
-                    await toast.promise($callStore?.stopRecording(), {
-                        loading: 'Stopping recording...',
-                        success: 'Recording stopped successfully!',
-                        error: 'Failed to stop recording!'
-                    });
-                    try {
-                        const recordings = await $callStore?.queryRecordings();
+				isRecording = true;
+			} else {
+				toast.error('Recording is not allowed for this call');
+			}
+		} else {
+			if ($callStore) {
+				if ($callStore?.permissionsContext.hasPermission(OwnCapability.STOP_RECORD_CALL)) {
+					await toast.promise($callStore?.stopRecording(), {
+						loading: 'Stopping recording...',
+						success: 'Recording stopped successfully!',
+						error: 'Failed to stop recording!'
+					});
+					try {
+						const recordings = await $callStore?.queryRecordings();
 						console.log('Recordings:', recordings);
-                        if (recordings && recordings.recordings.length > 0) {
-                            console.log('Recording URL:', recordings.recordings[0]);
-                        } else {
-                            console.log('No recordings found');
-                        }
-                    } catch (e) {
-                        console.error('Error querying recordings:', e);
-                    }
-                } else {
-                    toast.error('You are not allowed to stop recording');
-                }
-            } else {
-                toast.error('No call to stop recording');
-            }
-        }
-    }
-	function endCall() {
-		$callStore?.leave();
+						if (recordings && recordings.recordings.length > 0) {
+							console.log('Recording URL:', recordings.recordings[0]);
+						} else {
+							console.log('No recordings found');
+						}
+					} catch (e) {
+						console.error('Error querying recordings:', e);
+					}
+					isRecording = false;
+				} else {
+					toast.error('You are not allowed to stop recording');
+				}
+			} else {
+				toast.error('No call to stop recording');
+			}
+		}
+	}
+	async function endCall() {
+		await $callStore?.leave();
 		goto(`/workspaces/${$page.params.workspace}/lessons`);
 	}
 </script>
