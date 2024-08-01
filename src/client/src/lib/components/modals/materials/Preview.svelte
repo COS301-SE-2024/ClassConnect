@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Scene from '$src/lib/components/sandbox/+Scene.svelte';
+	import Scene from '$src/lib/components/sandbox/Scene.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { Modal } from 'flowbite-svelte';
 	import { Canvas } from '@threlte/core';
