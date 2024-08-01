@@ -1,7 +1,7 @@
 import type { Actions } from './$types';
 import { error, fail } from '@sveltejs/kit';
 
-import { addUser, getUsers, editUser, deleteUser, validateUser } from '$utils/user';
+import { addUser, getUsers, editUser, deleteUser, validateUser } from '$src/lib/server/utils/user';
 
 export async function load({ locals }) {
 	validateUser(locals, 'admin');

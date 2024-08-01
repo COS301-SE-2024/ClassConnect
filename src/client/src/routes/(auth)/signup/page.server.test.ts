@@ -6,7 +6,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import User from '$db/schemas/User';
 import * as signupModule from './+page.server';
-import { generateUsername } from '$src/utils/auth';
+import { generateUsername } from '$lib/server/utils/auth';
 
 vi.mock('$db/schemas/User', () => {
 	const UserMock: any = vi.fn().mockImplementation(() => ({}));
@@ -26,7 +26,7 @@ vi.mock('@node-rs/argon2', () => ({
 	hash: vi.fn()
 }));
 
-vi.mock('$utils/auth', () => ({
+vi.mock('$lib/server/utils/auth', () => ({
 	generateUsername: vi.fn()
 }));
 

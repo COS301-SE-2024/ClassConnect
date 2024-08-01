@@ -31,13 +31,7 @@ export async function sendEmail({ to, subject, html }: EmailOptions): Promise<vo
 export async function sendWelcomeEmail(to: string, name: string, username: string): Promise<void> {
 	const subject = "🎉 Welcome to ClassConnect! Let's get started!";
 
-	const templatePath = path.join(
-		process.cwd(),
-		'src',
-		'lib',
-		'templates',
-		'welcome.html'
-	);
+	const templatePath = path.join(process.cwd(), 'src', 'lib', 'templates', 'welcome.html');
 
 	let html = await fs.readFile(templatePath, 'utf-8');
 

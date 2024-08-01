@@ -6,8 +6,8 @@ import type { SignUpData } from '$src/types';
 
 import User from '$db/schemas/User';
 import { HASH_OPTIONS } from '$src/constants';
-import { generateUsername } from '$utils/auth';
-import { sendWelcomeEmail } from '$utils/email';
+import { generateUsername } from '$src/lib/server/utils/auth';
+import { sendWelcomeEmail } from '$src/lib/server/utils/email';
 
 export async function load({ locals }) {
 	if (locals.user) redirect(302, '/home');

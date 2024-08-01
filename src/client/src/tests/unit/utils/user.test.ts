@@ -5,8 +5,15 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import Users from '$db/schemas/User';
 import { upload } from '$lib/server/storage';
-import { generateUsername } from '$utils/auth';
-import { addUser, getUsers, formatUser, editUser, deleteUser, validateUser } from '$utils/user';
+import { generateUsername } from '$lib/server/utils/auth';
+import {
+	addUser,
+	getUsers,
+	formatUser,
+	editUser,
+	deleteUser,
+	validateUser
+} from '$lib/server/utils/user';
 
 vi.mock('@node-rs/argon2', () => ({
 	hash: vi.fn()
@@ -17,7 +24,7 @@ vi.mock('@sveltejs/kit', async () => {
 	return { ...actual, error: vi.fn(), fail: vi.fn() };
 });
 
-vi.mock('$utils/auth', () => ({
+vi.mock('$lib/server/utils/auth', () => ({
 	generateUsername: vi.fn()
 }));
 
