@@ -11,11 +11,13 @@
 	} from 'flowbite-svelte-icons';
 	import { Button, CloseButton, Drawer, Hr, Listgroup, ListgroupItem } from 'flowbite-svelte';
 
+	import ViewLocalModelModal from './ViewModal.svelte';
 	import { navigateToParentRoute } from '$utils/navigation';
 
 	let isClosed = true;
 	let fullscreen = false;
 	let canvas: HTMLElement;
+	let viewModalOpen = false;
 
 	const transitionParams = { x: -320, duration: 200, easing: sineIn };
 	const models = getContext('models') as [{ name: string; url: string }];
@@ -79,7 +81,7 @@
 
 		<Hr />
 
-		<Button color="light">Upload Your Own Model</Button>
+		<Button on:click={() => (viewModalOpen = true)} color="light">View Your Own Model</Button>
 
 		<Button on:click={() => navigateToParentRoute($page.url.pathname)} color="dark" class="mt-auto">
 			Exit<ArrowLeftToBracketOutline />
@@ -99,4 +101,6 @@
 			{/if}
 		</Button>
 	</div>
+
+	<ViewLocalModelModal bind:open={viewModalOpen} />
 </HTML>
