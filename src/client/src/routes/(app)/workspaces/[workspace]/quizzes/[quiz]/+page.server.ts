@@ -9,7 +9,7 @@ import Grade from '$db/schemas/Grades';
 export const load: PageServerLoad = async ({ params, locals }) => {
 	try {
 		const role = locals.user?.role;
-
+		//const studentID = locals.user?.id.toString();
 		const quizId = params.quiz;
 		const questions = await Questions.find({ quiz: quizId });
 
@@ -18,6 +18,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			throw error(404, 'Quiz not found');
 		}
 		const duration = quiz.duration;
+		//const workspaceID = quiz.owner.toString();
+		//const quizID = quiz.id;
 
 		return {
 			role,
