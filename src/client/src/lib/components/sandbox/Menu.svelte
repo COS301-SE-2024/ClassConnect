@@ -11,8 +11,8 @@
 	} from 'flowbite-svelte-icons';
 	import { Button, CloseButton, Drawer, Hr, Listgroup, ListgroupItem } from 'flowbite-svelte';
 
-	import ViewLocalModelModal from './ViewModal.svelte';
 	import { navigateToParentRoute } from '$utils/navigation';
+	import ViewLocalModelModal from '$lib/components/sandbox/ViewModal.svelte';
 
 	let isClosed = true;
 	let fullscreen = false;

@@ -5,7 +5,7 @@
 	import { fade } from 'svelte/transition';
 	import { useProgress } from '@threlte/extras';
 
-	import Scene from './Scene.svelte';
+	import Scene from '$lib/components/sandbox/Scene.svelte';
 
 	export let data: any;
 

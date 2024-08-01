@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
 
-	import ModelViewer from './ModelViewer.svelte';
-	import StarterScene from './StarterScene.svelte';
+	import ModelViewer from '$lib/components/sandbox/ModelViewer.svelte';
+	import StarterScene from '$lib/components/sandbox/StarterScene.svelte';
 
 	export let models;
 	

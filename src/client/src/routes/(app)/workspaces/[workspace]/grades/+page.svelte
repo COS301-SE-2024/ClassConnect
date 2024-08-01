@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button, Modal } from 'flowbite-svelte';
-	import AssessmentTable from '$lib/components/common/AsessmentTable.svelte';
-	import LineChart from '$lib/components/common/LineChart.svelte';
+	import LineChart from '$lib/components/grades/LineChart.svelte';
+	import AssessmentTable from '$lib/components/grades/AssessmentTable.svelte';
 
 	let assessments: any[] = [];
 	let showModal = false;

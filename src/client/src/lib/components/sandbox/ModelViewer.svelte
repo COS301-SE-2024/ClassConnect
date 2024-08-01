@@ -6,8 +6,8 @@
 
 	import type { Object3D } from 'three';
 
-	import VR from './VR.svelte';
-	import Menu from './Menu.svelte';
+	import VR from '$lib/components/sandbox/VR.svelte';
+	import Menu from '$lib/components/sandbox/Menu.svelte';
 
 	export let currentModel: string;
 
