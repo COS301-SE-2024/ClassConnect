@@ -19,6 +19,7 @@
 		lecturer: [
 			{ icon: BullhornSolid, name: 'Dashboard', href: workspaceURL + '/dashboard' },
 			{ icon: ChartPieSolid, name: 'Grades', href: workspaceURL + '/grades' },
+			{ icon: ChartPieSolid, name: 'Student Marks', href: workspaceURL + '/studentmarks' },
 			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
 			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
 			{ icon: UserCircleSolid, name: 'Lessons', href: workspaceURL + '/lessons' },

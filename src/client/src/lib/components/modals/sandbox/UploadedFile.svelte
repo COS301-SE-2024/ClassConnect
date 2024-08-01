@@ -15,12 +15,25 @@
 
 	let objectSearchTerm = '';
 
+	function fuzzySearch(text: string, search: string): boolean {
+		search = search.toLowerCase();
+		text = text.toLowerCase();
+		let searchIndex = 0;
+		for (let i = 0; i < text.length && searchIndex < search.length; i++) {
+			if (text[i] === search[searchIndex]) {
+				searchIndex++;
+			}
+		}
+		return searchIndex === search.length;
+	}
+
 	$: filteredItems = items.filter(
-		(item: any) => item.title.toLowerCase().indexOf(objectSearchTerm.toLowerCase()) !== -1
+		(item: any) =>
+			fuzzySearch(item.title, objectSearchTerm) || fuzzySearch(item.description, objectSearchTerm)
 	);
 
 	function handleObjectSelect(items: any) {
-		displayedSandboxObjectURL.set(items.fileURL);
+		displayedSandboxObjectURL.set(items.file_path);
 		ObjInScene.set(true);
 		open = false;
 	}
@@ -34,7 +47,7 @@
 		bind:inputValue={objectSearchTerm}
 	>
 		<TableHead>
-			<TableHeadCell>ID</TableHeadCell>
+			<!-- <TableHeadCell>ID</TableHeadCell> -->
 			<TableHeadCell>Object</TableHeadCell>
 			<TableHeadCell>Description</TableHeadCell>
 		</TableHead>
@@ -42,7 +55,7 @@
 		<TableBody tableBodyClass="divide-y">
 			{#each filteredItems as item}
 				<TableBodyRow on:click={() => handleObjectSelect(item)} class="cursor-pointer">
-					<TableBodyCell>{item.id}</TableBodyCell>
+					<!-- <TableBodyCell>{item.id}</TableBodyCell> -->
 
 					<TableBodyCell>{item.title}</TableBodyCell>
 

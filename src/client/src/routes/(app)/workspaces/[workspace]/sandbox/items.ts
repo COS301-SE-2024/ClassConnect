@@ -1,4 +1,4 @@
-export const items = [
+export const items: any = [
 	{
 		id: 1,
 		title: 'Cash Register',

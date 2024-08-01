@@ -1,6 +1,7 @@
 import type { ObjectId } from 'mongoose';
 import type { Actions } from '@sveltejs/kit';
 import { fail, error, redirect } from '@sveltejs/kit';
+import { upload, deleteFile } from '$lib/server/storage';
 
 import Users from '$db/schemas/User';
 import Workspaces from '$db/schemas/Workspace';
@@ -84,13 +85,17 @@ function validateAdmin(locals: any) {
 async function createWorkspace(data: FormData, organisation: ObjectId | undefined) {
 	const name = data.get('name') as string;
 	const owner = data.get('owner') as string;
-	const image = data.get('image') as string;
+	const image_file = data.get('image') as File;
+	let image: string = '/images/organisation-placeholder.png';
 
+	if (image_file && image_file.size !== 0) {
+		image = await upload(image_file);
+	}
 	const newWorkspace = new Workspaces({
 		name,
 		owner,
 		organisation,
-		image: image || 'images/workspace-placeholder.svg'
+		image
 	});
 
 	await Users.findByIdAndUpdate(owner, { $push: { workspaces: newWorkspace._id } });
@@ -101,6 +106,7 @@ async function createWorkspace(data: FormData, organisation: ObjectId | undefine
 
 async function editWorkspace(data: FormData) {
 	const id = data.get('id') as string;
+
 	if (!id) return fail(400, { error: 'Workspace ID is required' });
 
 	const workspace = await Workspaces.findById(id);
@@ -108,10 +114,21 @@ async function editWorkspace(data: FormData) {
 
 	const name = data.get('name') as string;
 	const owner = data.get('owner') as string;
-	const image = data.get('image') as string;
+	const image_file: File = data.get('file') as File;
+	let image: string;
+
+	const updateData: { name?: string; owner?: string; image?: string } = {};
 
 	if (name) workspace.name = name;
-	if (image) workspace.image = image;
+	if (image_file && workspace && image_file.size !== 0) {
+		console.log('Image File Details: ' + image_file);
+		image = await upload(image_file);
+		console.log('Image details: ' + image);
+		if (image) {
+			await deleteFile(workspace.image);
+			updateData.image = image;
+		}
+	}
 
 	if (owner && owner !== workspace.owner.toString()) {
 		await Users.findByIdAndUpdate(workspace.owner, { $pull: { workspaces: workspace._id } });
@@ -143,7 +160,7 @@ export const actions: Actions = {
 
 		try {
 			const data = await request.formData();
-
+			console.log(data);
 			return await createWorkspace(data, locals.user?.organisation);
 		} catch (error) {
 			console.error('Server error:', error);

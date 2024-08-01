@@ -1,5 +1,4 @@
 import AWS from 'aws-sdk';
-import { webcrypto as crypto } from 'crypto';
 import { BUCKET } from '$env/static/private';
 
 const S3 = new AWS.S3();

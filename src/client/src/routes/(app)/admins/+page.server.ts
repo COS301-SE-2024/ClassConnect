@@ -2,6 +2,7 @@ import { hash } from '@node-rs/argon2';
 import type { Actions } from './$types';
 import type { ObjectId } from 'mongoose';
 import { fail, error } from '@sveltejs/kit';
+import { upload, deleteFile } from '$lib/server/storage';
 
 import Users from '$db/schemas/User';
 import type { User } from '$src/types';
@@ -45,12 +46,17 @@ function validateAdmin(locals: any) {
 async function addAdmin(data: FormData, organisation: ObjectId | undefined) {
 	const name = data.get('name') as string;
 	const email = data.get('email') as string;
-	const image = 'https://class-connect-file-storage.s3.amazonaws.com/pictures/default.svg';
+	const image_file = data.get('image') as File;
 	const surname = data.get('surname') as string;
+
+	let image: string = '/images/profile-placeholder.png';
 
 	const existingUser = await Users.findOne({ email });
 	if (existingUser) return fail(400, { error: 'Email already in use' });
 
+	if (image_file && image_file.size !== 0) {
+		image = await upload(image_file);
+	}
 	const username = generateUsername('admin', email);
 	const hashedPassword = await hash(username, HASH_OPTIONS);
 
@@ -62,7 +68,7 @@ async function addAdmin(data: FormData, organisation: ObjectId | undefined) {
 		organisation,
 		role: 'admin',
 		password: hashedPassword,
-		image: image || '/images/profile-placeholder.png'
+		image
 	});
 
 	await newAdmin.save();
@@ -71,18 +77,25 @@ async function addAdmin(data: FormData, organisation: ObjectId | undefined) {
 
 async function editAdmin(data: FormData) {
 	const id = data.get('id') as string;
-	if (!id) return fail(400, { error: 'Admin ID is required' });
+	const image = data.get('image') as File;
 
 	const updateData: Partial<User> = {};
 
-	['name', 'email', 'image', 'surname'].forEach((field) => {
+	['name', 'email', 'surname'].forEach((field) => {
 		const value = data.get(field) as string;
-
 		if (value !== '') updateData[field as keyof Partial<User>] = value;
 	});
 
-	const updatedAdmin = await Users.findByIdAndUpdate(id, updateData, { new: true });
-	if (!updatedAdmin) return fail(404, { error: 'Admin not found' });
+	if (image.size !== 0) {
+		const { image: userImage } = await Users.findById(id).select('image');
+
+		if (userImage !== '/images/profile-placeholder.png') await deleteFile(userImage);
+
+		updateData.image = await upload(image);
+	}
+
+	const updatedStudent = await Users.findByIdAndUpdate(id, updateData, { new: true });
+	if (!updatedStudent) return fail(404, { error: 'Student not found' });
 
 	return { success: true };
 }
