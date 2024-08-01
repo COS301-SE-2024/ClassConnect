@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcrypt';
-import * as crypto from 'crypto';
+import crypto from 'crypto'; 
 
 export class Utility {
   static generateUsername(role: string, email: string): string {
