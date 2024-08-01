@@ -22,7 +22,7 @@
 				<ArrowRightOutline />
 			</Button>
 		</Card>
-		
+
 		<Card img="/images/virtual-classroom.jpg" imgClass="h-[58%]" class="m-2 max-w-[45%] flex-grow">
 			<h5 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">Playground</h5>
 

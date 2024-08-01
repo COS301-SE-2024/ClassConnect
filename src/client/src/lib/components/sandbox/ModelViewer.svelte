@@ -71,7 +71,7 @@
 	<Checkbox bind:value={enableZoom} label="enableZoom" />
 	<Checkbox bind:value={zoomToCursor} label="zoomToCursor" />
 	<Checkbox bind:value={enableDamping} label="enableDamping" />
-	
+
 	<Slider label="zoomSpeed" bind:value={zoomSpeed} min={0.1} max={4} step={0.1} />
 	<Slider label="rotateSpeed" bind:value={rotateSpeed} min={0.1} max={8} step={0.1} />
 </Pane>

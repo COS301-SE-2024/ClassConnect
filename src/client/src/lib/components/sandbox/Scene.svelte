@@ -5,7 +5,7 @@
 	import StarterScene from '$lib/components/sandbox/StarterScene.svelte';
 
 	export let models;
-	
+
 	let currentModel: string;
 
 	function loadModel(modelUrl: string) {
