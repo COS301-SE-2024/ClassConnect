@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { VRButton } from '@threlte/xr';
+	import { VRButton } from '@threlte/xr'
 	import { Canvas } from '@threlte/core';
 	import { tweened } from 'svelte/motion';
 	import { fade } from 'svelte/transition';
