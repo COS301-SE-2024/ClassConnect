@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Progressbar, Button, Radio, Card,  } from 'flowbite-svelte';
+	import { Progressbar, Button, Radio, Card } from 'flowbite-svelte';
 	import Form from '$lib/components/questions/Form.svelte';
 	import { enhance } from '$app/forms';
 	import Submission from '$lib/components/modals/quizzes/Submission.svelte';
@@ -15,7 +15,7 @@
 		isFormOpen = !isFormOpen;
 	}
 
-	$: ({ questions, role, duration, studentID, workspaceID, quizID } = data);
+	$: ({ questions, role, duration } = data);
 	$: activeTimer = role === 'student';
 
 	let last_time: number;
@@ -73,7 +73,6 @@
 			}, 0);
 			submissionMessage = `You have successfully submitted the quiz. Your score is ${totalPoints} points.`;
 			submitModalOpen = true;
-			
 		} catch (error) {
 			console.error('Error in handleQuizSubmission:', error);
 		}
@@ -94,9 +93,6 @@
 			console.error('Error in handleTimeOutSubmission:', error);
 		}
 	}
-
-	
-
 </script>
 
 <main class="container mx-auto my-8 px-4">
@@ -134,29 +130,28 @@
 						</div>
 					</Card>
 				{/each}
-				
+
 				<form
 					method="POST"
 					action="?/submitQuiz"
 					use:enhance={() => {
 						return async ({ result }) => {
-						if (result.type === 'success') {
-							submissionResult = result.data;
-						} else {
-							submissionResult = { success: false, error: 'Failed to submit quiz' };
-						}
-						submissionMessage = submissionResult.success
-							? submissionResult.message || 'Quiz submitted successfully'
-							: submissionResult.error || 'An error occurred';
-						submitModalOpen = true;
+							if (result.type === 'success') {
+								submissionResult = result.data;
+							} else {
+								submissionResult = { success: false, error: 'Failed to submit quiz' };
+							}
+							submissionMessage = submissionResult.success
+								? submissionResult.message || 'Quiz submitted successfully'
+								: submissionResult.error || 'An error occurred';
+							submitModalOpen = true;
 						};
 					}}
-					>
+				>
 					<input type="hidden" name="mark" value={totalPoints} />
 					<Button type="submit" on:click={handleQuizSubmission}>Submit Quiz</Button>
 				</form>
 			</div>
-			
 		{/if}
 	{:else if role === 'lecturer'}
 		<Form bind:open={isFormOpen} />

@@ -6,20 +6,20 @@ const gradesSchema = new mongoose.Schema({
 		ref: 'User',
 		required: true
 	},
-	quizID:{
-        type: mongoose.Types.ObjectId,
+	quizID: {
+		type: mongoose.Types.ObjectId,
 		ref: 'Quiz',
 		required: true
-    },
-	workspaceID:{
-        type: mongoose.Types.ObjectId,
+	},
+	workspaceID: {
+		type: mongoose.Types.ObjectId,
 		ref: 'Workspace',
 		required: true
-    },
-	mark:{
-        type: Number,
-        required: true
-    },
+	},
+	mark: {
+		type: Number,
+		required: true
+	}
 });
 
 const Grades = mongoose.models.Grades || mongoose.model('Grades', gradesSchema);
