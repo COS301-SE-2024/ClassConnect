@@ -17,6 +17,8 @@ package-lock.json
 
 .npm
 
+.amplify-hosting
+
 # IDEs and editors
 /.vscode
 .idea
