@@ -23,12 +23,22 @@
 	import EditModal from '$lib/components/modals/user/Edit.svelte';
 
 	let id: string;
+
+	let _name: string;
+	let surname: string;
+	let email: string;
+
 	let isAddModalOpen = false;
 	let isEditModalOpen = false;
 	let isRemoveModalOpen = false;
 
-	function handleEditModalOpen(adminId: string) {
+	function handleEditModalOpen(adminId: string,adminName:string,adminSurname:string,adminEmail:string) {
 		id = adminId;
+	
+		_name = adminName;
+		surname = adminSurname;
+		email = adminEmail;
+
 		isEditModalOpen = true;
 	}
 
@@ -98,7 +108,7 @@
 								<div class="flex space-x-2">
 									<Button
 										color="purple"
-										on:click={() => handleEditModalOpen(admin.id)}
+										on:click={() => handleEditModalOpen(admin.id,admin.name,admin.surname,admin.email)}
 										class="p-1.5 sm:p-2"
 									>
 										<EditOutline class="h-4 w-4 sm:h-5 sm:w-5" />
@@ -123,5 +133,5 @@
 </div>
 
 <AddModal bind:open={isAddModalOpen} role="Admin" />
-<EditModal bind:open={isEditModalOpen} {id} role="Admin" />
-<RemoveModal bind:open={isRemoveModalOpen} {id} item="user" />
+<EditModal bind:open={isEditModalOpen} {id} {_name} {surname} {email} role="Admin" />
+<RemoveModal bind:open={isRemoveModalOpen} {id}  />
