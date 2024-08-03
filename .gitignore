@@ -21,6 +21,8 @@ package-lock.json
 *.swp
 *.swo
 
+.vercel
+
 # OS generated files
 .DS_Store
 Thumbs.db
