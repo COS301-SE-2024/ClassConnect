@@ -87,7 +87,7 @@
 		"canvas-confetti": "^1.9.3",
 		"clsx": "^2.1.1",
 		"encoding": "^0.1.13",
-		"gcp-metadata": "^6.1.0",
+		"gcp-metadata": "^5.2.0",
 		"kerberos": "^2.1.0",
 		"mongodb": "^6.8.0",
 		"mongodb-client-encryption": "^6.0.1",

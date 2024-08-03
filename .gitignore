@@ -15,6 +15,8 @@ package-lock.json
 .aws.*
 .aws
 
+.npm
+
 # IDEs and editors
 /.vscode
 .idea
