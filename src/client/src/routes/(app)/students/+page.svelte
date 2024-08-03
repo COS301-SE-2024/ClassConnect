@@ -27,13 +27,20 @@
 	import EnrolModal from '$lib/components/modals/user/Enrol.svelte';
 
 	let id: string;
+	let _name: string;
+	let surname: string;
+	let email: string;
+
 	let isAddModalOpen = false;
 	let isEditModalOpen = false;
 	let isRemoveModalOpen = false;
 	let isEnrolModalOpen = false;
 
-	function handleEditModalOpen(studentId: string) {
+	function handleEditModalOpen(studentId: string, studentName: string, studentSurname: string, studentEmail: string) {
 		id = studentId;
+		_name = studentName;
+		surname = studentSurname;
+		email =	studentEmail;
 		isEditModalOpen = true;
 	}
 
@@ -104,7 +111,7 @@
 								<div class="flex space-x-2">
 									<Button
 										color="purple"
-										on:click={() => handleEditModalOpen(student.id)}
+										on:click={() => handleEditModalOpen(student.id,student.name, student.surname, student.email)}
 										class="p-1.5 sm:p-2"
 									>
 										<EditOutline class="h-4 w-4 sm:h-5 sm:w-5" />
@@ -129,6 +136,6 @@
 </div>
 
 <AddModal bind:open={isAddModalOpen} role="Student" />
-<EditModal bind:open={isEditModalOpen} {id} role="Student" />
-<RemoveModal bind:open={isRemoveModalOpen} {id} item="user" />
+<EditModal bind:open={isEditModalOpen} {id} {_name} {surname} {email} role="Student" />
+<RemoveModal bind:open={isRemoveModalOpen} {id}  />
 <EnrolModal bind:open={isEnrolModalOpen} {id} {workspaces} role="Student" />

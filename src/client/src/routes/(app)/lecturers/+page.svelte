@@ -18,12 +18,19 @@
 	export let data;
 
 	let id: string;
+	let _name: string;
+	let surname: string;
+	let email: string;
+
 	let isAddModalOpen = false;
 	let isEditModalOpen = false;
 	let isRemoveModalOpen = false;
 
-	function handleEditModalOpen(lecturerId: string) {
+	function handleEditModalOpen(lecturerId: string, lecturerName: string, lecturerSurname: string, lecturerEmail: string) {
 		id = lecturerId;
+		_name = lecturerName;
+		surname = lecturerSurname;
+		email = lecturerEmail;
 		isEditModalOpen = true;
 	}
 
@@ -99,7 +106,7 @@
 								<div class="flex space-x-2">
 									<Button
 										color="purple"
-										on:click={() => handleEditModalOpen(lecturer.id)}
+										on:click={() => handleEditModalOpen(lecturer.id, lecturer.name, lecturer.surname, lecturer.email)}
 										class="p-1.5 sm:p-2"
 									>
 										<EditOutline class="h-4 w-4 sm:h-5 sm:w-5" />
@@ -124,8 +131,8 @@
 </div>
 
 <AddModal bind:open={isAddModalOpen} role="Lecturer" />
-<EditModal bind:open={isEditModalOpen} {id} role="Lecturer" />
-<RemoveModal bind:open={isRemoveModalOpen} {id} item="user" />
+<EditModal bind:open={isEditModalOpen} {id} {_name} {surname} {email} role="Lecturer" />
+<RemoveModal bind:open={isRemoveModalOpen} {id} />
 <!--
 <script lang="ts">
 	import {
