@@ -11,7 +11,39 @@ const amplifyDirectories = [
 ];
 
 const deployManifestConfig = {
-  entrypoint: 'build/index.js',
+  version: 1,
+  routes: [
+    {
+      path: `/assets/*`,
+      target: {
+        kind: 'Static',
+      },
+    },
+    {
+      path: `/*.*`,
+      target: {
+        kind: 'Static',
+      },
+      fallback: {
+        kind: 'Compute',
+        src: 'default',
+      },
+    },
+    {
+      path: '/*',
+      target: {
+        kind: 'Compute',
+        src: 'default',
+      },
+    },
+  ],
+  computeResources: [
+    {
+      name: 'default',
+      runtime: 'nodejs18.x',
+      entrypoint: 'build/index.js',
+    },
+  ],
   framework: {
     name: 'sveltekit',
     version: '1.20.4',
