@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Button, Modal, Label, Input, Fileupload } from 'flowbite-svelte';
+	import toast, {Toaster} from 'svelte-french-toast';
 
 	export let id: string;
 	export let role: string;
@@ -10,19 +11,41 @@
 	export let surname: string;
 	export let email: string;
 
-	let error: string;
 	let value: string;
 
-	function close() {
-		return async ({ result, update }: any) => {
-			if (result.type === 'success') {
-				await update();
-				open = false;
-			} else {
-				error = result.data?.error;
-			}
-		};
-	}
+	function close({formElement, formData, cancel}: any) {
+    const image = formData.get('image') as File;
+   
+    if (image) {
+        if (image.name !== "") {
+            const extension = image.name.split('.').pop()?.toLowerCase();
+            
+            if (image.size > 1000000) {
+                toast.error('The size of file should be less than 1 MB!');
+                cancel();
+                throw new Error('File is too big');
+            }
+            
+            const imageExtensions = ['jpg', 'jpeg', 'png','svg'];
+            
+            if (!(extension && imageExtensions.includes(extension))) {
+                toast.error('File type is not supported');
+                cancel();
+                throw new Error('File type is not supported');
+            }
+        }
+    }
+
+    return async ({ result, update }: any) => {
+        if (result.type === 'success') {
+            await update();
+            open = false;
+        } else {
+            toast.error(result.data?.error || 'An unknown error occurred');
+        }
+    };
+}
+		
 </script>
 
 <Modal bind:open size="xs" class="w-full">
@@ -35,9 +58,7 @@
 	>
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Edit {role}</h3>
 
-		{#if error}
-			<p class="mt-2 text-center text-red-500">{error}</p>
-		{/if}
+		<Toaster/>
 		<Input type="hidden" id="id" name="id" value={id} />
 		<Label for="name" class="space-y-2">
 			<span>Name</span>
