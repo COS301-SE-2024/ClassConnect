@@ -100,6 +100,7 @@
 		}
 	}
 </script>
+
 <main class="container mx-auto my-8 px-4">
     <h1 class="mb-4 text-2xl font-bold">Quiz Questions</h1>
     {#if role === 'student' || (role === 'lecturer' && isPreview)}
@@ -116,27 +117,57 @@
                 <div>{(elapsed / 1000).toFixed(1)}s</div>
             {/if}
             <div class="space-y-6">
-                {#each questions as question (question.id)}
-                    <Card>
-                        <!-- Question content -->
-                    </Card>
-                {/each}
-            </div>
-            {#if role === 'student' && !isPreview}
-                <form method="POST" action="?/submitQuiz" use:enhance={() => { /* ... */ }}>
-                    <input type="hidden" name="mark" value={totalPoints} />
-                    <Button type="submit" on:click={handleQuizSubmission}>Submit Quiz</Button>
-                </form>
-            {/if}
-        {/if}
-    {:else if role === 'lecturer' && !isPreview}
-        <Form bind:open={isFormOpen} />
-        {#if !isFormOpen}
-            <Button on:click={toggleForm} class="mt-4">Create New Question</Button>
-        {/if}
-    {:else}
-        <p class="text-gray-700 dark:text-gray-300">You do not have permission to view this content.</p>
-    {/if}
+				{#each questions as question (question.id)}
+					<Card>
+						<h2 class="mb-2 text-xl font-bold">Question {question.questionNumber}</h2>
+						<p class="mb-4 text-base font-normal text-gray-700 dark:text-gray-400">
+							{question.questionContent}
+						</p>
+						<div class="space-y-2">
+							{#each question.options as option}
+								<Radio
+									name={question.questionNumber}
+									value={option.content}
+									checked={selectedAnswers[question.questionNumber] === option.content}
+									on:change={() => handleSelection(question.questionNumber, option.content)}
+								>
+									{option.content}
+								</Radio>
+							{/each}
+						</div>
+					</Card>
+					{/each}
+				</div>
+				{#if role === 'student' && !isPreview}
+					<form
+						method="POST"
+						action="?/submitQuiz"
+						use:enhance={() => {
+							return async ({ result }) => {
+								if (result.type === 'success') {
+									submissionResult = result.data;
+								} else {
+									submissionResult = { success: false, error: 'Failed to submit quiz' };
+								}
+								submissionMessage = submissionResult.success
+									? submissionResult.message || 'Quiz submitted successfully'
+									: submissionResult.error || 'An error occurred';
+								submitModalOpen = true;
+							};
+						}}
+					>
+						<input type="hidden" name="mark" value={totalPoints} />
+						<Button type="submit" on:click={handleQuizSubmission}>Submit Quiz</Button>
+					</form>
+				{/if}
+		{/if}
+	{:else if role === 'lecturer' && !isPreview}
+		<Form bind:open={isFormOpen} />
+		{#if !isFormOpen}
+			<Button on:click={toggleForm} class="mt-4">Create New Question</Button>
+		{/if}
+	{:else}
+		<p class="text-gray-700 dark:text-gray-300">You do not have permission to view this content.</p>
+	{/if}
 </main>
-
 <Submission bind:open={submitModalOpen} {submissionMessage} {totalPoints} />
