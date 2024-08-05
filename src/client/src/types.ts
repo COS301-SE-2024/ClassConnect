@@ -89,3 +89,33 @@ export type FAQCategory = {
 	category: string;
 	items: FAQItem[];
 };
+
+export interface Quiz {
+	id: string;
+	instructions: string;
+	title: string;
+	graded: string;
+	date: Date;
+	duration: number;
+}
+
+export interface Grades {
+	id: string;
+	studentID: string;
+	workspaceID: string;
+	quizID: string;
+	mark: number;
+}
+
+export interface Option {
+	content: string;
+	points: number;
+}
+
+export interface Question {
+	id: string;
+	questionNumber: number;
+	questionContent: string;
+	questionType: string;
+	options: Option[];
+}

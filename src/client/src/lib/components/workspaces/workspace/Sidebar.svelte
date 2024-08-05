@@ -23,6 +23,7 @@
 			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
 			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
 			{ icon: UserCircleSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
+			{ icon: UserCircleSolid, name: 'Quizzes', href: workspaceURL + '/quizzes' },
 			{ icon: UsersGroupSolid, name: 'Sandbox', href: workspaceURL + '/sandbox' }
 		],
 		student: [
@@ -30,6 +31,7 @@
 			{ icon: BullhornSolid, name: 'Activities', href: workspaceURL + '/activities' },
 			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
 			{ icon: UserCircleSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
+			{ icon: UserCircleSolid, name: 'Quizzes', href: workspaceURL + '/quizzes' },
 			{ icon: UsersGroupSolid, name: 'Sandbox', href: workspaceURL + '/sandbox' },
 			{ icon: ChartPieSolid, name: 'Grades', href: workspaceURL + '/grades' }
 		]
