@@ -17,6 +17,7 @@
 		"test:coverage": "vitest run --coverage"
 	},
 	"devDependencies": {
+		"readable-stream": "^4.5.2",
 		"@fontsource/roboto": "^5.0.13",
 		"@sveltejs/adapter-auto": "^3.2.2",
 		"@sveltejs/kit": "^2.5.18",
@@ -59,7 +60,6 @@
 		"rollup-plugin-terser": "^7.0.2",
 		"@rollup/plugin-image": "^3.0.3",
 		"amplify-adapter": "^0.1.2",
-    "readable-stream": "^4.5.2",
 		"@sveltejs/adapter-node": "^5.2.0"
 	},
 	"type": "module",
