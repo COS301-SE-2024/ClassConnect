@@ -221,9 +221,9 @@
 
 	<div class="flex gap-4">
 		<Card size="lg" class="flex-grow">
-			<div class="mb-4 flex items-center justify-between">
+			<div class="mb-6 flex items-center justify-between">
 				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
-					Recent Student Submissions
+					Recent Submissions
 				</h5>
 				<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View all</a>
 			</div>
@@ -241,9 +241,8 @@
 							<TableBodyCell>
 								{#if Submissions.grade !== null}
 									<div class="font-bold">{Submissions.grade}%</div>
-									<div class="text-sm text-gray-500">Your grade</div>
 								{:else}
-									<div class="text-sm text-gray-500">N/A</div>
+									<div class="font-bold text-gray-400">N/A</div>
 								{/if}
 							</TableBodyCell>
 							<TableBodyCell class="text-right">
@@ -255,21 +254,30 @@
 			</Table>
 		</Card>
 		<Card size="sm" class="flex-grow">
-			<div class="mb-4 flex justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
-				<div class="flex items-center">
-					<div
-						class="me-3 flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-700"
-					>
-						<CalendarWeekSolid class="h-6 w-6 text-gray-500 dark:text-gray-400" />
-					</div>
-					<div>
-						<h5 class="pb-1 text-2xl font-bold leading-none text-gray-900 dark:text-white">
-							Another Card
-						</h5>
-					</div>
-				</div>
+			<div class="mb-6 flex items-center justify-between">
+				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Announcements</h5>
+				<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View All</a>
 			</div>
-			<p>Content goes here.</p>
+			<Table divClass="overflow-x-auto w-full">
+				<TableBody>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">announcement 1</div>
+								<div class="font-semibold">announcment text</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">announcement 2</div>
+								<div class="font-semibold">announcement text</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+				</TableBody>
+			</Table>
 		</Card>
 	</div>
 </div>

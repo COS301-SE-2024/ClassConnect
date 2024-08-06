@@ -25,22 +25,12 @@
 			time: '12:00 - 13:00',
 			href: '/',
 			title: 'Scaling your brand from €0 to multimillion euros'
-		},
-		{
-			time: '13:00 - 14:00',
-			href: '/',
-			title: 'Updates from the Open Source Multimedia community'
-		},
-		{
-			time: '14:00 - 15:00',
-			href: '/',
-			title: 'Exploring the balance between customer acquisition and retention'
 		}
 	];
 </script>
 
 <div class="w-full">
-	<div class="mb-4 flex items-center justify-between">
+	<div class="mb-6 flex items-center justify-between">
 		<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Schedule</h5>
 		<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View all</a>
 	</div>
