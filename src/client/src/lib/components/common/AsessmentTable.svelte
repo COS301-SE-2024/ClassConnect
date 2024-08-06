@@ -19,28 +19,28 @@
 
 	export let data: AssessmentStat[] = [];
 
-	// function addColumn(): void {
-	// 	const newColumnName = `Column ${data.length + 1}`;
-	// 	data = [...data, { name: newColumnName, submitted: 0, average: 0, passRate: 0 }];
-	// }
+	function addColumn(): void {
+		const newColumnName = `Column ${data.length + 1}`;
+		data = [...data, { name: newColumnName, submitted: 0, average: 0, passRate: 0 }];
+	}
 
-	// function removeColumn(index: number): void {
-	// 	data = data.filter((_, i) => i !== index);
-	// }
+	function removeColumn(index: number): void {
+		data = data.filter((_, i) => i !== index);
+	}
 
-	// function updateData(index: number, field: keyof ColumnData, value: string): void {
-	// 	if (field === 'name') {
-	// 		data[index][field] = value;
-	// 	} else {
-	// 		data[index][field] = parseFloat(value) || 0;
-	// 	}
-	// 	data = [...data];
-	// }
+	function updateData(index: number, field: keyof ColumnData, value: string): void {
+		if (field === 'name') {
+			data[index][field] = value;
+		} else {
+			data[index][field] = parseFloat(value) || 0;
+		}
+		data = [...data];
+	}
 
-	// function handleInput(event: Event, index: number, field: keyof ColumnData): void {
-	// 	const target = event.target as HTMLInputElement;
-	// 	updateData(index, field, target.value);
-	// }
+	function handleInput(event: Event, index: number, field: keyof ColumnData): void {
+		const target = event.target as HTMLInputElement;
+		updateData(index, field, target.value);
+	}
 </script>
 
 <Table striped={true} hoverable={true}>

@@ -6,7 +6,7 @@ import User from '$lib/server/database/schemas/User';
 import Quiz from '$lib/server/database/schemas/Quiz';
 import Grades from '$lib/server/database/schemas/Grades';
 
-export async function load({locals}) {
+export async function load({ locals }) {
 	try {
 		const quizzes = (await Quiz.find().lean().select('_id title').sort('createdAt')) as {
 			_id: ObjectId;
@@ -21,7 +21,6 @@ export async function load({locals}) {
 
 		grades.forEach((grade) => {
 			const studentId = grade.studentID._id.toString();
-			const studentName = grade.studentID.name;
 			const quizIndex = quizzes.findIndex(
 				(quiz) => quiz._id.toString() === grade.quizID.toString()
 			);
@@ -37,9 +36,9 @@ export async function load({locals}) {
 			studentMap.set(studentId, studentGrades);
 		});
 
-		const students: StudentGrade[] = Array.from(studentMap, ([id, grades]) => ({
+		const students: StudentGrade[] = Array.from(studentMap, ([grades]) => ({
 			grades: grades,
-			name: user.username,
+			name: user.username
 		}));
 
 		return {
