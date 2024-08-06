@@ -38,6 +38,7 @@
 				<TableHeadCell>{assessment}</TableHeadCell>
 			{/each}
 		</TableHead>
+		
 		<TableBody>
 			{#each filteredStudents as student}
 				<TableBodyRow>
