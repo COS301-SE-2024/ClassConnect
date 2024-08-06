@@ -1,4 +1,5 @@
 <script lang="ts">
+	//[quiz].page.svelte
 	import { Progressbar, Button, Radio, Card } from 'flowbite-svelte';
 	import Form from '$lib/components/questions/Form.svelte';
 	import { enhance } from '$app/forms';
@@ -6,6 +7,7 @@
 	import { browser } from '$app/environment';
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/stores';
+	import { goto } from '$app/navigation';
 
 
 	export let data: any;
@@ -99,6 +101,19 @@
 			console.error('Error in handleTimeOutSubmission:', error);
 		}
 	}
+
+	async function handleMakeAvailable() {
+    const result = await fetch(`?/makeAvailable`, {
+      method: 'POST',
+    });
+    if (result.ok) {
+      alert('Quiz is now available for students');
+      // Optionally, redirect to the quizzes page
+      goto(`/workspaces/${data.workspaceID}/quizzes`);
+    } else {
+      alert('Failed to make quiz available');
+    }
+  }
 </script>
 
 <main class="container mx-auto my-8 px-4">
@@ -159,6 +174,8 @@
 						<input type="hidden" name="mark" value={totalPoints} />
 						<Button type="submit" on:click={handleQuizSubmission}>Submit Quiz</Button>
 					</form>
+				{:else if role === 'lecturer' && isPreview}
+					<Button on:click={handleMakeAvailable}>Make Available</Button>
 				{/if}
 		{/if}
 	{:else if role === 'lecturer' && !isPreview}

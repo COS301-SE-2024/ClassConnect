@@ -1,4 +1,5 @@
 <script lang="ts">
+	//quizzes.page.svelte
 	import {
 		Table,
 		Button,
@@ -18,6 +19,7 @@
 	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
 	import Question from '$lib/components/questions/Form.svelte';
+	import type { page } from '$app/stores';
 
 	export let data: any;
 	console.log(data);
@@ -25,7 +27,8 @@
 	let id: string;
 	let isQuizFormOpen = false;
 	let isEditModalOpen = false;
-	//let isPreviewOpen = false;
+	let makeAvailable= false;
+	
 	let isRemoveModalOpen = false;
 
 	let selectedQuestionType = '';
@@ -56,6 +59,11 @@
 	function handleRemoveModalOpen(quizId: string) {
 		id = quizId;
 		isRemoveModalOpen = true;
+	}
+
+	function handleAvailability(quizId: string){
+		id= quizId;
+		makeAvailable= true;
 	}
 
 	function handlePreview(quizId: string) {

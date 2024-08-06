@@ -1,3 +1,5 @@
+//quizzes.page.server.ts
+
 import type { Actions } from './$types';
 import { fail, error } from '@sveltejs/kit';
 //import { ObjectId } from 'mongodb';
@@ -57,7 +59,7 @@ async function createQuiz(
 
 	await newQuiz.save();
 
-	//create activity
+	
 	const newActivity = new Activities({
 		title: `New Quiz: ${title}`,
 		description: instructions || '',
