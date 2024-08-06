@@ -15,7 +15,7 @@ export async function retry_connection() {
 		await mongoose.connect(MONGODB_URI);
 		console.log('Connected to the database');
 	} catch (error) {
-		if(!MONGODB_URI) {
+		if (!MONGODB_URI) {
 			throw new Error('MONGODB_URI is not defined');
 		}
 		console.error('Error connecting to the database: ', error);

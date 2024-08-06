@@ -1,4 +1,4 @@
-import crypto from 'crypto'; 
+import crypto from 'crypto';
 
 export function generateUsername(role: string, email: string): string {
 	const rolePrefix = getRolePrefix(role);

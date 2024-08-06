@@ -39,13 +39,7 @@
 				<TableBodyCell>{lesson.time}</TableBodyCell>
 
 				<TableBodyCell>
-					<Button
-						class="mr-2"
-						size="sm"
-						on:click={() => goto($page.url + '/video')}
-					>
-						Open
-					</Button>
+					<Button class="mr-2" size="sm" on:click={() => goto($page.url + '/video')}>Open</Button>
 
 					{#if role === 'lecturer'}
 						<Button

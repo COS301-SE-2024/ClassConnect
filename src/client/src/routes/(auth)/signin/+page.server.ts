@@ -63,7 +63,7 @@ export const actions: Actions = {
 
 		try {
 			await retry_connection();
-			
+
 			const { user, error } = await authenticateUser(formData);
 
 			if (error) return fail(400, { error });

@@ -68,11 +68,11 @@ async function sendWelcomeEmail(to: string, name: string, username: string) {
 
 async function checkEmailExists(email: string): Promise<boolean> {
 	let user;
-	try{
+	try {
 		user = await User.findOne({ email });
-	}catch(error){
+	} catch (error) {
 		await retry_connection();
-		user = await User.findOne({ email});
+		user = await User.findOne({ email });
 	}
 	return !!user;
 }
