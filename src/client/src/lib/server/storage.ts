@@ -1,10 +1,12 @@
 import AWS from '$lib/server/aws.config';
+import { updateConfig } from '$lib/server/aws.config';
 import { BUCKET } from '$env/static/private';
 
 const S3 = new AWS.S3();
 
 export async function upload(file: File): Promise<string> {
 	try {
+		await updateConfig();
 		if (!BUCKET) {
 			throw new Error('No bucket name');
 		}
@@ -27,6 +29,7 @@ export async function upload(file: File): Promise<string> {
 }
 
 export async function deleteFile(url: string): Promise<void> {
+	await updateConfig();
 	const urlObj = new URL(url);
 	const key = urlObj.pathname.slice(1);
 
