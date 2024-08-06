@@ -1,4 +1,3 @@
-rm -rf node_modules
 rm -rf build
 bun install
 bun run build

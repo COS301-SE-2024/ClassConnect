@@ -70,6 +70,27 @@ export default defineConfig({
 		}
 	},
 	optimizeDeps: {
-		include: ['svelte', 'three']
+		include: [
+			'svelte', 
+            '@lucia-auth/adapter-mongodb',
+            '@node-rs/argon2',
+            '@sendgrid/mail',
+            '@stream-io/node-sdk',
+            '@stream-io/video-client',
+            '@threlte/core',
+            '@threlte/extras',
+            '@types/canvas-confetti',
+            'aws-sdk',
+            'axios',
+            'bcrypt',
+            'canvas-confetti',
+            'mongodb',
+            'mongoose',
+            'playroomkit',
+            'stream-chat',
+            'svelte-french-toast',
+            'svelte-tweakpane-ui',
+            'three'
+		]
 	}
 });
