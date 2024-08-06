@@ -140,3 +140,8 @@ export interface AssessmentStat {
 	average: number;
 	passRate: number;
 }
+
+export interface StudentGrade {
+	name: string;
+	grades: number[];
+}
