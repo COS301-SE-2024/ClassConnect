@@ -7,7 +7,8 @@
 		TableHead,
 		TableBodyRow,
 		TableHeadCell,
-		TableBodyCell
+		TableBodyCell,
+		Toggle
 	} from 'flowbite-svelte';
 	import { goto } from '$app/navigation';
 	import {
@@ -19,7 +20,8 @@
 	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
 	import Question from '$lib/components/questions/Form.svelte';
-	import type { page } from '$app/stores';
+	
+
 
 	export let data: any;
 	console.log(data);
@@ -27,7 +29,6 @@
 	let id: string;
 	let isQuizFormOpen = false;
 	let isEditModalOpen = false;
-	let makeAvailable= false;
 	
 	let isRemoveModalOpen = false;
 
@@ -37,13 +38,14 @@
 		const workspaceId = data.workspaceID;
 		console.log('Workspace ID:', workspaceId);
 		if (workspaceId) {
-			goto(`/workspaces/${workspaceId}/quizzes/${quizID}`);
+			goto(`/workspaces/${workspaceId}/quizzes/${quizID}?preview=false`);
+			
 		} else {
 			console.error('Workspace ID is missing or undefined');
 		}
 	}
 
-	const headers = ['Title', 'Graded', 'Date Modified', 'Actions'];
+	const headers = ['Title', 'Graded', 'Date Modified', 'Duration', 'Actions'];
 	$: ({ quizzes } = data);
 
 	function handleEditModalOpen(quizID: string) {
@@ -61,10 +63,6 @@
 		isRemoveModalOpen = true;
 	}
 
-	function handleAvailability(quizId: string){
-		id= quizId;
-		makeAvailable= true;
-	}
 
 	function handlePreview(quizId: string) {
 		id = quizId;
@@ -78,8 +76,7 @@
 
 	function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {
 		selectedQuestionType = event.detail.type;
-		const quizID = id; // Get the current quiz ID
-
+		const quizID = id; 
 		openQuiz(quizID);
 		isQuizFormOpen = true;
 	}
@@ -123,11 +120,13 @@
 
 			<TableBody tableBodyClass="divide-y">
 				{#each quizzes as quiz (quiz.id)}
+				{#if (data.role === 'student' ) || data.role === 'lecturer'}
 					<TableBodyRow>
 						<TableBodyCell>{quiz.title}</TableBodyCell>
 						<TableBodyCell>{quiz.graded}</TableBodyCell>
 						<TableBodyCell>{quiz.date}</TableBodyCell>
 						<TableBodyCell>{quiz.duration}</TableBodyCell>
+						
 						<TableBodyCell>
 							<div class="flex items-center gap-x-6">
 								{#if data.role === 'lecturer'}
@@ -148,6 +147,7 @@
 							</div>
 						</TableBodyCell>
 					</TableBodyRow>
+				{/if}
 				{/each}
 			</TableBody>
 		</Table>

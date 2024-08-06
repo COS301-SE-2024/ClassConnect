@@ -17,7 +17,8 @@ function formatQuiz(quiz: any): Quiz {
 		id: quiz._id.toString(),
 		graded: quiz.graded,
 		date: quiz.date.toISOString(),
-		duration: quiz.duration
+		duration: quiz.duration,
+		isAvailable: quiz.isAvailable
 	};
 }
 
@@ -42,19 +43,40 @@ export async function load({ params }) {
 	}
 }
 
+async function updateQuizAvailability(quizId: string, isAvailable: boolean) {
+    try {
+        const quiz = await Quizzes.findById(quizId);
+        if (!quiz) {
+            return fail(404, { error: 'Quiz not found' });
+        }
+
+        quiz.isAvailable = isAvailable;
+		console.log(quiz.isAvailable);
+        await quiz.save();
+
+        return { success: true,
+		 };
+		
+    } catch (err) {
+        console.error('Error updating quiz availability:', err);
+        return fail(500, { error: 'Failed to update quiz availability' });
+    }
+}
+
 async function createQuiz(
 	title: string,
 	graded: string,
 	instructions: string,
 	ownerID: ObjectId,
-	duration: number
+	duration: number,
 ) {
 	const newQuiz = new Quizzes({
 		title,
 		graded,
 		instructions,
 		owner: ownerID,
-		duration
+		duration,
+		
 	});
 
 	await newQuiz.save();
@@ -91,11 +113,12 @@ export const actions: Actions = {
 		try {
 			const data = await request.formData();
 			const title = data.get('title') as string;
-			const duration = 5000;
+			const duration = parseInt(data.get('duration') as string, 10);
 			const instructions = data.get('instructions') as string;
 			const graded = 'No';
 			const workspaceId = new mongoose.Types.ObjectId(params.workspace);
 			console.log('Quiz Workspace Id:', workspaceId);
+			
 
 			return await createQuiz(title, graded, instructions, workspaceId, duration);
 		} catch (error) {
@@ -117,5 +140,20 @@ export const actions: Actions = {
 			console.error('Error removing quiz:', err);
 			return fail(500, { error: 'Failed to remove quiz' });
 		}
-	}
+	},
+
+	toggleAvailability: async ({ request }) => {
+        try {
+            const data = await request.formData();
+            const quizId = data.get('quizId') as string;
+            const isAvailable = data.get('isAvailable') === 'true';
+
+            if (!quizId) return fail(400, { error: 'Quiz ID is required' });
+
+            return await updateQuizAvailability(quizId, isAvailable);
+        } catch (err) {
+            console.error('Error toggling quiz availability:', err);
+            return fail(500, { error: 'Failed to toggle quiz availability' });
+        }
+    }
 };

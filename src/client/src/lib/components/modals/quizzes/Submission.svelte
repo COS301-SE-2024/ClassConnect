@@ -7,19 +7,20 @@
 
 	let error: string;
 
-	function close() {
-		return async ({ result, update }: any) => {
-			if (result.type === 'success') {
-				await update();
-				open = false;
-			} else {
-				error = result.data?.error;
-			}
-		};
+	async function close() {
+		try {
+			await new Promise((resolve) => setTimeout(resolve, 500)); 
+
+			
+			open = false;
+		} catch (err) {
+			error = 'An error occurred while closing the modal.';
+			console.error(err);
+		}
 	}
 </script>
 
-<Modal bind:open size="xs" class="w-full">
+<Modal bind:open size="xs" class="w-full"  >
 	<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Quiz Submission</h3>
 	{#if error}
 		<p class="mt-2 text-center text-red-500">{error}</p>
@@ -30,5 +31,5 @@
 	<p class="mb-4 text-lg font-semibold">
 		Total Points: {totalPoints}
 	</p>
-	<Button on:click={close} class="mt-4 w-full">Close</Button>
+	<Button  class="mt-4 w-full" on:click={close}>Close</Button>
 </Modal>

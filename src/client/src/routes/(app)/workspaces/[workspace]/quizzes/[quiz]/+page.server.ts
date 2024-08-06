@@ -148,21 +148,5 @@ export const actions: Actions = {
 			console.error('Error saving grade:', error);
 			return fail(500, { error: 'Failed to save grade' });
 		}
-	},
-	makeAvailable: async ({ params, locals }) => {
-		validateLecturer(locals);
-		try {
-		  const quizId = params.quiz;
-		  const quiz = await Quizzes.findById(quizId);
-		  if (!quiz) {
-			throw error(404, 'Quiz not found');
-		  }
-		  quiz.isAvailable = true;
-		  await quiz.save();
-		  return { success: true };
-		} catch (err) {
-		  console.error('Error making quiz available:', err);
-		  return fail(500, { error: 'Failed to make quiz available' });
-		}
-	  }
+	}
 };

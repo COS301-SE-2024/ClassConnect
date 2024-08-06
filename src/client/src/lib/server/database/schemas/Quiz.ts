@@ -26,6 +26,10 @@ const quizsSchema = new mongoose.Schema({
 	duration: {
 		type: Number,
 		required: true
+	},
+	isAvailable:{
+		type: Boolean,
+		default: false
 	}
 });
 

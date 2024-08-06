@@ -7,7 +7,7 @@
 	import { browser } from '$app/environment';
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/stores';
-	import { goto } from '$app/navigation';
+	import { writingQuiz } from '$lib/store/sidebar'; 
 
 
 	export let data: any;
@@ -26,7 +26,7 @@
 
 	let last_time: number;
 	let frame: number;
-
+	
 	function update() {
 		if (activeTimer) {
 			frame = requestAnimationFrame(update);
@@ -52,11 +52,13 @@
 		if (browser && activeTimer) {
 			last_time = performance.now();
 			update();
+			writingQuiz.set(true);  
 		}
 
 	});
 
 	onDestroy(() => {
+		writingQuiz.set(false);
 		if (browser && frame && activeTimer) {
 			cancelAnimationFrame(frame);
 		}
@@ -102,18 +104,7 @@
 		}
 	}
 
-	async function handleMakeAvailable() {
-    const result = await fetch(`?/makeAvailable`, {
-      method: 'POST',
-    });
-    if (result.ok) {
-      alert('Quiz is now available for students');
-      // Optionally, redirect to the quizzes page
-      goto(`/workspaces/${data.workspaceID}/quizzes`);
-    } else {
-      alert('Failed to make quiz available');
-    }
-  }
+	
 </script>
 
 <main class="container mx-auto my-8 px-4">
@@ -173,9 +164,8 @@
 					>
 						<input type="hidden" name="mark" value={totalPoints} />
 						<Button type="submit" on:click={handleQuizSubmission}>Submit Quiz</Button>
+
 					</form>
-				{:else if role === 'lecturer' && isPreview}
-					<Button on:click={handleMakeAvailable}>Make Available</Button>
 				{/if}
 		{/if}
 	{:else if role === 'lecturer' && !isPreview}

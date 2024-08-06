@@ -7,15 +7,16 @@
 
 	let error: string;
 
-	function close() {
-		return async ({ result, update }: any) => {
-			if (result.type === 'success') {
-				await update();
-				open = false;
-			} else {
-				error = result.data?.error;
-			}
-		};
+	async function close() {
+		try {
+			await new Promise((resolve) => setTimeout(resolve, 500)); 
+
+			
+			open = false;
+		} catch (err) {
+			error = 'An error occurred while closing the modal.';
+			console.error(err);
+		}
 	}
 </script>
 
