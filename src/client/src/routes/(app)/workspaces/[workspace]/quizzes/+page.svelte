@@ -66,7 +66,7 @@
 		} else {
 			console.error('Workspace ID is missing or undefined');
 		}
-}
+	}
 
 	function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {
 		selectedQuestionType = event.detail.type;
