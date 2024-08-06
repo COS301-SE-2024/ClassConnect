@@ -5,6 +5,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { SENDGRID_API_KEY, FROM_EMAIL } from '$env/static/private';
 
 import User from '$db/schemas/User';
+import { retry_connection } from '$db/db';
 import type { SignUpData } from '$src/types';
 import { HASH_OPTIONS } from '$src/constants';
 import { generateUsername } from '$utils/user';
@@ -66,7 +67,13 @@ async function sendWelcomeEmail(to: string, name: string, username: string) {
 }
 
 async function checkEmailExists(email: string): Promise<boolean> {
-	const user = await User.findOne({ email });
+	let user;
+	try {
+		user = await User.findOne({ email });
+	} catch (error) {
+		await retry_connection();
+		user = await User.findOne({ email });
+	}
 	return !!user;
 }
 

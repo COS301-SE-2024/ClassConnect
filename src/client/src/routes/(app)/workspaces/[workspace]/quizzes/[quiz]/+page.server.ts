@@ -66,7 +66,6 @@ async function createQuestion(
 	return { success: true };
 }
 
-//saving marks
 async function saveGrade(
 	studentID: ObjectId,
 	quizID: ObjectId,
