@@ -4,7 +4,6 @@ import { svelteTesting } from '@testing-library/svelte/vite';
 import image from '@rollup/plugin-image';
 import json from '@rollup/plugin-json';
 import { terser } from 'rollup-plugin-terser';
-import viteCompression from 'vite-plugin-compression'; // For compressing output files
 import viteImageMin from 'vite-plugin-imagemin'; // For optimizing images
 
 export default defineConfig({
@@ -58,7 +57,7 @@ export default defineConfig({
 	build: {
 		sourcemap: false, // Remove source maps
 		rollupOptions: {
-			external: ['bun.lockb'], // Exclude bun.lockb or any other binary files
+			external: ['bun.lockb'] // Exclude bun.lockb or any other binary files
 		}
 	}
 });
