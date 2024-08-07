@@ -12,7 +12,7 @@ import Grade from '$db/schemas/Grades';
 export const load: PageServerLoad = async ({ params, locals }) => {
 	try {
 		const role = locals.user?.role;
-		//const studentID = locals.user?.id.toString();
+		const workspaceID = params.workspace;
 		const quizId = params.quiz;
 		const questions = await Questions.find({ quiz: quizId });
 
@@ -36,7 +36,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 					content: option.content,
 					points: option.points
 				}))
-			}))
+			})),
+			workspaceID
 		};
 	} catch (e) {
 		console.error('Failed to load Questions: ', e);

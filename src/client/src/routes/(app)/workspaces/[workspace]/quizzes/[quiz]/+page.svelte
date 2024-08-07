@@ -8,9 +8,11 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/stores';
 	import { writingQuiz } from '$lib/store/sidebar'; 
+	import { goto } from '$app/navigation';
 
 
 	export let data: any;
+	const workspaceID= data.workspaceID;
 	let elapsed = 0;
 	let isFormOpen = false;
 	let activeTimer = false;
@@ -39,42 +41,57 @@
 			}
 		}
 	}
-
+	
 	function stopTimer() {
 		if (browser && frame) {
 			cancelAnimationFrame(frame);
 			activeTimer = false;
 		}
 	}
-
+	
 	onMount(() => {
-		// isPreview = $page.url.searchParams.get('preview') === 'true';
-		if (browser && activeTimer) {
-			last_time = performance.now();
-			update();
-			writingQuiz.set(true);  
-		}
+		if (browser) {
+        if (activeTimer) {
+            last_time = performance.now();
+            update();
+            writingQuiz.set(true);
+        }
 
+        // Add this new block for monitoring writingQuiz
+        const unsubscribe = writingQuiz.subscribe(value => {
+            console.log('writingQuiz value:', value);
+        });
+
+        // Return a cleanup function
+        return () => {
+            unsubscribe();
+            if (frame) {
+                cancelAnimationFrame(frame);
+            }
+        };
+    }
+		
 	});
-
+	
 	onDestroy(() => {
-		writingQuiz.set(false);
 		if (browser && frame && activeTimer) {
 			cancelAnimationFrame(frame);
 		}
+		
 	});
 	let selectedAnswers: { [key: string]: string } = {};
 	let submitModalOpen = false;
 	let submissionMessage = '';
 	let totalPoints = 0;
-
+	
 	function handleSelection(questionId: string, optionContent: string) {
 		selectedAnswers[questionId] = optionContent;
 	}
-
+	
 	async function handleQuizSubmission() {
 		try {
 			stopTimer();
+			writingQuiz.set(false);
 			totalPoints = questions.reduce((total: number, question: any) => {
 				const selectedOption = question.options.find(
 					(option: any) => option.content === selectedAnswers[question.questionNumber]
@@ -87,9 +104,10 @@
 			console.error('Error in handleQuizSubmission:', error);
 		}
 	}
-
+	
 	function handleTimeOutSubmission() {
 		try {
+			writingQuiz.set(false);
 			// Calculate points as in handleQuizSubmission
 			totalPoints = questions.reduce((total: number, question: any) => {
 				const selectedOption = question.options.find(
@@ -104,6 +122,11 @@
 		}
 	}
 
+	function handleFormSubmit() {
+		
+		isFormOpen = false;
+		goto(`/workspaces/${workspaceID}/quizzes`);
+}
 	
 </script>
 
@@ -169,10 +192,10 @@
 				{/if}
 		{/if}
 	{:else if role === 'lecturer' && !isPreview}
-		<Form bind:open={isFormOpen} />
-		{#if !isFormOpen}
-			<Button on:click={toggleForm} class="mt-4">Create New Question</Button>
-		{/if}
+		<Form 
+		bind:open={isFormOpen} 
+		on:formSubmitted={handleFormSubmit}
+	/>
 	{:else}
 		<p class="text-gray-700 dark:text-gray-300">You do not have permission to view this content.</p>
 	{/if}

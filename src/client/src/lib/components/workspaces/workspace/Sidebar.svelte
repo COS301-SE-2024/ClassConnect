@@ -10,23 +10,17 @@
 		GlobeOutline
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
-	import { sidebarOpen, writingQuiz } from '$lib/store/sidebar';
+	import { writingQuiz } from '$lib/store/sidebar';
 	import { onDestroy } from 'svelte';
 
 	let isOpen = true;
 
-	const unsubscribeSidebarOpen = sidebarOpen.subscribe(value => {
-		isOpen = value;
-	});
 
 	const unsubscribeWritingQuiz = writingQuiz.subscribe(value => {
-		if (value) {
-		isOpen = false;  
-		}
+		isOpen = !value;
 	});
 
 	onDestroy(() => {
-		unsubscribeSidebarOpen();
 		unsubscribeWritingQuiz();
 	});
 	export let workspace;
