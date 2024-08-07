@@ -14,7 +14,6 @@ export default defineConfig({
 		image(),
 		json(),
 		terser(), // Minify JavaScript
-		viteCompression(), // Compress output files
 		viteImageMin({
 			// Optimize images
 			gifsicle: {
@@ -60,37 +59,6 @@ export default defineConfig({
 		sourcemap: false, // Remove source maps
 		rollupOptions: {
 			external: ['bun.lockb'], // Exclude bun.lockb or any other binary files
-			output: {
-				manualChunks(id) {
-					if (id.includes('node_modules')) {
-						return id.toString().split('node_modules/')[1].split('/')[0].toString();
-					}
-				}
-			}
 		}
-	},
-	optimizeDeps: {
-		include: [
-			'svelte',
-			'@lucia-auth/adapter-mongodb',
-			'@node-rs/argon2',
-			'@sendgrid/mail',
-			'@stream-io/node-sdk',
-			'@stream-io/video-client',
-			'@threlte/core',
-			'@threlte/extras',
-			'@types/canvas-confetti',
-			'aws-sdk',
-			'axios',
-			'bcrypt',
-			'canvas-confetti',
-			'mongodb',
-			'mongoose',
-			'playroomkit',
-			'stream-chat',
-			'svelte-french-toast',
-			'svelte-tweakpane-ui',
-			'three'
-		]
 	}
 });
