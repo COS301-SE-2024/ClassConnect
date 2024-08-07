@@ -7,8 +7,7 @@
 		TableHead,
 		TableBodyRow,
 		TableHeadCell,
-		TableBodyCell,
-		Toggle
+		TableBodyCell
 	} from 'flowbite-svelte';
 	import { goto } from '$app/navigation';
 	import {
@@ -20,8 +19,6 @@
 	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
 	import Question from '$lib/components/questions/Form.svelte';
-	
-
 
 	export let data: any;
 	console.log(data);
@@ -29,7 +26,7 @@
 	let id: string;
 	let isQuizFormOpen = false;
 	let isEditModalOpen = false;
-	
+
 	let isRemoveModalOpen = false;
 
 	let selectedQuestionType = '';
@@ -39,7 +36,6 @@
 		console.log('Workspace ID:', workspaceId);
 		if (workspaceId) {
 			goto(`/workspaces/${workspaceId}/quizzes/${quizID}?preview=false`);
-			
 		} else {
 			console.error('Workspace ID is missing or undefined');
 		}
@@ -63,7 +59,6 @@
 		isRemoveModalOpen = true;
 	}
 
-
 	function handlePreview(quizId: string) {
 		id = quizId;
 		const workspaceId = data.workspaceID;
@@ -72,11 +67,11 @@
 		} else {
 			console.error('Workspace ID is missing or undefined');
 		}
-}
+	}
 
 	function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {
 		selectedQuestionType = event.detail.type;
-		const quizID = id; 
+		const quizID = id;
 		openQuiz(quizID);
 		isQuizFormOpen = true;
 	}
@@ -120,34 +115,34 @@
 
 			<TableBody tableBodyClass="divide-y">
 				{#each quizzes as quiz (quiz.id)}
-				{#if (data.role === 'student' ) || data.role === 'lecturer'}
-					<TableBodyRow>
-						<TableBodyCell>{quiz.title}</TableBodyCell>
-						<TableBodyCell>{quiz.graded}</TableBodyCell>
-						<TableBodyCell>{quiz.date}</TableBodyCell>
-						<TableBodyCell>{quiz.duration}</TableBodyCell>
-						
-						<TableBodyCell>
-							<div class="flex items-center gap-x-6">
-								{#if data.role === 'lecturer'}
-									{#if quiz.graded === 'No'}
-										<Button on:click={() => handleEditModalOpen(quiz.id)}>
-											<EditOutline />
+					{#if data.role === 'student' || data.role === 'lecturer'}
+						<TableBodyRow>
+							<TableBodyCell>{quiz.title}</TableBodyCell>
+							<TableBodyCell>{quiz.graded}</TableBodyCell>
+							<TableBodyCell>{quiz.date}</TableBodyCell>
+							<TableBodyCell>{quiz.duration}</TableBodyCell>
+
+							<TableBodyCell>
+								<div class="flex items-center gap-x-6">
+									{#if data.role === 'lecturer'}
+										{#if quiz.graded === 'No'}
+											<Button on:click={() => handleEditModalOpen(quiz.id)}>
+												<EditOutline />
+											</Button>
+										{/if}
+										<Button color="yellow" on:click={() => handlePreview(quiz.id)}>
+											<ArrowUpRightFromSquareOutline />
 										</Button>
+										<Button color="red" on:click={() => handleRemoveModalOpen(quiz.id)}>
+											<TrashBinOutline />
+										</Button>
+									{:else if data.role === 'student'}
+										<Button on:click={() => openQuiz(quiz.id)}>Start</Button>
 									{/if}
-									<Button color="yellow" on:click={() => handlePreview(quiz.id)}>
-										<ArrowUpRightFromSquareOutline />
-									</Button>
-									<Button color="red" on:click={() => handleRemoveModalOpen(quiz.id)}>
-										<TrashBinOutline />
-									</Button>
-								{:else if data.role === 'student'}
-									<Button on:click={() => openQuiz(quiz.id)}>Start</Button>
-								{/if}
-							</div>
-						</TableBodyCell>
-					</TableBodyRow>
-				{/if}
+								</div>
+							</TableBodyCell>
+						</TableBodyRow>
+					{/if}
 				{/each}
 			</TableBody>
 		</Table>

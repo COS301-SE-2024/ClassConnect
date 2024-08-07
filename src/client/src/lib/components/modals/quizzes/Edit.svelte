@@ -20,7 +20,7 @@
 	}
 </script>
 
-<Modal {open} on:close={() => (open = false)} >
+<Modal {open} on:close={() => (open = false)}>
 	<h3 class="text-lg font-medium text-gray-900 dark:text-white">Choose Question Type</h3>
 	<div class="mt-4">
 		<Label>

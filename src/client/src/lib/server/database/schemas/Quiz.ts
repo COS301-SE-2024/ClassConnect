@@ -27,7 +27,7 @@ const quizsSchema = new mongoose.Schema({
 		type: Number,
 		required: true
 	},
-	isAvailable:{
+	isAvailable: {
 		type: Boolean,
 		default: false
 	}

@@ -15,8 +15,7 @@
 
 	let isOpen = true;
 
-
-	const unsubscribeWritingQuiz = writingQuiz.subscribe(value => {
+	const unsubscribeWritingQuiz = writingQuiz.subscribe((value) => {
 		isOpen = !value;
 	});
 
@@ -56,8 +55,8 @@
 
 <aside
 	class="flex h-screen w-64 flex-col overflow-y-auto border-r bg-primary-100 px-4 py-1 dark:border-gray-700 dark:bg-gray-900 rtl:border-l rtl:border-r-0"
-	class:hidden={!isOpen}>
-	
+	class:hidden={!isOpen}
+>
 	<!-- Back button -->
 	<a
 		href="/workspaces"

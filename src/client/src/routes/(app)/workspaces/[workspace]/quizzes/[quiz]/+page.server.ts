@@ -1,6 +1,5 @@
 //[quiz].page.server.ts
 
-
 import type { Actions, PageServerLoad } from './$types';
 import { fail, error } from '@sveltejs/kit';
 import mongoose from 'mongoose';

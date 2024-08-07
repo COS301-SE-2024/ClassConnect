@@ -97,7 +97,7 @@ export interface Quiz {
 	graded: string;
 	date: Date;
 	duration: number;
-	isAvailable :boolean
+	isAvailable: boolean;
 }
 
 export interface Grades {

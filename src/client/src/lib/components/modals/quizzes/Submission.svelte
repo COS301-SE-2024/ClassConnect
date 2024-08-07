@@ -9,9 +9,8 @@
 
 	async function close() {
 		try {
-			await new Promise((resolve) => setTimeout(resolve, 500)); 
+			await new Promise((resolve) => setTimeout(resolve, 500));
 
-			
 			open = false;
 		} catch (err) {
 			error = 'An error occurred while closing the modal.';
@@ -20,7 +19,7 @@
 	}
 </script>
 
-<Modal bind:open size="xs" class="w-full"  >
+<Modal bind:open size="xs" class="w-full">
 	<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Quiz Submission</h3>
 	{#if error}
 		<p class="mt-2 text-center text-red-500">{error}</p>
@@ -31,5 +30,5 @@
 	<p class="mb-4 text-lg font-semibold">
 		Total Points: {totalPoints}
 	</p>
-	<Button  class="mt-4 w-full" on:click={close}>Close</Button>
+	<Button class="mt-4 w-full" on:click={close}>Close</Button>
 </Modal>
