@@ -15,6 +15,10 @@ vi.mock('$db/schemas/User', () => {
 	return { default: UserMock };
 });
 
+vi.mock('$db/db', () => ({
+	retry_connection: vi.fn()
+}));
+
 vi.mock('@sendgrid/mail', () => ({
 	default: {
 		setApiKey: vi.fn(),

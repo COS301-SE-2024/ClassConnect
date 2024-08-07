@@ -1,13 +1,10 @@
 <script lang="ts">
-	import { Chart, Card, Button, Dropdown, DropdownItem } from 'flowbite-svelte';
 	import { ChevronDownOutline, FileLinesSolid } from 'flowbite-svelte-icons';
+	import { Chart, Card, Button, Dropdown, DropdownItem } from 'flowbite-svelte';
 
-	export let data: {
-		name: string;
-		submitted: number;
-		average: number;
-		passRate: number;
-	}[] = [];
+	import type { AssessmentStat } from '$src/types';
+
+	export let data: AssessmentStat[] = [];
 
 	$: options = {
 		chart: {

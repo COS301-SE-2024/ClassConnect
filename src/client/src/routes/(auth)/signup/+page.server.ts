@@ -5,6 +5,7 @@ import type { Actions } from './$types';
 import type { SignUpData } from '$src/types';
 
 import User from '$db/schemas/User';
+import { retry_connection } from '$db/db';
 import { HASH_OPTIONS } from '$src/constants';
 import { generateUsername } from '$src/lib/server/utils/auth';
 import { sendWelcomeEmail } from '$src/lib/server/utils/email';
@@ -97,6 +98,7 @@ async function handleSignup(
 
 export const actions: Actions = {
 	default: async (event) => {
+		retry_connection();
 		const formData = await event.request.formData();
 		const result = await handleSignup(formData);
 

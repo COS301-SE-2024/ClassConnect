@@ -20,7 +20,7 @@
 	let showPreview = true;
 	let callId = $page.params.lesson;
 
-	let { apiKey, token, user, role } = data;
+	let { apiKey, token, user, role, materials } = data;
 
 	onMount(() => {
 		chatClient = StreamChat.getInstance(apiKey);
@@ -47,5 +47,5 @@
 {#if showPreview}
 	<Preview onJoin={handleJoin} />
 {:else}
-	<Room {call} {channel} {role} />
+	<Room {call} {channel} {role} {materials} />
 {/if}
