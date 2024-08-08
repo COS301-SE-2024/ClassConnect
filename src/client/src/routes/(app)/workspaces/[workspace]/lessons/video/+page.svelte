@@ -1,5 +1,6 @@
 <script lang="ts">
-	const videoLink = 'https://videos.pexels.com/video-files/3195394/3195394-uhd_2560_1440_25fps.mp4';
+	import { vid_url } from '$lib/store';
+	const videoLink = $vid_url;
 </script>
 
 <video
