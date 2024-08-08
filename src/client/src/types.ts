@@ -119,3 +119,29 @@ export interface Question {
 	questionType: string;
 	options: Option[];
 }
+
+export interface GradeData {
+	_id: string;
+	studentID: string;
+	quizID: string;
+	workspaceID: string;
+	mark: number;
+}
+
+export interface QuizData {
+	_id: string;
+	title: string;
+	totalPossibleScore: number;
+}
+
+export interface AssessmentStat {
+	name: string;
+	submitted: number;
+	average: number;
+	passRate: number;
+}
+
+export interface StudentGrade {
+	name: string;
+	grades: number[];
+}

@@ -8,6 +8,7 @@
 		TableBodyCell,
 		Button
 	} from 'flowbite-svelte';
+	import type { AssessmentStat } from '$src/types';
 
 	interface ColumnData {
 		name: string;
@@ -16,7 +17,7 @@
 		passRate: number;
 	}
 
-	export let data: ColumnData[] = [];
+	export let data: AssessmentStat[] = [];
 
 	function addColumn(): void {
 		const newColumnName = `Column ${data.length + 1}`;

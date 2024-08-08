@@ -30,6 +30,6 @@
 	<Dropdown placement="bottom" triggeredBy="#avatar-menu">
 		<DropdownItem href="/profile">Profile</DropdownItem>
 		<DropdownDivider />
-		<DropdownItem href="/signout">Sign out</DropdownItem>
+		<DropdownItem href="/signout">Sign Out</DropdownItem>
 	</Dropdown>
 </Navbar>
