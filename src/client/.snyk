@@ -4,3 +4,7 @@ ignore:
     - "*":
         reason: "Ignoring this issue because it is not relevant to our current project setup."
         expires: "2025-07-07T00:00:00Z"
+  "SNYK-JS-INFLIGHT-6095116":
+    - "*":
+        reason: "Ignoring this issue because it is not relevant to our current project setup."
+        expires: "2025-07-07T00:00:00Z"

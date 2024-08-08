@@ -13,6 +13,7 @@
 	export let call: Call;
 	export let role: string;
 	export let channel: Channel;
+	export let materials: any;
 	const callStore: Writable<Call | null> = writable(null);
 
 	onMount(async () => {
@@ -35,7 +36,7 @@
 {#if $callStore}
 	<div class="flex h-screen">
 		<div class="flex w-3/4 flex-col items-center justify-center">
-			<Participants />
+			<Participants {materials} />
 			<Controls {role} />
 		</div>
 

@@ -62,6 +62,16 @@ export interface Lesson {
 	workspace: string;
 }
 
+export interface Recording {
+	id: string;
+	topic: string;
+	time: string;
+	date: string;
+	description: string;
+	workspace: string;
+	url: string;
+}
+
 export interface Material {
 	id: string;
 	title: string;
@@ -89,3 +99,59 @@ export type FAQCategory = {
 	category: string;
 	items: FAQItem[];
 };
+
+export interface Quiz {
+	id: string;
+	instructions: string;
+	title: string;
+	graded: string;
+	date: Date;
+	duration: number;
+}
+
+export interface Grades {
+	id: string;
+	studentID: string;
+	workspaceID: string;
+	quizID: string;
+	mark: number;
+}
+
+export interface Option {
+	content: string;
+	points: number;
+}
+
+export interface Question {
+	id: string;
+	questionNumber: number;
+	questionContent: string;
+	questionType: string;
+	options: Option[];
+}
+
+export interface GradeData {
+	_id: string;
+	studentID: string;
+	quizID: string;
+	workspaceID: string;
+	mark: number;
+}
+
+export interface QuizData {
+	_id: string;
+	title: string;
+	totalPossibleScore: number;
+}
+
+export interface AssessmentStat {
+	name: string;
+	submitted: number;
+	average: number;
+	passRate: number;
+}
+
+export interface StudentGrade {
+	name: string;
+	grades: number[];
+}

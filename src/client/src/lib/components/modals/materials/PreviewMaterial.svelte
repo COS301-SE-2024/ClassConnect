@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { displayedSandboxObjectURL, ObjInScene } from '$src/lib/store/objects';
-	import Scene from '$src/lib/components/sandbox/+Scene.svelte';
+	import Scene from '$src/lib/components/sandbox/Scene.svelte';
 	import { change } from '$lib/store/';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { Button, Modal } from 'flowbite-svelte';
