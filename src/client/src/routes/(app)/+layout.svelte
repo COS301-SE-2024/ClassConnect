@@ -35,6 +35,7 @@
 		<div class="sticky top-0">
 			<Header {data} />
 		</div>
+
 		<slot />
 	</div>
 </div>
