@@ -1,4 +1,5 @@
 <script lang="ts">
+	//quizzes.page.svelte
 	import {
 		Table,
 		Button,
@@ -25,7 +26,7 @@
 	let id: string;
 	let isQuizFormOpen = false;
 	let isEditModalOpen = false;
-	//let isPreviewOpen = false;
+
 	let isRemoveModalOpen = false;
 
 	let selectedQuestionType = '';
@@ -34,13 +35,13 @@
 		const workspaceId = data.workspaceID;
 		console.log('Workspace ID:', workspaceId);
 		if (workspaceId) {
-			goto(`/workspaces/${workspaceId}/quizzes/${quizID}`);
+			goto(`/workspaces/${workspaceId}/quizzes/${quizID}?preview=false`);
 		} else {
 			console.error('Workspace ID is missing or undefined');
 		}
 	}
 
-	const headers = ['Title', 'Graded', 'Date Modified', 'Actions'];
+	const headers = ['Title', 'Graded', 'Date Modified', 'Duration', 'Actions'];
 	$: ({ quizzes } = data);
 
 	function handleEditModalOpen(quizID: string) {
@@ -70,8 +71,7 @@
 
 	function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {
 		selectedQuestionType = event.detail.type;
-		const quizID = id; // Get the current quiz ID
-
+		const quizID = id;
 		openQuiz(quizID);
 		isQuizFormOpen = true;
 	}
@@ -115,31 +115,34 @@
 
 			<TableBody tableBodyClass="divide-y">
 				{#each quizzes as quiz (quiz.id)}
-					<TableBodyRow>
-						<TableBodyCell>{quiz.title}</TableBodyCell>
-						<TableBodyCell>{quiz.graded}</TableBodyCell>
-						<TableBodyCell>{quiz.date}</TableBodyCell>
-						<TableBodyCell>{quiz.duration}</TableBodyCell>
-						<TableBodyCell>
-							<div class="flex items-center gap-x-6">
-								{#if data.role === 'lecturer'}
-									{#if quiz.graded === 'No'}
-										<Button on:click={() => handleEditModalOpen(quiz.id)}>
-											<EditOutline />
+					{#if data.role === 'student' || data.role === 'lecturer'}
+						<TableBodyRow>
+							<TableBodyCell>{quiz.title}</TableBodyCell>
+							<TableBodyCell>{quiz.graded}</TableBodyCell>
+							<TableBodyCell>{quiz.date}</TableBodyCell>
+							<TableBodyCell>{quiz.duration}</TableBodyCell>
+
+							<TableBodyCell>
+								<div class="flex items-center gap-x-6">
+									{#if data.role === 'lecturer'}
+										{#if quiz.graded === 'No'}
+											<Button on:click={() => handleEditModalOpen(quiz.id)}>
+												<EditOutline />
+											</Button>
+										{/if}
+										<Button color="yellow" on:click={() => handlePreview(quiz.id)}>
+											<ArrowUpRightFromSquareOutline />
 										</Button>
+										<Button color="red" on:click={() => handleRemoveModalOpen(quiz.id)}>
+											<TrashBinOutline />
+										</Button>
+									{:else if data.role === 'student'}
+										<Button on:click={() => openQuiz(quiz.id)}>Start</Button>
 									{/if}
-									<Button color="yellow" on:click={() => handlePreview(quiz.id)}>
-										<ArrowUpRightFromSquareOutline />
-									</Button>
-									<Button color="red" on:click={() => handleRemoveModalOpen(quiz.id)}>
-										<TrashBinOutline />
-									</Button>
-								{:else if data.role === 'student'}
-									<Button on:click={() => openQuiz(quiz.id)}>Start</Button>
-								{/if}
-							</div>
-						</TableBodyCell>
-					</TableBodyRow>
+								</div>
+							</TableBodyCell>
+						</TableBodyRow>
+					{/if}
 				{/each}
 			</TableBody>
 		</Table>

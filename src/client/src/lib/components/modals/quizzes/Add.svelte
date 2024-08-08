@@ -45,6 +45,17 @@
 		<Label for="title" class="mb-2 mt-2 text-left">Title</Label>
 		<Input type="text" id="title" name="title" placeholder="Fire Drill" size="md" required />
 
+		<Label for="duration" class="mb-2 mt-2 text-left">Duration (in minutes)</Label>
+		<Input
+			type="number"
+			id="duration"
+			name="duration"
+			placeholder="30"
+			size="md"
+			required
+			min="0"
+		/>
+
 		<Label for="instructions" class="mb-2 mt-2 text-left">Add Instructions</Label>
 		<Textarea
 			id="instructions"

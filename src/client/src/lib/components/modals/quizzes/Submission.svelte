@@ -7,15 +7,15 @@
 
 	let error: string;
 
-	function close() {
-		return async ({ result, update }: any) => {
-			if (result.type === 'success') {
-				await update();
-				open = false;
-			} else {
-				error = result.data?.error;
-			}
-		};
+	async function close() {
+		try {
+			await new Promise((resolve) => setTimeout(resolve, 500));
+
+			open = false;
+		} catch (err) {
+			error = 'An error occurred while closing the modal.';
+			console.error(err);
+		}
 	}
 </script>
 
@@ -30,5 +30,5 @@
 	<p class="mb-4 text-lg font-semibold">
 		Total Points: {totalPoints}
 	</p>
-	<Button on:click={close} class="mt-4 w-full">Close</Button>
+	<Button class="mt-4 w-full" on:click={close}>Close</Button>
 </Modal>
