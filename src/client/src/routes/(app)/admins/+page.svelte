@@ -12,7 +12,9 @@
 	import { ArrowRightOutline, EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 
 	export let data;
-	$: ({ admins } = data);
+	console.log(data);
+
+	$: ({ admins, organisation } = data);
 	let searchTerm = '';
 	$: filteredAdmins = admins.filter(
 		(admin: { name: string }) => admin.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1
@@ -21,6 +23,7 @@
 	import AddModal from '$lib/components/modals/user/Add.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
 	import EditModal from '$lib/components/modals/user/Edit.svelte';
+	import PageUnavailable from '$lib/components/common/PageUnavailable.svelte';
 
 	let id: string;
 
@@ -48,6 +51,10 @@
 	}
 </script>
 
+
+{#if organisation === undefined}
+	<PageUnavailable />
+{:else}
 <div class="container mx-auto px-4 py-8">
 	{#if admins.length === 0}
 		<Card
@@ -135,3 +142,4 @@
 <AddModal bind:open={isAddModalOpen} role="Admin" />
 <EditModal bind:open={isEditModalOpen} {id} {_name} {surname} {email} role="Admin" />
 <RemoveModal bind:open={isRemoveModalOpen} {id}  />
+{/if}

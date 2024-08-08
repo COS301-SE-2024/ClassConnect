@@ -49,7 +49,14 @@ export async function load({ locals }) {
 		const students = await getStudents(locals.user.organisation);
 		const workspaces = await getWorkspaces(locals.user.organisation);
 
-		return { students, workspaces };
+		let organisation = locals.user?.organisation;
+		if(organisation !== undefined || organisation !== null) {
+			organisation = JSON.parse(JSON.stringify(locals.user?.organisation));
+		}
+
+		return { students, workspaces,
+			organisation
+		 };
 	} catch (e) {
 		console.error('Failed to load students:', e);
 		throw error(500, 'Error occurred while fetching students');

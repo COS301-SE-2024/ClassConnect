@@ -2,12 +2,16 @@
 	import { Button } from 'flowbite-svelte';
 	import Card from '$src/lib/components/announcements/Card.svelte';
 	import AddModal from '$lib/components/modals/announcement/Add.svelte';
+	import NoAccess from '$lib/components/common/PageUnavailable.svelte'
 	export let data: any;
 
 	let isAddModalOpen = false;
-	$: ({ announcements } = data);
+	$: ({ announcements, organisation } = data);
 </script>
 
+{#if organisation=== undefined}
+<NoAccess/>
+{:else}
 <main class="container mx-auto my-2 px-4">
 	{#if announcements.length === 0}
 		<div class="text-center">
@@ -51,3 +55,4 @@
 </main>
 
 <AddModal bind:open={isAddModalOpen} />
+{/if}

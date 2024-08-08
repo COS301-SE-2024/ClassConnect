@@ -28,11 +28,17 @@ async function getAdmins(organisation: ObjectId): Promise<User[]> {
 
 export async function load({ locals }) {
 	if (locals.user?.role !== 'admin') throw error(401, 'Only admins can access this page');
+	console.log(locals.user?.organisation);
 
 	try {
-		const admins = await getAdmins(locals.user.organisation);
+		let organisation = locals.user?.organisation;
+		if(organisation !== undefined || organisation !== null) {
+			organisation = JSON.parse(JSON.stringify(locals.user?.organisation));
+		}
+		const admins = await getAdmins(organisation);
 
-		return { admins };
+
+		return {  organisation, admins };
 	} catch (e) {
 		console.error('Failed to load admins:', e);
 		throw error(500, 'Error occurred while fetching admins');

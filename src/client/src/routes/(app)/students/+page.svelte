@@ -12,7 +12,7 @@
 	import NoStudentCard from '$lib/components/common/ZeroUsersCard.svelte';
 
 	export let data;
-	$: ({ students, workspaces } = data);
+	$: ({ students,workspaces, organisation } = data);
 	let searchTerm = '';
 	$: filteredStudents = students.filter(
 		(student) =>
@@ -25,6 +25,7 @@
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
 	import EditModal from '$lib/components/modals/user/Edit.svelte';
 	import EnrolModal from '$lib/components/modals/user/Enrol.svelte';
+	import NoAccess from '$lib/components/common/PageUnavailable.svelte'
 
 	let id: string;
 	let _name: string;
@@ -56,6 +57,10 @@
 	}
 </script>
 
+
+{#if organisation==undefined}
+<NoAccess/>
+{:else}
 <div class="container mx-auto px-4 py-8">
 	{#if students.length === 0}
 		<NoStudentCard
@@ -139,3 +144,4 @@
 <EditModal bind:open={isEditModalOpen} {id} {_name} {surname} {email} role="Student" />
 <RemoveModal bind:open={isRemoveModalOpen} {id}  />
 <EnrolModal bind:open={isEnrolModalOpen} {id} {workspaces} role="Student" />
+{/if}

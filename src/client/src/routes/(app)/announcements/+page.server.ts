@@ -22,13 +22,21 @@ async function getAnnouncements(ownerID: ObjectId | undefined): Promise<Announce
 
 export async function load({ locals }) {
 	try {
+
+		let organisation = locals.user?.organisation;
+		if(organisation !== undefined || organisation !== null) {
+			organisation = JSON.parse(JSON.stringify(locals.user?.organisation));
+		}
+
 		let announcements;
 		if (locals.user?.organisation) {
 			announcements = await getAnnouncements(locals.user?.organisation);
 			console.log('OrgdIQ', locals.user?.organisation);
+
 		}
 		return {
-			announcements
+			announcements,
+			organisation
 		};
 	} catch (e) {
 		console.error('Failed to load announcements: ', e);
