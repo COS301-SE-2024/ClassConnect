@@ -16,7 +16,6 @@
 	let isFormOpen = false;
 	let activeTimer = false;
 	let isPreview = false;
-	let isPreview = false;
 	let submissionResult: any = null;
 
 	$: ({ questions, role, duration } = data);
@@ -128,7 +127,6 @@
 <main class="container mx-auto my-8 px-4">
 	<h1 class="mb-4 text-2xl font-bold">Quiz Questions</h1>
 	{#if role === 'student' || (role === 'lecturer' && isPreview)}
-	{#if role === 'student' || (role === 'lecturer' && isPreview)}
 		{#if questions.length === 0}
 			<p class="text-gray-700 dark:text-gray-300">No questions available for this quiz.</p>
 		{:else}
@@ -171,8 +169,6 @@
 						</div>
 					</Card>
 				{/each}
-			</div>
-			{#if role === 'student' && !isPreview}
 			</div>
 			{#if role === 'student' && !isPreview}
 				<form
