@@ -1,5 +1,5 @@
 <script lang="ts">
-	import LineChart from '$lib/components/common/LineChart.svelte';
+	import LineChart from '$lib/components/grades/LineChart.svelte';
 
 	export let data: any;
 	let assessments = data.assessmentStats;

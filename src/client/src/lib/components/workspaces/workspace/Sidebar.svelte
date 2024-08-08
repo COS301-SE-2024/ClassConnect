@@ -36,7 +36,7 @@
 			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
 			{ icon: UserCircleSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
 			{ icon: UserCircleSolid, name: 'Quizzes', href: workspaceURL + '/quizzes' },
-			{ icon: UsersGroupSolid, name: 'Sandbox', href: workspaceURL + '/sandbox' }
+			{ icon: UsersGroupSolid, name: 'Environments', href: workspaceURL + '/environments' }
 		],
 		student: [
 			{ icon: GlobeOutline, name: 'Announcements', href: workspaceURL + '/announcements' },
@@ -44,7 +44,7 @@
 			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
 			{ icon: UserCircleSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
 			{ icon: UserCircleSolid, name: 'Quizzes', href: workspaceURL + '/quizzes' },
-			{ icon: UsersGroupSolid, name: 'Sandbox', href: workspaceURL + '/sandbox' },
+			{ icon: UsersGroupSolid, name: 'Environments', href: workspaceURL + '/environments' },
 			{ icon: ChartPieSolid, name: 'Grades', href: workspaceURL + '/grades' }
 		]
 	};
@@ -58,7 +58,6 @@
 	class="flex h-screen w-64 flex-col overflow-y-auto border-r bg-primary-100 px-4 py-1 dark:border-gray-700 dark:bg-gray-900 rtl:border-l rtl:border-r-0"
 	class:hidden={!isOpen}
 >
-	<!-- Back button -->
 	<a
 		href="/workspaces"
 		class="mb-4 flex items-center text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"

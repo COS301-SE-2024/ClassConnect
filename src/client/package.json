@@ -73,6 +73,7 @@
 		"@sveltejs/adapter-vercel": "^5.4.1",
 		"@threlte/core": "^7.3.1",
 		"@threlte/extras": "^8.11.4",
+		"@threlte/xr": "^0.1.4",
 		"@types/canvas-confetti": "^1.6.4",
 		"@vue/test-utils": "^2.4.6",
 		"aws-sdk": "^2.1656.0",
