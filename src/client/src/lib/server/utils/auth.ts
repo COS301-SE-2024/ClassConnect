@@ -1,3 +1,5 @@
+import crypto from 'crypto';
+
 export function generateUsername(role: string, email: string): string {
 	const rolePrefix = getRolePrefix(role);
 	const emailHash = hashEmail(email).slice(0, 7);
