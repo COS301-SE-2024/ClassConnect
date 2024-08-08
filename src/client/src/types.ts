@@ -62,6 +62,16 @@ export interface Lesson {
 	workspace: string;
 }
 
+export interface Recording {
+	id: string;
+	topic: string;
+	time: string;
+	date: string;
+	description: string;
+	workspace: string;
+	url: string;
+}
+
 export interface Material {
 	id: string;
 	title: string;

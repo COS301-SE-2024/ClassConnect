@@ -26,6 +26,18 @@ vi.mock('$db/schemas/User', () => ({
 	}
 }));
 
+vi.mock('$db/schemas/Recording', () => ({
+	default: {
+		find: vi.fn()
+	}
+}));
+
+vi.mock('$db/schemas/Lesson', () => ({
+	default: {
+		findById: vi.fn()
+	}
+}));
+
 vi.mock('$db/schemas/Material', () => ({
 	default: {
 		find: vi.fn()
