@@ -6,7 +6,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import User from '$db/schemas/User';
 import * as signupModule from './+page.server';
-import { generateUsername } from '$utils/user';
+import { generateUsername } from '$lib/server/utils/auth';
 
 vi.mock('$db/schemas/User', () => {
 	const UserMock: any = vi.fn().mockImplementation(() => ({}));
@@ -14,6 +14,10 @@ vi.mock('$db/schemas/User', () => {
 
 	return { default: UserMock };
 });
+
+vi.mock('$db/db', () => ({
+	retry_connection: vi.fn()
+}));
 
 vi.mock('@sendgrid/mail', () => ({
 	default: {
@@ -26,7 +30,7 @@ vi.mock('@node-rs/argon2', () => ({
 	hash: vi.fn()
 }));
 
-vi.mock('$utils/user', () => ({
+vi.mock('$lib/server/utils/auth', () => ({
 	generateUsername: vi.fn()
 }));
 

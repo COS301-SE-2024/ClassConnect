@@ -2,7 +2,10 @@
 	import { Canvas } from '@threlte/core';
 	import Scene from './Scene.svelte';
 
-	let selectedObject = 'box';
+	let selectedObject =
+		'https://class-connect-file-storage.s3.amazonaws.com/objects/66a0f01ef4736bcf3a73c7d0.glb';
+
+	export let materials;
 
 	function handleObjectChange(event: Event) {
 		selectedObject = (event.target as HTMLSelectElement).value;
@@ -15,9 +18,11 @@
 	<div class="object-selector">
 		<label for="object-select">Select 3D Object:</label>
 		<select id="object-select" bind:value={selectedObject} on:change={handleObjectChange}>
-			<option value="box">Box</option>
-			<option value="sphere">Sphere</option>
-			<option value="cone">Cone</option>
+			{#each materials as material}
+				{#if material.type === true}
+					<option value={material.file_path}>{material.title}</option>
+				{/if}
+			{/each}
 		</select>
 	</div>
 

@@ -60,7 +60,12 @@
 
 	function handlePreview(quizId: string) {
 		id = quizId;
-		openQuiz(id);
+		const workspaceId = data.workspaceID;
+		if (workspaceId) {
+			goto(`/workspaces/${workspaceId}/quizzes/${quizId}?preview=true`);
+		} else {
+			console.error('Workspace ID is missing or undefined');
+		}
 	}
 
 	function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {

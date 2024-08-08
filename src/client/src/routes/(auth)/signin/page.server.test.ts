@@ -18,6 +18,10 @@ vi.mock('@node-rs/argon2', () => ({
 	verify: vi.fn()
 }));
 
+vi.mock('$db/db', () => ({
+	retry_connection: vi.fn()
+}));
+
 vi.mock('$lib/server/auth', () => ({
 	lucia: {
 		createSession: vi.fn(),
