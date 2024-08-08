@@ -7,8 +7,6 @@
 	import { browser } from '$app/environment';
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/stores';
-	import { writingQuiz } from '$lib/store/sidebar';
-	import { goto } from '$app/navigation';
 
 	export let data: any;
 	const workspaceID = data.workspaceID;
@@ -46,25 +44,10 @@
 	}
 
 	onMount(() => {
-		if (browser) {
-			if (activeTimer) {
-				last_time = performance.now();
-				update();
-				writingQuiz.set(true);
-			}
-
-			// Add this new block for monitoring writingQuiz
-			const unsubscribe = writingQuiz.subscribe((value) => {
-				console.log('writingQuiz value:', value);
-			});
-
-			// Return a cleanup function
-			return () => {
-				unsubscribe();
-				if (frame) {
-					cancelAnimationFrame(frame);
-				}
-			};
+		// isPreview = $page.url.searchParams.get('preview') === 'true';
+		if (browser && activeTimer) {
+			last_time = performance.now();
+			update();
 		}
 	});
 
@@ -181,6 +164,11 @@
 					<Button type="submit" on:click={handleQuizSubmission}>Submit Quiz</Button>
 				</form>
 			{/if}
+		{/if}
+	{:else if role === 'lecturer' && !isPreview}
+		<Form bind:open={isFormOpen} />
+		{#if !isFormOpen}
+			<Button on:click={toggleForm} class="mt-4">Create New Question</Button>
 		{/if}
 	{:else if role === 'lecturer' && !isPreview}
 		<Form bind:open={isFormOpen} on:formSubmitted={handleFormSubmit} />

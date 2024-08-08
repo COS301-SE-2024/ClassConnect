@@ -1,23 +1,30 @@
 <script lang="ts">
 	import {
-		Table,
 		Button,
-		Avatar,
-		TableBody,
 		TableHead,
-		TableBodyRow,
 		TableHeadCell,
-		TableBodyCell
+		TableBody,
+		TableBodyRow,
+		TableBodyCell,
+		TableSearch
 	} from 'flowbite-svelte';
+	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
+	import NoStudentCard from '$lib/components/common/ZeroUsersCard.svelte';
 
-	import { UserAddOutline, EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
+	export let data;
+	$: ({ students, workspaces } = data);
+	let searchTerm = '';
+	$: filteredStudents = students.filter(
+		(student) =>
+			student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+			student.username.toLowerCase().includes(searchTerm.toLowerCase())
+	);
 
 	import AddModal from '$lib/components/modals/user/Add.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
 	import EditModal from '$lib/components/modals/user/Edit.svelte';
 	import EnrolModal from '$lib/components/modals/user/Enrol.svelte';
-
-	export let data: any;
 
 	let id: string;
 	let isAddModalOpen = false;
@@ -25,41 +32,36 @@
 	let isRemoveModalOpen = false;
 	let isEnrolModalOpen = false;
 
-	const headers: string[] = ['Name', 'Username', 'Email Address'];
-
 	function handleEditModalOpen(studentId: string) {
 		id = studentId;
 		isEditModalOpen = true;
 	}
 
+	/*
 	function handleEnrolModalOpen(studentId: string) {
 		id = studentId;
 		isEnrolModalOpen = true;
 	}
-
+	*/
 	function handleRemoveModalOpen(studentId: string) {
 		id = studentId;
 		isRemoveModalOpen = true;
 	}
-
-	$: ({ students, workspaces } = data);
 </script>
 
-<main class="container mx-auto my-2 px-4">
+<div class="container mx-auto px-4 py-8">
 	{#if students.length === 0}
-		<div class="text-center">
-			<h1 class="mb-4 text-2xl font-semibold text-gray-700 dark:text-white">
-				You do not have any students in the organisation
-			</h1>
-
-			<Button on:click={() => (isAddModalOpen = true)}>Add Student</Button>
-		</div>
+		<NoStudentCard
+			imgSrc="https://media.wired.com/photos/647e7400d96882f74caa3e5c/16:9/w_2400,h_1350,c_limit/Don't-Want-Students-To-Rely-On-ChatGPT-Ideas-1356557660.jpg"
+			title="Aspiring Minds, Shaping the Future - Students Embark on a Journey of Discovery!"
+			description="Students are the foundation upon which the edifice of knowledge is built, their inquisitive minds and eager spirits driving the progress of humanity."
+			buttonText="Add Your First Student"
+		/>
 	{:else}
-		<div class="sm:flex sm:items-center sm:justify-between">
-			<div>
+		<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+			<div class="mb-4 sm:mb-0">
 				<div class="flex items-center gap-x-3">
 					<h2 class="text-xl font-bold text-gray-800 dark:text-white">Students</h2>
-
 					<span
 						class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
 					>
@@ -68,59 +70,63 @@
 					</span>
 				</div>
 			</div>
-			<div class="mb-4 flex items-center gap-x-3">
+			<div class="flex items-center gap-x-3">
 				<Button on:click={() => (isAddModalOpen = true)}>Add Student</Button>
 			</div>
 		</div>
-
-		<Table class="my-2">
-			<TableHead>
-				{#each headers as header}
-					<TableHeadCell>{header}</TableHeadCell>
-				{/each}
-			</TableHead>
-
-			<TableBody tableBodyClass="divide-y">
-				{#each students as student (student.id)}
-					<TableBodyRow>
-						<TableBodyCell class="inline-flex items-center gap-x-3">
-							<div class="flex items-center gap-x-2">
-								<Avatar src={student.image} alt={`${student.name} ${student.surname}`} />
-
-								<div>
-									<p class="text-lg text-gray-800 dark:text-white">
-										{student.name}
-										{student.surname}
-									</p>
+		<div class="overflow-x-auto">
+			<TableSearch placeholder="Search by name" hoverable={true} bind:inputValue={searchTerm}>
+				<TableHead>
+					<TableHeadCell class="text-sm sm:text-base">Student</TableHeadCell>
+					<TableHeadCell class="text-sm sm:text-base">Username</TableHeadCell>
+					<TableHeadCell class="text-sm sm:text-base">Actions</TableHeadCell>
+				</TableHead>
+				<TableBody tableBodyClass="divide-y">
+					{#each filteredStudents as student}
+						<TableBodyRow>
+							<TableBodyCell>
+								<div class="flex items-center">
+									<img
+										src={student.image}
+										alt={student.name}
+										class="mr-2 h-8 w-8 rounded-full sm:mr-4 sm:h-10 sm:w-10"
+									/>
+									<div>
+										<div class="text-sm font-semibold sm:text-base">{student.name}</div>
+										<div class="text-xs text-gray-500 sm:text-sm">{student.email}</div>
+									</div>
 								</div>
-							</div>
-						</TableBodyCell>
-
-						<TableBodyCell>{student.username}</TableBodyCell>
-
-						<TableBodyCell>{student.email}</TableBodyCell>
-
-						<TableBodyCell>
-							<div class="flex items-center gap-x-6">
-								<Button on:click={() => handleEditModalOpen(student.id)}>
-									<EditOutline />
-								</Button>
-
-								<Button color="red" on:click={() => handleRemoveModalOpen(student.id)}>
-									<TrashBinOutline />
-								</Button>
-
-								<Button color="yellow" on:click={() => handleEnrolModalOpen(student.id)}>
-									<UserAddOutline />
-								</Button>
-							</div>
-						</TableBodyCell>
-					</TableBodyRow>
-				{/each}
-			</TableBody>
-		</Table>
+							</TableBodyCell>
+							<TableBodyCell>
+								<div class="text-sm font-semibold sm:text-base">{student.username}</div>
+							</TableBodyCell>
+							<TableBodyCell>
+								<div class="flex space-x-2">
+									<Button
+										color="purple"
+										on:click={() => handleEditModalOpen(student.id)}
+										class="p-1.5 sm:p-2"
+									>
+										<EditOutline class="h-4 w-4 sm:h-5 sm:w-5" />
+										<span class="ml-2 hidden text-sm sm:inline">Edit</span>
+									</Button>
+									<Button
+										color="red"
+										on:click={() => handleRemoveModalOpen(student.id)}
+										class="p-1.5 sm:p-2"
+									>
+										<TrashBinOutline class="h-4 w-4 sm:h-5 sm:w-5" />
+										<span class="ml-2 hidden text-sm sm:inline">Delete</span>
+									</Button>
+								</div>
+							</TableBodyCell>
+						</TableBodyRow>
+					{/each}
+				</TableBody>
+			</TableSearch>
+		</div>
 	{/if}
-</main>
+</div>
 
 <AddModal bind:open={isAddModalOpen} role="Student" />
 <EditModal bind:open={isEditModalOpen} {id} role="Student" />

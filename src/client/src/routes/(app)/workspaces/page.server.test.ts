@@ -127,7 +127,6 @@ describe('Workspace Management', () => {
 			const mockFormData = new FormData();
 			mockFormData.append('name', 'New Workspace');
 			mockFormData.append('owner', 'owner1');
-			mockFormData.append('image', 'workspace.jpg');
 
 			const mockRequest = {
 				formData: vi.fn().mockResolvedValue(mockFormData)
@@ -148,7 +147,7 @@ describe('Workspace Management', () => {
 				name: 'New Workspace',
 				owner: 'owner1',
 				organisation: 'org1',
-				image: 'workspace.jpg'
+				image: '/images/organisation-placeholder.png'
 			});
 			expect(mockWorkspace.save).toHaveBeenCalled();
 		});
@@ -168,7 +167,6 @@ describe('Workspace Management', () => {
 			mockFormData.append('id', '123');
 			mockFormData.append('name', 'Updated Workspace');
 			mockFormData.append('owner', 'newowner');
-			mockFormData.append('image', 'new-image.jpg');
 
 			const mockRequest = {
 				formData: vi.fn().mockResolvedValue(mockFormData)
@@ -179,7 +177,6 @@ describe('Workspace Management', () => {
 			const mockWorkspace = {
 				name: 'Old Workspace',
 				owner: 'oldowner',
-				image: 'old-image.jpg',
 				save: vi.fn()
 			};
 			(Workspace.findById as any).mockResolvedValue(mockWorkspace);
@@ -189,7 +186,6 @@ describe('Workspace Management', () => {
 
 			expect(result).toEqual({ success: true });
 			expect(mockWorkspace.name).toBe('Updated Workspace');
-			expect(mockWorkspace.image).toBe('new-image.jpg');
 			expect(User.findByIdAndUpdate).toHaveBeenCalledTimes(2);
 		});
 

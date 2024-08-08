@@ -3,6 +3,7 @@ import { StreamClient } from '@stream-io/node-sdk';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import Users from '$db/schemas/User';
+import Materials from '$db/schemas/Material';
 import * as LessonLoad from './+page.server';
 
 vi.mock('@sveltejs/kit', async () => {
@@ -25,6 +26,24 @@ vi.mock('$db/schemas/User', () => ({
 	}
 }));
 
+vi.mock('$db/schemas/Recording', () => ({
+	default: {
+		find: vi.fn()
+	}
+}));
+
+vi.mock('$db/schemas/Lesson', () => ({
+	default: {
+		findById: vi.fn()
+	}
+}));
+
+vi.mock('$db/schemas/Material', () => ({
+	default: {
+		find: vi.fn()
+	}
+}));
+
 describe('Stream Client Load Function', () => {
 	beforeEach(() => {
 		vi.resetAllMocks();
@@ -37,7 +56,7 @@ describe('Stream Client Load Function', () => {
 				STREAM_SECRET_KEY: undefined
 			}));
 
-			await expect(LessonLoad.load({ locals: {} })).rejects.toEqual(
+			await expect(LessonLoad.load({ locals: {}, params: {} })).rejects.toEqual(
 				error(403, 'Stream credentials not set')
 			);
 		});
@@ -61,11 +80,18 @@ describe('Stream Client Load Function', () => {
 				select: vi.fn().mockResolvedValue(mockUser)
 			});
 
+			(Materials.find as any).mockResolvedValue([
+				{ _id: '1', title: 'Title', description: 'Desc' }
+			]);
+
 			(StreamClient as any).mockImplementation(() => ({
 				createToken: vi.fn().mockResolvedValue(mockToken)
 			}));
 
-			const result = await LessonLoad.load({ locals: { user: { id: '123' } } });
+			const result = await LessonLoad.load({
+				locals: { user: { id: '123' } },
+				params: { workspace: '321' }
+			});
 
 			expect(result).toEqual({
 				apiKey: 'mock-api-key',
@@ -74,7 +100,14 @@ describe('Stream Client Load Function', () => {
 					image: 'profile.jpg',
 					name: 'John Doe'
 				},
-				token: mockToken
+				token: mockToken,
+				materials: [
+					{
+						id: '1',
+						title: 'Title',
+						description: 'Desc'
+					}
+				]
 			});
 		});
 
@@ -92,9 +125,9 @@ describe('Stream Client Load Function', () => {
 				createToken: vi.fn().mockResolvedValue('mock-token')
 			}));
 
-			await expect(LessonLoad.load({ locals: { user: { id: '123' } } })).rejects.toEqual(
-				error(404, 'User not found')
-			);
+			await expect(
+				LessonLoad.load({ locals: { user: { id: '123' } }, params: {} })
+			).rejects.toEqual(error(404, 'User not found'));
 		});
 	});
 });
