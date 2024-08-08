@@ -1,6 +1,5 @@
 <script lang="ts">
 	import {
-		A,
 		Card,
 		Chart,
 		Table,

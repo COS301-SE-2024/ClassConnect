@@ -1,18 +1,14 @@
 <script lang="ts">
 	import {
-		A,
 		Card,
 		Chart,
 		Table,
 		TableBody,
 		TableBodyCell,
 		TableBodyRow,
-		Timeline,
-		TimelineItem,
 		Badge
 	} from 'flowbite-svelte';
-	import { CalendarWeekSolid, SalePercentSolid } from 'flowbite-svelte-icons';
-	import OveriviewSchedule from '$lib/components/common/OverviewShedule.svelte';
+	import { SalePercentSolid } from 'flowbite-svelte-icons';
 	import OverviewShedule from '$lib/components/common/OverviewShedule.svelte';
 
 	const options = {
