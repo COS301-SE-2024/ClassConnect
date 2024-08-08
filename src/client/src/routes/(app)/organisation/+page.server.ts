@@ -32,7 +32,7 @@ export async function load({ locals }) {
 
 async function createOrganisation(data: FormData, userId: ObjectId) {
 	const name = data.get('name') as string;
-	let image: string = 'images/organisation-placeholder.png';
+	let image: string = '/images/organisation-placeholder.png';
 	const image_file: File = data.get('file') as File;
 
 	if (!name) return fail(400, { error: 'Organisation Name is required' });
@@ -61,10 +61,10 @@ async function editOrganisation(data: FormData, userId: ObjectId) {
 	const name = data.get('name') as string;
 	const image_file: File = data.get('file') as File;
 
+	if (!id) return fail(400, { error: 'Organisation ID is required' });
+
 	const Org = await Organisation.findById(id);
 	let image: string;
-
-	if (!id) return fail(400, { error: 'Organisation ID is required' });
 
 	const updateData: { name?: string; image?: string } = {};
 

@@ -1,1 +1,8 @@
-{ "dependencies": { "cypress": "^13.13.0" } }
+{
+  "dependencies": {
+    "cypress": "^13.13.0"
+  },
+  "devDependencies": {
+    "vitest": "^2.0.5"
+  }
+}

@@ -1,5 +1,14 @@
 <script lang="ts">
-	import { Table, Button } from 'flowbite-svelte';
+	import {
+		Table,
+		TableHead,
+		TableHeadCell,
+		TableBody,
+		TableBodyRow,
+		TableBodyCell,
+		Button
+	} from 'flowbite-svelte';
+	import type { AssessmentStat } from '$src/types';
 
 	interface ColumnData {
 		name: string;
@@ -8,7 +17,7 @@
 		passRate: number;
 	}
 
-	export let data: ColumnData[] = [];
+	export let data: AssessmentStat[] = [];
 
 	function addColumn(): void {
 		const newColumnName = `Column ${data.length + 1}`;
@@ -34,57 +43,55 @@
 	}
 </script>
 
-<Table>
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Submitted (%)</th>
-			<th>Average (%)</th>
-			<th>Pass Rate (%)</th>
-			<th>Actions</th>
-		</tr>
-	</thead>
-	<tbody>
+<Table striped={true} hoverable={true}>
+	<TableHead>
+		<TableHeadCell>Name</TableHeadCell>
+		<TableHeadCell>Submitted (%)</TableHeadCell>
+		<TableHeadCell>Average (%)</TableHeadCell>
+		<TableHeadCell>Pass Rate (%)</TableHeadCell>
+		<TableHeadCell>Actions</TableHeadCell>
+	</TableHead>
+	<TableBody>
 		{#each data as column, index}
-			<tr>
-				<td>
+			<TableBodyRow>
+				<TableBodyCell>
 					<input
 						type="text"
 						value={column.name}
 						on:input={(e) => handleInput(e, index, 'name')}
-						class="w-full rounded border p-2"
+						class="w-full rounded border bg-transparent p-2"
 					/>
-				</td>
-				<td>
+				</TableBodyCell>
+				<TableBodyCell>
 					<input
 						type="number"
 						value={column.submitted}
 						on:input={(e) => handleInput(e, index, 'submitted')}
-						class="w-full rounded border p-2"
+						class="w-full rounded border bg-transparent p-2"
 					/>
-				</td>
-				<td>
+				</TableBodyCell>
+				<TableBodyCell>
 					<input
 						type="number"
 						value={column.average}
 						on:input={(e) => handleInput(e, index, 'average')}
-						class="w-full rounded border p-2"
+						class="w-full rounded border bg-transparent p-2"
 					/>
-				</td>
-				<td>
+				</TableBodyCell>
+				<TableBodyCell>
 					<input
 						type="number"
 						value={column.passRate}
 						on:input={(e) => handleInput(e, index, 'passRate')}
-						class="w-full rounded border p-2"
+						class="w-full rounded border bg-transparent p-2"
 					/>
-				</td>
-				<td>
-					<Button color="red" on:click={() => removeColumn(index)}>Remove</Button>
-				</td>
-			</tr>
+				</TableBodyCell>
+				<TableBodyCell>
+					<Button color="red" size="sm" on:click={() => removeColumn(index)}>Remove</Button>
+				</TableBodyCell>
+			</TableBodyRow>
 		{/each}
-	</tbody>
+	</TableBody>
 </Table>
 
-<Button on:click={addColumn}>Add Column</Button>
+<Button class="mt-4" on:click={addColumn}>Add Column</Button>

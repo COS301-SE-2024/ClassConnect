@@ -1,11 +1,12 @@
-import AWS from 'aws-sdk';
-import { webcrypto as crypto } from 'crypto';
+import AWS from '$lib/server/aws.config';
+import { updateConfig } from '$lib/server/aws.config';
 import { BUCKET } from '$env/static/private';
 
 const S3 = new AWS.S3();
 
 export async function upload(file: File): Promise<string> {
 	try {
+		await updateConfig();
 		if (!BUCKET) {
 			throw new Error('No bucket name');
 		}
@@ -28,6 +29,7 @@ export async function upload(file: File): Promise<string> {
 }
 
 export async function deleteFile(url: string): Promise<void> {
+	await updateConfig();
 	const urlObj = new URL(url);
 	const key = urlObj.pathname.slice(1);
 
@@ -35,6 +37,13 @@ export async function deleteFile(url: string): Promise<void> {
 		Bucket: BUCKET,
 		Key: key
 	};
+
+	// Check if the key contains the word 'default'
+	const defaultRegex = /default/;
+	if (defaultRegex.test(key)) {
+		console.log(`File could not be deleted as it is a default file: ${key}`);
+		return;
+	}
 
 	try {
 		await S3.deleteObject(params).promise();

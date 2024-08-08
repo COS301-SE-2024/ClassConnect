@@ -1,7 +1,10 @@
 <script lang="ts">
-	import Construction from '$lib/components/common/Construction.svelte';
+	/** @type {import('./$types').PageData} */
+	export let data;
+
+	import Profile from '$lib/components/common/Profile.svelte';
 </script>
 
 <main>
-	<Construction />
+	<Profile user={data.user_data} />
 </main>

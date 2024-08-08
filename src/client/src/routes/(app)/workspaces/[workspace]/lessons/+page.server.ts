@@ -1,8 +1,9 @@
 import type { Actions } from './$types';
 import { error, fail } from '@sveltejs/kit';
 import Activities from '$db/schemas/Activity';
-import type { Lesson } from '$src/types';
+import type { Lesson, Recording } from '$src/types';
 import Lessons from '$db/schemas/Lesson';
+import Recordings from '$db/schemas/Recording';
 
 function formatLesson(lesson: any): Partial<Lesson> {
 	return {
@@ -14,19 +15,39 @@ function formatLesson(lesson: any): Partial<Lesson> {
 	};
 }
 
+function formatRecording(recording: any): Partial<Recording> {
+	return {
+		id: recording._id.toString(),
+		date: recording.date,
+		time: recording.time,
+		topic: recording.topic,
+		description: recording.description,
+		url: recording.url
+	};
+}
+
 async function getLessons(workspace: string): Promise<Partial<Lesson>[]> {
 	const lessons = await Lessons.find({ workspace });
 
 	return lessons.map(formatLesson);
 }
 
+async function getRecordings(workspace: string): Promise<Partial<Recording>[]> {
+	const recordings = await Recordings.find({ workspace });
+
+	return recordings.map(formatRecording);
+}
+
 export async function load({ locals, params }) {
 	try {
 		const lessons = await getLessons(params.workspace);
 
+		const recordings = await getRecordings(params.workspace);
+
 		return {
 			role: locals.user?.role,
-			lessons
+			lessons,
+			recordings
 		};
 	} catch (e) {
 		console.error('Server error:', e);
@@ -110,6 +131,15 @@ async function deleteLesson(id: string) {
 	return { success: true };
 }
 
+async function deleteRecording(id: string) {
+	if (!id) return fail(400, { error: 'Lesson ID is required' });
+
+	const deletedLesson = await Recordings.findByIdAndDelete(id);
+	if (!deletedLesson) return fail(404, { message: 'Lesson not found' });
+
+	return { success: true };
+}
+
 export const actions: Actions = {
 	schedule: async ({ request, locals, params }) => {
 		validateLecturer(locals);
@@ -143,6 +173,19 @@ export const actions: Actions = {
 			const id = data.get('id') as string;
 
 			return await deleteLesson(id);
+		} catch (e) {
+			console.error('Error deleting lesson:', e);
+			return fail(500, { message: 'Failed to delete lesson' });
+		}
+	},
+	deleteRecording: async ({ request, locals }) => {
+		validateLecturer(locals);
+
+		try {
+			const data = await request.formData();
+			const id = data.get('id') as string;
+
+			return await deleteRecording(id);
 		} catch (e) {
 			console.error('Error deleting lesson:', e);
 			return fail(500, { message: 'Failed to delete lesson' });

@@ -9,6 +9,8 @@
 	import ScreenShare from './ScreenShare.svelte';
 	import Environment from './Environment.svelte';
 
+	export let materials: any;
+
 	let gridClass = '';
 	let isEnvironmentOn = false;
 	let participants: StreamVideoParticipant[] = [];
@@ -44,7 +46,7 @@
 
 <div class="h-full w-full bg-gray-100 p-4 dark:bg-gray-900">
 	{#if isEnvironmentOn}
-		<Environment />
+		<Environment {materials} />
 	{:else if screenSharingParticipant}
 		<ScreenShare participant={screenSharingParticipant} />
 	{:else}
