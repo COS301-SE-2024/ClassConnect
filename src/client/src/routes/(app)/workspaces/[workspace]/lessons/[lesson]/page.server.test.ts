@@ -38,7 +38,6 @@ vi.mock('$db/schemas/Lesson', () => ({
 	}
 }));
 
-
 vi.mock('$db/schemas/Material', () => ({
 	default: {
 		find: vi.fn()
