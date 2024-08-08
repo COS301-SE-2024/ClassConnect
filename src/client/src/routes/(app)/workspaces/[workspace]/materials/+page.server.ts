@@ -76,6 +76,7 @@ async function deleteMaterial(id: string) {
 
 export const actions: Actions = {
 	uploadMat: async ({ request, locals, params }) => {
+		console.log('Uploading material...');
 		validateLecturer(locals);
 		try {
 			const data = await request.formData();

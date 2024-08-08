@@ -28,6 +28,13 @@
 	let isMicOn = $callStore?.microphone.state.status === 'enabled' ? true : false;
 	let isScreenShareOn = $callStore?.screenShare.state.status === 'enabled' ? true : false;
 
+	let lessonId: string;
+
+	// Extract the lesson ID from the URL parameters
+	$: lessonId = $page.params.lesson;
+
+	console.log('Lesson ID:', lessonId);
+
 	function toggleMicrophone() {
 		isMicOn = !isMicOn;
 		$callStore?.microphone.toggle();
@@ -73,7 +80,26 @@
 						const recordings = await $callStore?.queryRecordings();
 						console.log('Recordings:', recordings);
 						if (recordings && recordings.recordings.length > 0) {
-							console.log('Recording URL:', recordings.recordings[0]);
+							console.log('Recording:', recordings.recordings[recordings.recordings.length - 1]);
+							const record = recordings.recordings[recordings.recordings.length - 1];
+
+							const url = record.url;
+							const formData = new FormData();
+
+							formData.append('recordingURL', url);
+							formData.append('LessonID', lessonId);
+
+							const response = await fetch('?/SaveRecording', {
+								method: 'POST',
+								body: formData
+							});
+
+							if (response.ok) {
+								console.log('Recording saved successfully');
+								toast.success('Recording saved successfully');
+							} else {
+								console.error('Failed to save recording');
+							}
 						} else {
 							console.log('No recordings found');
 						}
