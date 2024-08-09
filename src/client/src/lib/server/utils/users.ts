@@ -90,6 +90,10 @@ export async function deleteUser(id: string) {
 	if (!id) return fail(400, { error: 'User ID is required' });
 
 	const deletedUser = await Users.findByIdAndDelete(id);
+
+	const { image } = deletedUser;
+	if (image !== '/images/profile-placeholder.png') await deleteFile(image);
+
 	if (!deletedUser) return fail(404, { error: 'User not found' });
 
 	return { success: true };
