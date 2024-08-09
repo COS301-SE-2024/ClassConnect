@@ -193,20 +193,12 @@
 
 <div class="w-full p-4">
 	<div class="mb-4 flex gap-4">
-		<Card size="lg" class="flex-grow">
-			<div class="mb-4 flex justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
-				<div class="flex items-center">
-					<div
-						class="me-3 flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-700"
-					>
-						<SalePercentSolid class="h-6 w-6 text-gray-500 dark:text-gray-400" />
-					</div>
-					<div>
-						<h5 class="pb-1 text-2xl font-bold leading-none text-gray-900 dark:text-white">
-							Average Percentages
-						</h5>
-					</div>
-				</div>
+		<Card size="none" class="flex-grow">
+			<div class="mb-6 flex items-center justify-between">
+				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
+					Average Percentages
+				</h5>
+				<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View all</a>
 			</div>
 			<Chart {options} />
 		</Card>
@@ -216,7 +208,7 @@
 	</div>
 
 	<div class="flex gap-4">
-		<Card size="lg" class="flex-grow">
+		<Card size="none" class="flex-grow">
 			<div class="mb-6 flex items-center justify-between">
 				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
 					Recent Submissions
