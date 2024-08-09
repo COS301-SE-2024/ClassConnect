@@ -1,4 +1,5 @@
 <script lang="ts">
+	//import { sidebarOpen } from '$lib/store/sidebar';
 	import {
 		BullhornSolid,
 		BriefcaseSolid,
@@ -9,7 +10,18 @@
 		GlobeOutline
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
+	import { writingQuiz } from '$lib/store/sidebar';
+	import { onDestroy } from 'svelte';
 
+	let isOpen = true;
+
+	const unsubscribeWritingQuiz = writingQuiz.subscribe((value) => {
+		isOpen = !value;
+	});
+
+	onDestroy(() => {
+		unsubscribeWritingQuiz();
+	});
 	export let workspace;
 	export let role: 'lecturer' | 'student';
 
@@ -44,6 +56,7 @@
 
 <aside
 	class="flex h-screen w-64 flex-col overflow-y-auto border-r bg-primary-100 px-4 py-1 dark:border-gray-700 dark:bg-gray-900 rtl:border-l rtl:border-r-0"
+	class:hidden={!isOpen}
 >
 	<a
 		href="/workspaces"

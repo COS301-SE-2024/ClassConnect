@@ -1,4 +1,5 @@
 <script lang="ts">
+	//[quiz].page.svelte
 	import { Progressbar, Button, Radio, Card } from 'flowbite-svelte';
 	import Form from '$lib/components/questions/Form.svelte';
 	import { enhance } from '$app/forms';
@@ -6,16 +7,16 @@
 	import { browser } from '$app/environment';
 	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/stores';
+	import { writingQuiz } from '$lib/store/sidebar';
+	import { goto } from '$app/navigation';
 
 	export let data: any;
+	const workspaceID = data.workspaceID;
 	let elapsed = 0;
 	let isFormOpen = false;
 	let activeTimer = false;
 	let isPreview = false;
 	let submissionResult: any = null;
-	function toggleForm() {
-		isFormOpen = !isFormOpen;
-	}
 
 	$: ({ questions, role, duration } = data);
 	$: activeTimer = role === 'student' && !isPreview;
@@ -45,10 +46,25 @@
 	}
 
 	onMount(() => {
-		// isPreview = $page.url.searchParams.get('preview') === 'true';
-		if (browser && activeTimer) {
-			last_time = performance.now();
-			update();
+		if (browser) {
+			if (activeTimer) {
+				last_time = performance.now();
+				update();
+				writingQuiz.set(true);
+			}
+
+			// Add this new block for monitoring writingQuiz
+			const unsubscribe = writingQuiz.subscribe((value) => {
+				console.log('writingQuiz value:', value);
+			});
+
+			// Return a cleanup function
+			return () => {
+				unsubscribe();
+				if (frame) {
+					cancelAnimationFrame(frame);
+				}
+			};
 		}
 	});
 
@@ -69,6 +85,7 @@
 	async function handleQuizSubmission() {
 		try {
 			stopTimer();
+			writingQuiz.set(false);
 			totalPoints = questions.reduce((total: number, question: any) => {
 				const selectedOption = question.options.find(
 					(option: any) => option.content === selectedAnswers[question.questionNumber]
@@ -84,6 +101,7 @@
 
 	function handleTimeOutSubmission() {
 		try {
+			writingQuiz.set(false);
 			// Calculate points as in handleQuizSubmission
 			totalPoints = questions.reduce((total: number, question: any) => {
 				const selectedOption = question.options.find(
@@ -96,6 +114,11 @@
 		} catch (error) {
 			console.error('Error in handleTimeOutSubmission:', error);
 		}
+	}
+
+	function handleFormSubmit() {
+		isFormOpen = false;
+		goto(`/workspaces/${workspaceID}/quizzes`);
 	}
 </script>
 
@@ -160,10 +183,7 @@
 			{/if}
 		{/if}
 	{:else if role === 'lecturer' && !isPreview}
-		<Form bind:open={isFormOpen} />
-		{#if !isFormOpen}
-			<Button on:click={toggleForm} class="mt-4">Create New Question</Button>
-		{/if}
+		<Form bind:open={isFormOpen} on:formSubmitted={handleFormSubmit} />
 	{:else}
 		<p class="text-gray-700 dark:text-gray-300">You do not have permission to view this content.</p>
 	{/if}
