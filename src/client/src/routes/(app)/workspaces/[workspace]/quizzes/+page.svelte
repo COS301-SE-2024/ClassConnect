@@ -10,11 +10,7 @@
 		TableBodyCell
 	} from 'flowbite-svelte';
 	import { goto } from '$app/navigation';
-	import {
-		EditOutline,
-		TrashBinOutline,
-		ArrowUpRightFromSquareOutline
-	} from 'flowbite-svelte-icons';
+	
 	import AddModal from '$lib/components/modals/quizzes/Add.svelte';
 	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
@@ -26,6 +22,7 @@
 	let id: string;
 	let isQuizFormOpen = false;
 	let isEditModalOpen = false;
+	let isAddQuiz = false;
 
 	let isRemoveModalOpen = false;
 
@@ -46,7 +43,8 @@
 
 	function handleEditModalOpen(quizID: string) {
 		id = quizID;
-		isEditModalOpen = true;
+		openQuiz(quizID);
+		isQuizFormOpen = true;
 	}
 
 	// function handleAddModalOpen(quizID: string) {
@@ -101,7 +99,7 @@
 
 			<div class="mb-4 flex items-center gap-x-3">
 				{#if data.role === 'lecturer'}
-					<Button on:click={() => (isQuizFormOpen = true)}>Add Quiz</Button>
+					<Button on:click={() => (isAddQuiz = true)}>Add Quiz</Button>
 				{/if}
 			</div>
 		</div>
@@ -127,14 +125,15 @@
 									{#if data.role === 'lecturer'}
 										{#if quiz.graded === 'No'}
 											<Button on:click={() => handleEditModalOpen(quiz.id)}>
-												<EditOutline />
+												Edit
+												
 											</Button>
 										{/if}
 										<Button color="yellow" on:click={() => handlePreview(quiz.id)}>
-											<ArrowUpRightFromSquareOutline />
+											Preview 
 										</Button>
 										<Button color="red" on:click={() => handleRemoveModalOpen(quiz.id)}>
-											<TrashBinOutline />
+											Delete
 										</Button>
 									{:else if data.role === 'student'}
 										<Button on:click={() => openQuiz(quiz.id)}>Start</Button>
@@ -149,9 +148,6 @@
 	{/if}
 </main>
 
-<AddModal bind:open={isQuizFormOpen} />
-<EditModal bind:open={isEditModalOpen} on:select={handleQuestionTypeSelect} />
-{#if selectedQuestionType === 'multiple-choice'}
-	<Question bind:open={isQuizFormOpen} />
-{/if}
+<AddModal bind:open={isAddQuiz} />
+
 <RemoveModal bind:open={isRemoveModalOpen} {id} item="quiz" />
