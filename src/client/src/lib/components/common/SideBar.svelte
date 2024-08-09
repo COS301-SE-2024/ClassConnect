@@ -59,7 +59,7 @@
 				src="images/class-connect-logo.png"
 				alt="Class Connect owl logo"
 			/>
-			<div class="roboto text-xl dark:text-gray-300">Class Connect</div>
+			<div class="roboto text-xl dark:text-gray-300">ClassConnect</div>
 		</div>
 	</a>
 

@@ -7,11 +7,47 @@
 		DropdownItem,
 		DropdownDivider
 	} from 'flowbite-svelte';
-
+	import { onMount } from 'svelte';
+	import { change } from '$lib/store';
 	import BreadCrumbs from '$lib/components/common/Breadcrumbs.svelte';
 
 	export let data;
+
 	let { name, image } = data;
+
+	async function getUserData() {
+		try {
+			const formData = new FormData();
+			const response = await fetch('/settings?/get_user_details', {
+				method: 'POST',
+				body: formData
+			});
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			const data = await response.json();
+			if (data.data) {
+				const input = data.data;
+				const innerString = JSON.parse(input)[0];
+				const user_data = JSON.parse(innerString);
+				const user = user_data.user;
+				name = user.name;
+				image = user.image;
+			}
+		} catch (error) {
+			console.error('There was a problem in the fetch operation:', error);
+		}
+	}
+
+	onMount(() => {
+		getUserData();
+	});
+
+	$: {
+		change.subscribe(() => {
+			getUserData();
+		});
+	}
 </script>
 
 <Navbar>
