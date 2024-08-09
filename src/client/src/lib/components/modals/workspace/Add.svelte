@@ -36,13 +36,7 @@
 
 		<Label for="name" class="space-y-2">
 			<span>Name</span>
-			<Input
-				type="text"
-				id="name"
-				name="name"
-				placeholder="Physical Sciences"
-				required
-			/>
+			<Input type="text" id="name" name="name" placeholder="Physical Sciences" required />
 		</Label>
 
 		<Label for="description" class="space-y-2">
@@ -63,7 +57,7 @@
 				{/each}
 			</Select>
 		</Label>
-		
+
 		<Label for="image" class="space-y-2">
 			<span>Image</span>
 			<Fileupload bind:value id="image" name="image" />

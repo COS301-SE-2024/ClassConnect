@@ -6,7 +6,7 @@
 		TableSearch,
 		TableBodyRow,
 		TableBodyCell,
-		TableHeadCell,
+		TableHeadCell
 	} from 'flowbite-svelte';
 	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 
@@ -89,7 +89,7 @@
 						</TableBodyCell>
 
 						<TableBodyCell>
-							<div class="flex space-x-2 items-center justify-center">
+							<div class="flex items-center justify-center space-x-2">
 								<Button
 									color="green"
 									on:click={() => handleEditModalOpen(admin.id)}

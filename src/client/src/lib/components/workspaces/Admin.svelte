@@ -1,36 +1,35 @@
 <script lang="ts">
 	import {
-		Card,
 		Button,
 		TableHead,
-		TableHeadCell,
 		TableBody,
+		TableSearch,
 		TableBodyRow,
 		TableBodyCell,
-		TableSearch
+		TableHeadCell
 	} from 'flowbite-svelte';
 	import { ArrowRightOutline, EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 
+	import RemoveModal from '$lib/components/modals/Delete.svelte';
+	import AddModal from '$lib/components/modals/workspace/Add.svelte';
+	import EditModal from '$lib/components/modals/workspace/Edit.svelte';
+
 	export let data;
 
-	$: ({ lecturers, workspaces } = data);
-
+	let id: string;
 	let searchTerm = '';
+
+	let isAddModalOpen = false;
+	let isEditModalOpen = false;
+	let isRemoveModalOpen = false;
+
+	$: ({ lecturers, workspaces } = data);
 
 	$: filteredWorkspaces = workspaces.filter(
 		(workspace: { name: string; owner: string }) =>
 			workspace.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			workspace.owner.toLowerCase().includes(searchTerm.toLowerCase())
 	);
-
-	import RemoveModal from '$lib/components/modals/Delete.svelte';
-	import AddModal from '$lib/components/modals/workspace/Add.svelte';
-	import EditModal from '$lib/components/modals/workspace/Edit.svelte';
-
-	let id: string;
-	let isAddModalOpen = false;
-	let isEditModalOpen = false;
-	let isRemoveModalOpen = false;
 
 	function handleEditModalOpen(lecturerId: string) {
 		id = lecturerId;

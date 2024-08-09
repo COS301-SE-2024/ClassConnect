@@ -29,7 +29,7 @@
 				drift: randomInRange(-0.4, 0.4),
 				gravity: randomInRange(0.4, 0.6),
 				colors: ['#004d00', '#009900', '#00cc00'],
-				origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 },
+				origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 }
 			});
 		}, 50);
 

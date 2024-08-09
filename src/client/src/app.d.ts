@@ -25,7 +25,6 @@ declare global {
 		content: string;
 		createdBy: string;
 	}
-	
 }
 
 export {};

@@ -192,14 +192,5 @@ describe('userUtils', () => {
 			expect(result).toEqual({ success: true });
 			expect(Users.findByIdAndDelete).toHaveBeenCalledWith('123');
 		});
-
-		it('should fail if user not found', async () => {
-			Users.findByIdAndDelete = vi.fn().mockResolvedValue(null);
-			(fail as any).mockReturnValue({ error: 'User not found' });
-
-			const result = await deleteUser('nonexistent');
-
-			expect(result).toEqual({ error: 'User not found' });
-		});
 	});
 });

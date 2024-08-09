@@ -28,7 +28,7 @@
 
 <div class="mb-6 flex items-center justify-between">
 	<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Upcoming Events</h5>
-	<a href="/" class="text-primary-600 dark:text-primary-500 text-sm font-medium">View all</a>
+	<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View all</a>
 </div>
 
 <Table divClass="overflow-x-auto">
