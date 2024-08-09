@@ -38,6 +38,7 @@
 				open = false;
 			} else {
 				error = result.data?.error;
+				toast.error(result.data?.error);
 			}
 		};
 	}
@@ -53,11 +54,7 @@
 		enctype="multipart/form-data"
 	>
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add new {role}</h3>
-
-		{#if error}
-			<p class="mt-2 text-center text-red-500">{error}</p>
-		{/if}
-
+		
 		<Label for="name" class="space-y-2">
 			<span>Name</span>
 			<Input type="text" id="name" name="name" placeholder="John" required />

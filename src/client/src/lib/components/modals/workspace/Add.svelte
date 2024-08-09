@@ -1,20 +1,42 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Button, Modal, Label, Input, Select, Fileupload } from 'flowbite-svelte';
-
+	import toast, {Toaster} from 'svelte-french-toast';
 	export let open: boolean;
 	export let lecturers: [{ id: string; name: string; surname: string }];
 
 	let error: string;
 	let value: string;
 
-	function close() {
+	function close({formData,cancel}:any) {
+		const image = formData.get('image') as File;
+   
+   if (image) {
+	   if (image.name !== "") {
+		   const extension = image.name.split('.').pop()?.toLowerCase();
+		   
+		   if (image.size > 1000000) {
+			   toast.error('The size of file should be less than 1 MB!');
+			   cancel();
+			   throw new Error('File is too big');
+		   }
+		   
+		   const imageExtensions = ['jpg', 'jpeg', 'png','svg'];
+		   
+		   if (!(extension && imageExtensions.includes(extension))) {
+			   toast.error('File type is not supported');
+			   cancel();
+			   throw new Error('File type is not supported');
+		   }
+	   }
+   }
+
 		return async ({ result, update }: any) => {
 			if (result.type === 'success') {
 				await update();
 				open = false;
 			} else {
-				error = result.data?.error;
+				toast.error(result.data?.error);
 			}
 		};
 	}
@@ -30,9 +52,6 @@
 	>
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Create New Workspace</h3>
 
-		{#if error}
-			<p class="mt-2 text-center text-red-500">{error}</p>
-		{/if}
 
 		<Label for="code" class="space-y-2">
 			<span>Code</span>
