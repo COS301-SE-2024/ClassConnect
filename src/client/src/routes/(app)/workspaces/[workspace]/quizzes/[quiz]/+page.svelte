@@ -21,8 +21,6 @@
 	$: ({ questions, role, duration } = data);
 	$: activeTimer = role === 'student' && !isPreview;
 	$: isPreview = $page.url.searchParams.get('preview') === 'true';
-	$: activeTimer = role === 'student' && !isPreview;
-	$: isPreview = $page.url.searchParams.get('preview') === 'true';
 
 	let last_time: number;
 	let frame: number;
@@ -184,7 +182,6 @@
 				</form>
 			{/if}
 		{/if}
-		
 	{:else if role === 'lecturer' && !isPreview}
 		<Form bind:open={isFormOpen} on:formSubmitted={handleFormSubmit} />
 	{:else}

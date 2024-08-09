@@ -10,7 +10,7 @@
 		TableBodyCell
 	} from 'flowbite-svelte';
 	import { goto } from '$app/navigation';
-	
+
 	import AddModal from '$lib/components/modals/quizzes/Add.svelte';
 	//import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
@@ -20,7 +20,7 @@
 	console.log(data);
 
 	let id: string;
-	let isQuizFormOpen = false;
+	//let isQuizFormOpen = false;
 	//let isEditModalOpen = false;
 	let isAddQuiz = false;
 
@@ -44,7 +44,7 @@
 	function handleEditModalOpen(quizID: string) {
 		id = quizID;
 		openQuiz(quizID);
-		isQuizFormOpen = true;
+		//isQuizFormOpen = true;
 	}
 
 	// function handleAddModalOpen(quizID: string) {
@@ -81,7 +81,7 @@
 			<h1 class="mb-4 text-2xl font-semibold text-gray-700 dark:text-white">
 				No quizzes available in this workspace.
 			</h1>
-			<Button on:click={() => (isQuizFormOpen = true)}>Add Quiz</Button>
+			<Button on:click={() => (isAddQuiz = true)}>Add Quiz</Button>
 		</div>
 	{:else}
 		<div class="sm:flex sm:items-center sm:justify-between">
@@ -124,14 +124,9 @@
 								<div class="flex items-center gap-x-6">
 									{#if data.role === 'lecturer'}
 										{#if quiz.graded === 'No'}
-											<Button on:click={() => handleEditModalOpen(quiz.id)}>
-												Edit
-												
-											</Button>
+											<Button on:click={() => handleEditModalOpen(quiz.id)}>Edit</Button>
 										{/if}
-										<Button color="yellow" on:click={() => handlePreview(quiz.id)}>
-											Preview 
-										</Button>
+										<Button color="yellow" on:click={() => handlePreview(quiz.id)}>Preview</Button>
 										<Button color="red" on:click={() => handleRemoveModalOpen(quiz.id)}>
 											Delete
 										</Button>
