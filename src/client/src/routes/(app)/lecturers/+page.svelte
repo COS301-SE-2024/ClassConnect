@@ -8,7 +8,7 @@
 		TableBodyCell,
 		TableSearch
 	} from 'flowbite-svelte';
-	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
+	import { EditOutline, TrashBinOutline, ArrowRightOutline } from 'flowbite-svelte-icons';
 	import NoLecturerCard from '$lib/components/common/ZeroUsersCard.svelte';
 
 	import AddModal from '$lib/components/modals/user/Add.svelte';
@@ -43,14 +43,26 @@
 	);
 </script>
 
-<div class="container mx-auto px-4 py-8">
+<div class="container h-[calc(100vh-64px)] mx-auto px-4 py-8">
 	{#if lecturers.length === 0}
-		<NoLecturerCard
-			imgSrc="https://www.paulconnollycomms.co.uk/wp-content/uploads/2023/02/shutterstock_1955321449-scaled.jpg"
-			title="Ignite Minds And Inspire Greatness!"
-			description="Lecturers are the catalysts who transform classrooms into dynamic hubs of learning and growth, empowering students to reach their full potential."
-			buttonText="Add Your First Lecturer"
+		<img
+			class="mb-4 h-1/2 w-full rounded-lg"
+			alt="workspace"
+			src="/images/lecturer.jpg"
 		/>
+
+		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+			Ignite Minds And Inspire Greatness!
+		</h5>
+
+		<p class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400">
+			Lecturers are the catalysts who transform classrooms into dynamic hubs of learning and growth,
+			empowering students to reach their full potential.
+		</p>
+
+		<Button on:click={() => (isAddModalOpen = true)} class="w-full sm:w-auto">
+			Add Your First Lecturer <ArrowRightOutline class="ms-2 h-6 w-6 text-white" />
+		</Button>
 	{:else}
 		<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
 			<div class="mb-4 sm:mb-0">
@@ -74,7 +86,6 @@
 				<TableHead>
 					<TableHeadCell class="text-sm sm:text-base">Lecturer</TableHeadCell>
 					<TableHeadCell class="text-sm sm:text-base">Username</TableHeadCell>
-					<TableHeadCell class="text-sm sm:text-base">Actions</TableHeadCell>
 				</TableHead>
 				<TableBody tableBodyClass="divide-y">
 					{#each filteredLecturers as lecturer}
@@ -96,9 +107,9 @@
 								<div class="truncate text-sm font-semibold sm:text-base">{lecturer.username}</div>
 							</TableBodyCell>
 							<TableBodyCell>
-								<div class="flex space-x-2">
+								<div class="flex space-x-2 justify-center">
 									<Button
-										color="purple"
+										color="green"
 										on:click={() => handleEditModalOpen(lecturer.id)}
 										class="p-1.5 sm:p-2"
 									>

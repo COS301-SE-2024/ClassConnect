@@ -34,23 +34,24 @@
 		{#if error}
 			<p class="mt-2 text-center text-red-500">{error}</p>
 		{/if}
+
 		<Input type="hidden" id="id" name="id" value={id} />
+
 		<Label for="name" class="space-y-2">
 			<span>Name</span>
 			<Input type="text" id="name" name="name" placeholder="John" />
 		</Label>
+
 		<Label for="surname" class="space-y-2">
 			<span>Surname</span>
 			<Input type="text" id="surname" name="surname" placeholder="Doe" />
 		</Label>
+
 		<Label for="email" class="space-y-2">
 			<span>Email</span>
 			<Input type="email" id="email" name="email" placeholder="johndoe@email.com" />
 		</Label>
-		<Label for="image" class="space-y-2">
-			<span>Profile Picture</span>
-			<Fileupload bind:value id="image" name="image" />
-		</Label>
+
 		<Button type="submit" class="w-full1">Edit {role}</Button>
 	</form>
 </Modal>

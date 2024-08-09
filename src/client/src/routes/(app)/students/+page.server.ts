@@ -1,14 +1,30 @@
 import type { Actions } from './$types';
 import { error, fail } from '@sveltejs/kit';
 
+import User from '$db/schemas/User';
+import Workspace from '$db/schemas/Workspace';
 import { addUser, getUsers, editUser, deleteUser, validateUser } from '$src/lib/server/utils/users';
+
+function formatWorkspace(workspace: any) {
+	return {
+		name: workspace.name,
+		image: workspace.image,
+		id: workspace._id.toString()
+	};
+}
 
 export async function load({ locals }) {
 	validateUser(locals, 'admin');
 
 	try {
 		const students = await getUsers('student', locals.user?.organisation);
-		return { students };
+		const workspaces = await Workspace.find({ organisation: locals.user?.organisation }).select(
+			'name image'
+		);
+
+		const formattedWorkspaces = workspaces.map(formatWorkspace);
+
+		return { students, workspaces: formattedWorkspaces };
 	} catch (e) {
 		console.error('Failed to load students:', e);
 		throw error(500, 'Error occurred while fetching students');
@@ -37,6 +53,27 @@ export const actions: Actions = {
 		} catch (err) {
 			console.error('Error updating student:', err);
 			return fail(500, { error: 'Failed to update student' });
+		}
+	},
+
+	enrol: async ({ request, locals }) => {
+		validateUser(locals, 'admin');
+
+		const data = await request.formData();
+		const id = data.get('id') as string;
+		const selectedWorkspaces = data.getAll('workspaces') as string[];
+
+		try {
+			await User.findByIdAndUpdate(
+				id,
+				{ $addToSet: { workspaces: { $each: selectedWorkspaces } } },
+				{ new: true, runValidators: true }
+			);
+
+			return { success: true };
+		} catch (err) {
+			console.error('Error enrolling student:', err);
+			return fail(500, { error: 'Failed to enrol student' });
 		}
 	},
 
