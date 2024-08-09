@@ -1,3 +1,5 @@
+//quizzes.page.server.ts
+
 import type { Actions } from './$types';
 import { fail, error } from '@sveltejs/kit';
 //import { ObjectId } from 'mongodb';
@@ -15,7 +17,8 @@ function formatQuiz(quiz: any): Quiz {
 		id: quiz._id.toString(),
 		graded: quiz.graded,
 		date: quiz.date.toISOString(),
-		duration: quiz.duration
+		duration: quiz.duration,
+		isAvailable: quiz.isAvailable
 	};
 }
 
@@ -40,6 +43,24 @@ export async function load({ params }) {
 	}
 }
 
+async function updateQuizAvailability(quizId: string, isAvailable: boolean) {
+	try {
+		const quiz = await Quizzes.findById(quizId);
+		if (!quiz) {
+			return fail(404, { error: 'Quiz not found' });
+		}
+
+		quiz.isAvailable = isAvailable;
+		console.log(quiz.isAvailable);
+		await quiz.save();
+
+		return { success: true };
+	} catch (err) {
+		console.error('Error updating quiz availability:', err);
+		return fail(500, { error: 'Failed to update quiz availability' });
+	}
+}
+
 async function createQuiz(
 	title: string,
 	graded: string,
@@ -57,7 +78,6 @@ async function createQuiz(
 
 	await newQuiz.save();
 
-	//create activity
 	const newActivity = new Activities({
 		title: `New Quiz: ${title}`,
 		description: instructions || '',
@@ -114,6 +134,21 @@ export const actions: Actions = {
 		} catch (err) {
 			console.error('Error removing quiz:', err);
 			return fail(500, { error: 'Failed to remove quiz' });
+		}
+	},
+
+	toggleAvailability: async ({ request }) => {
+		try {
+			const data = await request.formData();
+			const quizId = data.get('quizId') as string;
+			const isAvailable = data.get('isAvailable') === 'true';
+
+			if (!quizId) return fail(400, { error: 'Quiz ID is required' });
+
+			return await updateQuizAvailability(quizId, isAvailable);
+		} catch (err) {
+			console.error('Error toggling quiz availability:', err);
+			return fail(500, { error: 'Failed to toggle quiz availability' });
 		}
 	}
 };

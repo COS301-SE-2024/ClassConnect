@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Button, Input, Textarea, NumberInput, Label } from 'flowbite-svelte';
+	import { createEventDispatcher } from 'svelte';
 
 	export let open: boolean;
-
+	const dispatch = createEventDispatcher();
 	let error: string;
 
 	function close() {
@@ -11,6 +12,7 @@
 			if (result.type === 'success') {
 				await update();
 				open = false;
+				dispatch('formSubmitted');
 			} else {
 				error = result.data?.error;
 			}
