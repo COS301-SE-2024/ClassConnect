@@ -184,6 +184,7 @@
 				</form>
 			{/if}
 		{/if}
+		
 	{:else if role === 'lecturer' && !isPreview}
 		<Form bind:open={isFormOpen} on:formSubmitted={handleFormSubmit} />
 	{:else}

@@ -12,21 +12,21 @@
 	import { goto } from '$app/navigation';
 	
 	import AddModal from '$lib/components/modals/quizzes/Add.svelte';
-	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
+	//import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
-	import Question from '$lib/components/questions/Form.svelte';
+	//import Question from '$lib/components/questions/Form.svelte';
 
 	export let data: any;
 	console.log(data);
 
 	let id: string;
 	let isQuizFormOpen = false;
-	let isEditModalOpen = false;
+	//let isEditModalOpen = false;
 	let isAddQuiz = false;
 
 	let isRemoveModalOpen = false;
 
-	let selectedQuestionType = '';
+	//let selectedQuestionType = '';
 
 	function openQuiz(quizID: string) {
 		const workspaceId = data.workspaceID;
@@ -67,12 +67,12 @@
 		}
 	}
 
-	function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {
-		selectedQuestionType = event.detail.type;
-		const quizID = id;
-		openQuiz(quizID);
-		isQuizFormOpen = true;
-	}
+	// function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {
+	// 	selectedQuestionType = event.detail.type;
+	// 	const quizID = id;
+	// 	openQuiz(quizID);
+	// 	isQuizFormOpen = true;
+	// }
 </script>
 
 <main class="container mx-auto my-2 px-4">
@@ -149,5 +149,8 @@
 </main>
 
 <AddModal bind:open={isAddQuiz} />
-
+<!-- <EditModal bind:open={isEditModalOpen} on:select={handleQuestionTypeSelect} />
+{#if selectedQuestionType === 'multiple-choice'}
+	<Question bind:open={isQuizFormOpen} />
+{/if} -->
 <RemoveModal bind:open={isRemoveModalOpen} {id} item="quiz" />
