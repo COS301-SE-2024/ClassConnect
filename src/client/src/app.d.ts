@@ -6,8 +6,6 @@ declare global {
 		}
 	}
 
-	//Auth
-
 	interface SignUpData {
 		name: string;
 		email: string;
@@ -19,6 +17,15 @@ declare global {
 		username: string;
 		password: string;
 	}
+
+	interface Announcement {
+		id: string;
+		date: string;
+		title: string;
+		content: string;
+		createdBy: string;
+	}
+	
 }
 
 export {};

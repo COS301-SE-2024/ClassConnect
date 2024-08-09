@@ -21,21 +21,21 @@
 			name: 'Jake Mileham',
 			date: 'Submitted: May 22, 2024',
 			status: 'In Progress',
-			color: 'orange'
+			color: 'yellow'
 		},
 		{
 			image: '/images/profile-placeholder.png',
 			name: 'Joshua Wereley',
 			date: 'Submitted: May 23, 2024',
 			status: 'In Progress',
-			color: 'orange'
+			color: 'yellow'
 		}
 	];
 </script>
 
 <div class="mb-6 flex items-center justify-between">
 	<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
-		Recent Acceptance Letters
+		Admission Letters
 	</h5>
 	<a href="/" class="text-primary-600 dark:text-primary-500 text-sm font-medium">View all</a>
 </div>
@@ -51,7 +51,7 @@
 						<div class="text-sm text-gray-500">{application.date}</div>
 					</div>
 				</TableBodyCell>
-				
+
 				<TableBodyCell class="text-right">
 					<Badge rounded large color={application.color}>{application.status}</Badge>
 				</TableBodyCell>

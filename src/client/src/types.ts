@@ -16,15 +16,6 @@ export interface User_Details {
 	surname: string;
 	username: string;
 }
-
-export interface Announcement {
-	id: string;
-	title: string;
-	date: string;
-	createdBy: string;
-	description: string;
-}
-
 export interface Activity {
 	id: string;
 	title: string;

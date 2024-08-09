@@ -45,8 +45,7 @@
 		{ icon: InfoCircleSolid, name: 'FAQ', href: '/faq' }
 	];
 
-	$: role;
-	$: currentLinks = navLinks[role];
+	const currentLinks = navLinks[role];
 </script>
 
 <aside
@@ -59,7 +58,7 @@
 				src="images/class-connect-logo.png"
 				alt="Class Connect owl logo"
 			/>
-			<div class="text-xl dark:text-gray-300">Class Connect</div>
+			<div class="text-xl dark:text-gray-300">ClassConnect</div>
 		</div>
 	</a>
 

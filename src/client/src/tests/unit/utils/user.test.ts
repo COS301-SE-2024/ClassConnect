@@ -13,7 +13,7 @@ import {
 	editUser,
 	deleteUser,
 	validateUser
-} from '$lib/server/utils/user';
+} from '$src/lib/server/utils/users';
 
 vi.mock('@node-rs/argon2', () => ({
 	hash: vi.fn()
