@@ -120,7 +120,7 @@
 							<TableBodyCell>{quiz.title}</TableBodyCell>
 							<TableBodyCell>{quiz.graded}</TableBodyCell>
 							<TableBodyCell>{quiz.date}</TableBodyCell>
-							<TableBodyCell>{quiz.duration /(60*1000)}</TableBodyCell>
+							<TableBodyCell>{quiz.duration / (60 * 1000)}</TableBodyCell>
 
 							<TableBodyCell>
 								<div class="flex items-center gap-x-6">

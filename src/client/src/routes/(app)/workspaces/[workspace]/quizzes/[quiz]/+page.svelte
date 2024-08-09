@@ -130,7 +130,6 @@
 		{#if questions.length === 0}
 			<p class="text-gray-700 dark:text-gray-300">No questions available for this quiz.</p>
 		{:else}
-			
 			{#if role === 'student' && !isPreview}
 				<p class="text-gray-700 dark:text-gray-300">Elapsed time to complete quiz:</p>
 				<Progressbar
