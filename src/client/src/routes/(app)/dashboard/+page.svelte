@@ -1,5 +1,5 @@
 <script>
-	import AdminDashboard from '$src/lib/components/dashboards/Admin.svelte';
+	import AdminDashboard from '$src/lib/components/dashboards/admin/Main.svelte';
 	import StudentDashboard from '$src/lib/components/dashboards/Student.svelte';
 
 	export let data;
