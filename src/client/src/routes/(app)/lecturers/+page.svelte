@@ -57,11 +57,12 @@
 {:else}
 <div class="container mx-auto px-4 py-8">
 	{#if lecturers.length === 0}
-		<NoLecturerCard
+		<NoLecturerCard 
 			imgSrc="https://www.paulconnollycomms.co.uk/wp-content/uploads/2023/02/shutterstock_1955321449-scaled.jpg"
 			title="Ignite Minds And Inspire Greatness!"
 			description="Lecturers are the catalysts who transform classrooms into dynamic hubs of learning and growth, empowering students to reach their full potential."
 			buttonText="Add Your First Lecturer"
+			role="Lecturer"
 		/>
 	{:else}
 		<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">

@@ -15,7 +15,7 @@
 	$: ({ students, workspaces, organisation } = data);
 	let searchTerm = '';
 	$: filteredStudents = students.filter(
-		(student) =>
+		(student:any) =>
 			student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			student.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			student.username.toLowerCase().includes(searchTerm.toLowerCase())
@@ -68,6 +68,7 @@
 			title="Aspiring Minds, Shaping the Future - Students Embark on a Journey of Discovery!"
 			description="Students are the foundation upon which the edifice of knowledge is built, their inquisitive minds and eager spirits driving the progress of humanity."
 			buttonText="Add Your First Student"
+			role = "Student"
 		/>
 	{:else}
 		<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">

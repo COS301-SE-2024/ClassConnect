@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Button, Modal, Label, Input, Fileupload } from 'flowbite-svelte';
+	import toast, {Toaster} from 'svelte-french-toast';
 
 	export let role: string;
 	export let open: boolean;
@@ -8,7 +9,29 @@
 	let error: string;
 	let value: string;
 
-	function close() {
+	function close({formData, cancel}:any) {
+		const image = formData.get('image') as File;
+   
+   if (image) {
+	   if (image.name !== "") {
+		   const extension = image.name.split('.').pop()?.toLowerCase();
+		   
+		   if (image.size > 1000000) {
+			   toast.error('The size of file should be less than 1 MB!');
+			   cancel();
+			   throw new Error('File is too big');
+		   }
+		   
+		   const imageExtensions = ['jpg', 'jpeg', 'png','svg'];
+		   
+		   if (!(extension && imageExtensions.includes(extension))) {
+			   toast.error('File type is not supported');
+			   cancel();
+			   throw new Error('File type is not supported');
+		   }
+	   }
+   }
+
 		return async ({ result, update }: any) => {
 			if (result.type === 'success') {
 				await update();
@@ -20,6 +43,7 @@
 	}
 </script>
 
+<Toaster/>
 <Modal bind:open size="xs" class="w-full">
 	<form
 		method="POST"
@@ -39,7 +63,7 @@
 			<Input type="text" id="name" name="name" placeholder="John" required />
 		</Label>
 		<Label for="surname" class="space-y-2">
-			<span>Name</span>
+			<span>Surname</span>
 			<Input type="text" id="surname" name="surname" placeholder="Doe" required />
 		</Label>
 		<Label for="email" class="space-y-2">

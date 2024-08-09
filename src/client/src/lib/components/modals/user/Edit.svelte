@@ -13,7 +13,7 @@
 
 	let value: string;
 
-	function close({formElement, formData, cancel}: any) {
+	function close({formData, cancel}: any) {
     const image = formData.get('image') as File;
    
     if (image) {
