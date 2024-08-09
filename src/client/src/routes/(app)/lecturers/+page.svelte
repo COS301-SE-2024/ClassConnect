@@ -14,6 +14,7 @@
 	import AddModal from '$lib/components/modals/user/Add.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
 	import EditModal from '$lib/components/modals/user/Edit.svelte';
+	import NoAccess from '$lib/components/common/PageUnavailable.svelte';
 
 	export let data;
 
@@ -39,17 +40,21 @@
 		isRemoveModalOpen = true;
 	}
 
-	$: ({ lecturers } = data);
+	$: ({ lecturers ,organisation } = data);
 
 	let searchTerm = '';
 	$: filteredLecturers = lecturers.filter(
-		(lecturer) =>
+		(lecturer:any) =>
 			lecturer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			lecturer.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
 			lecturer.username.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 </script>
 
+
+{#if organisation === undefined}
+<NoAccess/>
+{:else}
 <div class="container mx-auto px-4 py-8">
 	{#if lecturers.length === 0}
 		<NoLecturerCard
@@ -133,6 +138,8 @@
 <AddModal bind:open={isAddModalOpen} role="Lecturer" />
 <EditModal bind:open={isEditModalOpen} {id} {_name} {surname} {email} role="Lecturer" />
 <RemoveModal bind:open={isRemoveModalOpen} {id} />
+
+{/if}
 <!--
 <script lang="ts">
 	import {

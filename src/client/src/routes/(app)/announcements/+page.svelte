@@ -9,7 +9,7 @@
 	$: ({ announcements, organisation } = data);
 </script>
 
-{#if organisation=== undefined}
+{#if organisation === undefined}
 <NoAccess/>
 {:else}
 <main class="container mx-auto my-2 px-4">

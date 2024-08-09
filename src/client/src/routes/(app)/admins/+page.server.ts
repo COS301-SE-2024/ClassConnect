@@ -31,14 +31,14 @@ export async function load({ locals }) {
 	console.log(locals.user?.organisation);
 
 	try {
-		let organisation = locals.user?.organisation;
-		if(organisation !== undefined || organisation !== null) {
+		let organisation;
+		if(locals.user?.organisation) {
 			organisation = JSON.parse(JSON.stringify(locals.user?.organisation));
 		}
 		const admins = await getAdmins(organisation);
 
 
-		return {  organisation, admins };
+		return { organisation, admins };
 	} catch (e) {
 		console.error('Failed to load admins:', e);
 		throw error(500, 'Error occurred while fetching admins');

@@ -49,8 +49,8 @@ export async function load({ locals }) {
 		const students = await getStudents(locals.user.organisation);
 		const workspaces = await getWorkspaces(locals.user.organisation);
 
-		let organisation = locals.user?.organisation;
-		if(organisation !== undefined || organisation !== null) {
+		let organisation;
+		if(locals.user?.organisation) {
 			organisation = JSON.parse(JSON.stringify(locals.user?.organisation));
 		}
 

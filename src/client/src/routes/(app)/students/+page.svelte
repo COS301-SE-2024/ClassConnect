@@ -12,7 +12,7 @@
 	import NoStudentCard from '$lib/components/common/ZeroUsersCard.svelte';
 
 	export let data;
-	$: ({ students,workspaces, organisation } = data);
+	$: ({ students, workspaces, organisation } = data);
 	let searchTerm = '';
 	$: filteredStudents = students.filter(
 		(student) =>
