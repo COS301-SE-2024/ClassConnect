@@ -5,9 +5,10 @@ import type { User } from '$src/types';
 import type { ObjectId } from 'mongoose';
 
 import Users from '$db/schemas/User';
+import { generateUsername } from './auth';
+import { sendWelcomeEmail } from './email';
 import { HASH_OPTIONS } from '$src/constants';
-import { generateUsername } from '$src/lib/server/utils/auth';
-import { upload, deleteFile } from '$lib/server/storage';
+import { upload, deleteFile } from '../storage';
 
 export function formatUser(user: any): User {
 	return {
@@ -58,6 +59,8 @@ export async function addUser(data: FormData, organisation: ObjectId | undefined
 	});
 
 	await newUser.save();
+	//sendWelcomeEmail(email, name, username);
+
 	return { success: true };
 }
 
