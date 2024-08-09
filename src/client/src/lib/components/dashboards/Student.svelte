@@ -8,7 +8,6 @@
 		TableBodyRow,
 		Badge
 	} from 'flowbite-svelte';
-	import { SalePercentSolid } from 'flowbite-svelte-icons';
 	import OverviewShedule from '$lib/components/common/OverviewShedule.svelte';
 
 	const options = {
