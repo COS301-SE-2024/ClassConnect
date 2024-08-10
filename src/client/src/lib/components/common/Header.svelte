@@ -10,42 +10,48 @@
 	import { onMount } from 'svelte';
 	import { change } from '$lib/store';
 	import BreadCrumbs from '$lib/components/common/Breadcrumbs.svelte';
+	import axios from 'axios';
 
 	export let data;
 
 	let { name, image } = data;
+	const apiUrl = '/api/user';
 
 	async function getUserData() {
 		try {
-			const formData = new FormData();
-			const response = await fetch('/settings?/get_user_details', {
-				method: 'POST',
-				body: formData
-			});
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
-			const data = await response.json();
-			if (data.data) {
-				const input = data.data;
-				const innerString = JSON.parse(input)[0];
-				const user_data = JSON.parse(innerString);
-				const user = user_data.user;
-				name = user.name;
-				image = user.image;
-			}
+			await axios
+				.get(apiUrl)
+				.then((response) => {
+					console.log('User data:', response.data);
+					const user = response.data;
+					name = user.name;
+					image = user.image;
+				})
+				.catch((error) => {
+					if (error) {
+						console.log('An error occurred');
+					}
+					// if (error.response) {
+					// 	console.error('Error response data:', error.response.data);
+					// 	console.error('Error response status:', error.response.status);
+					// } else if (error.request) {
+					// 	console.error('Error request:', error.request);
+					// } else {
+					// 	console.error('Error message:', error.message);
+					// }
+				});
 		} catch (error) {
-			console.error('There was a problem in the fetch operation:', error);
+			console.error('There was a problem with the get operation:', error);
 		}
 	}
 
-	onMount(() => {
+	onMount(async () => {
 		getUserData();
 	});
 
 	$: {
-		change.subscribe(() => {
-			getUserData();
+		change.subscribe(async () => {
+			await getUserData();
 		});
 	}
 </script>

@@ -7,31 +7,34 @@
 	import UploadPicture from '$lib/components/modals/settings/UploadPicture.svelte';
 	import UpdateGeneralDetails from '$lib/components/forms/UpdateGeneralDetails.svelte';
 	import UpdatePassword from '$lib/components/forms/UpdatePassword.svelte';
+	import axios from 'axios';
 
 	export let user: any;
 
 	let openDeleteModal = false;
 	let openFileHandlingModal = false;
+	const apiUrl = '/api/user';
 
 	async function getUserData() {
 		try {
-			const formData = new FormData();
-			const response = await fetch('/settings?/get_user_details', {
-				method: 'POST',
-				body: formData
-			});
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
-			const data = await response.json();
-			if (data.data) {
-				const input = data.data;
-				const innerString = JSON.parse(input)[0];
-				const user_data = JSON.parse(innerString);
-				user = user_data.user;
-			}
+			axios
+				.get(apiUrl)
+				.then((response) => {
+					console.log('User data:', response.data);
+					user = response.data;
+				})
+				.catch((error) => {
+					if (error.response) {
+						console.error('Error response data:', error.response.data);
+						console.error('Error response status:', error.response.status);
+					} else if (error.request) {
+						console.error('Error request:', error.request);
+					} else {
+						console.error('Error message:', error.message);
+					}
+				});
 		} catch (error) {
-			console.error('There was a problem with your fetch operation:', error);
+			console.error('There was a problem with the get operation:', error);
 		}
 	}
 
