@@ -13,7 +13,9 @@ export function formatAnnouncement(announcement: any): Announcement {
 	};
 }
 
-export async function getAnnouncements(ownerID: ObjectId | undefined): Promise<Announcement[]> {
+export async function getAnnouncements(
+	ownerID: ObjectId | string | undefined
+): Promise<Announcement[]> {
 	const announcements = await Announcements.find({ owner: ownerID }).populate('createdBy');
 
 	return announcements.map(formatAnnouncement);
@@ -25,7 +27,7 @@ export function validateUser(locals: any, requiredRole: string) {
 	}
 }
 
-export async function addAnnouncement(data: FormData, organisation: ObjectId | undefined) {
+export async function addAnnouncement(data: FormData, organisation: ObjectId | string | undefined) {
 	const title = data.get('title') as string;
 	const content = data.get('content') as string;
 	const createdBy = data.get('createdBy') as string;
@@ -49,7 +51,7 @@ export async function editAnnouncement(data: FormData) {
 	['title', 'content'].forEach((field) => {
 		const value = data.get(field) as string;
 
-		if (value !== '') updateData[field as keyof Announcement] = value;
+		if (value && value !== '') updateData[field as keyof Announcement] = value;
 	});
 
 	await Announcements.findByIdAndUpdate(id, updateData);

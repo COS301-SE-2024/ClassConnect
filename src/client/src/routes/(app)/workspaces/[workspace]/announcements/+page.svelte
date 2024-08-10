@@ -4,4 +4,4 @@
 	export let data;
 </script>
 
-<Announcements {data} />
+<Announcements {data} view={'lecturer'} />

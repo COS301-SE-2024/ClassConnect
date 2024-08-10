@@ -9,13 +9,11 @@ import {
 	deleteAnnouncement
 } from '$lib/server/utils/announcements';
 
-export async function load({ locals }) {
-	validateUser(locals, 'admin');
-
+export async function load({ locals, params }) {
 	try {
-		const announcements = await getAnnouncements(locals.user?.organisation);
+		const announcements = await getAnnouncements(params.workspace);
 
-		return { announcements, role: locals.user?.role };
+		return { announcements, id: locals.user?.id.toString(), role: locals.user?.role };
 	} catch (e) {
 		console.error('Failed to load announcements:', e);
 		throw error(500, 'Error occurred while fetching announcements');
@@ -23,19 +21,19 @@ export async function load({ locals }) {
 }
 
 export const actions: Actions = {
-	add: async ({ request, locals }) => {
-		validateUser(locals, 'admin');
+	post: async ({ request, locals, params }) => {
+		validateUser(locals, 'lecturer');
 
 		try {
 			const data = await request.formData();
-			return await addAnnouncement(data, locals.user?.organisation);
+			return await addAnnouncement(data, params.workspace);
 		} catch (error) {
 			console.error('Error adding announcement:', error);
 			return fail(500, { error: 'Failed to add announcement' });
 		}
 	},
 	edit: async ({ request, locals }) => {
-		validateUser(locals, 'admin');
+		validateUser(locals, 'lecturer');
 
 		try {
 			const data = await request.formData();
@@ -46,7 +44,7 @@ export const actions: Actions = {
 		}
 	},
 	delete: async ({ request, locals }) => {
-		validateUser(locals, 'admin');
+		validateUser(locals, 'lecturer');
 
 		try {
 			const data = await request.formData();

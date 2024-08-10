@@ -9,7 +9,7 @@
 
 	let isAddModalOpen = false;
 
-	$: ({ role, announcements } = data);
+	$: ({ id, role, announcements } = data);
 </script>
 
 <main class="container mx-auto my-2 px-4">
@@ -24,7 +24,7 @@
 					No Announcements Found
 				</p>
 
-				{#if view === 'admin'}
+				{#if view === role}
 					<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
 				{/if}
 			</div>
@@ -49,7 +49,7 @@
 			</div>
 
 			<div class="mb-4 flex items-center gap-x-3">
-				{#if view === 'admin'}
+				{#if view === role}
 					<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
 				{/if}
 			</div>
@@ -61,4 +61,4 @@
 	{/if}
 </main>
 
-<AddModal bind:open={isAddModalOpen} />
+<AddModal bind:open={isAddModalOpen} {id} />

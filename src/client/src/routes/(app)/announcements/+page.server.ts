@@ -13,7 +13,7 @@ export async function load({ locals }) {
 	try {
 		const announcements = await getAnnouncements(locals.user?.organisation);
 
-		return { announcements, role: locals.user?.role };
+		return { announcements, id: locals.user?.id.toString(), role: locals.user?.role };
 	} catch (e) {
 		console.error('Failed to load announcements:', e);
 		throw error(500, 'Error occurred while fetching announcements');
@@ -21,7 +21,7 @@ export async function load({ locals }) {
 }
 
 export const actions: Actions = {
-	add: async ({ request, locals }) => {
+	post: async ({ request, locals }) => {
 		validateUser(locals, 'admin');
 
 		try {
