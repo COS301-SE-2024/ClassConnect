@@ -3,11 +3,9 @@
 	export let user: any;
 </script>
 
-<div
-	class="ease-soft-in-out xl:ml-68.5 relative h-full bg-gray-50 transition-all duration-200"
->
-	<section class="w-full h-full overflow-hidden dark:bg-gray-900">
-		<div class="mx-auto w-full h-full">
+<div class="ease-soft-in-out xl:ml-68.5 relative h-full bg-gray-50 transition-all duration-200">
+	<section class="h-full w-full overflow-hidden dark:bg-gray-900">
+		<div class="mx-auto h-full w-full">
 			<!-- User Cover IMAGE -->
 			<img
 				src="/images/ryunosuke-kikuno-RKwivgSTXVI-unsplash.jpg"
@@ -32,20 +30,24 @@
 				</h1>
 
 				<!-- About -->
-				<div class="overflow-hidden rounded-lg border bg-white shadow dark:bg-gray-800 dark:border-gray-700">
+				<div
+					class="overflow-hidden rounded-lg border bg-white shadow dark:border-gray-700 dark:bg-gray-800"
+				>
 					<div class="px-4 py-5 sm:px-6">
-						<h3 class="text-lg  text-center font-medium leading-6 text-gray-900 dark:text-white">Profile information</h3>
+						<h3 class="text-center text-lg font-medium leading-6 text-gray-900 dark:text-white">
+							Profile information
+						</h3>
 					</div>
-					<div class="border-t border-gray-200 px-4 py-5 sm:p-0 dark:border-gray-600">
+					<div class="border-t border-gray-200 px-4 py-5 dark:border-gray-600 sm:p-0">
 						<dl class="sm:divide-y sm:divide-gray-200 dark:sm:divide-gray-600">
 							<div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
-								<dt class="text-sm font-medium text-gray-500 dark:text-white">Full name : </dt>
+								<dt class="text-sm font-medium text-gray-500 dark:text-white">Full name :</dt>
 								<dd class="mt-1 text-sm text-gray-900 dark:text-white sm:col-span-2 sm:mt-0">
 									{user.name + ' ' + user.surname}
 								</dd>
 							</div>
 							<div class="py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
-								<dt class="text-sm font-medium text-gray-500 dark:text-white">Email address : </dt>
+								<dt class="text-sm font-medium text-gray-500 dark:text-white">Email address :</dt>
 								<dd class="mt-1 text-sm text-gray-900 dark:text-white sm:col-span-2 sm:mt-0">
 									{user.email}
 								</dd>

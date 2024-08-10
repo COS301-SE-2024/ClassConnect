@@ -7,7 +7,6 @@
 	import { mat_change } from '$lib/store/';
 	import { page } from '$app/stores';
 
-
 	const dispatch = createEventDispatcher();
 
 	export let id: string;
@@ -36,7 +35,6 @@
 		open = false;
 		dispatch('close');
 	}
-
 </script>
 
 <Toaster />

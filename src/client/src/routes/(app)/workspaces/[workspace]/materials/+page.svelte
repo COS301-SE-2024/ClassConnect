@@ -2,16 +2,6 @@
 	import { Tabs } from 'flowbite-svelte';
 	import MaterialsTab from '$src/lib/components/materials/MaterialsTab.svelte';
 	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
-    import { page } from '$app/stores';
-	import { browser } from '$app/environment';
-
-    //Function to reload the current page
-    async function reloadPage() {
-		if(browser) {
-    	    await goto($page.url.pathname, { invalidateAll: true });
-		}
-    }
 
 	export let data: any;
 	let materials: any[] = [];
@@ -24,7 +14,6 @@
 		ObjectMaterials = data.materials.filter((material: any) => material.type);
 		DocumentMaterials = data.materials.filter((material: any) => !material.type);
 	});
-
 </script>
 
 <div class="mt-2">

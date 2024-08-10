@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Button, Modal, Label, Fileupload, Helper, Input } from 'flowbite-svelte';
 	import PreviewMaterial from '$lib/components/modals/materials/PreviewMaterial.svelte';
-	import { displayedSandboxObjectURL } from '$src/lib/store/objects';
 	import { createEventDispatcher } from 'svelte';
 
 	export let open: boolean;
