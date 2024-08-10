@@ -55,4 +55,4 @@
 </div>
 
 <EditModal bind:open={isEditModalOpen} {id} />
-<RemoveModal bind:open={isRemoveModalOpen} {id} item={"announcement"} />
+<RemoveModal bind:open={isRemoveModalOpen} {id} item={'announcement'} />

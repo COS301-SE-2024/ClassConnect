@@ -7,7 +7,7 @@
 		UsersGroupSolid,
 		ChartPieSolid,
 		ArrowLeftOutline,
-		GlobeOutline, 
+		GlobeOutline,
 		ChartLineUpOutline,
 		ClipboardListSolid
 	} from 'flowbite-svelte-icons';

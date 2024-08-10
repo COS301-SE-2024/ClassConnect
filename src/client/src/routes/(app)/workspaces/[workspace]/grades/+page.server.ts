@@ -6,7 +6,7 @@ export async function load({ locals, params }) {
 
 	try {
 		const workspaceID = params.workspace;
-        
+
 		const grades = await Grades.find({ studentID: locals.user.id, workspaceID })
 			.populate('quizID')
 			.lean();

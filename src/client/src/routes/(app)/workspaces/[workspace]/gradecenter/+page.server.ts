@@ -1,19 +1,22 @@
 import { error } from '@sveltejs/kit';
+
 import type { ObjectId } from 'mongoose';
 import type { StudentGrade } from '$src/types';
-import User from '$lib/server/database/schemas/User';
+
 import Quiz from '$lib/server/database/schemas/Quiz';
 import Grades from '$lib/server/database/schemas/Grades';
 
 export async function load({ locals }) {
+	if (locals.user?.role !== 'lecturer') throw error(401, 'Only lecturers can access this page');
+
 	try {
 		const quizzes = (await Quiz.find().lean().select('_id title').sort('createdAt')) as {
 			_id: ObjectId;
 			title: string;
 		}[];
 
-		const grades = await Grades.find().lean().populate('studentID', 'username name surname');
 		const assessments = quizzes.map((quiz) => quiz.title);
+		const grades = await Grades.find().lean().populate('studentID', 'username name surname');
 		const studentMap = new Map<string, { grades: number[]; name: string; username: string }>();
 
 		grades.forEach((grade) => {

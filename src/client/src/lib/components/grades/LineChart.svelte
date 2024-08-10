@@ -82,6 +82,6 @@
 	};
 </script>
 
-<div class="dark:bg-gray-800 p-4 rounded">
-    <Chart {options} />
+<div class="rounded p-4 dark:bg-gray-800">
+	<Chart {options} />
 </div>
