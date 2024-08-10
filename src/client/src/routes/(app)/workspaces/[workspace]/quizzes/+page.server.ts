@@ -116,7 +116,8 @@ export const actions: Actions = {
 			const workspaceId = new mongoose.Types.ObjectId(params.workspace);
 			console.log('Quiz Workspace Id:', workspaceId);
 
-			return await createQuiz(title, graded, instructions, workspaceId, duration);
+			const result= await createQuiz(title, graded, instructions, workspaceId, duration);
+			return result;
 		} catch (error) {
 			console.error('Error posting quiz:', error);
 			return fail(500, { error: 'Failed to post quiz' });
