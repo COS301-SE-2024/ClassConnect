@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { Button, Tabs, TabItem } from 'flowbite-svelte';
-	import Recordings from '$src/lib/components/common/Recordings.svelte';
+
 	import { formatDate } from '$utils/date';
 	import Upcoming from '$src/lib/components/lessons/Upcoming.svelte';
 	import InSession from '$src/lib/components/lessons/InSession.svelte';
+	import Recordings from '$src/lib/components/common/Recordings.svelte';
 	import ScheduleModal from '$src/lib/components/modals/lessons/Schedule.svelte';
 
 	export let data: any;

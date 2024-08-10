@@ -6,7 +6,7 @@
 		TableHead,
 		TableBodyRow,
 		TableBodyCell,
-		TableHeadCell,
+		TableHeadCell
 	} from 'flowbite-svelte';
 
 	export let data: any;
@@ -22,7 +22,7 @@
 	function getColorClass(grade: number) {
 		if (grade < 39) return 'bg-red-200 dark:bg-red-900';
 		if (grade < 69) return 'bg-yellow-200 dark:bg-yellow-900';
-		
+
 		return 'bg-green-200 dark:bg-green-900';
 	}
 </script>
@@ -30,31 +30,35 @@
 <div class="container mx-auto p-4">
 	<h1 class="mb-4 text-2xl font-bold dark:text-white">Grade Book</h1>
 
-	<Input type="text" placeholder="Search student" bind:value={searchTerm} class="mb-4" />
+	{#if students.length === 0}
+		<p class="text-lg dark:text-white">No grades available</p>
+	{:else}
+		<Input type="text" placeholder="Search student" bind:value={searchTerm} class="mb-4 w-1/4" />
 
-	<Table striped={true}>
-		<TableHead>
-			<TableHeadCell>Name</TableHeadCell>
-			<TableHeadCell>Student No.</TableHeadCell>
-			{#each assessments as assessment}
-				<TableHeadCell>{assessment}</TableHeadCell>
-			{/each}
-		</TableHead>
+		<Table striped={true}>
+			<TableHead>
+				<TableHeadCell>Name</TableHeadCell>
+				<TableHeadCell>Student No.</TableHeadCell>
+				{#each assessments as assessment}
+					<TableHeadCell>{assessment}</TableHeadCell>
+				{/each}
+			</TableHead>
 
-		<TableBody>
-			{#each filteredStudents as student}
-				<TableBodyRow>
-					<TableBodyCell>{student.name}</TableBodyCell>
+			<TableBody>
+				{#each filteredStudents as student}
+					<TableBodyRow>
+						<TableBodyCell>{student.name}</TableBodyCell>
 
-					<TableBodyCell>{student.username}</TableBodyCell>
+						<TableBodyCell>{student.username}</TableBodyCell>
 
-					{#each student.grades as grade}
-						<TableBodyCell class={getColorClass(grade)}>
-							{grade}%
-						</TableBodyCell>
-					{/each}
-				</TableBodyRow>
-			{/each}
-		</TableBody>
-	</Table>
+						{#each student.grades as grade}
+							<TableBodyCell class={getColorClass(grade)}>
+								{grade}%
+							</TableBodyCell>
+						{/each}
+					</TableBodyRow>
+				{/each}
+			</TableBody>
+		</Table>
+	{/if}
 </div>

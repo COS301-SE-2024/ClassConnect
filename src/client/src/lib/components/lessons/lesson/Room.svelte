@@ -40,7 +40,7 @@
 			<Controls {role} />
 		</div>
 
-		<div class="mb-4 mr-4 mt-4 w-1/4">
+		<div class="w-1/4 p-4">
 			<Chat {channel} />
 		</div>
 	</div>

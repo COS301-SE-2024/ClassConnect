@@ -1,12 +1,12 @@
 <script lang="ts">
 	import {
 		Tabs,
-		TabItem,
 		Table,
+		TabItem,
 		TableBody,
-		TableBodyCell,
-		TableBodyRow,
 		TableHead,
+		TableBodyRow,
+		TableBodyCell,
 		TableHeadCell
 	} from 'flowbite-svelte';
 
@@ -16,7 +16,7 @@
 </script>
 
 <main class="container mx-auto p-4">
-	<h1 class="mb-4 text-3xl font-bold">Student Grades</h1>
+	<h1 class="mb-4 text-3xl font-bold dark:text-white">Student Grades</h1>
 
 	<Tabs style="underline">
 		{#each workspaces as workspace}
@@ -28,6 +28,7 @@
 						<TableHeadCell>Your Score (%)</TableHeadCell>
 						<TableHeadCell>Class Average (%)</TableHeadCell>
 					</TableHead>
+
 					<TableBody>
 						{#each workspace.grades as grade}
 							<TableBodyRow>
