@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { Button, Modal, Label, Input, Fileupload } from 'flowbite-svelte';
 	import toast, {Toaster} from 'svelte-french-toast';
+	import Loading from '$lib/components/common/SubmitLoader.svelte';
 
 	export let id: string;
 	export let role: string;
@@ -12,6 +13,8 @@
 	export let email: string;
 
 	let value: string;
+
+	let loading: boolean;
 
 	function close({formData, cancel}: any) {
     const image = formData.get('image') as File;
@@ -37,8 +40,11 @@
     }
 
     return async ({ result, update }: any) => {
+		loading = true;
         if (result.type === 'success') {
+			await new Promise(resolve => setTimeout(resolve, 5000));
             await update();
+			loading = false;
             open = false;
         } else {
             toast.error(result.data?.error || 'An unknown error occurred');
@@ -49,6 +55,7 @@
 </script>
 
 <Modal bind:open size="xs" class="w-full">
+	<!-- <Loading {loading} text="Loading"/> -->
 	<form
 		method="POST"
 		action="?/edit"

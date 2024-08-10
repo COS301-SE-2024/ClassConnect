@@ -2,12 +2,14 @@
 	import { enhance } from '$app/forms';
 	import { Button, Modal, Label, Input, Fileupload } from 'flowbite-svelte';
 	import toast, {Toaster} from 'svelte-french-toast';
+	import Loading from '$lib/components/common/SubmitLoader.svelte';
 
 	export let role: string;
 	export let open: boolean;
 
 	let error: string;
 	let value: string;
+	let loading: boolean;
 
 	function close({formData, cancel}:any) {
 		const image = formData.get('image') as File;
@@ -33,6 +35,7 @@
    }
 
 		return async ({ result, update }: any) => {
+			loading = true;
 			if (result.type === 'success') {
 				await update();
 				open = false;
@@ -73,6 +76,7 @@
 		</Label>
 		<Button type="submit" class="w-full1">Add {role}</Button>
 	</form>
+<Loading {loading} text="Submitting"/>
 </Modal>
 
 <!--
