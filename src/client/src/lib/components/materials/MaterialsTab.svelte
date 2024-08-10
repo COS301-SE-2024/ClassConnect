@@ -150,62 +150,52 @@
 	{#if filteredItems && filteredItems.length > 0}
 		<div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 			{#each filteredItems as material (material.id)}
-				<div class="space-y-4">
-					<div
-						class="text-surface shadow-secondary-1 dark:bg-surface-dark block max-w-[18rem] rounded-lg bg-white dark:text-white"
-					>
-						<div class="relative overflow-hidden bg-cover bg-no-repeat">
-							<img class="rounded-t-lg" src={material.thumbnail} alt={material.title} />
-						</div>
-						<div class="flex items-center justify-between px-6">
-							<h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-								{material.title}
-							</h5>
-							<div>
-								<DotsVerticalOutline id="card-dot-menu-{material.id}" size="xl" />
-								<Dropdown placement="bottom" triggeredBy={`#card-dot-menu-${material.id}`}>
-									<DropdownItem class="flex" on:click={() => copyToClipboard(material.file_path)}>
-										<ShareNodesOutline class="me-2" />
-										Share
-									</DropdownItem>
-									<DropdownItem
-										class="flex"
-										on:click={() =>
-											handlePreview(material.file_path, material.title, material.type)}
-									>
-										<EyeOutline class="me-2" />
-										Preview
-									</DropdownItem>
-									<DropdownItem
-										class="flex"
-										on:click={() => handleDownload(material.file_path, material.title)}
-									>
-										<ArrowDownToBracketOutline class="me-2" />
-										Download
-									</DropdownItem>
-									<DropdownDivider />
-									<DropdownItem
-										class="flex"
-										on:click={() => handleDelete(material.id, material.title)}
-									>
-										<TrashBinOutline color="red" class="me-2" />
-										Delete
-									</DropdownItem>
-								</Dropdown>
-							</div>
-						</div>
-						<div class="px-6 py-2">
-							<p class="font-normal leading-tight text-gray-700 dark:text-gray-400">
-								{material.description}
-							</p>
-						</div>
-						<div class="px-6 py-2">
-							<Button on:click={() => handleFileOpening(material.file_path, material.type)}>
-								Open File <ArrowRightOutline class="ms-2 h-6 w-6 text-white" />
-							</Button>
+			<div class="space-y-4">
+				<div
+					class="text-surface shadow-secondary-1 dark:border-2 dark:border-gray-500 block max-w-[18rem] rounded-lg bg-white dark:bg-gray-800 dark:text-white"
+				>
+					<div class="relative overflow-hidden bg-cover bg-no-repeat">
+						<img class="rounded-t-lg" src={material.thumbnail} alt={material.title} />
+					</div>
+					<div class="flex items-center justify-between px-6">
+						<h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+							{material.title}
+						</h5>
+						<div>
+							<DotsVerticalOutline id="card-dot-menu-{material.id}" size="xl" class="dark:text-gray-400" />
+							<Dropdown placement="bottom" triggeredBy={`#card-dot-menu-${material.id}`}>
+								<DropdownItem class="flex dark:text-gray-200" on:click={() => copyToClipboard(material.file_path)}>
+									<ShareNodesOutline class="me-2 dark:text-gray-400" />
+									Share
+								</DropdownItem>
+								<DropdownItem class="flex dark:text-gray-200" on:click={() => handlePreview(material.file_path, material.title, material.type)}>
+									<EyeOutline class="me-2 dark:text-gray-400" />
+									Preview
+								</DropdownItem>
+								<DropdownItem class="flex dark:text-gray-200" on:click={() => handleDownload(material.file_path, material.title)}>
+									<ArrowDownToBracketOutline class="me-2 dark:text-gray-400" />
+									Download
+								</DropdownItem>
+								<DropdownDivider class="dark:border-gray-600" />
+								<DropdownItem class="flex dark:text-gray-200" on:click={() => handleDelete(material.id, material.title)}>
+									<TrashBinOutline color="red" class="me-2 dark:text-red-400" />
+									Delete
+								</DropdownItem>
+							</Dropdown>
 						</div>
 					</div>
+					<div class="px-6 py-2">
+						<p class="font-normal leading-tight text-gray-700 dark:text-gray-400">
+							{material.description}
+						</p>
+					</div>
+					<div class="px-6 py-2">
+						<Button on:click={() => handleFileOpening(material.file_path, material.type)}>
+							Open File <ArrowRightOutline class="ms-2 h-6 w-6 text-white dark:text-white" />
+						</Button>
+					</div>
 				</div>
+			</div>			
 			{/each}
 		</div>
 	{:else}

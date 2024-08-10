@@ -15,19 +15,19 @@
 			class="flex h-full w-full flex-col items-center justify-center space-x-8 space-y-16 lg:flex-row lg:space-y-0 2xl:space-x-0"
 		>
 			<div
-				class="flex w-full flex-col items-center justify-center text-center lg:w-1/2 lg:px-2 xl:px-0"
+				class="flex w-full h-full flex-col items-center justify-center text-center lg:w-1/2 lg:px-2 xl:px-0"
 			>
-				<p class="mt-2 text-4xl font-bold tracking-wider text-gray-300 md:text-5xl lg:text-6xl">
+				<p class="mt-2 text-4xl font-bold tracking-wider text-gray-300 dark:text-white md:text-5xl lg:text-6xl">
 					No Announcements Found
 				</p>
-				<p class="my-12 text-lg text-gray-500 md:text-xl lg:text-2xl">
+				<p class="my-12 text-lg text-gray-500 dark:text-white md:text-xl lg:text-2xl">
 					Great, looks like you have no announcements.
 				</p>
 				{#if data.role === 'admin'}
 					<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
 				{/if}
 			</div>
-			<div class="flex w-1/2 justify-center lg:h-full lg:items-end">
+			<div class="flex w-1/2 justify-center h-full lg:items-end">
 				<svg
 					class="w-full text-green-600"
 					xmlns="http://www.w3.org/2000/svg"
