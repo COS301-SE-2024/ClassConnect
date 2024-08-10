@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { setContext } from 'svelte';
-
 	import ModelViewer from '$lib/components/sandbox/ModelViewer.svelte';
 	import StarterScene from '$lib/components/sandbox/StarterScene.svelte';
 

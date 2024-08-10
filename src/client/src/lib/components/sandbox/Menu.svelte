@@ -10,6 +10,7 @@
 		ArrowLeftToBracketOutline
 	} from 'flowbite-svelte-icons';
 	import { Button, CloseButton, Drawer, Hr, Listgroup, ListgroupItem } from 'flowbite-svelte';
+	import { displayedSandboxObjectURL } from '$src/lib/store/objects';
 
 	import { navigateToParentRoute } from '$utils/navigation';
 	import ViewLocalModelModal from '$lib/components/sandbox/ViewModal.svelte';
@@ -27,6 +28,10 @@
 
 	onMount(() => {
 		canvas = document.querySelector('.webgl') as HTMLCanvasElement;
+		console.log('this is the obj url in menu: ', $displayedSandboxObjectURL);
+		if ($displayedSandboxObjectURL !== '') {
+			loadModel($displayedSandboxObjectURL);
+		}
 	});
 
 	function toggleFullscreen() {
@@ -39,6 +44,11 @@
 
 			fullscreen = false;
 		}
+	}
+
+	function exit() {
+		displayedSandboxObjectURL.set('');
+		navigateToParentRoute($page.url.pathname);
 	}
 </script>
 
@@ -85,7 +95,7 @@
 
 		<Button on:click={() => (viewModalOpen = true)} color="light">View Your Own Model</Button>
 
-		<Button on:click={() => navigateToParentRoute($page.url.pathname)} color="dark" class="mt-auto">
+		<Button on:click={exit} color="dark" class="mt-auto">
 			Exit<ArrowLeftToBracketOutline />
 		</Button>
 	</Drawer>

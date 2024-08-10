@@ -9,7 +9,8 @@
 		DotsVerticalOutline,
 		EyeOutline,
 		ShareNodesOutline,
-		TrashBinOutline
+		TrashBinOutline,
+		ArrowDownToBracketOutline
 	} from 'flowbite-svelte-icons';
 	import DeleteMaterial from '$src/lib/components/modals/materials/DeleteMaterial.svelte';
 	import Preview from '$src/lib/components/modals/materials/Preview.svelte';
@@ -43,12 +44,13 @@
 
 	const handleFileOpening = (url: string, type: boolean) => {
 		if (!type) {
+			console.log(url);
 			objURL.set(url);
 			goto($page.url + '/material');
 		} else {
 			displayedSandboxObjectURL.set(url);
 			let curr_url: string = $page.url.toString();
-			curr_url = curr_url.replace('materials', 'sandbox');
+			curr_url = curr_url.replace('materials', 'environments/sandbox');
 			goto(curr_url);
 		}
 	};
@@ -67,6 +69,29 @@
 		type = mat_type;
 		openPreviewModal = true;
 	};
+
+	async function handleDownload(mat_url: string, mat_title: string) {
+		const toastId = toast.loading('Downloading...');
+		try {
+			const response = await fetch(mat_url);
+			const blob = await response.blob();
+
+			const url = URL.createObjectURL(blob);
+			const link = document.createElement('a');
+			link.href = url;
+			link.download = mat_title;
+			document.body.appendChild(link);
+			link.click();
+
+			// Clean up
+			document.body.removeChild(link);
+			URL.revokeObjectURL(url);
+			toast.dismiss(toastId);
+			toast.success('Downloaded successfully!');
+		} catch (error) {
+			console.error('Failed to download file:', error);
+		}
+	}
 
 	const copyToClipboard = (url: string) => {
 		console.log(url);
@@ -151,6 +176,13 @@
 										<EyeOutline class="me-2" />
 										Preview
 									</DropdownItem>
+									<DropdownItem
+										class="flex"
+										on:click={() => handleDownload(material.file_path, material.title)}
+									>
+										<ArrowDownToBracketOutline class="me-2" />
+										Download
+									</DropdownItem>
 									<DropdownDivider />
 									<DropdownItem
 										class="flex"
@@ -168,7 +200,7 @@
 							</p>
 						</div>
 						<div class="px-6 py-2">
-							<Button on:click={() => handleFileOpening(material.url, material.type)}>
+							<Button on:click={() => handleFileOpening(material.file_path, material.type)}>
 								Open File <ArrowRightOutline class="ms-2 h-6 w-6 text-white" />
 							</Button>
 						</div>

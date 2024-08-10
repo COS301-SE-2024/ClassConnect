@@ -10,7 +10,7 @@
 
 	async function handleFinalUpload(event: Event) {
 		const toastId = toast.loading('Uploading...');
-		
+
 		open = false;
 
 		event.preventDefault();

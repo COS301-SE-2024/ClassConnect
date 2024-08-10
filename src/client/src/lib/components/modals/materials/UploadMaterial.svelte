@@ -53,7 +53,6 @@
 				if (fileUrl) {
 					open = false;
 					openPreviewModal = true;
-					displayedSandboxObjectURL.set(fileUrl);
 				} else {
 					console.log('Failed to read file URL');
 				}

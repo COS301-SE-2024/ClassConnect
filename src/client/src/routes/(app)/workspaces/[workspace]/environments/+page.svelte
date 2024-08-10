@@ -10,7 +10,7 @@
 
 	<div class="flex flex-wrap justify-center">
 		<Card img="/images/view-3D-models-1.jpg" class="m-2 max-w-[45%] flex-grow">
-			<h5 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">Sandbox Environment</h5>
+			<h5 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">3D Playground</h5>
 
 			<p class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400">
 				Explore and view 3D models of your workspace or your own creations. Experience them in VR
@@ -18,13 +18,13 @@
 			</p>
 
 			<Button on:click={() => goto($page.url + '/sandbox')}>
-				Enter Sandbox
+				Enter Playground
 				<ArrowRightOutline />
 			</Button>
 		</Card>
 
 		<Card img="/images/virtual-classroom.jpg" imgClass="h-[58%]" class="m-2 max-w-[45%] flex-grow">
-			<h5 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">Playground</h5>
+			<h5 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">VR Playground</h5>
 
 			<p class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400">
 				Join your classmates in a virtual space to learn, discuss, and explore together. Collaborate
