@@ -46,8 +46,6 @@ export async function load() {
 			passRate: Number(((stat.passRate / stat.submitted) * 100).toFixed(2))
 		}));
 
-		console.log('Assessment stats:', assessmentStats);
-
 		return { assessmentStats };
 	} catch (e) {
 		console.error('Error fetching assessment stats:', e);

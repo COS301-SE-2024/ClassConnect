@@ -5,6 +5,7 @@
 	import AddModal from '$lib/components/modals/announcement/Add.svelte';
 
 	export let data: any;
+	export let view: string;
 
 	let isAddModalOpen = false;
 
@@ -23,7 +24,7 @@
 					No Announcements Found
 				</p>
 
-				{#if data.role === 'admin' || data.role === 'lecturer'}
+				{#if view === 'admin'}
 					<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
 				{/if}
 			</div>
@@ -48,7 +49,7 @@
 			</div>
 
 			<div class="mb-4 flex items-center gap-x-3">
-				{#if data.role === 'admin'}
+				{#if view === 'admin'}
 					<Button on:click={() => (isAddModalOpen = true)}>Create Announcement</Button>
 				{/if}
 			</div>

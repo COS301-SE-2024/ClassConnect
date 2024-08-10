@@ -7,7 +7,9 @@
 		UsersGroupSolid,
 		ChartPieSolid,
 		ArrowLeftOutline,
-		GlobeOutline
+		GlobeOutline, 
+		ChartLineUpOutline,
+		ClipboardListSolid
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
 	import { writingQuiz } from '$lib/store/sidebar';
@@ -30,8 +32,8 @@
 	const navLinks = {
 		lecturer: [
 			{ icon: BullhornSolid, name: 'Dashboard', href: workspaceURL + '/dashboard' },
-			{ icon: ChartPieSolid, name: 'Grades', href: workspaceURL + '/grades' },
-			{ icon: ChartPieSolid, name: 'Student Marks', href: workspaceURL + '/studentmarks' },
+			{ icon: ChartLineUpOutline, name: 'Analytics', href: workspaceURL + '/analytics' },
+			{ icon: ClipboardListSolid, name: 'Grade Center', href: workspaceURL + '/gradecenter' },
 			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
 			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
 			{ icon: UserCircleSolid, name: 'Lessons', href: workspaceURL + '/lessons' },

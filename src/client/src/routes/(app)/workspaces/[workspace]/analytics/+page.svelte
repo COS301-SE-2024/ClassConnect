@@ -2,6 +2,7 @@
 	import LineChart from '$lib/components/grades/LineChart.svelte';
 
 	export let data: any;
+
 	let assessments = data.assessmentStats;
 </script>
 
@@ -9,8 +10,8 @@
 	<h1 class="mb-4 text-3xl font-bold">Analytics</h1>
 
 	<div class="mt-8">
-		<h2 class="mb-2 text-2xl font-bold">{assessments[0].name}</h2>
-		<!-- <AssessmentTable bind:data={assessment} /> -->
+		<h2 class="mb-2 text-2xl font-bold">Class Tests</h2>
+
 		<LineChart data={assessments} />
 	</div>
 </main>

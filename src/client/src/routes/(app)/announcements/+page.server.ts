@@ -10,8 +10,6 @@ import {
 } from '$lib/server/utils/announcements';
 
 export async function load({ locals }) {
-	validateUser(locals, 'admin');
-
 	try {
 		const announcements = await getAnnouncements(locals.user?.organisation);
 
