@@ -21,15 +21,15 @@
 			}
 
 			confetti({
+				spread: 120,
 				particleCount: 3,
 				startVelocity: 0,
-				spread: 120,
-				origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 },
-				colors: ['#004d00', '#009900', '#00cc00'],
 				shapes: ['circle', 'square'],
-				gravity: randomInRange(0.4, 0.6),
 				scalar: randomInRange(0.8, 1.2),
-				drift: randomInRange(-0.4, 0.4)
+				drift: randomInRange(-0.4, 0.4),
+				gravity: randomInRange(0.4, 0.6),
+				colors: ['#004d00', '#009900', '#00cc00'],
+				origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 }
 			});
 		}, 50);
 

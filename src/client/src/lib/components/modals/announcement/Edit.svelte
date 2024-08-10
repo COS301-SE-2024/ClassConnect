@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
+
 	import Banner from '$lib/components/common/Banner.svelte';
+
 	export let id: string;
 	export let open: boolean;
 
 	let error: string;
-	let message: string;
 	let color: string;
+	let message: string;
 	let display: boolean = false;
 
 	function close() {
@@ -45,11 +47,11 @@
 		<Label for="title" class="mb-2 mt-2 text-left">New Title</Label>
 		<Input type="text" id="title" name="title" placeholder="Fire Drill" size="md" />
 
-		<Label for="description" class="mb-2 mt-2 text-left">New Description</Label>
+		<Label for="content" class="mb-2 mt-2 text-left">New Content</Label>
 		<Input
 			type="text"
-			id="description"
-			name="description"
+			id="content"
+			name="content"
 			placeholder="The fire drill is as follows..."
 			size="md"
 		/>

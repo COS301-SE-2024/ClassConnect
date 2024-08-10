@@ -5,7 +5,7 @@ const announcementsSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-	description: {
+	content: {
 		type: String,
 		required: true
 	},
@@ -15,14 +15,14 @@ const announcementsSchema = new mongoose.Schema({
 		default: Date.now
 	},
 	owner: {
+		required: true,
 		type: mongoose.Types.ObjectId,
-		ref: 'Organisation' || 'Workspace',
-		required: true
+		ref: 'Organisation' || 'Workspace'
 	},
 	createdBy: {
-		type: mongoose.Types.ObjectId,
 		ref: 'User',
-		required: true
+		required: true,
+		type: mongoose.Types.ObjectId
 	}
 });
 

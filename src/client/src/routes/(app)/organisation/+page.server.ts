@@ -1,16 +1,18 @@
-import type { Actions } from './$types';
 import { fail, error } from '@sveltejs/kit';
-import { upload, deleteFile } from '$src/lib/server/storage';
+import { upload, deleteFile } from '$lib/server/storage';
+
+import type { Actions } from './$types';
+import type { ObjectId } from 'mongoose';
 
 import User from '$db/schemas/User';
-import type { ObjectId } from 'mongoose';
 import Organisation from '$db/schemas/Organisation';
 
 function formatOrganisation(org: any) {
 	return {
-		id: org._id.toString(),
 		name: org.name,
-		image: org.image
+		image: org.image,
+		id: org._id.toString(),
+		createdAt: org.createdAt.toDateString()
 	};
 }
 
@@ -23,7 +25,34 @@ export async function load({ locals }) {
 	if (locals.user?.role !== 'admin') throw error(401, 'Only admins can access this page');
 
 	try {
-		return await getOrganisation(locals.user.id);
+		const organisation = await getOrganisation(locals.user.id);
+
+		const numAdmins = await User.countDocuments({
+			role: 'admin',
+			organisation: locals.user.organisation
+		});
+
+		const numLecturers = await User.countDocuments({
+			role: 'lecturer',
+			organisation: locals.user.organisation
+		});
+
+		const numStudents = await User.countDocuments({
+			role: 'student',
+			organisation: locals.user.organisation
+		});
+
+		return {
+			stats: {
+				numAdmins,
+				numStudents,
+				numLecturers
+			},
+			id: organisation?.id,
+			name: organisation?.name,
+			image: organisation?.image,
+			created: organisation?.createdAt
+		};
 	} catch (e) {
 		console.error('Failed to load organisation:', e);
 		throw error(500, 'Error occurred while fetching organisation');
@@ -32,22 +61,20 @@ export async function load({ locals }) {
 
 async function createOrganisation(data: FormData, userId: ObjectId) {
 	const name = data.get('name') as string;
-	let image: string = '/images/organisation-placeholder.png';
-	const image_file: File = data.get('file') as File;
+	const image_file = data.get('image') as File;
 
 	if (!name) return fail(400, { error: 'Organisation Name is required' });
 
-	if (image_file) {
-		image = await upload(image_file);
-	}
-
 	const existingOrg = await Organisation.findOne({ createdBy: userId });
-	if (existingOrg) return fail(400, { error: 'User already has an organisation' });
+	if (existingOrg) return fail(400, { error: 'You already have an organisation' });
+
+	let image: string = '/images/organisation-placeholder.png';
+	if (image_file && image_file.size !== 0) image = await upload(image_file);
 
 	const newOrganisation = new Organisation({
 		name,
-		createdBy: userId,
-		image: image
+		image: image,
+		createdBy: userId
 	});
 
 	await newOrganisation.save();
@@ -56,35 +83,28 @@ async function createOrganisation(data: FormData, userId: ObjectId) {
 	return { success: true };
 }
 
-async function editOrganisation(data: FormData, userId: ObjectId) {
+async function editOrganisation(data: FormData) {
 	const id = data.get('id') as string;
 	const name = data.get('name') as string;
-	const image_file: File = data.get('file') as File;
-
-	if (!id) return fail(400, { error: 'Organisation ID is required' });
-
-	const Org = await Organisation.findById(id);
-	let image: string;
+	const image = data.get('image') as File;
 
 	const updateData: { name?: string; image?: string } = {};
 
-	if (name) updateData.name = name;
+	if (name !== '') updateData.name = name;
 
-	if (image_file && Org) {
-		image = await upload(image_file);
-		if (image) {
-			await deleteFile(Org.image);
-			updateData.image = image;
+	console.log('edit organisation', image);
+
+	if (image && image.size !== 0) {
+		const { image: organisationImage } = await Organisation.findById(id).select('image');
+
+		if (organisationImage !== '/images/organisation-placeholder.png') {
+			await deleteFile(organisationImage);
 		}
+
+		updateData.image = await upload(image);
 	}
 
-	const updatedOrg = await Organisation.findOneAndUpdate(
-		{ _id: id, createdBy: userId },
-		updateData,
-		{ new: true }
-	);
-
-	if (!updatedOrg) return fail(404, { error: 'Organisation not found or not authorized' });
+	await Organisation.findByIdAndUpdate(id, updateData);
 
 	return { success: true };
 }
@@ -94,14 +114,18 @@ async function deleteOrganisation(data: FormData, userId: ObjectId) {
 
 	if (!id) return fail(400, { error: 'Organisation ID is required' });
 
-	const deletedOrg = await Organisation.findOneAndDelete({ _id: id, createdBy: userId });
-	if (deletedOrg) {
-		const image_url: string = deletedOrg.image;
-		if (image_url !== 'images/organisation-placeholder.png') {
-			await deleteFile(image_url);
-		}
+	const { organisation } = await User.findById(userId).select('organisation');
+
+	if (id !== organisation.toString()) {
+		return fail(400, { error: 'You can only delete your own organisation' });
 	}
-	if (!deletedOrg) return fail(404, { error: 'Organisation not found or not authorised' });
+
+	const deletedOrganisation = await Organisation.findByIdAndDelete(id);
+
+	console.log('deletedOrganisation', deletedOrganisation);
+
+	const { image } = deletedOrganisation;
+	if (image !== '/images/organisation-placeholder.png') await deleteFile(image);
 
 	await User.updateOne({ _id: userId }, { $unset: { organisation: '' } });
 	await User.deleteMany({ organisation: id });
@@ -125,10 +149,12 @@ export const actions: Actions = {
 	edit: async ({ request, locals }) => {
 		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
 
+		console.log('edit organisation');
+
 		try {
 			const data = await request.formData();
 
-			return await editOrganisation(data, locals.user.id);
+			return await editOrganisation(data);
 		} catch (e) {
 			console.error('Error updating organisation:', e);
 			return fail(500, { error: 'Failed to update organisation' });
@@ -136,6 +162,8 @@ export const actions: Actions = {
 	},
 	delete: async ({ request, locals }) => {
 		if (!locals.user || locals.user.role !== 'admin') throw error(401, 'Unauthorised');
+
+		console.log('delete organisation');
 
 		try {
 			const data = await request.formData();

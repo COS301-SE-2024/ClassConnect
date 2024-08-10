@@ -7,7 +7,9 @@
 		UsersGroupSolid,
 		ChartPieSolid,
 		ArrowLeftOutline,
-		GlobeOutline
+		GlobeOutline,
+		ChartLineUpOutline,
+		ClipboardListSolid
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
 	import { writingQuiz } from '$lib/store/sidebar';
@@ -30,8 +32,8 @@
 	const navLinks = {
 		lecturer: [
 			{ icon: BullhornSolid, name: 'Dashboard', href: workspaceURL + '/dashboard' },
-			{ icon: ChartPieSolid, name: 'Grades', href: workspaceURL + '/grades' },
-			{ icon: ChartPieSolid, name: 'Student Marks', href: workspaceURL + '/studentmarks' },
+			{ icon: ChartLineUpOutline, name: 'Analytics', href: workspaceURL + '/analytics' },
+			{ icon: ClipboardListSolid, name: 'Grade Center', href: workspaceURL + '/gradecenter' },
 			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
 			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
 			{ icon: UserCircleSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
@@ -71,7 +73,7 @@
 			<div class="flex justify-center">
 				<img class="mb-2 h-20 w-20" src={workspace.image} alt="Class Connect owl logo" />
 			</div>
-			<div class="roboto text-center text-xl dark:text-gray-300">{workspace.name}</div>
+			<div class="text-center text-xl dark:text-gray-300">{workspace.name}</div>
 		</div>
 	</a>
 
@@ -81,7 +83,7 @@
 				<a
 					class="mt-5 flex transform items-center rounded-lg px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href ===
 					$page.url.pathname
-						? 'active_sidebar dark:text-gray-800'
+						? 'active-sidebar dark:text-gray-800'
 						: ''}"
 					{href}
 				>

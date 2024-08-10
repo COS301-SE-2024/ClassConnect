@@ -4,6 +4,8 @@ import { error, redirect } from '@sveltejs/kit';
 
 export async function load({ locals }) {
 	if (!locals.user) throw error(401);
+
+	return { role: locals.user.role };
 }
 
 export const actions: Actions = {
