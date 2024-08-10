@@ -85,10 +85,10 @@ async function createQuiz(
 		owner: ownerID,
 		type: 'quiz'
 	});
-
+	
 	await newActivity.save();
-
 	return { success: true };
+
 }
 
 function validateLecturer(locals: any) {

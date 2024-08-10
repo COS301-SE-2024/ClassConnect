@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 
 import Quizzes from '$db/schemas/Quiz';
 import Activities from '$db/schemas/Activity';
-import * as quizzesModule from './quizzes.page.server';
+import * as quizzesModule from './+page.server';
 
 vi.mock('$db/schemas/Quiz', () => {
   const QuizzesMock: any = vi.fn().mockImplementation(() => ({
@@ -44,7 +44,7 @@ describe('Quizzes Management', () => {
     it('should return workspaceID and quizzes', async () => {
       const params = { workspace: 'workspace1' };
       const mockQuizzes = [
-        { _id: '1', title: 'Quiz1', instructions: 'Inst1', graded: 'Yes', date: new Date(), duration: 3600000, isAvailable: true },
+        { _id: '1', title: 'Quiz1', instructions: 'Inst1', graded: 'No', date: new Date(), duration: 3600000, isAvailable: true },
         { _id: '2', title: 'Quiz2', instructions: 'Inst2', graded: 'No', date: new Date(), duration: 1800000, isAvailable: false }
       ];
 
@@ -75,16 +75,26 @@ describe('Quizzes Management', () => {
       mockFormData.append('title', 'New Quiz');
       mockFormData.append('duration', '60');
       mockFormData.append('instructions', 'Quiz instructions');
-
+  
       const mockRequest = {
         formData: vi.fn().mockResolvedValue(mockFormData)
       };
-
+  
       const locals = { user: { role: 'lecturer' } };
       const params = { workspace: 'workspace1' };
-
+  
+      const mockQuiz = {
+        save: vi.fn().mockResolvedValue(undefined)
+      };
+      const mockActivity = {
+        save: vi.fn().mockResolvedValue(undefined)
+      };
+  
+      (Quizzes as any).mockImplementation(() => mockQuiz);
+      (Activities as any).mockImplementation(() => mockActivity);
+  
       const result = await quizzesModule.actions.post({ request: mockRequest, locals, params } as any);
-
+  
       expect(result).toEqual({ success: true });
       expect(Quizzes).toHaveBeenCalledWith({
         title: 'New Quiz',
@@ -93,6 +103,7 @@ describe('Quizzes Management', () => {
         owner: expect.any(mongoose.Types.ObjectId),
         duration: 3600000
       });
+      expect(mockQuiz.save).toHaveBeenCalled();
       expect(Activities).toHaveBeenCalledWith({
         title: 'New Quiz: New Quiz',
         description: 'Quiz instructions',
@@ -100,6 +111,7 @@ describe('Quizzes Management', () => {
         owner: expect.any(mongoose.Types.ObjectId),
         type: 'quiz'
       });
+      expect(mockActivity.save).toHaveBeenCalled();
     });
 
     it('should fail if user is not a lecturer', async () => {
