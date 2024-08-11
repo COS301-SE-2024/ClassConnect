@@ -61,7 +61,7 @@
 			<div class="text-2xl font-semibold text-gray-800 dark:text-gray-300">ClassConnect</div>
 		</div>
 	</a>
-
+e
 	<nav class="flex-1 space-y-2">
 		{#each currentLinks as { icon, name, href }}
 			<a
