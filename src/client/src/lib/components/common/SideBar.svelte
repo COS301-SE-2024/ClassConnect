@@ -52,11 +52,7 @@
 >
 	<a href="/" class="mx-auto mb-6">
 		<div class="flex items-center">
-			<img
-				class="mr-3 h-16 w-16"
-				src="images/class-connect-logo.png"
-				alt="ClassConnect owl logo"
-			/>
+			<img class="mr-3 h-16 w-16" src="images/class-connect-logo.png" alt="ClassConnect owl logo" />
 			<div class="text-2xl font-semibold text-gray-800 dark:text-gray-300">ClassConnect</div>
 		</div>
 	</a>
@@ -64,8 +60,11 @@
 	<nav class="flex-1 space-y-2">
 		{#each currentLinks as { icon, name, href }}
 			<a
-				class="flex items-center rounded-lg px-4 py-2 text-gray-600 transition duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href === $page.url.pathname ? 'active-sidebar dark:text-gray-800' : ''}"
-				href={href}
+				class="flex items-center rounded-lg px-4 py-2 text-gray-600 transition duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href ===
+				$page.url.pathname
+					? 'active-sidebar dark:text-gray-800'
+					: ''}"
+				{href}
 			>
 				<svelte:component this={icon} class="h-5 w-5" />
 				<span class="ml-4 text-base font-medium">{name}</span>
@@ -76,8 +75,11 @@
 
 		{#each commonLinks as { icon, name, href }}
 			<a
-				class="flex items-center rounded-lg px-4 py-2 text-gray-600 transition duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href === $page.url.pathname ? 'active-sidebar dark:text-gray-800' : ''}"
-				href={href}
+				class="flex items-center rounded-lg px-4 py-2 text-gray-600 transition duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href ===
+				$page.url.pathname
+					? 'active-sidebar dark:text-gray-800'
+					: ''}"
+				{href}
 			>
 				<svelte:component this={icon} class="h-5 w-5" />
 				<span class="ml-4 text-base font-medium">{name}</span>

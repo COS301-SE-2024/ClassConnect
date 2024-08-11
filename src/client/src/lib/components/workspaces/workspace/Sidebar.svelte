@@ -73,7 +73,9 @@
 			<div class="flex justify-center">
 				<img class="h-20 w-20 rounded-full" src={workspace.image} alt="ClassConnect owl logo" />
 			</div>
-			<div class="mt-2 text-center text-2xl font-semibold text-gray-800 dark:text-gray-300">{workspace.name}</div>
+			<div class="mt-2 text-center text-2xl font-semibold text-gray-800 dark:text-gray-300">
+				{workspace.name}
+			</div>
 		</div>
 	</a>
 
@@ -81,8 +83,11 @@
 		<nav class="space-y-2">
 			{#each currentLinks as { icon, name, href }}
 				<a
-					class="flex items-center rounded-lg px-4 py-2 text-gray-600 transition duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href === $page.url.pathname ? 'active-sidebar dark:text-gray-800' : ''}"
-					href={href}
+					class="flex items-center rounded-lg px-4 py-2 text-gray-600 transition duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href ===
+					$page.url.pathname
+						? 'active-sidebar dark:text-gray-800'
+						: ''}"
+					{href}
 				>
 					<svelte:component this={icon} class="h-5 w-5" />
 					<span class="ml-4 text-base font-medium">{name}</span>
