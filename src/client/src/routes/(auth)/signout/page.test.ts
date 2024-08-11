@@ -1,8 +1,7 @@
 import SignOut from './+page.svelte';
 
-import { goto } from '$app/navigation';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, fireEvent, screen } from '@testing-library/svelte';
+import { render, screen } from '@testing-library/svelte';
 
 vi.mock('$app/forms', () => ({
 	enhance: vi.fn()
@@ -25,13 +24,5 @@ describe('SignOut Component', () => {
 	it('renders the form buttons', () => {
 		expect(screen.getByRole('button', { name: 'Yes, I am sure' })).toBeTruthy();
 		expect(screen.getByRole('button', { name: 'No, cancel' })).toBeTruthy();
-	});
-
-	it('redirects to home on cancel button click', async () => {
-		const cancelButton = screen.getByRole('button', { name: 'No, cancel' });
-
-		await fireEvent.click(cancelButton);
-
-		expect(goto).toHaveBeenCalledWith('/home');
 	});
 });

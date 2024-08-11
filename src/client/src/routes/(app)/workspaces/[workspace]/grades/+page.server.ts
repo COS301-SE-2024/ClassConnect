@@ -1,56 +1,34 @@
 import { error } from '@sveltejs/kit';
-
-import Quiz from '$lib/server/database/schemas/Quiz';
 import Grades from '$lib/server/database/schemas/Grades';
-import type { AssessmentStat, GradeData, QuizData } from '$src/types';
 
-export async function load() {
+export async function load({ locals, params }) {
+	if (!locals.user || locals.user.role !== 'student') throw error(401, 'Unauthorised');
+
 	try {
-		const quizzes: QuizData[] = await Quiz.find().lean();
-		const grades: GradeData[] = await Grades.find().lean();
+		const workspaceID = params.workspace;
 
-		const statMap = new Map<string, AssessmentStat>();
-		const quizMap = new Map(quizzes.map((quiz) => [quiz._id.toString(), quiz]));
+		const grades = await Grades.find({ studentID: locals.user.id, workspaceID })
+			.populate('quizID')
+			.lean();
 
-		grades.forEach((grade) => {
-			const quizId = grade.quizID.toString();
-			const quiz = quizMap.get(quizId);
-
-			if (!quiz) return;
-
-			if (!statMap.has(quizId)) {
-				statMap.set(quizId, {
-					name: quiz.title,
-					submitted: 0,
-					average: 0,
-					passRate: 0
-				});
-			}
-
-			const stat = statMap.get(quizId)!;
-
-			stat.submitted++;
-			stat.average += grade.mark;
-
-			const passMark = 100 * 0.5;
-
-			if (grade.mark >= passMark) {
-				stat.passRate++;
-			}
-		});
-
-		const assessmentStats: AssessmentStat[] = Array.from(statMap.values()).map((stat) => ({
-			name: stat.name,
-			submitted: stat.submitted,
-			average: Number((stat.average / stat.submitted).toFixed(2)),
-			passRate: Number(((stat.passRate / stat.submitted) * 100).toFixed(2))
+		const workspaceGrades = grades.map((grade) => ({
+			average: 0,
+			score: grade.mark,
+			assessment: grade.quizID.title,
+			quizID: grade.quizID._id.toString(),
+			date: grade.quizID.date.toDateString()
 		}));
 
-		console.log('Assessment stats:', assessmentStats);
+		for (const assessment of workspaceGrades) {
+			const allGrades = await Grades.find({ quizID: assessment.quizID });
+			const average = allGrades.reduce((sum, g) => sum + g.mark, 0) / allGrades.length;
 
-		return { assessmentStats };
+			assessment.average = Math.round(average);
+		}
+
+		return { grades: workspaceGrades };
 	} catch (e) {
-		console.error('Error fetching assessment stats:', e);
-		throw error(500, 'An error occurred while fetching assessment stats');
+		console.error('Error fetching grades:', e);
+		throw error(500, 'An error occurred while fetching grades');
 	}
 }

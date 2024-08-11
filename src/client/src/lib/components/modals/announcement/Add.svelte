@@ -3,11 +3,12 @@
 	import Banner from '$lib/components/common/Banner.svelte';
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
 
+	export let id: string;
 	export let open: boolean;
 
 	let error: string;
-	let message: string;
 	let color: string;
+	let message: string;
 	let display: boolean = false;
 
 	function close() {
@@ -41,14 +42,16 @@
 			<p class="mt-2 text-center text-red-500">{error}</p>
 		{/if}
 
+		<Input type="hidden" name="createdBy" value={id} />
+
 		<Label for="title" class="mb-2 mt-2 text-left">Title</Label>
 		<Input type="text" id="title" name="title" placeholder="Fire Drill" size="md" required />
 
-		<Label for="description" class="mb-2 mt-2 text-left">Description</Label>
+		<Label for="content" class="mb-2 mt-2 text-left">Content</Label>
 		<Input
 			type="text"
-			id="description"
-			name="description"
+			id="content"
+			name="content"
 			placeholder="The fire drill is as follows..."
 			size="md"
 			required

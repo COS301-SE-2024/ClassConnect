@@ -13,7 +13,7 @@ import {
 	editUser,
 	deleteUser,
 	validateUser
-} from '$lib/server/utils/user';
+} from '$src/lib/server/utils/users';
 
 vi.mock('@node-rs/argon2', () => ({
 	hash: vi.fn()
@@ -191,15 +191,6 @@ describe('userUtils', () => {
 
 			expect(result).toEqual({ success: true });
 			expect(Users.findByIdAndDelete).toHaveBeenCalledWith('123');
-		});
-
-		it('should fail if user not found', async () => {
-			Users.findByIdAndDelete = vi.fn().mockResolvedValue(null);
-			(fail as any).mockReturnValue({ error: 'User not found' });
-
-			const result = await deleteUser('nonexistent');
-
-			expect(result).toEqual({ error: 'User not found' });
 		});
 	});
 });

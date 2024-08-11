@@ -9,7 +9,6 @@
 		Badge
 	} from 'flowbite-svelte';
 	import { SalePercentSolid } from 'flowbite-svelte-icons';
-	import OverviewShedule from '$lib/components/common/OverviewShedule.svelte';
 
 	const options = {
 		colors: ['#50e991', '"#0bb4ff"'],
@@ -211,7 +210,7 @@
 			<Chart {options} />
 		</Card>
 		<Card size="sm">
-			<OverviewShedule />
+			<!-- <OverviewShedule /> -->
 		</Card>
 	</div>
 

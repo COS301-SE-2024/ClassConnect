@@ -4,67 +4,40 @@
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
 
 	export let id: string;
-	//export let item: string;
+	export let item: string;
 	export let open: boolean;
 
 	let error: string;
-	/* Message, Colour & Display are saying that they are assigned a valye but never used. I am just commenting it out in the meantime.
-	let message: string;
-	let color: string;
-	let display: boolean = false;
 
 	function close() {
 		return async ({ result, update }: any) => {
 			if (result.type === 'success') {
 				await update();
-				message = 'Deleted successfully';
-				color = 'green';
 				open = false;
-				display = true;
 			} else {
 				error = result.data?.error;
-				message = 'Delete failed';
-				color = 'red';
-				open = false;
-				display = true;
 			}
 		};
 	}
-		*/
 </script>
 
 <Modal bind:open size="xs">
 	<div class="text-center">
 		<ExclamationCircleOutline class="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-200" />
+
 		<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-			Are you sure you want to delete this workspace?
+			Are you sure you want to delete this {item}?
 		</h3>
+
 		{#if error}
 			<p class="mt-2 text-center text-red-500">{error}</p>
 		{/if}
+
 		<form method="POST" action="?/delete" use:enhance={close}>
 			<Input type="hidden" id="id" name="id" value={id} />
+
 			<Button color="red" class="me-2" type="submit">Yes, I'm sure</Button>
-			<Button color="alternative">No, cancel</Button>
+			<Button color="alternative" on:click={() => (open = false)}>No, cancel</Button>
 		</form>
 	</div>
 </Modal>
-<!--
-<Modal bind:open size="xs">
-	<ExclamationCircleOutline class="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-200" />
-
-	<h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-		Are you sure you want to remove this {item}?
-	</h3>
-
-	{#if error}
-		<p class="mt-2 text-center text-red-500">{error}</p>
-	{/if}
-
-	<form method="POST" action="?/delete" use:enhance={close}>
-		<Input type="hidden" id="id" name="id" value={id} />
-
-		<Button type="submit" color="red" class="me-2">Yes, I'm sure</Button>
-	</form>
-</Modal>
--->
