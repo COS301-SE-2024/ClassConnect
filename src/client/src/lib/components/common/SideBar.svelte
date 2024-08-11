@@ -54,12 +54,8 @@
 >
 	<a href="/" class="mx-auto">
 		<div class="flex items-center">
-			<img
-				class="mr-2 h-20 w-20"
-				src="images/class-connect-logo.png"
-				alt="Class Connect owl logo"
-			/>
-			<div class="roboto text-xl dark:text-gray-300">Class Connect</div>
+			<img class="mr-2 h-20 w-20" src="images/class-connect-logo.png" alt="ClassConnect owl logo" />
+			<div class="roboto text-xl dark:text-gray-300">ClassConnect</div>
 		</div>
 	</a>
 

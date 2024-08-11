@@ -69,7 +69,7 @@
 	<a href="/" class="mx-auto">
 		<div class="items-center">
 			<div class="flex justify-center">
-				<img class="mb-2 h-20 w-20" src={workspace.image} alt="Class Connect owl logo" />
+				<img class="mb-2 h-20 w-20" src={workspace.image} alt="ClassConnect owl logo" />
 			</div>
 			<div class="roboto text-center text-xl dark:text-gray-300">{workspace.name}</div>
 		</div>
