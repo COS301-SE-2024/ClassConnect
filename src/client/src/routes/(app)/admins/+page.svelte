@@ -4,13 +4,10 @@
 		TableHead,
 		TableBody,
 		TableSearch,
-		TableSearch,
 		TableBodyRow,
 		TableBodyCell,
 		TableHeadCell
-		TableHeadCell
 	} from 'flowbite-svelte';
-	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 
 	import AddModal from '$lib/components/modals/user/Add.svelte';
@@ -143,5 +140,5 @@
 
 	<AddModal bind:open={isAddModalOpen} role="Admin" />
 	<EditModal bind:open={isEditModalOpen} {id} {_name} {surname} {email} role="Admin" />
-	<RemoveModal bind:open={isRemoveModalOpen} {id} />
+	<RemoveModal bind:open={isRemoveModalOpen} {id} item="admin" />
 {/if}
