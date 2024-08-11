@@ -4,10 +4,13 @@
 		TableHead,
 		TableBody,
 		TableSearch,
+		TableSearch,
 		TableBodyRow,
 		TableBodyCell,
 		TableHeadCell
+		TableHeadCell
 	} from 'flowbite-svelte';
+	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 	import { EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 
 	import AddModal from '$lib/components/modals/user/Add.svelte';
