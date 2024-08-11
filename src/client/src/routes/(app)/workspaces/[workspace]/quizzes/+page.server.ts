@@ -85,10 +85,9 @@ async function createQuiz(
 		owner: ownerID,
 		type: 'quiz'
 	});
-	
+
 	await newActivity.save();
 	return { success: true };
-
 }
 
 function validateLecturer(locals: any) {
@@ -116,7 +115,7 @@ export const actions: Actions = {
 			const workspaceId = new mongoose.Types.ObjectId(params.workspace);
 			console.log('Quiz Workspace Id:', workspaceId);
 
-			const result= await createQuiz(title, graded, instructions, workspaceId, duration);
+			const result = await createQuiz(title, graded, instructions, workspaceId, duration);
 			return result;
 		} catch (error) {
 			console.error('Error posting quiz:', error);

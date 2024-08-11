@@ -82,7 +82,7 @@
 				No quizzes available in this workspace.
 			</h1>
 			{#if data.role === 'lecturer'}
-					<Button on:click={() => (isAddQuiz = true)}>Add Quiz</Button>
+				<Button on:click={() => (isAddQuiz = true)}>Add Quiz</Button>
 			{/if}
 		</div>
 	{:else}
@@ -150,4 +150,4 @@
 {#if selectedQuestionType === 'multiple-choice'}
 	<Question bind:open={isQuizFormOpen} />
 {/if} -->
-<RemoveModal bind:open={isRemoveModalOpen} {id}  />
+<RemoveModal bind:open={isRemoveModalOpen} {id} item="quiz" />
