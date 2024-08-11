@@ -76,23 +76,35 @@
 	let selectedAnswers: { [key: string]: string } = {};
 	let submitModalOpen = false;
 	let submissionMessage = '';
-	let totalPoints = 0;
+	let totalPoints = 0;let totalPossiblePoints = 0;
+	let percentageScore = 0;
 
 	function handleSelection(questionId: string, optionContent: string) {
 		selectedAnswers[questionId] = optionContent;
+	}
+
+	function calculateTotalPoints() {
+		totalPoints = questions.reduce((total: number, question: any) => {
+			const selectedOption = question.options.find(
+				(option: any) => option.content === selectedAnswers[question.questionNumber]
+			);
+			return total + (selectedOption ? selectedOption.points : 0);
+		}, 0);
+
+		totalPossiblePoints = questions.reduce((total: number, question: any) => {
+			const maxPoints = Math.max(...question.options.map((option: any) => option.points));
+			return total + maxPoints;
+		}, 0);
+
+		percentageScore = (totalPoints / totalPossiblePoints) * 100;
 	}
 
 	async function handleQuizSubmission() {
 		try {
 			stopTimer();
 			writingQuiz.set(false);
-			totalPoints = questions.reduce((total: number, question: any) => {
-				const selectedOption = question.options.find(
-					(option: any) => option.content === selectedAnswers[question.questionNumber]
-				);
-				return total + (selectedOption ? selectedOption.points : 0);
-			}, 0);
-			submissionMessage = `You have successfully submitted the quiz. Your score is ${totalPoints} points.`;
+			calculateTotalPoints();
+			submissionMessage = `You have successfully submitted the quiz. Your score is ${percentageScore.toFixed(2)}%.`;
 			submitModalOpen = true;
 		} catch (error) {
 			console.error('Error in handleQuizSubmission:', error);
@@ -102,20 +114,13 @@
 	function handleTimeOutSubmission() {
 		try {
 			writingQuiz.set(false);
-			// Calculate points as in handleQuizSubmission
-			totalPoints = questions.reduce((total: number, question: any) => {
-				const selectedOption = question.options.find(
-					(option: any) => option.content === selectedAnswers[question.questionNumber]
-				);
-				return total + (selectedOption ? selectedOption.points : 0);
-			}, 0);
-			submissionMessage = `Your time has run out for the quiz submission. Your score is ${totalPoints} points.`;
+			calculateTotalPoints();
+			submissionMessage = `Your time has run out for the quiz submission. Your score is ${percentageScore.toFixed(2)}%.`;
 			submitModalOpen = true;
 		} catch (error) {
 			console.error('Error in handleTimeOutSubmission:', error);
 		}
 	}
-
 	function handleFormSubmit() {
 		isFormOpen = false;
 		goto(`/workspaces/${workspaceID}/quizzes`);
