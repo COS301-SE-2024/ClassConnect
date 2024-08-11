@@ -16,44 +16,64 @@
 
 	let loading: boolean;
 
-	function close({formData, cancel}: any) {
-    const image = formData.get('image') as File;
-   
-    if (image) {
-        if (image.name !== "") {
-            const extension = image.name.split('.').pop()?.toLowerCase();
-            
-            if (image.size > 1000000) {
-                toast.error('The size of file should be less than 1 MB!');
-                cancel();
-                throw new Error('File is too big');
-            }
-            
-            const imageExtensions = ['jpg', 'jpeg', 'png','svg'];
-            
-            if (!(extension && imageExtensions.includes(extension))) {
-                toast.error('File type is not supported');
-                cancel();
-                throw new Error('File type is not supported');
-            }
-        }
-    }
 
-    return async ({ result, update }: any) => {
-		loading = true;
-        if (result.type === 'success') {
-			await new Promise(resolve => setTimeout(resolve, 5000));
-            await update();
-			loading = false;
-            open = false;
-        } else {
-            toast.error(result.data?.error || 'An unknown error occurred');
-        }
-    };
-}
+	function close({ formData, cancel }: any) {
+		const image = formData.get('image') as File;
+
+		if (image && image.name !== "") {
+			const extension = image.name.split('.').pop()?.toLowerCase();
+
+			if (image.size > 1000000) {
+				toast.error('The size of file should be less than 1 MB!');
+				cancel();
+				return;
+			}
+
+			const imageExtensions = ['jpg', 'jpeg', 'png', 'svg'];
+
+			if (!(extension && imageExtensions.includes(extension))) {
+				toast.error('File type is not supported');
+				cancel();
+				return;
+			}
+		}
+
+		return ({ result, update }: any) => {
+			loading = true; // Set loading state to true when form submission starts
+
+			const promise = new Promise((resolve, reject) => {
+				setTimeout(async () => {
+					try {
+						if (result.type === 'success') {
+							await update();
+							open = false;
+							resolve(`${role} details changed successfully!`);
+						} else {
+							reject(result.data?.error || 'An unknown error occurred');
+						}
+					} catch (error) {
+						reject(error);
+					} finally {
+						loading = false; // Reset loading state after form submission is complete
+					}
+				}, 500);
+			});
+
+			toast.promise(
+				promise,
+				{
+					loading: 'Changing detials..',
+					success: (message) => `${message}`,
+					error: (error) => `${error}`
+				}
+			);
+
+			return promise;
+		};
+	}
 		
 </script>
-
+<Toaster/>
 <Modal bind:open size="xs" class="w-full">
 	<!-- <Loading {loading} text="Loading"/> -->
 	<form
@@ -65,7 +85,7 @@
 	>
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Edit {role}</h3>
 
-		<Toaster/>
+
 		<Input type="hidden" id="id" name="id" value={id} />
 		<Label for="name" class="space-y-2">
 			<span>Name</span>

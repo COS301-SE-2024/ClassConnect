@@ -11,40 +11,59 @@
 	let value: string;
 	
 
-	function close({formElement, formData, cancel}: any) {
-    const image = formData.get('image') as File;
-   
-    if (image) {
-        if (image.name !== "") {
-            const extension = image.name.split('.').pop()?.toLowerCase();
-            
-            if (image.size > 1000000) {
-                toast.error('The size of file should be less than 1 MB!');
-                cancel();
-                throw new Error('File is too big');
-            }
-            
-            const imageExtensions = ['jpg', 'jpeg', 'png','svg'];
-            
-            if (!(extension && imageExtensions.includes(extension))) {
-                toast.error('File type is not supported');
-                cancel();
-                throw new Error('File type is not supported');
-            }
-        }
-    }
+	function close({ formData, cancel }: any) {
+		const image = formData.get('image') as File;
 
-    return async ({ result, update }: any) => {
-        if (result.type === 'success') {
-            await update();
-            open = false;
-        } else {
-            toast.error(result.data?.error || 'An unknown error occurred');
-        }
-    };
-}
+		if (image && image.name !== "") {
+			const extension = image.name.split('.').pop()?.toLowerCase();
+
+			if (image.size > 1000000) {
+				toast.error('The size of file should be less than 1 MB!');
+				cancel();
+				return;
+			}
+
+			const imageExtensions = ['jpg', 'jpeg', 'png', 'svg'];
+
+			if (!(extension && imageExtensions.includes(extension))) {
+				toast.error('File type is not supported');
+				cancel();
+				return;
+			}
+		}
+
+		return ({ result, update }: any) => {
+			const promise = new Promise((resolve, reject) => {
+				setTimeout(async () => {
+					try {
+						if (result.type === 'success') {
+							await update();
+							open = false;
+							resolve('Workspace changed successfully!');
+						} else {
+							reject(result.data?.error || 'An unknown error occurred');
+						}
+					} catch (error) {
+						reject(error);
+					} finally {
+					}
+				}, 500);
+			});
+
+			toast.promise(
+				promise,
+				{
+					loading: 'Changing workspace...',
+					success: (message) => `${message}`,
+					error: (error) => `${error}`
+				}
+			);
+
+			return promise;
+		};
+	}
 </script>
-
+<Toaster />
 <Modal bind:open size="xs" class="w-full">
 	<form
 		method="POST"
