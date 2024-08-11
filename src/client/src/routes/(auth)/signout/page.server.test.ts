@@ -1,7 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { lucia } from '$lib/server/auth';
 import * as signoutModule from './+page.server';
 import { error, redirect } from '@sveltejs/kit';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+import { lucia } from '$lib/server/auth';
 
 vi.mock('$lib/server/auth', () => ({
 	lucia: {
@@ -39,7 +40,7 @@ describe('Sign Out Module', () => {
 		it('should not throw error if user exists in locals', async () => {
 			const locals = { user: { id: '123' } };
 
-			await expect(signoutModule.load({ locals })).resolves.toBeUndefined();
+			await expect(signoutModule.load({ locals })).resolves.toEqual({ role: undefined });
 			expect(error).not.toHaveBeenCalled();
 		});
 	});

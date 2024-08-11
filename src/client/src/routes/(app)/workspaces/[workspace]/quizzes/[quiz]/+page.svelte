@@ -21,8 +21,6 @@
 	$: ({ questions, role, duration } = data);
 	$: activeTimer = role === 'student' && !isPreview;
 	$: isPreview = $page.url.searchParams.get('preview') === 'true';
-	$: activeTimer = role === 'student' && !isPreview;
-	$: isPreview = $page.url.searchParams.get('preview') === 'true';
 
 	let last_time: number;
 	let frame: number;
@@ -130,15 +128,6 @@
 		{#if questions.length === 0}
 			<p class="text-gray-700 dark:text-gray-300">No questions available for this quiz.</p>
 		{:else}
-			{#if role === 'student' && !isPreview}
-				<p class="text-gray-700 dark:text-gray-300">Elapsed time to complete quiz:</p>
-				<Progressbar
-					progress={100 * (1 - elapsed / duration)}
-					size="h-4"
-					color={elapsed / duration > 0.75 ? 'red' : elapsed / duration > 0.5 ? 'yellow' : 'green'}
-				/>
-				<div>{(elapsed / 1000).toFixed(1)}s</div>
-			{/if}
 			{#if role === 'student' && !isPreview}
 				<p class="text-gray-700 dark:text-gray-300">Elapsed time to complete quiz:</p>
 				<Progressbar

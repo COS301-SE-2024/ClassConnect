@@ -45,8 +45,7 @@
 		{ icon: InfoCircleSolid, name: 'FAQ', href: '/faq' }
 	];
 
-	$: role;
-	$: currentLinks = navLinks[role];
+	const currentLinks = navLinks[role];
 </script>
 
 <aside
@@ -59,7 +58,7 @@
 				src="images/class-connect-logo.png"
 				alt="Class Connect owl logo"
 			/>
-			<div class="roboto text-xl dark:text-gray-300">ClassConnect</div>
+			<div class="text-xl dark:text-gray-300">ClassConnect</div>
 		</div>
 	</a>
 
@@ -69,7 +68,7 @@
 				<a
 					class="mt-5 flex transform items-center rounded-lg px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href ===
 					$page.url.pathname
-						? 'active_sidebar dark:text-gray-800'
+						? 'active-sidebar dark:text-gray-800'
 						: ''}"
 					{href}
 				>
@@ -85,7 +84,7 @@
 				<a
 					class="mt-5 flex transform items-center rounded-lg px-4 py-2 text-gray-600 transition-colors duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href ===
 					$page.url.pathname
-						? 'active_sidebar dark:text-gray-800'
+						? 'active-sidebar dark:text-gray-800'
 						: ''}"
 					{href}
 				>

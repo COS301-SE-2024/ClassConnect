@@ -1,7 +1,11 @@
-<script>
+<script lang="ts">
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
 	import { Button } from 'flowbite-svelte';
+
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 </script>
 
 <main
@@ -14,7 +18,13 @@
 
 		<form method="POST" use:enhance class="flex">
 			<Button type="submit" color="red" class="mx-2 w-full">Yes, I am sure</Button>
-			<Button on:click={() => goto('/home')} class="mx-2 w-full">No, cancel</Button>
+
+			<Button
+				class="mx-2 w-full"
+				on:click={() => goto(data.role === 'lecturer' ? '/workspaces' : '/dashboard')}
+			>
+				No, cancel
+			</Button>
 		</form>
 	</div>
 </main>

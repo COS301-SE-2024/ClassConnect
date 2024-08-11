@@ -38,9 +38,9 @@
 		<Label for="name" class="mb-2 mt-2 text-left">New Name</Label>
 		<Input type="text" id="name" name="name" placeholder="Example University" size="md" />
 
-		<Label for="with_helper" class="pb-2">New Logo</Label>
-		<Fileupload id="with_helper" name="file" class="mb-2" />
-		<Helper>SVG, PNG or JPG (MAX. 1 MB).</Helper>
+		<Label for="image" class="pb-2">New Logo</Label>
+		<Fileupload id="image" name="image" class="mb-2" />
+		<Helper>SVG, PNG or JPG (MAX. 10 MB).</Helper>
 
 		<Button type="submit" class="mt-4 w-full">Save</Button>
 	</form>
