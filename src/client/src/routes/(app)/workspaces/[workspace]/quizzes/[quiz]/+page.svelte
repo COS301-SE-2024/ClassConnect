@@ -76,7 +76,8 @@
 	let selectedAnswers: { [key: string]: string } = {};
 	let submitModalOpen = false;
 	let submissionMessage = '';
-	let totalPoints = 0;let totalPossiblePoints = 0;
+	let totalPoints = 0;
+	let totalPossiblePoints = 0;
 	let percentageScore = 0;
 
 	function handleSelection(questionId: string, optionContent: string) {
@@ -183,7 +184,7 @@
 						};
 					}}
 				>
-					<input type="hidden" name="mark" value={totalPoints} />
+					<input type="hidden" name="mark" value={percentageScore} />
 					<Button type="submit" on:click={handleQuizSubmission}>Submit Quiz</Button>
 				</form>
 			{/if}

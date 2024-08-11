@@ -3,7 +3,7 @@
 
 	export let open: boolean = false;
 	export let submissionMessage: string = '';
-	
+
 	export let percentageScore: number = 0;
 
 	let error: string;
