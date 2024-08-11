@@ -1,12 +1,5 @@
 <script>
-	import {
-		Avatar,
-		Navbar,
-		DarkMode,
-		Dropdown,
-		DropdownItem,
-		DropdownDivider
-	} from 'flowbite-svelte';
+	import { Avatar, Navbar, DarkMode } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
 	import { change } from '$lib/store';
 	import BreadCrumbs from '$lib/components/common/Breadcrumbs.svelte';
