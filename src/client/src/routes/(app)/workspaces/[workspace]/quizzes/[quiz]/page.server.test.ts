@@ -99,8 +99,6 @@ describe('Quiz Actions', () => {
 			);
 			expect(mockQuestion.save).toHaveBeenCalled();
 		});
-
-		
 	});
 
 	describe('actions.submitQuiz', () => {
@@ -138,8 +136,6 @@ describe('Quiz Actions', () => {
 			);
 			expect(mockGrade.save).toHaveBeenCalled();
 		});
-
-		
 
 		it('should return 404 if quiz is not found', async () => {
 			const mockRequest = {
