@@ -81,7 +81,9 @@
 			<h1 class="mb-4 text-2xl font-semibold text-gray-700 dark:text-white">
 				No quizzes available in this workspace.
 			</h1>
-			<Button on:click={() => (isAddQuiz = true)}>Add Quiz</Button>
+			{#if data.role === 'lecturer'}
+				<Button on:click={() => (isAddQuiz = true)}>Add Quiz</Button>
+			{/if}
 		</div>
 	{:else}
 		<div class="sm:flex sm:items-center sm:justify-between">
