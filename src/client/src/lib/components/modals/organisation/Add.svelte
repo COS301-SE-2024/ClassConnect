@@ -35,9 +35,9 @@
 		<Label for="name" class="mb-2 mt-2 text-left">Name</Label>
 		<Input type="text" id="name" name="name" placeholder="Example University" size="md" required />
 
-		<Label for="with_helper" class="pb-2">Logo</Label>
-		<Fileupload id="with_helper" name="file" class="mb-2" />
-		<Helper>SVG, PNG or JPG (MAX. 1 MB).</Helper>
+		<Label for="image" class="pb-2">Logo</Label>
+		<Fileupload id="image" name="image" class="mb-2" />
+		<Helper>SVG, PNG or JPG (MAX. 10 MB).</Helper>
 
 		<Button type="submit" class="mt-4 w-full">Create Organisation</Button>
 	</form>

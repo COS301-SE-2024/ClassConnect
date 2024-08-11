@@ -17,7 +17,6 @@
 		"test:coverage": "vitest run --coverage"
 	},
 	"devDependencies": {
-		"@fontsource/roboto": "^5.0.13",
 		"@rollup/plugin-image": "^3.0.3",
 		"@sveltejs/adapter-auto": "^3.2.2",
 		"@sveltejs/adapter-node": "^5.2.0",
@@ -76,7 +75,7 @@
 		"@threlte/xr": "^0.1.4",
 		"@types/canvas-confetti": "^1.6.4",
 		"@vue/test-utils": "^2.4.6",
-		"aws-sdk": "^2.1656.0",
+		"aws-sdk": "^2.1670.0",
 		"axios": "^1.7.2",
 		"bcrypt": "^5.1.1",
 		"canvas-confetti": "^1.9.3",

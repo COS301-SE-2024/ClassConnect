@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { ChevronDownOutline, FileLinesSolid } from 'flowbite-svelte-icons';
-	import { Chart, Card, Button, Dropdown, DropdownItem } from 'flowbite-svelte';
+	import { Chart } from 'flowbite-svelte';
 
 	import type { AssessmentStat } from '$src/types';
 
@@ -83,36 +82,6 @@
 	};
 </script>
 
-<Card size="lg">
-	<div class="mb-5 flex justify-between">
-		<div class="grid grid-cols-2 gap-4">
-			<p class="text-2xl font-bold leading-none text-gray-900 dark:text-white">Assessment Graph</p>
-		</div>
-		<div>
-			<Button color="light" class="px-3 py-2">
-				Last week<ChevronDownOutline class="ms-1.5 h-2.5 w-2.5" />
-			</Button>
-			<Dropdown class="w-40">
-				<DropdownItem>Yesterday</DropdownItem>
-				<DropdownItem>Today</DropdownItem>
-				<DropdownItem>Last 7 days</DropdownItem>
-				<DropdownItem>Last 30 days</DropdownItem>
-				<DropdownItem>Last 90 days</DropdownItem>
-			</Dropdown>
-		</div>
-	</div>
+<div class="rounded p-4 dark:bg-gray-800">
 	<Chart {options} />
-	<div
-		class="mt-2.5 grid grid-cols-1 items-center justify-between border-t border-gray-200 dark:border-gray-700"
-	>
-		<div class="pt-5">
-			<Button
-				href="/"
-				class="inline-flex items-center rounded-lg bg-primary-700 px-4 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-			>
-				<FileLinesSolid class="me-2 h-3.5 w-3.5 text-white" />
-				View full report
-			</Button>
-		</div>
-	</div>
-</Card>
+</div>

@@ -2,7 +2,6 @@ import { hash } from '@node-rs/argon2';
 import { fail, redirect } from '@sveltejs/kit';
 
 import type { Actions } from './$types';
-import type { SignUpData } from '$src/types';
 
 import User from '$db/schemas/User';
 import { retry_connection } from '$db/db';
@@ -23,8 +22,9 @@ function validateName(name: FormDataEntryValue | null): string {
 function validateEmail(email: FormDataEntryValue | null): string {
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-	if (typeof email !== 'string' || email.length === 0 || !emailRegex.test(email))
+	if (typeof email !== 'string' || email.length === 0 || !emailRegex.test(email)) {
 		throw new Error('Invalid email');
+	}
 
 	return email;
 }
