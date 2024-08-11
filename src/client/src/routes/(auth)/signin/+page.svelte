@@ -22,8 +22,8 @@
 	<section class="w-1/2" style="z-index: 1;">
 		<div class="flex h-screen flex-col items-center">
 			<div class="m-4 flex items-center justify-center">
-				<img class="w-1/4" src="/images/class-connect-logo.png" alt="class connect logo" />
-				<h1 class="m-4 text-5xl font-bold text-white dark:text-white">Class Connect</h1>
+				<img class="w-1/4" src="/images/class-connect-logo.png" alt="ClassConnect logo" />
+				<h1 class="font-roboto m-4 text-5xl font-bold">ClassConnect</h1>
 			</div>
 
 			<div

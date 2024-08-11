@@ -13,7 +13,7 @@ describe('SignIn Component', () => {
 	});
 
 	it('renders the component', () => {
-		expect(screen.getByText('Class Connect')).toBeTruthy();
+		expect(screen.getByText('ClassConnect')).toBeTruthy();
 		expect(screen.getByText('Welcome Back 👋')).toBeTruthy();
 	});
 
