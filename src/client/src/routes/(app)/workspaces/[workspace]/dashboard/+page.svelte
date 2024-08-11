@@ -1,118 +1,278 @@
 <script lang="ts">
 	import {
+		Card,
+		Chart,
 		Table,
 		TableBody,
 		TableBodyCell,
 		TableBodyRow,
-		TableHead,
-		TableHeadCell,
-		Card,
-		Button,
-		Avatar
+		Badge
 	} from 'flowbite-svelte';
-	import {
-		ChartPieOutline,
-		CalendarEditOutline,
-		BookOpenOutline,
-		UsersOutline
-	} from 'flowbite-svelte-icons';
+	import { SalePercentSolid } from 'flowbite-svelte-icons';
 
-	// Mock data remains the same
-	const stats = [
-		{ title: 'Total Topics', value: 5, icon: BookOpenOutline },
-		{ title: 'Total Students', value: 120, icon: UsersOutline },
-		{ title: 'Upcoming Lectures', value: 3, icon: CalendarEditOutline },
-		{ title: 'Avg. Attendance', value: '85%', icon: ChartPieOutline }
-	];
-	const upcomingLectures = [
-		{ course: 'Introduction to Computer Science', date: '2024-07-05 10:00 AM', room: 'CS-101' },
-		{ course: 'Data Structures', date: '2024-07-06 2:00 PM', room: 'CS-202' },
-		{ course: 'Algorithms', date: '2024-07-07 11:00 AM', room: 'CS-303' }
-	];
-	const recentSubmissions = [
-		{ student: 'John Doe', course: 'Intro to CS', assignment: 'Homework 1', date: '2024-07-03' },
-		{
-			student: 'Jane Smith',
-			course: 'Data Structures',
-			assignment: 'Project 2',
-			date: '2024-07-02'
+	const options = {
+		colors: ['#50e991', '"#0bb4ff"'],
+		series: [
+			{
+				name: 'Your Average (%)',
+				color: '#50e991',
+				data: [
+					{ x: 'Jan', y: 42 },
+					{ x: 'Feb', y: 31 },
+					{ x: 'Mar', y: 89 },
+					{ x: 'Apr', y: 67 },
+					{ x: 'May', y: 14 },
+					{ x: 'Jun', y: 53 },
+					{ x: 'Jul', y: 86 }
+				]
+			},
+			{
+				name: 'Class Average (%)',
+				color: '#0bb4ff',
+				data: [
+					{ x: 'Jan', y: 75 },
+					{ x: 'Feb', y: 28 },
+					{ x: 'Mar', y: 91 },
+					{ x: 'Apr', y: 19 },
+					{ x: 'May', y: 83 },
+					{ x: 'Jun', y: 46 },
+					{ x: 'Jul', y: 72 }
+				]
+			}
+		],
+		chart: {
+			type: 'bar',
+			height: '320px',
+			fontFamily: 'Inter, sans-serif',
+			toolbar: {
+				show: false
+			}
 		},
-		{ student: 'Bob Johnson', course: 'Algorithms', assignment: 'Quiz 3', date: '2024-07-01' }
+		plotOptions: {
+			bar: {
+				horizontal: false,
+				columnWidth: '70%',
+				borderRadiusApplication: 'end',
+				borderRadius: 8
+			}
+		},
+		tooltip: {
+			shared: true,
+			intersect: false,
+			style: {
+				fontFamily: 'Inter, sans-serif'
+			}
+		},
+		states: {
+			hover: {
+				filter: {
+					type: 'darken',
+					value: 1
+				}
+			}
+		},
+		stroke: {
+			show: true,
+			width: 0,
+			colors: ['transparent']
+		},
+		grid: {
+			show: false,
+			strokeDashArray: 4,
+			padding: {
+				left: 2,
+				right: 2,
+				top: -14
+			}
+		},
+		dataLabels: {
+			enabled: false
+		},
+		legend: {
+			show: false
+		},
+		xaxis: {
+			floating: false,
+			labels: {
+				show: true,
+				style: {
+					fontFamily: 'Inter, sans-serif',
+					cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+				}
+			},
+			axisBorder: {
+				show: false
+			},
+			axisTicks: {
+				show: false
+			}
+		},
+		yaxis: {
+			show: false
+		},
+		fill: {
+			opacity: 1
+		}
+	};
+
+	type Status = 'To Do' | 'In Progress' | 'Completed' | 'Upcoming' | 'Late';
+	type BadgeColor =
+		| 'none'
+		| 'red'
+		| 'yellow'
+		| 'green'
+		| 'indigo'
+		| 'purple'
+		| 'pink'
+		| 'blue'
+		| 'dark'
+		| 'primary';
+
+	interface Submissions {
+		image: string;
+		name: string;
+		date: string;
+		grade: number | null;
+		status: Status;
+		color: BadgeColor;
+	}
+
+	const assignments: Submissions[] = [
+		{
+			image:
+				'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?size=626&ext=jpg&ga=GA1.1.2113030492.1720396800&semt=sph',
+			name: '	Sthe Nyandeni',
+			date: 'Submitted: May 20, 2024',
+			grade: 92,
+			status: 'Completed',
+			color: getStatusColor('Completed')
+		},
+		{
+			image:
+				'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?size=626&ext=jpg&ga=GA1.1.2113030492.1720396800&semt=sph',
+			name: 'Jason Maritz',
+			date: 'Submitted: May 21, 2024',
+			grade: 92,
+			status: 'Completed',
+			color: getStatusColor('Completed')
+		},
+		{
+			image:
+				'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?size=626&ext=jpg&ga=GA1.1.2113030492.1720396800&semt=sph',
+			name: 'Jake Mileham',
+			date: 'Submitted: May 22, 2024',
+			grade: null,
+			status: 'In Progress',
+			color: getStatusColor('In Progress')
+		},
+		{
+			image:
+				'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?size=626&ext=jpg&ga=GA1.1.2113030492.1720396800&semt=sph',
+			name: 'Joshua Wereley',
+			date: 'Submitted: May 23, 2024',
+			grade: null,
+			status: 'In Progress',
+			color: getStatusColor('In Progress')
+		}
 	];
+
+	function getStatusColor(status: Status): BadgeColor {
+		switch (status) {
+			case 'To Do':
+				return 'red';
+			case 'In Progress':
+				return 'yellow';
+			case 'Completed':
+				return 'green';
+			default:
+				return 'none';
+		}
+	}
 </script>
 
-<div class="bg-gray-50 p-4 dark:bg-gray-900">
-	<h1 class="mb-6 text-2xl font-bold text-gray-900 dark:text-white">Lecturer Dashboard</h1>
-
-	<!-- Stats Overview -->
-	<div class="mb-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-		{#each stats as stat}
-			<Card>
+<div class="w-full p-4">
+	<div class="mb-4 flex gap-4">
+		<Card size="lg" class="flex-grow">
+			<div class="mb-4 flex justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
 				<div class="flex items-center">
 					<div
-						class="inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-600 dark:bg-blue-800 dark:text-blue-200"
+						class="me-3 flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-700"
 					>
-						<svelte:component this={stat.icon} class="h-6 w-6" />
+						<SalePercentSolid class="h-6 w-6 text-gray-500 dark:text-gray-400" />
 					</div>
-					<div class="ml-4">
-						<p class="text-sm font-medium text-gray-500 dark:text-gray-400">{stat.title}</p>
-						<p class="text-2xl font-semibold text-gray-900 dark:text-white">{stat.value}</p>
+					<div>
+						<h5 class="pb-1 text-2xl font-bold leading-none text-gray-900 dark:text-white">
+							Average Percentages
+						</h5>
 					</div>
 				</div>
-			</Card>
-		{/each}
+			</div>
+			<Chart {options} />
+		</Card>
+		<Card size="sm">
+			<!-- <OverviewShedule /> -->
+		</Card>
 	</div>
 
-	<!-- Upcoming Lectures - Full Width -->
-	<Card class="mb-8 w-full">
-		<h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Upcoming Lectures</h2>
-		<Table>
-			<TableHead>
-				<TableHeadCell>Course</TableHeadCell>
-				<TableHeadCell>Date & Time</TableHeadCell>
-				<TableHeadCell>Room</TableHeadCell>
-			</TableHead>
-			<TableBody>
-				{#each upcomingLectures as lecture}
-					<TableBodyRow>
-						<TableBodyCell>{lecture.course}</TableBodyCell>
-						<TableBodyCell>{lecture.date}</TableBodyCell>
-						<TableBodyCell>{lecture.room}</TableBodyCell>
-					</TableBodyRow>
-				{/each}
-			</TableBody>
-		</Table>
-	</Card>
-
-	<!-- Recent Submissions - Full Width -->
-	<Card class="w-full">
-		<h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Recent Student Submissions</h2>
-		<Table>
-			<TableHead>
-				<TableHeadCell>Student</TableHeadCell>
-				<TableHeadCell>Course</TableHeadCell>
-				<TableHeadCell>Assignment</TableHeadCell>
-				<TableHeadCell>Date</TableHeadCell>
-				<TableHeadCell>Action</TableHeadCell>
-			</TableHead>
-			<TableBody>
-				{#each recentSubmissions as submission}
+	<div class="flex gap-4">
+		<Card size="lg" class="flex-grow">
+			<div class="mb-6 flex items-center justify-between">
+				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
+					Recent Submissions
+				</h5>
+				<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View all</a>
+			</div>
+			<Table divClass="relative overflow-x-auto">
+				<TableBody>
+					{#each assignments as Submissions}
+						<TableBodyRow>
+							<TableBodyCell class="flex items-center">
+								<img src={Submissions.image} alt="" class="mr-4 h-10 w-10 rounded-full" />
+								<div>
+									<div class="font-semibold">{Submissions.name}</div>
+									<div class="text-sm text-gray-500">{Submissions.date}</div>
+								</div>
+							</TableBodyCell>
+							<TableBodyCell>
+								{#if Submissions.grade !== null}
+									<div class="font-bold">{Submissions.grade}%</div>
+								{:else}
+									<div class="font-bold text-gray-400">N/A</div>
+								{/if}
+							</TableBodyCell>
+							<TableBodyCell class="text-right">
+								<Badge rounded large color={Submissions.color}>{Submissions.status}</Badge>
+							</TableBodyCell>
+						</TableBodyRow>
+					{/each}
+				</TableBody>
+			</Table>
+		</Card>
+		<Card size="sm" class="flex-grow">
+			<div class="mb-6 flex items-center justify-between">
+				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Announcements</h5>
+				<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View All</a>
+			</div>
+			<Table divClass="overflow-x-auto w-full">
+				<TableBody>
 					<TableBodyRow>
 						<TableBodyCell>
-							<div class="flex items-center">
-								<Avatar size="xs" class="mr-2" />
-								{submission.student}
+							<div>
+								<div class="text-sm text-gray-500">announcement 1</div>
+								<div class="font-semibold">announcment text</div>
 							</div>
 						</TableBodyCell>
-						<TableBodyCell>{submission.course}</TableBodyCell>
-						<TableBodyCell>{submission.assignment}</TableBodyCell>
-						<TableBodyCell>{submission.date}</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow>
 						<TableBodyCell>
-							<Button size="xs">Review</Button>
+							<div>
+								<div class="text-sm text-gray-500">announcement 2</div>
+								<div class="font-semibold">announcement text</div>
+							</div>
 						</TableBodyCell>
 					</TableBodyRow>
-				{/each}
-			</TableBody>
-		</Table>
-	</Card>
+				</TableBody>
+			</Table>
+		</Card>
+	</div>
 </div>

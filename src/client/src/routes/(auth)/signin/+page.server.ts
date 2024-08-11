@@ -4,8 +4,8 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, RequestEvent } from './$types';
 
 import User from '$db/schemas/User';
+import { retry_connection } from '$db/db';
 import { lucia } from '$lib/server/auth';
-import type { SignInData } from '$src/types';
 
 export async function load({ locals }) {
 	if (locals.user) {
@@ -61,6 +61,8 @@ export const actions: Actions = {
 		let role = '';
 
 		try {
+			await retry_connection();
+
 			const { user, error } = await authenticateUser(formData);
 
 			if (error) return fail(400, { error });

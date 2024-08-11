@@ -3,8 +3,6 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
-package-lock.json
-
 # SvelteKit
 /build
 
@@ -15,11 +13,17 @@ package-lock.json
 .aws.*
 .aws
 
+.npm
+
+.amplify-hosting
+
 # IDEs and editors
 /.vscode
 .idea
 *.swp
 *.swo
+
+.vercel
 
 # OS generated files
 .DS_Store

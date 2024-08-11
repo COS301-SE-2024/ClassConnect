@@ -1,15 +1,3 @@
-export interface SignUpData {
-	name: string;
-	surname: string;
-	email: string;
-	password: string;
-}
-
-export interface SignInData {
-	username: string;
-	password: string;
-}
-
 export interface User {
 	id: string;
 	name: string;
@@ -28,15 +16,6 @@ export interface User_Details {
 	surname: string;
 	username: string;
 }
-
-export interface Announcement {
-	id: string;
-	title: string;
-	date: string;
-	createdBy: string;
-	description: string;
-}
-
 export interface Activity {
 	id: string;
 	title: string;
@@ -60,6 +39,16 @@ export interface Lesson {
 	date: string;
 	description: string;
 	workspace: string;
+}
+
+export interface Recording {
+	id: string;
+	topic: string;
+	time: string;
+	date: string;
+	description: string;
+	workspace: string;
+	url: string;
 }
 
 export interface Material {
@@ -97,6 +86,7 @@ export interface Quiz {
 	graded: string;
 	date: Date;
 	duration: number;
+	isAvailable: boolean;
 }
 
 export interface Grades {
@@ -118,4 +108,30 @@ export interface Question {
 	questionContent: string;
 	questionType: string;
 	options: Option[];
+}
+
+export interface GradeData {
+	_id: string;
+	studentID: string;
+	quizID: string;
+	workspaceID: string;
+	mark: number;
+}
+
+export interface QuizData {
+	_id: string;
+	title: string;
+	totalPossibleScore: number;
+}
+
+export interface AssessmentStat {
+	name: string;
+	submitted: number;
+	average: number;
+	passRate: number;
+}
+
+export interface StudentGrade {
+	name: string;
+	grades: number[];
 }

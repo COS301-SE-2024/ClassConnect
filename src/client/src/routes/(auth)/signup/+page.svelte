@@ -1,5 +1,4 @@
 <script lang="ts">
-	import '@fontsource/roboto';
 	import { enhance } from '$app/forms';
 	import { Input, Label, Button, A, Spinner } from 'flowbite-svelte';
 	import { EyeOutline, EyeSlashOutline } from 'flowbite-svelte-icons';
@@ -8,6 +7,15 @@
 
 	let loading = false;
 	let showPassword = false;
+
+	function activateLoading() {
+		loading = true;
+
+		return async ({ update }: { update: any }) => {
+			await update();
+			loading = false;
+		};
+	}
 </script>
 
 <main class="flex">
@@ -15,27 +23,20 @@
 		<div class="flex h-screen flex-col items-center justify-center">
 			<div class="m-4 flex items-center justify-center">
 				<img class="w-1/4" src="/images/class-connect-logo.png" alt="class connect logo" />
-				<h1 class="font-roboto m-4 text-5xl font-bold">Class Connect</h1>
+				<h1 class="m-4 text-5xl font-bold dark:text-white">Class Connect</h1>
 			</div>
 
-			<div class="w-1/2 rounded-xl bg-white bg-opacity-80 p-4">
-				<h1 class="font-roboto text-center text-3xl font-bold">Get Started Now</h1>
+			<div
+				class="w-1/2 rounded-xl bg-white bg-opacity-80 p-4 dark:bg-gray-800 dark:bg-opacity-80 dark:text-gray-200"
+			>
+				<h1 class="text-center text-3xl font-bold">Get Started Now</h1>
 
 				{#if form?.error}
-					<p class="mt-2 text-center text-red-500">{form.error}</p>
+					<p class="mt-2 text-center text-red-500 dark:text-red-400">{form.error}</p>
 				{/if}
 
-				<form
-					method="POST"
-					use:enhance={() => {
-						loading = true;
-						return async ({ update }) => {
-							await update();
-							loading = false;
-						};
-					}}
-				>
-					<Label for="name" class="mb-2 mt-2 dark:text-gray-800">Name</Label>
+				<form method="POST" use:enhance={activateLoading}>
+					<Label for="name" class="mb-2 mt-2 dark:text-gray-200">Name</Label>
 					<Input
 						type="text"
 						id="name"
@@ -46,7 +47,7 @@
 						required
 					/>
 
-					<Label for="surname" class="mb-2 mt-2 dark:text-gray-800">Surname</Label>
+					<Label for="surname" class="mb-2 mt-2 dark:text-gray-200">Surname</Label>
 					<Input
 						type="text"
 						id="surname"
@@ -57,7 +58,7 @@
 						required
 					/>
 
-					<Label for="email" class="mb-2 mt-2 dark:text-gray-800">Email</Label>
+					<Label for="email" class="mb-2 mt-2 dark:text-gray-200">Email</Label>
 					<Input
 						type="email"
 						id="email"
@@ -67,7 +68,7 @@
 						required
 					/>
 
-					<Label for="password" class="mb-2 mt-2 dark:text-gray-800">Password</Label>
+					<Label for="password" class="mb-2 mt-2 dark:text-gray-200">Password</Label>
 					<div class="relative">
 						<Input
 							type={showPassword ? 'text' : 'password'}
@@ -77,6 +78,7 @@
 							disabled={loading}
 							required
 						/>
+
 						<button
 							type="button"
 							aria-label="Toggle password visibility"
@@ -84,25 +86,23 @@
 							on:click={() => (showPassword = !showPassword)}
 						>
 							{#if showPassword}
-								<EyeSlashOutline class="text-gray-500" />
+								<EyeSlashOutline class="text-gray-500 dark:text-gray-400" />
 							{:else}
-								<EyeOutline class="text-gray-500" />
+								<EyeOutline class="text-gray-500 dark:text-gray-400" />
 							{/if}
 						</button>
 					</div>
 
-					<Label for="confirm-password" class="mb-2 mt-2 dark:text-gray-800">Confirm Password</Label
+					<Label for="confirm-password" class="mb-2 mt-2 dark:text-gray-200">Confirm Password</Label
 					>
-					<div class="relative">
-						<Input
-							type="password"
-							id="confirm-password"
-							name="confirm-password"
-							placeholder="•••••••••"
-							disabled={loading}
-							required
-						/>
-					</div>
+					<Input
+						type="password"
+						id="confirm-password"
+						name="confirm-password"
+						placeholder="•••••••••"
+						disabled={loading}
+						required
+					/>
 
 					<Button type="submit" class="my-4 w-full">
 						{#if loading}
@@ -117,7 +117,7 @@
 					<div class="text-center">
 						<p>
 							Already have an account?{' '}
-							<A href="/signin" class="text-blue-600">Sign In</A>
+							<A href="/signin" class="text-green-600 dark:text-green-400">Sign In</A>
 						</p>
 					</div>
 				</div>
