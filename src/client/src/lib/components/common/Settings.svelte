@@ -1,40 +1,40 @@
 <script lang="ts">
-	import { Heading, Button, Alert } from 'flowbite-svelte';
+	import { Heading, Button } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
 	import { change } from '$lib/store';
-	import { UploadOutline, InfoCircleSolid } from 'flowbite-svelte-icons';
+	import { UploadOutline } from 'flowbite-svelte-icons';
 	import DeleteProfilePic from '$lib/components/modals/settings/DeleteProfilePic.svelte';
 	import UploadPicture from '$lib/components/modals/settings/UploadPicture.svelte';
 	import UpdateGeneralDetails from '$lib/components/forms/UpdateGeneralDetails.svelte';
 	import UpdatePassword from '$lib/components/forms/UpdatePassword.svelte';
+	import axios from 'axios';
 
 	export let user: any;
 
-	let updateStatus: any = null;
-
 	let openDeleteModal = false;
 	let openFileHandlingModal = false;
+	const apiUrl = '/api/user';
 
 	async function getUserData() {
 		try {
-			const formData = new FormData();
-			const response = await fetch('/settings?/get_user_details', {
-				method: 'POST',
-				body: formData
-			});
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
-			const data = await response.json();
-			if (data.data) {
-				const input = data.data;
-				const innerString = JSON.parse(input)[0];
-				const user_data = JSON.parse(innerString);
-				user = user_data.user;
-				console.log(user);
-			}
+			axios
+				.get(apiUrl)
+				.then((response) => {
+					console.log('User data:', response.data);
+					user = response.data;
+				})
+				.catch((error) => {
+					if (error.response) {
+						console.error('Error response data:', error.response.data);
+						console.error('Error response status:', error.response.status);
+					} else if (error.request) {
+						console.error('Error request:', error.request);
+					} else {
+						console.error('Error message:', error.message);
+					}
+				});
 		} catch (error) {
-			console.error('There was a problem with your fetch operation:', error);
+			console.error('There was a problem with the get operation:', error);
 		}
 	}
 
@@ -49,20 +49,6 @@
 	}
 </script>
 
-{#if updateStatus === 'failure'}
-	<Alert color="red" dismissable>
-		<InfoCircleSolid slot="icon" class="h-5 w-5" />
-		Update has been unsuccessful. Please try again.
-	</Alert>
-{/if}
-
-{#if updateStatus === 'success'}
-	<Alert color="green" dismissable>
-		<InfoCircleSolid slot="icon" class="h-5 w-5" />
-		Update has been successful.
-	</Alert>
-{/if}
-
 <div class="grid grid-cols-1 px-4 pt-6 dark:bg-gray-900 xl:grid-cols-3 xl:gap-4">
 	<div class="col-span-full mb-4 xl:mb-2">
 		<Heading tag="h1" class="text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
@@ -75,12 +61,12 @@
 		>
 			<div class="items-center sm:flex sm:space-x-4 xl:block xl:space-x-0 2xl:flex 2xl:space-x-4">
 				<img
-					class="mb-4 h-28 w-28 rounded-lg sm:mb-0 xl:mb-4 2xl:mb-0"
+					class="mb-4 h-28 w-28 rounded-[100px] sm:mb-0 xl:mb-4 2xl:mb-0"
 					src={user.image}
 					alt="profile"
 				/>
 				<div>
-					<h3 class="mb-1 text-xl font-bold text-gray-900 dark:text-white">Profile picture</h3>
+					<h3 class="mb-1 text-xl font-bold text-gray-900 dark:text-white">Profile Picture</h3>
 					<div class="mb-4 text-sm text-gray-500 dark:text-gray-400">
 						JPG, WEBP or PNG. Max size of 1 MB
 					</div>
@@ -111,7 +97,7 @@
 </div>
 
 <!-- Delete Modal -->
-<DeleteProfilePic open={openDeleteModal} />
+<DeleteProfilePic bind:open={openDeleteModal} />
 
 <!-- File Handling Modal -->
-<UploadPicture open={openFileHandlingModal} />
+<UploadPicture bind:open={openFileHandlingModal} />

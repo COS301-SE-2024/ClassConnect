@@ -1,41 +1,36 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Button, Label, Input } from 'flowbite-svelte';
-	import Banner from '$lib/components/common/Banner.svelte';
+	import toast, { Toaster } from 'svelte-french-toast';
+	import { change } from '$lib/store';
 
 	export let name;
 	export let surname;
 	export let email;
 
-	let message: string = 'Hi';
-	let color: string;
-	let display: boolean;
-
 	function updateDet() {
+		const toastId = toast.loading('Updating...');
 		return async ({ result, update }: any) => {
 			if (result.type === 'success') {
+				toast.dismiss(toastId);
+				toast.success('Profile details updated successfully');
 				await update();
-				message = 'Profile details updated successfully';
-				color = 'green';
-				display = true;
+				const log: string = 'change at timestamp: ' + new Date().toISOString();
+				change.set(log);
 			} else {
-				console.error(result.data?.error);
-				message = 'Update failed';
-				color = 'red';
-				display = true;
+				toast.dismiss(toastId);
+				toast.error('Update failed: ' + result.data?.error);
 			}
 		};
 	}
 </script>
 
-{#if display}
-	<Banner type="Delete" {color} {message} />
-{/if}
+<Toaster />
 
 <div
 	class="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2"
 >
-	<h3 class="mb-4 text-xl font-semibold dark:text-white">General information</h3>
+	<h3 class="mb-4 text-xl font-semibold dark:text-white">General Information</h3>
 	<form method="POST" action="/settings?/update_general_details" use:enhance={updateDet}>
 		<div class="grid grid-cols-6 gap-6">
 			<div class="col-span-6 sm:col-span-3">

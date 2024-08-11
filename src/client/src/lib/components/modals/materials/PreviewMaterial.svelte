@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { displayedSandboxObjectURL, ObjInScene } from '$src/lib/store/objects';
-	import Scene from '$src/lib/components/sandbox/Scene.svelte';
-	import { change } from '$lib/store/';
+	import Preview from '$lib/components/materials/Preview.svelte';
+	import { mat_change } from '$lib/store/';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { Button, Modal } from 'flowbite-svelte';
 	import { Canvas } from '@threlte/core';
+	import { page } from '$app/stores';
 
 	export let open: boolean;
 	export let file: File;
@@ -46,20 +47,19 @@
 				error: 'Failed to upload material!'
 			}
 		);
-		change.set('Material deleted at: ' + Date.now().toString());
+		const log: string = 'change at timestamp: ' + new Date().toISOString();
+		mat_change.set(log);
+		document.getElementById('reload_btn_delete')?.click();
 	}
 
 	console.log('This is the url: ', url);
-	// 3D Object Preview
-	let autoRotate: boolean = false;
-	let enableDamping: boolean = true;
-	let rotateSpeed: number = 1;
-	let zoomToCursor: boolean = false;
-	let zoomSpeed: number = 1;
-	let enableZoom: boolean = true;
 </script>
 
 <Toaster />
+
+<a id="reload_btn_delete" href={$page.url.pathname} data-sveltekit-reload class="hidden">
+	<button>Reload</button>
+</a>
 
 {#if type === 'object'}
 	<Modal id="previewModal" bind:open size="lg" placement="center">
@@ -73,14 +73,7 @@
 				>
 					<div class="flex-1">
 						<Canvas>
-							<Scene
-								{enableDamping}
-								{autoRotate}
-								{rotateSpeed}
-								{zoomToCursor}
-								{zoomSpeed}
-								{enableZoom}
-							/>
+							<Preview mat_url={url} />
 						</Canvas>
 					</div>
 				</section>
@@ -97,7 +90,7 @@
 	<Modal id="previewModal" bind:open size="lg" placement="center">
 		<div class="p-6 text-center">
 			<h3 class="mb-5 text-lg font-normal text-black dark:text-gray-400">
-				Are you sure you want to upload this 3D object?
+				Are you sure you want to upload this file ?
 			</h3>
 			<div class="flex justify-center p-3">
 				<section

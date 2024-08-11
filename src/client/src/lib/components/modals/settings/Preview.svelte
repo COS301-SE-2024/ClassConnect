@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button, Modal, Gallery } from 'flowbite-svelte';
-	import Banner from '$lib/components/common/Banner.svelte';
+	import toast, { Toaster } from 'svelte-french-toast';
 	import { change } from '$lib/store';
 
 	export let open: boolean;
@@ -8,20 +8,16 @@
 	export let imgSRC: string;
 	export let imgALT: string;
 
-	let message: string;
-	let color: string;
-	let display: boolean = false;
-
 	async function handleFinalUpload(event: Event) {
-		event.preventDefault();
+		const toastId = toast.loading('Uploading...');
 
-		console.log('Upload is being handled');
+		open = false;
+
+		event.preventDefault();
 
 		const formData = new FormData();
 
 		formData.append('file', image);
-
-		console.log(formData);
 
 		const response = await fetch('/settings?/upload_picture', {
 			method: 'POST',
@@ -29,26 +25,19 @@
 		});
 
 		if (response.ok) {
-			message = 'Uploaded profile picture successfully';
-			color = 'green';
-			display = true;
+			toast.dismiss(toastId);
+			toast.success('Profile picture updated successfully');
 			const log: string = 'change at timestamp: ' + new Date().toISOString();
 			change.set(log);
-			open = false;
 		} else {
-			message = 'Upload failed';
-			color = 'red';
-			display = true;
-			open = false;
+			const result = await response.json();
+			toast.dismiss(toastId);
+			toast.error('Update failed: ' + result.error);
 		}
-
-		open = false;
 	}
 </script>
 
-{#if display}
-	<Banner type="Delete" {color} {message} />
-{/if}
+<Toaster />
 
 <Modal id="previewModal" bind:open size="lg" placement="center">
 	<div class="p-6 text-center">

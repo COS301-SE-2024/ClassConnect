@@ -4,7 +4,8 @@
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { Button, Modal, Input } from 'flowbite-svelte';
 	import { createEventDispatcher } from 'svelte';
-	import { change } from '$lib/store/';
+	import { mat_change } from '$lib/store/';
+	import { page } from '$app/stores';
 
 	const dispatch = createEventDispatcher();
 
@@ -20,7 +21,8 @@
 				await update();
 				toast.dismiss(toastId);
 				toast.success('Delete was successfully!');
-				change.set('Material deleted at: ' + Date.now().toString());
+				mat_change.set('Material deleted at: ' + Date.now().toString());
+				document.getElementById('reload_btn_delete')?.click();
 			} else {
 				toast.dismiss(toastId);
 				toast.error('Delete Failed!');
@@ -36,6 +38,10 @@
 </script>
 
 <Toaster />
+
+<a id="reload_btn_delete" href={$page.url.pathname} data-sveltekit-reload class="hidden">
+	<button>Reload</button>
+</a>
 
 <Modal bind:open size="xs" class="text-center">
 	<ExclamationCircleOutline class="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-200" />

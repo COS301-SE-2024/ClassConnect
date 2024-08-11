@@ -2,48 +2,40 @@
 	import { enhance } from '$app/forms';
 	import { Button, Label, Input } from 'flowbite-svelte';
 	import { EyeOutline, EyeSlashOutline } from 'flowbite-svelte-icons';
-	import Banner from '$lib/components/common/Banner.svelte';
-
-	let message: string;
-	let color: string;
-	let display: boolean;
+	import toast, { Toaster } from 'svelte-french-toast';
 
 	let currentShowPassword = false;
 	let newShowPassword = false;
 	let confirmShowPassword = false;
 
 	function updatePass() {
+		const toastId = toast.loading('Updating...');
 		return async ({ result, update }: any) => {
 			if (result.type === 'success') {
+				toast.dismiss(toastId);
+				toast.success('Profile details updated successfully');
 				await update();
-				message = 'Profile details updated successfully';
-				color = 'green';
-				display = true;
 			} else {
-				console.error(result.data?.error);
-				message = 'Update failed';
-				color = 'red';
-				display = true;
+				toast.dismiss(toastId);
+				toast.error('Update failed: ' + result.data?.error);
 			}
 		};
 	}
 </script>
 
-{#if display}
-	<Banner type="Delete" {color} {message} />
-{/if}
+<Toaster />
 
 <div
 	class="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2"
 >
-	<h3 class="mb-4 text-xl font-semibold dark:text-white">Password information</h3>
+	<h3 class="mb-4 text-xl font-semibold dark:text-white">Password Information</h3>
 	<form method="POST" action="/settings?/update_password" use:enhance={updatePass}>
 		<div class="grid grid-cols-6 gap-6">
 			<div class="col-span-6 sm:col-span-3">
 				<Label
 					for="currPassword"
 					class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-					>Current password</Label
+					>Current Password</Label
 				>
 				<div class="relative">
 					<Input
@@ -72,7 +64,7 @@
 			<div class="col-span-6 sm:col-span-3">
 				<Label
 					for="newPassword"
-					class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">New password</Label
+					class="mb-2 block text-sm font-medium text-gray-900 dark:text-white">New Password</Label
 				>
 				<div class="relative">
 					<Input
@@ -104,7 +96,7 @@
 				<Label
 					for="conPassword"
 					class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-					>Confirm password</Label
+					>Confirm Password</Label
 				>
 				<div class="relative">
 					<Input
@@ -132,7 +124,7 @@
 			<div class="sm:col-full col-span-6">
 				<Button
 					class="rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-					type="submit">Update password</Button
+					type="submit">Update Password</Button
 				>
 			</div>
 		</div>

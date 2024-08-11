@@ -63,6 +63,7 @@
 	<a
 		href="/workspaces"
 		class="mb-6 flex items-center text-gray-600 transition-colors duration-300 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
+		data-sveltekit-reload
 	>
 		<ArrowLeftOutline class="h-5 w-5" />
 		<span class="ml-2 text-base font-medium">Back to Workspaces</span>

@@ -7,6 +7,6 @@
 	}
 </script>
 
-<main class="flex flex-col">
+<main class="flex h-full flex-col">
 	<object class="w-full flex-grow" data={pdf_data} title="Study Material" />
 </main>
