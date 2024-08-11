@@ -103,6 +103,7 @@
 		try {
 			stopTimer();
 			writingQuiz.set(false);
+			percentageScore = (totalPoints / totalPossiblePoints) * 100;
 			calculateTotalPoints();
 			submissionMessage = `You have successfully submitted the quiz. Your score is ${percentageScore.toFixed(2)}%.`;
 			submitModalOpen = true;
@@ -193,4 +194,4 @@
 		<p class="text-gray-700 dark:text-gray-300">You do not have permission to view this content.</p>
 	{/if}
 </main>
-<Submission bind:open={submitModalOpen} {submissionMessage} {totalPoints} />
+<Submission bind:open={submitModalOpen} {submissionMessage} {percentageScore} />
