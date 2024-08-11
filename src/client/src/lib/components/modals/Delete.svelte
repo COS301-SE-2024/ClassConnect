@@ -2,15 +2,13 @@
 	import { enhance } from '$app/forms';
 	import { Button, Modal, Input } from 'flowbite-svelte';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
-	import toast, {Toaster} from 'svelte-french-toast';
+	import toast, { Toaster } from 'svelte-french-toast';
 
 	export let id: string;
 	export let item: string;
 	export let open: boolean;
 
 	function close() {
-
-
 		return ({ result, update }: any) => {
 			const promise = new Promise((resolve, reject) => {
 				setTimeout(async () => {
@@ -24,25 +22,22 @@
 						}
 					} catch (error) {
 						reject(error);
-					} finally {
 					}
 				}, 500);
 			});
 
-			toast.promise(
-				promise,
-				{
-					loading: 'Deleting ...',
-					success: (message) => `${message}`,
-					error: (error) => `${error}`
-				}
-			);
+			toast.promise(promise, {
+				loading: 'Deleting ...',
+				success: (message) => `${message}`,
+				error: (error) => `${error}`
+			});
 
 			return promise;
 		};
 	}
 </script>
 
+<Toaster />
 <Modal bind:open size="xs">
 	<div class="text-center">
 		<ExclamationCircleOutline class="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-200" />

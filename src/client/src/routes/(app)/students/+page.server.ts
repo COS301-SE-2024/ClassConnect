@@ -22,14 +22,13 @@ export async function load({ locals }) {
 			'name image'
 		);
 		let organisation;
-		if(locals.user?.organisation) {
+		if (locals.user?.organisation) {
 			organisation = JSON.parse(JSON.stringify(locals.user?.organisation));
 		}
 
 		const formattedWorkspaces = workspaces.map(formatWorkspace);
 
-		return { students, workspaces: formattedWorkspaces,
-			organisation };
+		return { students, workspaces: formattedWorkspaces, organisation };
 	} catch (e) {
 		console.error('Failed to load students:', e);
 		throw error(500, 'Error occurred while fetching students');

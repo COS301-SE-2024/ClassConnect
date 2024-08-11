@@ -1,17 +1,14 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Button, Modal, Label, Input, Fileupload, Helper } from 'flowbite-svelte';
-	import toast, {Toaster} from 'svelte-french-toast';
+	import toast, { Toaster } from 'svelte-french-toast';
 
 	export let open: boolean;
-
-	let error: string;
-
 
 	function close({ formData, cancel }: any) {
 		const image = formData.get('image') as File;
 
-		if (image && image.name !== "") {
+		if (image && image.name !== '') {
 			const extension = image.name.split('.').pop()?.toLowerCase();
 
 			if (image.size > 1000000) {
@@ -42,25 +39,22 @@
 						}
 					} catch (error) {
 						reject(error);
-					} finally {
 					}
 				}, 500);
 			});
 
-			toast.promise(
-				promise,
-				{
-					loading: 'Adding organisation...',
-					success: (message) => `${message}`,
-					error: (error) => `${error}`
-				}
-			);
+			toast.promise(promise, {
+				loading: 'Adding organisation...',
+				success: (message) => `${message}`,
+				error: (error) => `${error}`
+			});
 
 			return promise;
 		};
 	}
 </script>
-<Toaster/>
+
+<Toaster />
 <Modal bind:open size="xs" class="w-full">
 	<form
 		method="POST"

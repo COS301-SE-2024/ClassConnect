@@ -1,20 +1,15 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Button, Modal, Label, Input, Fileupload } from 'flowbite-svelte';
-	import toast, {Toaster} from 'svelte-french-toast';
-	import Loading from '$lib/components/common/SubmitLoader.svelte';
+	import { Button, Modal, Label, Input } from 'flowbite-svelte';
+	import toast, { Toaster } from 'svelte-french-toast';
 
 	export let role: string;
 	export let open: boolean;
 
-	let error: string;
-	let value: string;
-	let loading: boolean;
-
 	function close({ formData, cancel }: any) {
 		const image = formData.get('image') as File;
 
-		if (image && image.name !== "") {
+		if (image && image.name !== '') {
 			const extension = image.name.split('.').pop()?.toLowerCase();
 
 			if (image.size > 1000000) {
@@ -33,8 +28,6 @@
 		}
 
 		return ({ result, update }: any) => {
-			loading = true; // Set loading state to true when form submission starts
-
 			const promise = new Promise((resolve, reject) => {
 				setTimeout(async () => {
 					try {
@@ -47,27 +40,22 @@
 						}
 					} catch (error) {
 						reject(error);
-					} finally {
-						loading = false; // Reset loading state after form submission is complete
 					}
 				}, 500);
 			});
 
-			toast.promise(
-				promise,
-				{
-					loading: `Adding ${role}...`,
-					success: (message) => `${message}`,
-					error: (error) => `${error}`
-				}
-			);
+			toast.promise(promise, {
+				loading: `Adding ${role}...`,
+				success: (message) => `${message}`,
+				error: (error) => `${error}`
+			});
 
 			return promise;
 		};
 	}
 </script>
 
-<Toaster/>
+<Toaster />
 <Modal bind:open size="xs" class="w-full">
 	<form
 		method="POST"
@@ -77,7 +65,7 @@
 		enctype="multipart/form-data"
 	>
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add new {role}</h3>
-		
+
 		<Label for="name" class="space-y-2">
 			<span>Name</span>
 			<Input type="text" id="name" name="name" placeholder="John" required />
@@ -95,5 +83,5 @@
 
 		<Button type="submit" class="w-full1">Add {role}</Button>
 	</form>
-<!-- <Loading {loading} text="Submitting"/> -->
+	<!-- <Loading {loading} text="Submitting"/> -->
 </Modal>

@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Button, Modal, Label, Input, Fileupload } from 'flowbite-svelte';
-	import toast, {Toaster} from 'svelte-french-toast';
-	import Loading from '$lib/components/common/SubmitLoader.svelte';
+	import { Button, Modal, Label, Input } from 'flowbite-svelte';
+	import toast, { Toaster } from 'svelte-french-toast';
 
 	export let id: string;
 	export let role: string;
@@ -12,15 +11,10 @@
 	export let surname: string;
 	export let email: string;
 
-	let value: string;
-
-	let loading: boolean;
-
-
 	function close({ formData, cancel }: any) {
 		const image = formData.get('image') as File;
 
-		if (image && image.name !== "") {
+		if (image && image.name !== '') {
 			const extension = image.name.split('.').pop()?.toLowerCase();
 
 			if (image.size > 1000000) {
@@ -39,8 +33,6 @@
 		}
 
 		return ({ result, update }: any) => {
-			loading = true; // Set loading state to true when form submission starts
-
 			const promise = new Promise((resolve, reject) => {
 				setTimeout(async () => {
 					try {
@@ -53,27 +45,22 @@
 						}
 					} catch (error) {
 						reject(error);
-					} finally {
-						loading = false; // Reset loading state after form submission is complete
 					}
 				}, 500);
 			});
 
-			toast.promise(
-				promise,
-				{
-					loading: 'Changing detials..',
-					success: (message) => `${message}`,
-					error: (error) => `${error}`
-				}
-			);
+			toast.promise(promise, {
+				loading: 'Changing detials..',
+				success: (message) => `${message}`,
+				error: (error) => `${error}`
+			});
 
 			return promise;
 		};
 	}
-		
 </script>
-<Toaster/>
+
+<Toaster />
 <Modal bind:open size="xs" class="w-full">
 	<!-- <Loading {loading} text="Loading"/> -->
 	<form
@@ -84,7 +71,6 @@
 		enctype="multipart/form-data"
 	>
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Edit {role}</h3>
-
 
 		<Input type="hidden" id="id" name="id" value={id} />
 

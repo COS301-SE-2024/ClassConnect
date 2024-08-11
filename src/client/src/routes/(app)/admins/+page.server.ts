@@ -9,7 +9,7 @@ export async function load({ locals }) {
 	try {
 		const admins = await getUsers('admin', locals.user?.organisation);
 		let organisation;
-		if(locals.user?.organisation) {
+		if (locals.user?.organisation) {
 			organisation = JSON.parse(JSON.stringify(locals.user?.organisation));
 		}
 		return { organisation, admins };
