@@ -8,10 +8,10 @@
 >
 	<div class="w-full max-w-2xl rounded-xl bg-white bg-opacity-90 p-12 shadow-2xl backdrop-blur-sm">
 		<div class="mb-8 flex justify-center">
-			<img src="images/class-connect-logo.png" alt="Class Connect Logo" class="h-40 w-40" />
+			<img src="images/class-connect-logo.png" alt="ClassConnect Logo" class="h-40 w-40" />
 		</div>
 
-		<h1 class="mb-6 text-center text-4xl font-bold text-green-700">Welcome to Class Connect</h1>
+		<h1 class="mb-6 text-center text-4xl font-bold text-green-700">Welcome to ClassConnect</h1>
 
 		<p class="mb-10 text-center text-xl text-gray-700">
 			Revolutionize your learning experience with our 3D virtual classroom environment.
