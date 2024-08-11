@@ -176,6 +176,6 @@
 
 <AddModal bind:open={isAddModalOpen} role="Student" />
 <EditModal bind:open={isEditModalOpen} {id} {_name} {surname} {email} role="Student" />
-<RemoveModal bind:open={isRemoveModalOpen} {id}  />
+<RemoveModal bind:open={isRemoveModalOpen} {id} item={'student'}  />
 <EnrolModal bind:open={isEnrolModalOpen} {id} {workspaces} role="Student" />
 {/if}

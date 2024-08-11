@@ -151,6 +151,6 @@
 
 <AddModal bind:open={isAddModalOpen} role="Lecturer" />
 <EditModal bind:open={isEditModalOpen} {id} {_name} {surname} {email} role="Lecturer" />
-<RemoveModal bind:open={isRemoveModalOpen} {id} />
+<RemoveModal bind:open={isRemoveModalOpen} {id} item = 'lecturer' />
 
 {/if}
