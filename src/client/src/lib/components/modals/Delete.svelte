@@ -6,7 +6,6 @@
 
 	export let id: string;
 	export let item: string;
-	export let item: string;
 	export let open: boolean;
 
 	function close() {
