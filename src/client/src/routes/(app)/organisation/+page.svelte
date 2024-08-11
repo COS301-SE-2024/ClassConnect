@@ -79,5 +79,5 @@
 </main>
 
 <CreateModal bind:open={isCreateModalOpen} />
-<EditModal bind:open={isEditModalOpen} {id} />
-<DeleteModal bind:open={isDeleteModalOpen} {id} item="organisation" />
+<EditModal bind:open={isEditModalOpen} {id} _name={name} />
+<DeleteModal bind:open={isDeleteModalOpen} {id} item={'organisation'} />

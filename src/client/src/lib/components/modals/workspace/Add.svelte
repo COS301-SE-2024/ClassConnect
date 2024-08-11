@@ -1,25 +1,62 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Button, Modal, Label, Input, Select, Fileupload } from 'flowbite-svelte';
-
+	import toast, { Toaster } from 'svelte-french-toast';
 	export let open: boolean;
 	export let lecturers: [{ id: string; name: string; surname: string }];
 
-	let error: string;
 	let value: string;
 
-	function close() {
-		return async ({ result, update }: any) => {
-			if (result.type === 'success') {
-				await update();
-				open = false;
-			} else {
-				error = result.data?.error;
+	function close({ formData, cancel }: any) {
+		const image = formData.get('image') as File;
+
+		if (image && image.name !== '') {
+			const extension = image.name.split('.').pop()?.toLowerCase();
+
+			if (image.size > 1000000) {
+				toast.error('The size of file should be less than 1 MB!');
+				cancel();
+				return;
 			}
+
+			const imageExtensions = ['jpg', 'jpeg', 'png', 'svg'];
+
+			if (!(extension && imageExtensions.includes(extension))) {
+				toast.error('File type is not supported');
+				cancel();
+				return;
+			}
+		}
+
+		return ({ result, update }: any) => {
+			const promise = new Promise((resolve, reject) => {
+				setTimeout(async () => {
+					try {
+						if (result.type === 'success') {
+							await update();
+							open = false;
+							resolve('Workspace added successfully!');
+						} else {
+							reject(result.data?.error || 'An unknown error occurred');
+						}
+					} catch (error) {
+						reject(error);
+					}
+				}, 500);
+			});
+
+			toast.promise(promise, {
+				loading: 'Adding workspace...',
+				success: (message) => `${message}`,
+				error: (error) => `${error}`
+			});
+
+			return promise;
 		};
 	}
 </script>
 
+<Toaster />
 <Modal bind:open size="xs" class="w-full">
 	<form
 		method="POST"
@@ -29,10 +66,6 @@
 		enctype="multipart/form-data"
 	>
 		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Create New Workspace</h3>
-
-		{#if error}
-			<p class="mt-2 text-center text-red-500">{error}</p>
-		{/if}
 
 		<Label for="name" class="space-y-2">
 			<span>Name</span>

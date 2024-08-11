@@ -65,8 +65,12 @@ export async function load({ locals }) {
 				getWorkspaces(locals.user.organisation),
 				getLecturers(locals.user.organisation)
 			]);
+			let organisation;
+			if (locals.user?.organisation) {
+				organisation = JSON.parse(JSON.stringify(locals.user?.organisation));
+			}
 
-			return { role: locals.user.role, lecturers, workspaces };
+			return { role: locals.user.role, lecturers, workspaces, organisation };
 		} else {
 			const workspaces = await getUserWorkspaces(locals.user.id);
 

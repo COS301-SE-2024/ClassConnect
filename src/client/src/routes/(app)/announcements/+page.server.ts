@@ -12,8 +12,14 @@ import {
 export async function load({ locals }) {
 	try {
 		const announcements = await getAnnouncements(locals.user?.organisation);
-
-		return { announcements, id: locals.user?.id.toString(), role: locals.user?.role };
+		let organisation;
+		if (locals.user?.organisation) {
+			organisation = JSON.parse(JSON.stringify(locals.user?.organisation));
+		}
+		return {
+			announcements,
+			organisation
+		};
 	} catch (e) {
 		console.error('Failed to load announcements:', e);
 		throw error(500, 'Error occurred while fetching announcements');

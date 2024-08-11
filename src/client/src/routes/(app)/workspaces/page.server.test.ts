@@ -74,6 +74,7 @@ describe('Workspace Management', () => {
 			const result = await workspaceModule.load({ locals } as any);
 
 			expect(result).toEqual({
+				organisation: 'org1',
 				role: 'admin',
 				lecturers: [
 					{ id: '1', name: 'Lecturer1', surname: 'Surname1' },

@@ -21,10 +21,14 @@ export async function load({ locals }) {
 		const workspaces = await Workspace.find({ organisation: locals.user?.organisation }).select(
 			'name image'
 		);
+		let organisation;
+		if (locals.user?.organisation) {
+			organisation = JSON.parse(JSON.stringify(locals.user?.organisation));
+		}
 
 		const formattedWorkspaces = workspaces.map(formatWorkspace);
 
-		return { students, workspaces: formattedWorkspaces };
+		return { students, workspaces: formattedWorkspaces, organisation };
 	} catch (e) {
 		console.error('Failed to load students:', e);
 		throw error(500, 'Error occurred while fetching students');

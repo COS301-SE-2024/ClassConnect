@@ -8,7 +8,11 @@ export async function load({ locals }) {
 
 	try {
 		const admins = await getUsers('admin', locals.user?.organisation);
-		return { admins };
+		let organisation;
+		if (locals.user?.organisation) {
+			organisation = JSON.parse(JSON.stringify(locals.user?.organisation));
+		}
+		return { organisation, admins };
 	} catch (e) {
 		console.error('Failed to load admins:', e);
 		throw error(500, 'Error occurred while fetching admins');
