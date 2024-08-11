@@ -49,19 +49,18 @@
 
 <aside
 	class="flex h-screen w-64 flex-col overflow-y-auto border-r bg-primary-100 px-4 py-6 dark:border-gray-700 dark:bg-gray-900 rtl:border-l rtl:border-r-0"
-	class:hidden={!open}
 >
 	<a href="/" class="mx-auto mb-6">
 		<div class="flex items-center">
 			<img
-				class="mr-3 h-14 w-14"
+				class="mr-3 h-16 w-16"
 				src="images/class-connect-logo.png"
 				alt="ClassConnect owl logo"
 			/>
 			<div class="text-2xl font-semibold text-gray-800 dark:text-gray-300">ClassConnect</div>
 		</div>
 	</a>
-e
+
 	<nav class="flex-1 space-y-2">
 		{#each currentLinks as { icon, name, href }}
 			<a
