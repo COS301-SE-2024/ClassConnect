@@ -1,0 +1,42 @@
+[
+	{
+		"id": 1,
+		"student_name": "Tracey",
+		"assignment_1": 80,
+		"assignment_2": 65,
+		"assignment_3": 77,
+		"assignment_4": 40
+	},
+	{
+		"id": 2,
+		"student_name": "Neil",
+		"assignment_1": 65,
+		"assignment_2": 40,
+		"assignment_3": 80,
+		"assignment_4": 90
+	},
+	{
+		"id": 3,
+		"student_name": "Ross",
+		"assignment_1": 64,
+		"assignment_2": 68,
+		"assignment_3": 40,
+		"assignment_4": 50
+	},
+	{
+		"id": 4,
+		"student_name": "Owen",
+		"assignment_1": 81,
+		"assignment_2": 60,
+		"assignment_3": 72,
+		"assignment_4": 74
+	},
+	{
+		"id": 5,
+		"student_name": "Jami",
+		"assignment_1": 56,
+		"assignment_2": 40,
+		"assignment_3": 80,
+		"assignment_4": 81
+	}
+]
