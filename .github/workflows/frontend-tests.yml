@@ -8,7 +8,6 @@ on:
       branches:
         - main
         - develop
-    
 jobs:
   build:
     name: Frontend tests
@@ -21,12 +20,16 @@ jobs:
       - uses: oven-sh/setup-bun@v1
         with:
             bun-version: latest
+      - name: Create .env file
+        run: |
+            echo AUTH_SECRET=${{ secrets.AUTH_SECRET }} >> src/client/.env
+            echo TEST_PASSWORD=${{ secrets.TEST_PASSWORD }} >> src/client/.env
+            echo SENDGRID_RECOVERY=${{ secrets.SENDGRID_RECOVERY }} >> src/client/.env
+            echo SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} >> src/client/.env
+            echo FROM_EMAIL=${{ secrets.FROM_EMAIL }} >> src/client/.env
       - name: Install dependencies for the frontend
         run: bun install
         working-directory: src/client
-      - name: Boot frontend
-        run: bash boot.sh
-        working-directory: scripts
       - name: Run Frontend Tests
         run: npm run test
         working-directory: src/client

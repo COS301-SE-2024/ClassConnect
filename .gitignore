@@ -10,11 +10,20 @@ yarn-error.log
 .env
 .env.*
 
+.aws.*
+.aws
+
+.npm
+
+.amplify-hosting
+
 # IDEs and editors
 /.vscode
 .idea
 *.swp
 *.swo
+
+.vercel
 
 # OS generated files
 .DS_Store
