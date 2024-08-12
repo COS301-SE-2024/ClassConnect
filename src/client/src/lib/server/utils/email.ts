@@ -1,6 +1,6 @@
-import path from 'path';
-import fs from 'fs/promises';
+import { resolve } from 'path';
 import sgMail from '@sendgrid/mail';
+import { readFile } from 'fs/promises';
 import { SENDGRID_API_KEY, FROM_EMAIL } from '$env/static/private';
 
 sgMail.setApiKey(SENDGRID_API_KEY);
@@ -31,9 +31,8 @@ export async function sendEmail({ to, subject, html }: EmailOptions): Promise<vo
 export async function sendWelcomeEmail(to: string, name: string, username: string): Promise<void> {
 	const subject = "🎉 Welcome to ClassConnect! Let's get started!";
 
-	const templatePath = path.join(process.cwd(), 'src', 'lib', 'templates', 'welcome.html');
-
-	let html = await fs.readFile(templatePath, 'utf-8');
+	const templatePath = resolve('src/lib/templates/welcome.html');
+	let html = await readFile(templatePath, 'utf-8');
 
 	html = html.replace('{{email}}', to);
 	html = html.replace('{{name}}', name);

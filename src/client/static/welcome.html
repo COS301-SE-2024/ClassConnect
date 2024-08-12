@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Welcome to ClassConnect</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				line-height: 1.6;
+				color: #333;
+				max-width: 600px;
+				margin: 0 auto;
+				padding: 20px;
+			}
+			.header {
+				background-color: #4caf50;
+				color: white;
+				text-align: center;
+				padding: 20px;
+				border-radius: 5px 5px 0 0;
+			}
+			.content {
+				background-color: #f9f9f9;
+				padding: 20px;
+				border-radius: 0 0 5px 5px;
+			}
+			.button {
+				display: inline-block;
+				background-color: #4caf50;
+				color: white;
+				padding: 10px 20px;
+				text-decoration: none;
+				border-radius: 5px;
+				margin-top: 20px;
+			}
+			.footer {
+				text-align: center;
+				margin-top: 20px;
+				font-size: 0.8em;
+				color: #666;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<h1>🎓 Welcome to ClassConnect!</h1>
+		</div>
+		<div class="content">
+			<h2>Hello, {{name}}! 👋</h2>
+			<p>
+				We're thrilled to have you join our community of learners and educators. ClassConnect is
+				here to make your educational journey smoother, more interactive, and more engaging than
+				ever before! 🚀
+			</p>
+
+			<h3>🔑 Your Account Details</h3>
+			<p>Your generated username is: <strong>{{username}}</strong></p>
+			<p>Your generated password is: <strong>{{username}}</strong></p>
+			<p>
+				You can use this username to log in to your account and start exploring all the features
+				ClassConnect has to offer.
+			</p>
+
+			<h3>🌟 What's Next?</h3>
+			<ul>
+				<li>Complete your profile to personalize your experience</li>
+				<li>Explore available courses or create your own</li>
+				<li>Connect with other learners and educators</li>
+				<li>Check out our interactive learning tools</li>
+			</ul>
+
+			<p>
+				We're here to support you every step of the way. If you have any questions or need
+				assistance, don't hesitate to reach out to our support team.
+			</p>
+
+			<a href="http://localhost:5173/signin" class="button">Log In to Your Account</a>
+
+			<p>Once again, welcome to ClassConnect! We're excited to see what you'll achieve. 🎉</p>
+
+			<p>Best regards,<br />The ClassConnect Team</p>
+		</div>
+		<div class="footer">
+			<p>
+				This email was sent to {{email}}. If you didn't sign up for ClassConnect, please ignore this
+				email.
+			</p>
+		</div>
+	</body>
+</html>
