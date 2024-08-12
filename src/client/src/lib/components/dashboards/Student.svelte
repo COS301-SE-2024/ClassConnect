@@ -6,11 +6,8 @@
 		TableBody,
 		TableBodyCell,
 		TableBodyRow,
-		Timeline,
-		TimelineItem,
 		Badge
 	} from 'flowbite-svelte';
-	import { CalendarWeekSolid, SalePercentSolid } from 'flowbite-svelte-icons';
 
 	const options = {
 		colors: ['#50e991', '"#0bb4ff"'],
@@ -130,7 +127,7 @@
 		| 'dark'
 		| 'primary';
 
-	interface Assignment {
+	interface Submissions {
 		image: string;
 		name: string;
 		date: string;
@@ -139,21 +136,12 @@
 		color: BadgeColor;
 	}
 
-	const assignments: Assignment[] = [
+	const assignments: Submissions[] = [
 		{
 			image:
 				'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?size=626&ext=jpg&ga=GA1.1.2113030492.1720396800&semt=sph',
-			name: 'Math Assignment',
-			date: 'Due: May 20, 2024',
-			grade: 85,
-			status: 'Completed',
-			color: getStatusColor('Completed')
-		},
-		{
-			image:
-				'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?size=626&ext=jpg&ga=GA1.1.2113030492.1720396800&semt=sph',
-			name: 'History Essay',
-			date: 'Due: May 21, 2024',
+			name: 'Assignment 1',
+			date: 'Submitted: Aug 1, 2024',
 			grade: 92,
 			status: 'Completed',
 			color: getStatusColor('Completed')
@@ -161,8 +149,17 @@
 		{
 			image:
 				'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?size=626&ext=jpg&ga=GA1.1.2113030492.1720396800&semt=sph',
-			name: 'Science Project',
-			date: 'Due: May 22, 2024',
+			name: 'Practical 1',
+			date: 'Submitted: Aug 2, 2024',
+			grade: 92,
+			status: 'Completed',
+			color: getStatusColor('Completed')
+		},
+		{
+			image:
+				'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?size=626&ext=jpg&ga=GA1.1.2113030492.1720396800&semt=sph',
+			name: 'Assignment 2',
+			date: 'Submitted: N/A',
 			grade: null,
 			status: 'In Progress',
 			color: getStatusColor('In Progress')
@@ -170,11 +167,11 @@
 		{
 			image:
 				'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?size=626&ext=jpg&ga=GA1.1.2113030492.1720396800&semt=sph',
-			name: 'English Literature',
-			date: 'Due: May 23, 2024',
+			name: 'Practical 2',
+			date: 'Submitted: N/A',
 			grade: null,
-			status: 'To Do',
-			color: getStatusColor('To Do')
+			status: 'In Progress',
+			color: getStatusColor('In Progress')
 		}
 	];
 
@@ -194,111 +191,95 @@
 
 <div class="w-full p-4">
 	<div class="mb-4 flex gap-4">
-		<Card size="lg" class="flex-grow">
-			<div class="mb-4 flex justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
-				<div class="flex items-center">
-					<div
-						class="me-3 flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-700"
-					>
-						<SalePercentSolid class="h-6 w-6 text-gray-500 dark:text-gray-400" />
-					</div>
-					<div>
-						<h5 class="pb-1 text-2xl font-bold leading-none text-gray-900 dark:text-white">
-							Average Percentages
-						</h5>
-					</div>
-				</div>
+		<Card size="none" class="flex-grow">
+			<div class="mb-6 flex items-center justify-between">
+				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
+					Average Percentages
+				</h5>
+				<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View All</a>
 			</div>
 			<Chart {options} />
 		</Card>
 		<Card size="sm" class="flex-grow">
-			<div class="mb-4 flex justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
-				<div class="flex items-center">
-					<div
-						class="me-3 flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-700"
-					>
-						<CalendarWeekSolid class="h-6 w-6 text-gray-500 dark:text-gray-400" />
-					</div>
-					<div>
-						<h5 class="pb-1 text-2xl font-bold leading-none text-gray-900 dark:text-white">
-							Schedule
-						</h5>
-					</div>
-				</div>
+			<div class="mb-6 flex items-center justify-between">
+				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Schedule</h5>
+				<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View All</a>
 			</div>
-			<Timeline order="vertical">
-				<TimelineItem title="Flowbite Application UI v2.0.0" date="Released on January 13th, 2022">
-					<svelte:fragment slot="icon">
-						<span
-							class="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-primary-200 ring-8 ring-white dark:bg-primary-900 dark:ring-gray-900"
-						>
-							<CalendarWeekSolid class="h-4 w-4 text-primary-600 dark:text-primary-400" />
-						</span>
-					</svelte:fragment>
-					<p class="mb-4 text-base font-normal text-gray-500 dark:text-gray-400">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-						incididunt ut labore et dolore magna aliqua.
-					</p>
-				</TimelineItem>
-				<TimelineItem title="Flowbite Figma v1.3.0" date="Released on December 7th, 2021">
-					<svelte:fragment slot="icon">
-						<span
-							class="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-primary-200 ring-8 ring-white dark:bg-primary-900 dark:ring-gray-900"
-						>
-							<CalendarWeekSolid class="h-4 w-4 text-primary-600 dark:text-primary-400" />
-						</span>
-					</svelte:fragment>
-					<p class="text-base font-normal text-gray-500 dark:text-gray-400">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-						incididunt ut labore et dolore magna aliqua.
-					</p>
-				</TimelineItem>
-				<TimelineItem title="Flowbite Library v1.2.2" date="Released on December 2nd, 2021">
-					<svelte:fragment slot="icon">
-						<span
-							class="absolute -start-3 flex h-6 w-6 items-center justify-center rounded-full bg-primary-200 ring-8 ring-white dark:bg-primary-900 dark:ring-gray-900"
-						>
-							<CalendarWeekSolid class="h-4 w-4 text-primary-600 dark:text-primary-400" />
-						</span>
-					</svelte:fragment>
-					<p class="text-base font-normal text-gray-500 dark:text-gray-400">
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-						incididunt ut labore et dolore magna aliqua.
-					</p>
-				</TimelineItem>
-			</Timeline>
+			<Table divClass="overflow-x-auto w-full">
+				<TableBody>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">12 August - 13:00</div>
+								<div class="font-semibold">COS301 Lecture 1</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">12 August - 16:00</div>
+								<div class="font-semibold">COS301 Lecture 2</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">13 August - 08:00</div>
+								<div class="font-semibold">COS301 Practical 1</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">13 August - 16:00</div>
+								<div class="font-semibold">COS301 Lecture 3</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">14 August - 10:00</div>
+								<div class="font-semibold">COS301 Lecture 4</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+				</TableBody>
+			</Table>
 		</Card>
 	</div>
 
 	<div class="flex gap-4">
-		<Card size="lg" class="flex-grow">
-			<div class="mb-4 flex items-center justify-between">
+		<Card size="none" class="flex-grow">
+			<div class="mb-6 flex items-center justify-between">
 				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
-					Your Assignments
+					Recent Submissions
 				</h5>
-				<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View all</a>
+				<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View All</a>
 			</div>
 			<Table divClass="relative overflow-x-auto">
 				<TableBody>
-					{#each assignments as assignment}
+					{#each assignments as Submissions}
 						<TableBodyRow>
 							<TableBodyCell class="flex items-center">
-								<img src={assignment.image} alt="" class="mr-4 h-10 w-10 rounded-full" />
+								<img src={Submissions.image} alt="" class="mr-4 h-10 w-10 rounded-full" />
 								<div>
-									<div class="font-semibold">{assignment.name}</div>
-									<div class="text-sm text-gray-500">{assignment.date}</div>
+									<div class="font-semibold">{Submissions.name}</div>
+									<div class="text-sm text-gray-500">{Submissions.date}</div>
 								</div>
 							</TableBodyCell>
 							<TableBodyCell>
-								{#if assignment.grade !== null}
-									<div class="font-bold">{assignment.grade}%</div>
-									<div class="text-sm text-gray-500">Your grade</div>
+								{#if Submissions.grade !== null}
+									<div class="font-bold">{Submissions.grade}%</div>
 								{:else}
-									<div class="text-sm text-gray-500">N/A</div>
+									<div class="font-bold text-gray-400">N/A</div>
 								{/if}
 							</TableBodyCell>
 							<TableBodyCell class="text-right">
-								<Badge rounded large color={assignment.color}>{assignment.status}</Badge>
+								<Badge rounded large color={Submissions.color}>{Submissions.status}</Badge>
 							</TableBodyCell>
 						</TableBodyRow>
 					{/each}
@@ -306,21 +287,46 @@
 			</Table>
 		</Card>
 		<Card size="sm" class="flex-grow">
-			<div class="mb-4 flex justify-between border-b border-gray-200 pb-4 dark:border-gray-700">
-				<div class="flex items-center">
-					<div
-						class="me-3 flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-700"
-					>
-						<CalendarWeekSolid class="h-6 w-6 text-gray-500 dark:text-gray-400" />
-					</div>
-					<div>
-						<h5 class="pb-1 text-2xl font-bold leading-none text-gray-900 dark:text-white">
-							Another Card
-						</h5>
-					</div>
-				</div>
+			<div class="mb-6 flex items-center justify-between">
+				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Announcements</h5>
+				<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View All</a>
 			</div>
-			<p>Content goes here.</p>
+			<Table divClass="overflow-x-auto w-full">
+				<TableBody>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">12 August</div>
+								<div class="font-semibold">Demo 3 Preperations</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">11 August</div>
+								<div class="font-semibold">Setup links for Demo 3 Preperations</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">10 August</div>
+								<div class="font-semibold">Speak to clients for Demo 3</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">10 August</div>
+								<div class="font-semibold">Speak to clients for Demo 3</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+				</TableBody>
+			</Table>
 		</Card>
 	</div>
 </div>
