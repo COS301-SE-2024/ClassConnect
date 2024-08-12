@@ -31,6 +31,14 @@ ClassConnect is an innovative educational platform that blends the traditional l
   - [Architecture Requirements V1](https://drive.google.com/file/d/1U9p_uGadIggmrLtXrF3WIuLZL7QBzgXq/view?usp=drive_link)
 </details>
 
+<details>
+  <summary>
+    Technical Installation manual
+  </summary>
+
+  - [Technical Install Manual](https://github.com/COS301-SE-2024/ClassConnect/wiki/Technical-Install-Manual)
+</details>
+
 For any additional documentation please have look at our [Wiki](https://github.com/COS301-SE-2024/ClassConnect/wiki)
 
 <h2>🎬 Demo Videos</h2>
