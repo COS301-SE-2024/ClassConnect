@@ -4,7 +4,7 @@
 	import { T, useFrame } from '@threlte/core';
 	import { Vector3, PerspectiveCamera } from 'three';
 	import { OrbitControls, GLTF, Sky } from '@threlte/extras';
-	import { insertCoin, isHost, onPlayerJoin, setState, getState } from 'playroomkit';
+	import { insertCoin, onPlayerJoin, setState, getState } from 'playroomkit';
 
 	let players: any[] = [];
 	let camera: PerspectiveCamera;

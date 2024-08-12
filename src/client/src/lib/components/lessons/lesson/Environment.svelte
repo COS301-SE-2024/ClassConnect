@@ -34,7 +34,7 @@
 	</div>
 
 	<Canvas>
-		<Scene {selectedObject} {role}/>
+		<Scene {selectedObject} {role} />
 	</Canvas>
 </div>
 

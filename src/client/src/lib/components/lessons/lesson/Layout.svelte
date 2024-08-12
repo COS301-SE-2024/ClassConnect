@@ -47,7 +47,7 @@
 
 <div class="h-full w-full bg-gray-100 p-4 dark:bg-gray-900">
 	{#if isEnvironmentOn}
-		<Environment {materials} {role}/>
+		<Environment {materials} {role} />
 	{:else if screenSharingParticipant}
 		<ScreenShare participant={screenSharingParticipant} />
 	{:else}

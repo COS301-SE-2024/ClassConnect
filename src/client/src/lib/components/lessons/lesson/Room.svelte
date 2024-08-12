@@ -36,7 +36,7 @@
 {#if $callStore}
 	<div class="flex h-screen">
 		<div class="flex w-3/4 flex-col items-center justify-center">
-			<Participants {materials} {role}/>
+			<Participants {materials} {role} />
 			<Controls {role} />
 		</div>
 
