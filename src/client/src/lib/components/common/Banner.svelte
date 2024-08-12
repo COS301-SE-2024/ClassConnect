@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { Banner } from 'flowbite-svelte';
 	import { InfoCircleSolid } from 'flowbite-svelte-icons';
-	export let color: string;
+
 	export let type: string;
+	export let color: string;
 	export let message: string;
 </script>
 

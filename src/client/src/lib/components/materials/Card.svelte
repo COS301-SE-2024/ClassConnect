@@ -73,8 +73,8 @@
 	<div
 		class="text-surface shadow-secondary-1 dark:bg-surface-dark block max-w-[18rem] rounded-lg bg-white dark:text-white"
 	>
-		<div class="relative overflow-hidden bg-cover bg-no-repeat">
-			<img class="rounded-t-lg" src={thumbnail} alt={title} />
+		<div class="relative flex justify-center overflow-hidden bg-cover bg-no-repeat">
+			<img class="w-full rounded-t-lg" src={thumbnail} alt={title} />
 		</div>
 		<div class="flex items-center justify-between px-6">
 			<h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">

@@ -72,7 +72,7 @@
 	updateBreadcrumbs();
 </script>
 
-<Breadcrumb aria-label="Default breadcrumb example">
+<Breadcrumb aria-label="Default breadcrumb example" data-testid="breadcrumbs">
 	<BreadcrumbItem href="/" home>Home</BreadcrumbItem>
 	{#each breadcrumbItems as item}
 		<BreadcrumbItem href={item.href}>{item.name}</BreadcrumbItem>

@@ -10,12 +10,13 @@
 	let camera: PerspectiveCamera;
 	let cameraPosition = new Vector3();
 
-	export let selectedObject: string =
-		'https://class-connect-file-storage.s3.amazonaws.com/objects/66a0f01ef4736bcf3a73c7d0.glb';
+	export let selectedObject: string = '';
 
 	async function init() {
 		await insertCoin({ skipLobby: true, roomCode: $page.params.lesson });
+		console.log('Connected to Playroom');
 		onPlayerJoin((state) => {
+			console.log('Player joined:', state);
 			players.push(state);
 			state.onQuit(() => {
 				players = players.filter((p) => p !== state);
@@ -37,6 +38,7 @@
 					y: cameraPosition.y,
 					z: cameraPosition.z
 				});
+
 				setState('selectedObject', selectedObject);
 			} else {
 				// Non-host players get camera position and selected object from host

@@ -7,10 +7,11 @@ import Users from '$db/schemas/User';
 import Workspaces from '$db/schemas/Workspace';
 import type { Workspace, User } from '$src/types';
 
-function formatWorkspace(workspace: any, owner: string): Workspace {
+function formatWorkspace(workspace: any, owner: string, image: string): Workspace {
 	return {
 		id: workspace._id.toString(),
 		owner: owner,
+		ownerImage: image,
 		name: workspace.name,
 		image: workspace.image,
 		description: workspace.description || ''
@@ -29,10 +30,11 @@ async function getWorkspaces(organisation: ObjectId): Promise<Workspace[]> {
 	const workspaces = await Workspaces.find({ organisation });
 
 	const formattedWorkspacesPromises = workspaces.map(async (workspace) => {
-		const owner = await Users.findById(workspace.owner).select('name surname');
+		const owner = await Users.findById(workspace.owner).select('name surname image');
 		const ownerName = owner ? `${owner.name} ${owner.surname}` : 'Unknown';
+		const ownerImage = owner ? owner.image : '';
 
-		return formatWorkspace(workspace, ownerName);
+		return formatWorkspace(workspace, ownerName, ownerImage);
 	});
 
 	return Promise.all(formattedWorkspacesPromises);
@@ -51,6 +53,7 @@ async function getUserWorkspaces(userId: ObjectId): Promise<Workspace[]> {
 		id: workspace._id.toString(),
 		name: workspace.name,
 		image: workspace.image,
+		ownerImage: workspace.owner?.image || '',
 		owner: workspace.owner?.toString() || '',
 		description: workspace.description || ''
 	}));
@@ -118,16 +121,19 @@ async function editWorkspace(data: FormData) {
 
 	const name = data.get('name') as string;
 	const owner = data.get('owner') as string;
-	const image_file: File = data.get('file') as File;
+	const description = data.get('description') as string;
+
 	let image: string;
+	const image_file: File = data.get('file') as File;
 
-	const updateData: { name?: string; owner?: string; image?: string } = {};
+	const updateData: { name?: string; owner?: string; description?: string; image?: string } = {};
 
-	if (name) workspace.name = name;
+	if (name !== '') workspace.name = name;
+	if (description !== '') workspace.description = description;
+
 	if (image_file && workspace && image_file.size !== 0) {
-		console.log('Image File Details: ' + image_file);
 		image = await upload(image_file);
-		console.log('Image details: ' + image);
+
 		if (image) {
 			await deleteFile(workspace.image);
 			updateData.image = image;
