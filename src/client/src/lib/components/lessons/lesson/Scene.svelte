@@ -10,6 +10,7 @@
 	let camera: PerspectiveCamera;
 	let cameraPosition = new Vector3();
 
+	export let role: string;
 	export let selectedObject: string = '';
 
 	async function init() {
@@ -32,7 +33,7 @@
 	useFrame(() => {
 		if (camera) {
 			cameraPosition.copy(camera.position);
-			if (isHost()) {
+			if (role === 'lecturer') {
 				setState('cameraPosition', {
 					x: cameraPosition.x,
 					y: cameraPosition.y,

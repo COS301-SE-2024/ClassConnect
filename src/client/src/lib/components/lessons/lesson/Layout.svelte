@@ -9,6 +9,7 @@
 	import ScreenShare from './ScreenShare.svelte';
 	import Environment from './Environment.svelte';
 
+	export let role: string;
 	export let materials: any;
 
 	let gridClass = '';
@@ -46,7 +47,7 @@
 
 <div class="h-full w-full bg-gray-100 p-4 dark:bg-gray-900">
 	{#if isEnvironmentOn}
-		<Environment {materials} />
+		<Environment {materials} {role}/>
 	{:else if screenSharingParticipant}
 		<ScreenShare participant={screenSharingParticipant} />
 	{:else}

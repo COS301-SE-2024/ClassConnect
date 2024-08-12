@@ -4,6 +4,8 @@
 	import { onMount } from 'svelte';
 
 	let selectedObject = '';
+
+	export let role: string;
 	export let materials: { type: boolean; file_path: string; title: string }[] = [];
 
 	function handleObjectChange(event: Event) {
@@ -32,7 +34,7 @@
 	</div>
 
 	<Canvas>
-		<Scene {selectedObject} />
+		<Scene {selectedObject} {role}/>
 	</Canvas>
 </div>
 
