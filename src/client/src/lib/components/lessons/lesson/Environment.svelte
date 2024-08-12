@@ -1,15 +1,20 @@
 <script lang="ts">
 	import { Canvas } from '@threlte/core';
 	import Scene from './Scene.svelte';
+	import { onMount } from 'svelte';
 
-	let selectedObject =
-		'https://class-connect-file-storage.s3.amazonaws.com/objects/66a0f01ef4736bcf3a73c7d0.glb';
-
-	export let materials;
+	let selectedObject = '';
+	export let materials: { type: boolean; file_path: string; title: string }[] = [];
 
 	function handleObjectChange(event: Event) {
 		selectedObject = (event.target as HTMLSelectElement).value;
 	}
+
+	onMount(() => {
+		if (materials.length > 0) {
+			selectedObject = materials.find((material) => material.type === true)?.file_path || '';
+		}
+	});
 </script>
 
 <div
@@ -25,7 +30,7 @@
 			{/each}
 		</select>
 	</div>
-
+	
 	<Canvas>
 		<Scene {selectedObject} />
 	</Canvas>
