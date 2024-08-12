@@ -227,6 +227,7 @@ export function determineFolder(file: File): string {
 	const picturesExtensions = ['png', 'jpeg', 'jpg', 'webp'];
 	const objectsExtensions = ['gltf', 'glb'];
 	const studyMaterialExtensions = ['pdf', 'pptx', 'epub'];
+	const videoExtensions = ['mp4', 'webm', 'mov'];
 
 	if (picturesExtensions.includes(extension)) {
 		return 'pictures';
@@ -234,6 +235,8 @@ export function determineFolder(file: File): string {
 		return 'objects';
 	} else if (studyMaterialExtensions.includes(extension)) {
 		return 'study-material';
+	} else if (videoExtensions.includes(extension)) {
+		return 'videos';
 	} else {
 		throw new Error('Unsupported file format');
 	}

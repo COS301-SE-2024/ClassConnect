@@ -2,6 +2,7 @@ import { error } from '@sveltejs/kit';
 import type { Actions } from './$types';
 import type { Material } from '$src/types';
 import Materials from '$db/schemas/Material';
+import { upload } from '$lib/server/storage';
 import Lessons from '$db/schemas/Lesson';
 import Recording from '$db/schemas/Recording';
 import { StreamClient } from '@stream-io/node-sdk';
@@ -74,6 +75,7 @@ function validateLecturer(locals: any) {
 
 async function saveRecording(data: FormData) {
 	const lesson_id = data.get('LessonID') as string;
+	const video_file = data.get('video') as File;
 	const Lesson = await Lessons.findById(lesson_id);
 
 	if (!Lesson) return fail(404, { message: 'Lesson not found' });
@@ -88,7 +90,7 @@ async function saveRecording(data: FormData) {
 
 	const workspace = Lesson.workspace;
 
-	const url: string = data.get('recordingURL') as string;
+	const url: string = await upload(video_file);
 
 	console.log('Topic: ', topic);
 	console.log('Description: ', description);

@@ -3,14 +3,14 @@
 
 	export let open: boolean = false;
 	export let submissionMessage: string = '';
-	export let totalPoints: number = 0;
+
+	export let percentageScore: number = 0;
 
 	let error: string;
 
 	async function close() {
 		try {
 			await new Promise((resolve) => setTimeout(resolve, 500));
-
 			open = false;
 		} catch (err) {
 			error = 'An error occurred while closing the modal.';
@@ -28,7 +28,7 @@
 		{submissionMessage}
 	</p>
 	<p class="mb-4 text-lg font-semibold">
-		Total Points: {totalPoints}
+		Percentage Score: {percentageScore.toFixed(2)}%
 	</p>
 	<Button class="mt-4 w-full" on:click={close}>Close</Button>
 </Modal>

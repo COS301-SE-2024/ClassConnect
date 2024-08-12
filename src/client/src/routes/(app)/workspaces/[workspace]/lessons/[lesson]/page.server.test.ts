@@ -14,6 +14,11 @@ vi.mock('@sveltejs/kit', async () => {
 	};
 });
 
+vi.mock('$lib/server/storage', () => ({
+	upload: vi.fn(),
+	deleteFile: vi.fn()
+}));
+
 vi.mock('@stream-io/node-sdk', () => ({
 	StreamClient: vi.fn().mockImplementation(() => ({
 		createToken: vi.fn()
