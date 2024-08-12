@@ -30,7 +30,7 @@
 			{/each}
 		</select>
 	</div>
-	
+
 	<Canvas>
 		<Scene {selectedObject} />
 	</Canvas>

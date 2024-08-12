@@ -47,7 +47,7 @@
 				if (hostCameraPos) {
 					camera.position.set(hostCameraPos.x, hostCameraPos.y, hostCameraPos.z);
 				}
-				
+
 				if (hostSelectedObject) {
 					selectedObject = hostSelectedObject;
 				}
