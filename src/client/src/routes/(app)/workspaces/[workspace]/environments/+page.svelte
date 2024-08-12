@@ -5,11 +5,15 @@
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
 </script>
 
-<main class="h-[calc(100vh-64px)]">
+<main class="container mx-auto my-2 px-4">
 	<h1 class="mb-8 text-center text-3xl font-bold dark:text-white">Choose Your Environment</h1>
 
 	<div class="flex flex-wrap justify-center">
-		<Card img="/images/view-3D-models-1.jpg" class="m-2 max-w-[45%] flex-grow">
+		<Card
+			img="/images/view-3D-models-1.jpg"
+			imgClass="h-48 object-cover rounded-lg"
+			class="m-2 max-w-[45%] flex-grow p-4"
+		>
 			<h5 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">3D Playground</h5>
 
 			<p class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400">
@@ -23,7 +27,11 @@
 			</Button>
 		</Card>
 
-		<Card img="/images/virtual-classroom.jpg" imgClass="h-[58%]" class="m-2 max-w-[45%] flex-grow">
+		<Card
+			img="/images/virtual-classroom.jpg"
+			imgClass="h-48 object-cover rounded-lg"
+			class="m-2 max-w-[45%] flex-grow p-4"
+		>
 			<h5 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">VR Playground</h5>
 
 			<p class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400">
