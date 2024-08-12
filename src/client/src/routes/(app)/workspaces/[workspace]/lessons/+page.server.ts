@@ -4,6 +4,7 @@ import Activities from '$db/schemas/Activity';
 import type { Lesson, Recording } from '$src/types';
 import Lessons from '$db/schemas/Lesson';
 import Recordings from '$db/schemas/Recording';
+import { deleteFile } from '$lib/server/storage';
 
 function formatLesson(lesson: any): Partial<Lesson> {
 	return {
@@ -134,8 +135,18 @@ async function deleteLesson(id: string) {
 async function deleteRecording(id: string) {
 	if (!id) return fail(400, { error: 'Lesson ID is required' });
 
-	const deletedLesson = await Recordings.findByIdAndDelete(id);
-	if (!deletedLesson) return fail(404, { message: 'Lesson not found' });
+	const recording = await Recordings.findById(id);
+
+	if (!recording) return fail(404, { message: 'Recording not found' });
+
+	try {
+		await deleteFile(recording.url);
+		await Recordings.findByIdAndDelete(id);
+	} catch (e) {
+		console.error('Error deleting recording:', e);
+		await Recordings.findByIdAndDelete(id);
+		return { success: true };
+	}
 
 	return { success: true };
 }
