@@ -9,7 +9,7 @@
 		ChartLineUpOutline,
 		ClipboardListSolid,
 		GlobeSolid,
-		BookOpenSolid,
+		BookOpenSolid
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
 	import { writingQuiz } from '$lib/store/sidebar';
