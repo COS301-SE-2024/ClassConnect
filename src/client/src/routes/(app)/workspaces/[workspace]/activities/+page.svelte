@@ -9,7 +9,7 @@
 </script>
 
 <main class="container mx-auto my-8 px-4">
-	<h1 class="mb-4 text-2xl font-bold">Workspace Activities</h1>
+	<h1 class="mb-4 text-2xl font-bold dark:text-white">Workspace Activities</h1>
 	{#if activities.length === 0}
 		<p class="text-gray-700 dark:text-gray-300">No activities found for this workspace.</p>
 	{:else}

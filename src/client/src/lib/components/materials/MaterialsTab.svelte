@@ -155,7 +155,7 @@
 						class="text-surface shadow-secondary-1 block max-w-[18rem] rounded-lg bg-white dark:border-2 dark:border-gray-500 dark:bg-gray-800 dark:text-white"
 					>
 						<div class="relative overflow-hidden bg-cover bg-no-repeat">
-							<img class="rounded-t-lg" src={material.thumbnail} alt={material.title} />
+							<img class="mx-auto rounded-t-lg" src={material.thumbnail} alt={material.title} />
 						</div>
 						<div class="flex items-center justify-between px-6">
 							<h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
