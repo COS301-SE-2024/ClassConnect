@@ -53,9 +53,12 @@
 	<BreadCrumbs />
 
 	<div class="flex items-center md:order-2">
-		<DarkMode class="mx-2 border text-gray-500 dark:border-gray-800 dark:text-gray-600" data-testid="darkmode" />
+		<DarkMode
+			class="mx-2 border text-gray-500 dark:border-gray-800 dark:text-gray-600"
+			data-testid="darkmode"
+		/>
 
-		<Avatar id="avatar-menu" src={image} class="mx-2" data-testid="avatar"/>
+		<Avatar id="avatar-menu" src={image} class="mx-2" data-testid="avatar" />
 
 		<div class="mx-2">
 			<div class="text-lg font-semibold">{name}</div>

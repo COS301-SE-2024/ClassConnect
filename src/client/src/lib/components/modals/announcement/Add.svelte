@@ -15,7 +15,7 @@
 		return async ({ result, update }: any) => {
 			if (result.type === 'success') {
 				await update();
-				message = 'Addition was successfull';
+				message = 'Addition was successful';
 				color = 'green';
 				open = false;
 				display = true;

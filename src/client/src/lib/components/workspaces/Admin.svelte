@@ -105,7 +105,7 @@
 							<TableBodyCell>
 								<div class="flex items-center">
 									<img
-										src={workspace.image}
+										src={workspace.ownerImage}
 										alt={`${workspace.name}`}
 										class="mr-2 h-8 w-8 rounded-full sm:mr-4 sm:h-10 sm:w-10"
 									/>

@@ -1,5 +1,7 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { Modal, Button } from 'flowbite-svelte';
+	import { navigateToParentRoute } from '$utils/navigation';
 
 	export let open: boolean = false;
 	export let submissionMessage: string = '';
@@ -12,6 +14,7 @@
 			await new Promise((resolve) => setTimeout(resolve, 500));
 
 			open = false;
+			navigateToParentRoute($page.url.pathname);
 		} catch (err) {
 			error = 'An error occurred while closing the modal.';
 			console.error(err);

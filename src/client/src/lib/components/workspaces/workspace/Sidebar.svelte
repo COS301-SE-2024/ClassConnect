@@ -2,14 +2,14 @@
 	import {
 		BullhornSolid,
 		BriefcaseSolid,
-		UserCircleSolid,
 		UsersGroupSolid,
 		ChartPieSolid,
 		ArrowLeftOutline,
 		ChartLineUpOutline,
 		ClipboardListSolid,
 		GlobeSolid,
-		BookOpenSolid
+		BookOpenSolid,
+		VideoCameraSolid
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
 	import { writingQuiz } from '$lib/store/sidebar';
@@ -37,15 +37,15 @@
 			{ icon: ClipboardListSolid, name: 'Grade Center', href: workspaceURL + '/gradecenter' },
 			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
 			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
-			{ icon: UserCircleSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
-			{ icon: UserCircleSolid, name: 'Quizzes', href: workspaceURL + '/quizzes' },
+			{ icon: VideoCameraSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
+			{ icon: BookOpenSolid, name: 'Quizzes', href: workspaceURL + '/quizzes' },
 			{ icon: UsersGroupSolid, name: 'Environments', href: workspaceURL + '/environments' }
 		],
 		student: [
 			{ icon: GlobeSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
 			{ icon: BullhornSolid, name: 'Activities', href: workspaceURL + '/activities' },
 			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
-			{ icon: UserCircleSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
+			{ icon: VideoCameraSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
 			{ icon: BookOpenSolid, name: 'Quizzes', href: workspaceURL + '/quizzes' },
 			{ icon: UsersGroupSolid, name: 'Environments', href: workspaceURL + '/environments' },
 			{ icon: ChartPieSolid, name: 'Grades', href: workspaceURL + '/grades' }

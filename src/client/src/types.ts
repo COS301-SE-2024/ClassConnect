@@ -29,6 +29,7 @@ export interface Workspace {
 	name: string;
 	image: string;
 	owner: string;
+	ownerImage: string;
 	description: string;
 }
 
