@@ -1,6 +1,6 @@
 <script lang="ts">
 	//[quiz].page.svelte
-	import { Progressbar, Button, Radio, Card } from 'flowbite-svelte';
+	import { Progressbar, Button, Radio, Card, Heading, P } from 'flowbite-svelte';
 	import Form from '$lib/components/questions/Form.svelte';
 	import { enhance } from '$app/forms';
 	import Submission from '$lib/components/modals/quizzes/Submission.svelte';
@@ -129,31 +129,50 @@
 	}
 </script>
 
-<main class="container mx-auto my-8 px-4">
-	<h1 class="mb-4 text-2xl font-bold">Quiz Questions</h1>
+<main class="container mx-auto my-8 max-w-4xl px-4">
+	<Heading tag="h1" class="mb-6 text-3xl font-bold text-gray-900 dark:text-white"
+		>Quiz Questions</Heading
+	>
+
 	{#if role === 'student' || (role === 'lecturer' && isPreview)}
 		{#if questions.length === 0}
-			<p class="text-gray-700 dark:text-gray-300">No questions available for this quiz.</p>
+			<P class="text-lg text-gray-700 dark:text-gray-300">No questions available for this quiz.</P>
 		{:else}
 			{#if role === 'student' && !isPreview}
-				<p class="text-gray-700 dark:text-gray-300">Elapsed time to complete quiz:</p>
-				<Progressbar
-					progress={100 * (1 - elapsed / duration)}
-					size="h-4"
-					color={elapsed / duration > 0.75 ? 'red' : elapsed / duration > 0.5 ? 'yellow' : 'green'}
-				/>
-				<div>{(elapsed / 1000).toFixed(1)}s</div>
+				<div class="mb-6">
+					<P class="mb-2 text-lg font-medium text-gray-700 dark:text-gray-300">Time remaining:</P>
+					<Progressbar
+						progress={100 * (1 - elapsed / duration)}
+						size="h-6"
+						color={elapsed / duration > 0.75
+							? 'red'
+							: elapsed / duration > 0.5
+								? 'yellow'
+								: 'green'}
+					/>
+					<P class="mt-2 text-right text-lg font-semibold"
+						>{((duration - elapsed) / 1000).toFixed(1)}s</P
+					>
+				</div>
 			{/if}
-			<div class="space-y-6">
+
+			<div class="space-y-8">
 				{#each questions as question (question.id)}
-					<Card>
-						<h2 class="mb-2 text-xl font-bold">Question {question.questionNumber}</h2>
-						<p class="mb-4 text-base font-normal text-gray-700 dark:text-gray-400">
+					<Card
+						size="none"
+						padding="xl"
+						class="bg-white shadow-lg transition-shadow duration-300 hover:shadow-xl dark:bg-gray-800"
+					>
+						<Heading tag="h2" class="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
+							Question {question.questionNumber}
+						</Heading>
+						<P class="mb-6 text-lg text-gray-700 dark:text-gray-300">
 							{question.questionContent}
-						</p>
-						<div class="space-y-2">
+						</P>
+						<div class="space-y-4">
 							{#each question.options as option}
 								<Radio
+									class="text-lg"
 									name={question.questionNumber}
 									value={option.content}
 									checked={selectedAnswers[question.questionNumber] === option.content}
@@ -166,6 +185,7 @@
 					</Card>
 				{/each}
 			</div>
+
 			{#if role === 'student' && !isPreview}
 				<form
 					method="POST"
@@ -183,16 +203,27 @@
 							submitModalOpen = true;
 						};
 					}}
+					class="mt-8 flex justify-center"
 				>
-					<input type="hidden" name="mark" value={percentageScore} />
-					<Button type="submit" on:click={handleQuizSubmission}>Submit Quiz</Button>
+					<input type="hidden" name="mark" value={totalPoints} />
+					<Button
+						type="submit"
+						color="green"
+						class="w-full sm:w-auto"
+						on:click={handleQuizSubmission}
+					>
+						Submit Quiz
+					</Button>
 				</form>
 			{/if}
 		{/if}
 	{:else if role === 'lecturer' && !isPreview}
 		<Form bind:open={isFormOpen} on:formSubmitted={handleFormSubmit} />
 	{:else}
-		<p class="text-gray-700 dark:text-gray-300">You do not have permission to view this content.</p>
+		<P class="text-lg text-gray-700 dark:text-gray-300"
+			>You do not have permission to view this content.</P
+		>
 	{/if}
 </main>
+
 <Submission bind:open={submitModalOpen} {submissionMessage} {percentageScore} />
