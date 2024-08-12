@@ -8,7 +8,6 @@
 		TableBodyRow,
 		Badge
 	} from 'flowbite-svelte';
-	import OverviewShedule from '$lib/components/common/OverviewShedule.svelte';
 
 	const options = {
 		colors: ['#50e991', '"#0bb4ff"'],
@@ -142,7 +141,7 @@
 			image:
 				'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?size=626&ext=jpg&ga=GA1.1.2113030492.1720396800&semt=sph',
 			name: 'Assignment 1',
-			date: 'Submitted: May 20, 2024',
+			date: 'Submitted: Aug 1, 2024',
 			grade: 92,
 			status: 'Completed',
 			color: getStatusColor('Completed')
@@ -151,7 +150,7 @@
 			image:
 				'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?size=626&ext=jpg&ga=GA1.1.2113030492.1720396800&semt=sph',
 			name: 'Practical 1',
-			date: 'Submitted: May 21, 2024',
+			date: 'Submitted: Aug 2, 2024',
 			grade: 92,
 			status: 'Completed',
 			color: getStatusColor('Completed')
@@ -160,7 +159,7 @@
 			image:
 				'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?size=626&ext=jpg&ga=GA1.1.2113030492.1720396800&semt=sph',
 			name: 'Assignment 2',
-			date: 'Submitted: May 22, 2024',
+			date: 'Submitted: N/A',
 			grade: null,
 			status: 'In Progress',
 			color: getStatusColor('In Progress')
@@ -169,7 +168,7 @@
 			image:
 				'https://img.freepik.com/free-photo/painting-mountain-lake-with-mountain-background_188544-9126.jpg?size=626&ext=jpg&ga=GA1.1.2113030492.1720396800&semt=sph',
 			name: 'Practical 2',
-			date: 'Submitted: May 23, 2024',
+			date: 'Submitted: N/A',
 			grade: null,
 			status: 'In Progress',
 			color: getStatusColor('In Progress')
@@ -197,12 +196,59 @@
 				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
 					Average Percentages
 				</h5>
-				<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View all</a>
+				<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View All</a>
 			</div>
 			<Chart {options} />
 		</Card>
-		<Card size="sm">
-			<OverviewShedule />
+		<Card size="sm" class="flex-grow">
+			<div class="mb-6 flex items-center justify-between">
+				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">Schedule</h5>
+				<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View All</a>
+			</div>
+			<Table divClass="overflow-x-auto w-full">
+				<TableBody>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">12 August - 13:00</div>
+								<div class="font-semibold">COS301 Lecture 1</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">12 August - 16:00</div>
+								<div class="font-semibold">COS301 Lecture 2</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">13 August - 08:00</div>
+								<div class="font-semibold">COS301 Practical 1</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">13 August - 16:00</div>
+								<div class="font-semibold">COS301 Lecture 3</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">14 August - 10:00</div>
+								<div class="font-semibold">COS301 Lecture 4</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+				</TableBody>
+			</Table>
 		</Card>
 	</div>
 
@@ -212,7 +258,7 @@
 				<h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
 					Recent Submissions
 				</h5>
-				<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View all</a>
+				<a href="/" class="text-sm font-medium text-primary-600 dark:text-primary-500">View All</a>
 			</div>
 			<Table divClass="relative overflow-x-auto">
 				<TableBody>
@@ -250,16 +296,32 @@
 					<TableBodyRow>
 						<TableBodyCell>
 							<div>
-								<div class="text-sm text-gray-500">announcement 1</div>
-								<div class="font-semibold">announcment text</div>
+								<div class="text-sm text-gray-500">12 August</div>
+								<div class="font-semibold">Demo 3 Preperations</div>
 							</div>
 						</TableBodyCell>
 					</TableBodyRow>
 					<TableBodyRow>
 						<TableBodyCell>
 							<div>
-								<div class="text-sm text-gray-500">announcement 2</div>
-								<div class="font-semibold">announcement text</div>
+								<div class="text-sm text-gray-500">11 August</div>
+								<div class="font-semibold">Setup links for Demo 3 Preperations</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">10 August</div>
+								<div class="font-semibold">Speak to clients for Demo 3</div>
+							</div>
+						</TableBodyCell>
+					</TableBodyRow>
+					<TableBodyRow>
+						<TableBodyCell>
+							<div>
+								<div class="text-sm text-gray-500">10 August</div>
+								<div class="font-semibold">Speak to clients for Demo 3</div>
 							</div>
 						</TableBodyCell>
 					</TableBodyRow>

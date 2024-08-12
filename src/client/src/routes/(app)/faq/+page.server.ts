@@ -20,6 +20,76 @@ export async function load({ locals }) {
 					]
 				},
 				{
+					category: 'Dashboard',
+					items: [
+						{
+							question: 'What is the dashboard?',
+							answer:
+								'Students can quickly overview their module, including how their performance compares to the class average, their schedule for the module, recent announcements, and various assignments associated with the module.'
+						},
+						{
+							question: 'What information can I see in the Average Percentages section',
+							answer:
+								'The Average Percentages section provides a visual comparison of your performance against the class average. You can see how your percentage scores for each month compare to those of your peers, helping you gauge your progress in the module.'
+						},
+						{
+							question: 'Where can I find my module schedule?',
+							answer:
+								'Your module schedule is available under the Schedule section. It lists the most recent dates and events, such as upcoming classes, assignment deadlines, and other key activities related to your module.'
+						},
+						{
+							question: 'What details are shown in the Your Assignments section?',
+							answer:
+								'The Your Assignments section displays a list of your assignments, including the title, due date, and status (e.g., To Do, In Progress, Completed). If you have received a grade for an assignment, it will also be shown here.'
+						},
+						{
+							question: 'How do I know the status of my assignments?',
+							answer:
+								'Each assignment in the Your Assignments section is labeled with a status badge. This badge indicates whether the assignment is still to be done, in progress, or completed. The color of the badge (red, yellow, green) helps you quickly identify the status.'
+						},
+						{
+							question: 'Can I view my assignments in one place?',
+							answer:
+								'Yes, you can view all your assignments by clicking the View all link in the Your Assignments section. This will take you to a page where you can see a comprehensive list of all your assignments, including those that are upcoming, in progress, or completed.'
+						}
+					]
+				},
+				{
+					category: 'Workspaces',
+					items: [
+						{
+							question: 'What are workspaces?',
+							answer:
+								'Workspaces lists all the modules that the student is taking. Each module is represented by a card which the user can click on to view more details about said module.'
+						},
+						{
+							question: 'What if I do not see a module that I have registered for?',
+							answer: 'Please consult with your department' + "'s faculaty advisor."
+						}
+					]
+				},
+				{
+					category: 'Announcemnts',
+					items: [
+						{
+							question: 'What are announcements?',
+							answer:
+								'Announcements list any announcement produced by Admin or Lecturers (if the student is taking that lecturer' +
+								"'s module)."
+						}
+					]
+				},
+				{
+					category: 'Grades',
+					items: [
+						{
+							question: 'What are grades?',
+							answer:
+								'Grades list all the marks of the student for every module that the student is taking.'
+						}
+					]
+				},
+				{
 					category: 'User Enrollment',
 					items: [
 						{

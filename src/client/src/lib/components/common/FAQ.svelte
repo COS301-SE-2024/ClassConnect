@@ -1,48 +1,36 @@
 <script lang="ts">
+	import { Accordion, AccordionItem } from 'flowbite-svelte';
+	import { Heading } from 'flowbite-svelte';
+
 	export let faqs: any;
 </script>
 
-<section class="bg-white dark:bg-gray-900">
-	<div class="container mx-auto max-w-4xl px-6 py-10">
-		<h1 class="text-center text-2xl font-semibold text-gray-800 dark:text-white lg:text-3xl">
-			Frequently asked questions
-		</h1>
+<section class="bg-gray-50 dark:bg-gray-900">
+	<div class="container mx-auto max-w-4xl px-6 py-16">
+		<Heading
+			tag="h1"
+			class="mb-8 text-center text-3xl font-bold text-gray-900 dark:text-white md:text-4xl"
+		>
+			Frequently Asked Questions
+		</Heading>
 
 		{#each faqs as faq}
-			<h1 class="pt-2 text-center text-2xl font-semibold text-gray-800 dark:text-white lg:text-3xl">
-				{faq.category}
-			</h1>
-			<div class="mt-12 space-y-8">
-				{#each faq.items as item}
-					<div class="rounded-lg border-2 border-gray-100 dark:border-gray-700">
-						<button class="flex w-full items-center justify-between p-8">
-							<h1 class="font-semibold text-gray-700 dark:text-white">{item.question}</h1>
-
-							<span class="rounded-full bg-gray-200 text-gray-400">
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									class="h-6 w-6"
-									fill="none"
-									viewBox="0 0 24 24"
-									stroke="currentColor"
+			<div class="mb-8">
+				<Heading tag="h2" class="mb-4 text-2xl font-semibold text-gray-800 dark:text-white">
+					{faq.category}
+				</Heading>
+				<Accordion flush>
+					{#each faq.items as item}
+						<AccordionItem>
+							<svelte:fragment slot="header">
+								<span class="text-lg font-medium text-gray-700 dark:text-gray-300"
+									>{item.question}</span
 								>
-									<path
-										stroke-linecap="round"
-										stroke-linejoin="round"
-										stroke-width="2"
-										d="M18 12H6"
-									/>
-								</svg>
-							</span>
-						</button>
-
-						<hr class="border-gray-200 dark:border-gray-700" />
-
-						<p class="p-8 text-sm text-gray-500 dark:text-gray-300">
-							{item.answer}
-						</p>
-					</div>
-				{/each}
+							</svelte:fragment>
+							<p class="mb-2 text-gray-600 dark:text-gray-400">{item.answer}</p>
+						</AccordionItem>
+					{/each}
+				</Accordion>
 			</div>
 		{/each}
 	</div>

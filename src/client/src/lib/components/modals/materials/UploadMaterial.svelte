@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Button, Modal, Label, Fileupload, Helper, Input } from 'flowbite-svelte';
 	import PreviewMaterial from '$lib/components/modals/materials/PreviewMaterial.svelte';
-	import { displayedSandboxObjectURL } from '$src/lib/store/objects';
 	import { createEventDispatcher } from 'svelte';
 
 	export let open: boolean;
@@ -53,7 +52,6 @@
 				if (fileUrl) {
 					open = false;
 					openPreviewModal = true;
-					displayedSandboxObjectURL.set(fileUrl);
 				} else {
 					console.log('Failed to read file URL');
 				}

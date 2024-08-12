@@ -5,9 +5,10 @@ import type { User } from '$src/types';
 import type { ObjectId } from 'mongoose';
 
 import Users from '$db/schemas/User';
+import { generateUsername } from './auth';
+import { sendWelcomeEmail } from './email';
 import { HASH_OPTIONS } from '$src/constants';
-import { generateUsername } from '$src/lib/server/utils/auth';
-import { upload, deleteFile } from '$lib/server/storage';
+import { upload, deleteFile } from '../storage';
 
 export function formatUser(user: any): User {
 	return {
@@ -58,6 +59,8 @@ export async function addUser(data: FormData, organisation: ObjectId | undefined
 	});
 
 	await newUser.save();
+	sendWelcomeEmail(email, name, username);
+
 	return { success: true };
 }
 
@@ -90,6 +93,10 @@ export async function deleteUser(id: string) {
 	if (!id) return fail(400, { error: 'User ID is required' });
 
 	const deletedUser = await Users.findByIdAndDelete(id);
+
+	const { image } = deletedUser;
+	if (image !== '/images/profile-placeholder.png') await deleteFile(image);
+
 	if (!deletedUser) return fail(404, { error: 'User not found' });
 
 	return { success: true };

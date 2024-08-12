@@ -1,14 +1,18 @@
 import type { Actions } from './$types';
 import { error, fail } from '@sveltejs/kit';
 
-import { addUser, getUsers, editUser, deleteUser, validateUser } from '$src/lib/server/utils/user';
+import { addUser, getUsers, editUser, deleteUser, validateUser } from '$src/lib/server/utils/users';
 
 export async function load({ locals }) {
 	validateUser(locals, 'admin');
 
 	try {
 		const admins = await getUsers('admin', locals.user?.organisation);
-		return { admins };
+		let organisation;
+		if (locals.user?.organisation) {
+			organisation = JSON.parse(JSON.stringify(locals.user?.organisation));
+		}
+		return { organisation, admins };
 	} catch (e) {
 		console.error('Failed to load admins:', e);
 		throw error(500, 'Error occurred while fetching admins');

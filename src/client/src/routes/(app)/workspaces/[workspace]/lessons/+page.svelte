@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { Button, Tabs, TabItem } from 'flowbite-svelte';
-	import Recordings from '$src/lib/components/common/Recordings.svelte';
+
 	import { formatDate } from '$utils/date';
 	import Upcoming from '$src/lib/components/lessons/Upcoming.svelte';
 	import InSession from '$src/lib/components/lessons/InSession.svelte';
+	import Recordings from '$src/lib/components/common/Recordings.svelte';
 	import ScheduleModal from '$src/lib/components/modals/lessons/Schedule.svelte';
 
 	export let data: any;
@@ -68,7 +69,7 @@
 						<span
 							class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
 						>
-							{lessons.length} lessons
+							{recordings.length} recordings
 						</span>
 					</div>
 				</div>

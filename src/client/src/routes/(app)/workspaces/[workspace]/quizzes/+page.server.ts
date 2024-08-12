@@ -87,7 +87,6 @@ async function createQuiz(
 	});
 
 	await newActivity.save();
-
 	return { success: true };
 }
 
@@ -109,13 +108,15 @@ export const actions: Actions = {
 		try {
 			const data = await request.formData();
 			const title = data.get('title') as string;
-			const duration = 5000;
+			const durationInMinutes = parseInt(data.get('duration') as string, 10);
+			const duration = durationInMinutes * 60 * 1000;
 			const instructions = data.get('instructions') as string;
 			const graded = 'No';
 			const workspaceId = new mongoose.Types.ObjectId(params.workspace);
 			console.log('Quiz Workspace Id:', workspaceId);
 
-			return await createQuiz(title, graded, instructions, workspaceId, duration);
+			const result = await createQuiz(title, graded, instructions, workspaceId, duration);
+			return result;
 		} catch (error) {
 			console.error('Error posting quiz:', error);
 			return fail(500, { error: 'Failed to post quiz' });

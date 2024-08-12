@@ -9,7 +9,8 @@
 		DotsVerticalOutline,
 		EyeOutline,
 		ShareNodesOutline,
-		TrashBinOutline
+		TrashBinOutline,
+		ArrowDownToBracketOutline
 	} from 'flowbite-svelte-icons';
 	import DeleteMaterial from '$src/lib/components/modals/materials/DeleteMaterial.svelte';
 	import Preview from '$src/lib/components/modals/materials/Preview.svelte';
@@ -43,12 +44,13 @@
 
 	const handleFileOpening = (url: string, type: boolean) => {
 		if (!type) {
+			console.log(url);
 			objURL.set(url);
 			goto($page.url + '/material');
 		} else {
 			displayedSandboxObjectURL.set(url);
 			let curr_url: string = $page.url.toString();
-			curr_url = curr_url.replace('materials', 'sandbox');
+			curr_url = curr_url.replace('materials', 'environments/sandbox');
 			goto(curr_url);
 		}
 	};
@@ -67,6 +69,29 @@
 		type = mat_type;
 		openPreviewModal = true;
 	};
+
+	async function handleDownload(mat_url: string, mat_title: string) {
+		const toastId = toast.loading('Downloading...');
+		try {
+			const response = await fetch(mat_url);
+			const blob = await response.blob();
+
+			const url = URL.createObjectURL(blob);
+			const link = document.createElement('a');
+			link.href = url;
+			link.download = mat_title;
+			document.body.appendChild(link);
+			link.click();
+
+			// Clean up
+			document.body.removeChild(link);
+			URL.revokeObjectURL(url);
+			toast.dismiss(toastId);
+			toast.success('Downloaded successfully!');
+		} catch (error) {
+			console.error('Failed to download file:', error);
+		}
+	}
 
 	const copyToClipboard = (url: string) => {
 		console.log(url);
@@ -127,7 +152,7 @@
 			{#each filteredItems as material (material.id)}
 				<div class="space-y-4">
 					<div
-						class="text-surface shadow-secondary-1 dark:bg-surface-dark block max-w-[18rem] rounded-lg bg-white dark:text-white"
+						class="text-surface shadow-secondary-1 block max-w-[18rem] rounded-lg bg-white dark:border-2 dark:border-gray-500 dark:bg-gray-800 dark:text-white"
 					>
 						<div class="relative overflow-hidden bg-cover bg-no-repeat">
 							<img class="rounded-t-lg" src={material.thumbnail} alt={material.title} />
@@ -137,26 +162,40 @@
 								{material.title}
 							</h5>
 							<div>
-								<DotsVerticalOutline id="card-dot-menu-{material.id}" size="xl" />
+								<DotsVerticalOutline
+									id="card-dot-menu-{material.id}"
+									size="xl"
+									class="dark:text-gray-400"
+								/>
 								<Dropdown placement="bottom" triggeredBy={`#card-dot-menu-${material.id}`}>
-									<DropdownItem class="flex" on:click={() => copyToClipboard(material.file_path)}>
-										<ShareNodesOutline class="me-2" />
+									<DropdownItem
+										class="flex dark:text-gray-200"
+										on:click={() => copyToClipboard(material.file_path)}
+									>
+										<ShareNodesOutline class="me-2 dark:text-gray-400" />
 										Share
 									</DropdownItem>
 									<DropdownItem
-										class="flex"
+										class="flex dark:text-gray-200"
 										on:click={() =>
 											handlePreview(material.file_path, material.title, material.type)}
 									>
-										<EyeOutline class="me-2" />
+										<EyeOutline class="me-2 dark:text-gray-400" />
 										Preview
 									</DropdownItem>
-									<DropdownDivider />
 									<DropdownItem
-										class="flex"
+										class="flex dark:text-gray-200"
+										on:click={() => handleDownload(material.file_path, material.title)}
+									>
+										<ArrowDownToBracketOutline class="me-2 dark:text-gray-400" />
+										Download
+									</DropdownItem>
+									<DropdownDivider class="dark:border-gray-600" />
+									<DropdownItem
+										class="flex dark:text-gray-200"
 										on:click={() => handleDelete(material.id, material.title)}
 									>
-										<TrashBinOutline color="red" class="me-2" />
+										<TrashBinOutline color="red" class="me-2 dark:text-red-400" />
 										Delete
 									</DropdownItem>
 								</Dropdown>
@@ -168,8 +207,8 @@
 							</p>
 						</div>
 						<div class="px-6 py-2">
-							<Button on:click={() => handleFileOpening(material.url, material.type)}>
-								Open File <ArrowRightOutline class="ms-2 h-6 w-6 text-white" />
+							<Button on:click={() => handleFileOpening(material.file_path, material.type)}>
+								Open File <ArrowRightOutline class="ms-2 h-6 w-6 text-white dark:text-white" />
 							</Button>
 						</div>
 					</div>

@@ -8,6 +8,7 @@
 	export let title: string;
 	export let description: string;
 	export let buttonText: string;
+	export let role: string;
 </script>
 
 <Card img={imgSrc} size="none" imgClass="w-auto h-auto object-cover">
@@ -22,4 +23,4 @@
 </Card>
 
 <!--This needs to be updated depending on the user-->
-<AddModal bind:open={isAddModalOpen} role="Lecturer" />
+<AddModal bind:open={isAddModalOpen} {role} />

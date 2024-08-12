@@ -6,7 +6,6 @@ import type { Actions, RequestEvent } from './$types';
 import User from '$db/schemas/User';
 import { retry_connection } from '$db/db';
 import { lucia } from '$lib/server/auth';
-import type { SignInData } from '$src/types';
 
 export async function load({ locals }) {
 	if (locals.user) {
