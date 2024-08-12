@@ -60,6 +60,7 @@ For any additional documentation please have look at our [Wiki](https://github.c
 
   - [Demo 1 Video](https://drive.google.com/file/d/1AJAgftIAKCBaGVa4KQGHvoX01R3dvBUb/view?usp=sharing)
   - [Demo 2 Video](https://drive.google.com/file/d/1ghBQ9XuCCzSb2AlCx-fG7FqwTJvoJDyO/view?usp=sharing)
+  - [Demo 3 Video](https://drive.google.com/file/d/1oFY1ZnJQr0eJqLPSz5RA8juzSl_HmWHp/view?usp=sharing)
 </details>
 
 <h2>💽 Demo Drives</h2>
