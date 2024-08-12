@@ -69,7 +69,7 @@
 						<span
 							class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
 						>
-							{lessons.length} lessons
+							{recordings.length} recordings
 						</span>
 					</div>
 				</div>
