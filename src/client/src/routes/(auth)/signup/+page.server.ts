@@ -91,7 +91,7 @@ async function handleSignup(
 
 		return {
 			success: false,
-			error: error instanceof Error ? error.message : 'An unknown error occurred'
+			error: 'Failed to sign up'
 		};
 	}
 }

@@ -4,8 +4,8 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { Actions, RequestEvent } from './$types';
 
 import User from '$db/schemas/User';
-import { retry_connection } from '$db/db';
 import { lucia } from '$lib/server/auth';
+import { retry_connection } from '$db/db';
 
 export async function load({ locals }) {
 	if (locals.user) {
@@ -74,7 +74,7 @@ export const actions: Actions = {
 		} catch (e) {
 			console.error('Authentication error:', e);
 
-			return fail(500, { error: 'An unknown error occurred' });
+			return fail(500, { error: 'Failed to sign in' });
 		}
 
 		role === 'lecturer' ? redirect(302, '/workspaces') : redirect(302, '/dashboard');
