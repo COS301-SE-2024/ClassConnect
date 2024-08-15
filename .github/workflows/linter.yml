@@ -23,13 +23,7 @@ jobs:
           bun-version: latest
       - name: Install dependencies for the frontend
         run: bun install
-        working-directory: src/client
-      - name: Install dependencies for the backend
-        run: bun install
-        working-directory: src/server/workspace
+        working-directory: src
       - name: Run Frontend Linters
         run: bun run lint
-        working-directory: src/client
-      - name: Run Backend Linters
-        run: bun run lint
-        working-directory: src/server/workspace
+        working-directory: src

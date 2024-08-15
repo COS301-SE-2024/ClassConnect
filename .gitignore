@@ -6,6 +6,7 @@ yarn-error.log
 # SvelteKit
 build
 coverage
+.svelte-kit/
 
 # NestJS
 .env
