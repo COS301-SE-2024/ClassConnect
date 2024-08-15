@@ -112,7 +112,6 @@
 							<TableBodyCell>
 								<div class="flex items-center justify-center space-x-2">
 									<Button
-										color="green"
 										on:click={() =>
 											handleEditModalOpen(admin.id, admin.name, admin.surname, admin.email)}
 										class="p-1.5 sm:p-2"

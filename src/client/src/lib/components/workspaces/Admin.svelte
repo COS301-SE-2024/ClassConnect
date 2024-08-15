@@ -118,7 +118,6 @@
 							<TableBodyCell>
 								<div class="flex justify-center space-x-2">
 									<Button
-										color="green"
 										on:click={() => handleEditModalOpen(workspace.id)}
 										class="p-1.5 sm:p-2"
 									>

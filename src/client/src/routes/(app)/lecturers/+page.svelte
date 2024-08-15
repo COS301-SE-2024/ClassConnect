@@ -127,7 +127,6 @@
 								<TableBodyCell>
 									<div class="flex justify-center space-x-2">
 										<Button
-											color="green"
 											on:click={() =>
 												handleEditModalOpen(
 													lecturer.id,

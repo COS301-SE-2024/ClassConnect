@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Button, Card } from 'flowbite-svelte';
-	import { UserSolid } from 'flowbite-svelte-icons';
+	import { UserSolid, EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
 
 	import DeleteModal from '$lib/components/modals/Delete.svelte';
 	import EditModal from '$lib/components/modals/organisation/Edit.svelte';
@@ -24,8 +24,11 @@
 			<p class="my-2 text-gray-500 dark:text-white">Created: <strong>{created}</strong></p>
 
 			<div class="flex space-x-4">
-				<Button on:click={() => (isEditModalOpen = true)}>Edit</Button>
-				<Button color="red" on:click={() => (isDeleteModalOpen = true)}>Delete</Button>
+				<Button on:click={() => (isEditModalOpen = true)}>
+					<EditOutline class="h-4 w-4 sm:h-5 sm:w-5" />
+					Edit</Button>
+				<Button color="red" on:click={() => (isDeleteModalOpen = true)}>
+					<TrashBinOutline class="h-4 w-4 sm:h-5 sm:w-5" />Delete</Button>
 			</div>
 
 			<div class="mt-8 grid w-full max-w-3xl grid-cols-1 gap-4 md:grid-cols-3">

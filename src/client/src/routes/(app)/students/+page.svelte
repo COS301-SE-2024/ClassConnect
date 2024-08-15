@@ -148,7 +148,6 @@
 										</Button>
 
 										<Button
-											color="green"
 											on:click={() =>
 												handleEditModalOpen(
 													student.id,
