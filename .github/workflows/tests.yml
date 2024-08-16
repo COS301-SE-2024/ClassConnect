@@ -10,7 +10,7 @@ on:
         - develop
 jobs:
   build:
-    name: Frontend tests
+    name: Unit tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
