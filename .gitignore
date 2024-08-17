@@ -1,32 +1,10 @@
-# Node.js
-node_modules/
-npm-debug.log
-yarn-error.log
-
-# SvelteKit
-build
-coverage
-.svelte-kit/
-
-# NestJS
+# Files
 .env
-.env.*
 
-.aws.*
-.aws
-
-.npm
-
-.amplify-hosting
-
-# IDEs and editors
-/.vscode
-.idea
-*.swp
-*.swo
-
+# Directories
+build
+.vscode
 .vercel
-
-# OS generated files
-.DS_Store
-Thumbs.db
+coverage
+.svelte-kit
+node_modules

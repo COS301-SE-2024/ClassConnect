@@ -3,6 +3,9 @@
 
 # Directories
 build
+static
+.vercel
 .vscode
+coverage
 .svelte-kit
 node_modules

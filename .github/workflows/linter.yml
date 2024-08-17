@@ -1,4 +1,4 @@
-name: Run ESLint on Push and Pull Requests
+name: Run Linter
 on:
   push:
     branches:
@@ -11,7 +11,7 @@ on:
     
 jobs:
   build:
-    name: Run ESLint
+    name: ESLint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
