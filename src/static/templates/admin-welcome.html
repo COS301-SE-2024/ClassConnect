@@ -40,6 +40,10 @@
 				font-size: 0.8em;
 				color: #666;
 			}
+			a {
+				color: white;
+				text-decoration: none;
+			}
 		</style>
 	</head>
 	<body>
@@ -56,7 +60,6 @@
 
 			<h3>🔑 Your Account Details</h3>
 			<p>Your generated username is: <strong>{{username}}</strong></p>
-			<p>Your generated password is: <strong>{{username}}</strong></p>
 			<p>
 				You can use this username to log in to your account and start exploring all the features
 				ClassConnect has to offer.
@@ -75,7 +78,7 @@
 				assistance, don't hesitate to reach out to our support team.
 			</p>
 
-			<a href="http://localhost:5173/signin" class="button">Log In to Your Account</a>
+			<a href="{{domain}}/signin" class="button">Log In to Your Account</a>
 
 			<p>Once again, welcome to ClassConnect! We're excited to see what you'll achieve. 🎉</p>
 

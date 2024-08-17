@@ -1,7 +1,6 @@
-import { resolve } from 'path';
 import sgMail from '@sendgrid/mail';
-import { readFile } from 'fs/promises';
-import { SENDGRID_API_KEY, FROM_EMAIL } from '$env/static/private';
+import { error } from '@sveltejs/kit';
+import { SENDGRID_API_KEY, FROM_EMAIL, DOMAIN } from '$env/static/private';
 
 sgMail.setApiKey(SENDGRID_API_KEY);
 
@@ -31,12 +30,23 @@ export async function sendEmail({ to, subject, html }: EmailOptions): Promise<vo
 export async function sendWelcomeEmail(to: string, name: string, username: string): Promise<void> {
 	const subject = "🎉 Welcome to ClassConnect! Let's get started!";
 
-	const templatePath = resolve('src/lib/templates/welcome.html');
-	let html = await readFile(templatePath, 'utf-8');
+	try {
+		const response = await fetch(`${DOMAIN}/templates/admin-welcome.html`);
 
-	html = html.replace('{{email}}', to);
-	html = html.replace('{{name}}', name);
-	html = html.replace('{{username}}', username);
+		if (!response.ok) {
+			throw error(404, 'Email template not found');
+		}
 
-	await sendEmail({ to, subject, html });
+		let html = await response.text();
+
+		html = html.replace('{{email}}', to);
+		html = html.replace('{{name}}', name);
+		html = html.replace('{{domain}}', DOMAIN);
+		html = html.replace('{{username}}', username);
+
+		await sendEmail({ to, subject, html });
+	} catch (err) {
+		console.error('Failed to send welcome email:', err);
+		throw error(500, 'Failed to send welcome email');
+	}
 }

@@ -23,7 +23,7 @@
 		<div class="flex h-screen flex-col items-center justify-center">
 			<div class="m-4 flex items-center justify-center">
 				<img class="w-1/4" src="/images/class-connect-logo.png" alt="ClassConnect logo" />
-				<h1 class="font-roboto m-4 text-5xl font-bold">ClassConnect</h1>
+				<h1 class="font-roboto m-4 text-5xl font-bold dark:text-white">ClassConnect</h1>
 			</div>
 
 			<div
