@@ -6,7 +6,7 @@ import type { ObjectId } from 'mongoose';
 
 import Users from '$db/schemas/User';
 import { generateUsername } from './auth';
-import { sendWelcomeEmail } from './email';
+//import { sendWelcomeEmail } from './email';
 import { HASH_OPTIONS } from '$src/constants';
 import { upload, deleteFile } from '../storage';
 
@@ -59,7 +59,7 @@ export async function addUser(data: FormData, organisation: ObjectId | undefined
 	});
 
 	await newUser.save();
-	sendWelcomeEmail(email, name, username);
+	//sendWelcomeEmail(email, name, username);
 
 	return { success: true };
 }
