@@ -81,7 +81,11 @@
 					{/if}
 				</form>
 				<div class="p-2">
-					<div class="text-center">
+					<div class="flex justify-between">
+						<A href="/forgot-password" class="text-green-600 dark:text-green-400">
+							Forgot your password?
+						</A>
+
 						<p class="dark:text-gray-200">
 							Don't have an account?{' '}
 							<A href="/signup" class="text-green-600 dark:text-green-400">Sign Up</A>
