@@ -1,5 +1,19 @@
 import crypto from 'crypto';
 
+export function validatePassword(
+	password: FormDataEntryValue | null,
+	confirmPassword: FormDataEntryValue | null
+): string {
+	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{6,}$/;
+
+	if (typeof password !== 'string' || !passwordRegex.test(password))
+		throw new Error('Invalid password');
+
+	if (password !== confirmPassword) throw new Error('Passwords do not match');
+
+	return password;
+}
+
 export function generateUsername(role: string, email: string): string {
 	const rolePrefix = getRolePrefix(role);
 	const emailHash = hashEmail(email).slice(0, 7);

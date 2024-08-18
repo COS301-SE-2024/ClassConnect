@@ -6,8 +6,8 @@ import type { Actions } from './$types';
 import User from '$db/schemas/User';
 import { retry_connection } from '$db/db';
 import { HASH_OPTIONS } from '$src/constants';
-import { generateUsername } from '$lib/server/utils/auth';
 import { sendAdminWelcomeEmail } from '$lib/server/utils/email';
+import { generateUsername, validatePassword } from '$lib/server/utils/auth';
 
 export async function load({ locals }) {
 	if (locals.user) redirect(302, '/home');
@@ -27,20 +27,6 @@ function validateEmail(email: FormDataEntryValue | null): string {
 	}
 
 	return email;
-}
-
-function validatePassword(
-	password: FormDataEntryValue | null,
-	confirmPassword: FormDataEntryValue | null
-): string {
-	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{6,}$/;
-
-	if (typeof password !== 'string' || !passwordRegex.test(password))
-		throw new Error('Invalid password');
-
-	if (password !== confirmPassword) throw new Error('Passwords do not match');
-
-	return password;
 }
 
 async function checkEmailExists(email: string): Promise<boolean> {
