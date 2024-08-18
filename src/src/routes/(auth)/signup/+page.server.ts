@@ -7,7 +7,7 @@ import User from '$db/schemas/User';
 import { retry_connection } from '$db/db';
 import { HASH_OPTIONS } from '$src/constants';
 import { generateUsername } from '$lib/server/utils/auth';
-import { sendWelcomeEmail } from '$lib/server/utils/email';
+import { sendAdminWelcomeEmail } from '$lib/server/utils/email';
 
 export async function load({ locals }) {
 	if (locals.user) redirect(302, '/home');
@@ -83,7 +83,7 @@ async function handleSignup(
 
 		const username = generateUsername('admin', data.email);
 		await createUser(data, username);
-		await sendWelcomeEmail(data.email, data.name, username);
+		await sendAdminWelcomeEmail(data.email, data.name, username);
 
 		return { success: true, name: data.name };
 	} catch (error) {

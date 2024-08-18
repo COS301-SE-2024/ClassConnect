@@ -27,7 +27,11 @@ export async function sendEmail({ to, subject, html }: EmailOptions): Promise<vo
 	}
 }
 
-export async function sendWelcomeEmail(to: string, name: string, username: string): Promise<void> {
+export async function sendAdminWelcomeEmail(
+	to: string,
+	name: string,
+	username: string
+): Promise<void> {
 	const subject = "🎉 Welcome to ClassConnect! Let's get started!";
 
 	try {
@@ -48,5 +52,29 @@ export async function sendWelcomeEmail(to: string, name: string, username: strin
 	} catch (err) {
 		console.error('Failed to send welcome email:', err);
 		throw error(500, 'Failed to send welcome email');
+	}
+}
+
+export async function sendPasswordResetEmail(email: string, token: string): Promise<void> {
+	const subject = '🔐 ClassConnect Password Reset Request';
+
+	try {
+		const response = await fetch(`${DOMAIN}/templates/password-reset.html`);
+
+		if (!response.ok) {
+			throw error(404, 'Email template not found');
+		}
+
+		const resetLink = `${DOMAIN}/reset-password/${token}`;
+
+		let html = await response.text();
+
+		html = html.replace('{{email}}', email);
+		html = html.replaceAll('{{resetLink}}', resetLink);
+
+		await sendEmail({ to: email, subject, html });
+	} catch (err) {
+		console.error('Failed to send password reset email:', err);
+		throw error(500, 'Failed to send password reset email');
 	}
 }
