@@ -16,10 +16,6 @@
 - [ ] Refactoring
 - [ ] Documentation Update
 
-**Testing Instructions:**
-
-[Provide clear and concise instructions on how to test your changes.]
-
 **Additional Notes:**
 
 [Any additional information that may be helpful for reviewers.]
