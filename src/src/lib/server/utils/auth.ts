@@ -37,7 +37,7 @@ export async function createPasswordResetToken(userId: string): Promise<string> 
 
 export function generateUsername(role: string, email: string): string {
 	const rolePrefix = getRolePrefix(role);
-	const emailHash = hashEmail(email).slice(0, 7);
+	const emailHash = hashEmail(email).slice(0, 6);
 	const year = new Date().getFullYear().toString().slice(-2);
 
 	return `${rolePrefix}${year}${emailHash}`;

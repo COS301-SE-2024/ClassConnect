@@ -64,7 +64,7 @@ export async function addUser(data: FormData, organisation: ObjectId | undefined
 	});
 
 	await newUser.save();
-	sendWelcomeEmail(role, email, name, username, password, organisationData.name);
+	sendWelcomeEmail(email, role, name, username, password, organisationData.name);
 
 	return { success: true };
 }

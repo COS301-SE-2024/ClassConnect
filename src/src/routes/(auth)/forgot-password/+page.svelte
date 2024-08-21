@@ -25,24 +25,22 @@
 			<h1 class="font-roboto m-4 text-4xl font-bold">ClassConnect</h1>
 		</div>
 
-		<div
-			class="w-1/2 rounded-xl bg-white bg-opacity-80 p-4 dark:bg-gray-800 dark:bg-opacity-80 dark:text-gray-200"
-		>
+		<div class="w-1/2 rounded-xl bg-white bg-opacity-80 p-4">
 			<div class="p-2 text-center">
-				<h1 class="text-center text-3xl font-bold dark:text-white">Forgot Password</h1>
-				<p class="dark:text-gray-200">Enter your email to reset your password.</p>
+				<h1 class="text-center text-3xl font-bold">Forgot Password</h1>
+				<p>Enter your email to reset your password.</p>
 			</div>
 
 			{#if form?.error}
-				<p class="mt-2 text-center text-red-500 dark:text-red-400">{form.error}</p>
+				<p class="mt-2 text-center text-red-500">{form.error}</p>
 			{/if}
 
 			{#if form?.success}
-				<p class="mt-2 text-center text-green-500 dark:text-green-400">{form.success}</p>
+				<p class="mt-2 text-center text-green-500">{form.success}</p>
 			{/if}
 
 			<form method="POST" use:enhance={activateLoading}>
-				<Label for="email" class="mb-2 mt-2 dark:text-gray-200">Email</Label>
+				<Label for="email" class="mb-2 mt-2">Email</Label>
 				<Input
 					type="email"
 					id="email"
@@ -65,7 +63,7 @@
 
 			<div class="p-2">
 				<div class="flex justify-center">
-					<A href="/signin" class="text-green-600 dark:text-green-400">Back to Sign In</A>
+					<A href="/signin" class="text-green-600">Back to Sign In</A>
 				</div>
 			</div>
 		</div>

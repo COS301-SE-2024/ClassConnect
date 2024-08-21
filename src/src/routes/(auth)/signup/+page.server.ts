@@ -69,8 +69,9 @@ async function handleSignup(
 		}
 
 		const username = generateUsername('admin', data.email);
+
 		await createUser(data, username);
-		await sendWelcomeEmail(data.email, data.name, username);
+		await sendWelcomeEmail(data.email, 'owner', data.name, username);
 
 		return { success: true, name: data.name };
 	} catch (error) {

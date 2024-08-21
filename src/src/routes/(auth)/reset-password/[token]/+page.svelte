@@ -35,34 +35,30 @@
 		</div>
 
 		{#if successful}
-			<div
-				class="w-1/2 rounded-xl bg-white bg-opacity-80 p-4 dark:bg-gray-800 dark:bg-opacity-80 dark:text-gray-200"
-			>
+			<div class="w-1/2 rounded-xl bg-white bg-opacity-80 p-4">
 				<div class="p-2 text-center">
-					<h1 class="text-center text-3xl font-bold dark:text-white">Password Reset</h1>
+					<h1 class="text-center text-3xl font-bold">Password Reset</h1>
 
-					<p class="dark:text-gray-200">Your password has been reset successfully.</p>
+					<p>Your password has been reset successfully.</p>
 
 					<Button href="/signin" class="mt-4">Go back to Sign In</Button>
 				</div>
 			</div>
 		{:else}
-			<div
-				class="w-1/2 rounded-xl bg-white bg-opacity-80 p-4 dark:bg-gray-800 dark:bg-opacity-80 dark:text-gray-200"
-			>
+			<div class="w-1/2 rounded-xl bg-white bg-opacity-80 p-4">
 				<div class="p-2 text-center">
-					<h1 class="text-center text-3xl font-bold dark:text-white">Reset Password</h1>
-					<p class="dark:text-gray-200">Enter your new password below.</p>
+					<h1 class="text-center text-3xl font-bold">Reset Password</h1>
+					<p>Enter your new password below.</p>
 				</div>
 
 				{#if form?.error}
-					<p class="mt-2 text-center text-red-500 dark:text-red-400">{form.error}</p>
+					<p class="mt-2 text-center text-red-500">{form.error}</p>
 				{/if}
 
 				<form method="POST" use:enhance={activateLoading}>
 					<input type="hidden" name="token" value={token} />
 
-					<Label for="password" class="mb-2 mt-2 dark:text-gray-200">New Password</Label>
+					<Label for="password" class="mb-2 mt-2">New Password</Label>
 					<div class="relative">
 						<Input
 							type={showPassword ? 'text' : 'password'}
@@ -80,16 +76,14 @@
 							on:click={() => (showPassword = !showPassword)}
 						>
 							{#if showPassword}
-								<EyeSlashOutline class="text-gray-500 dark:text-gray-400" />
+								<EyeSlashOutline class="text-gray-500" />
 							{:else}
-								<EyeOutline class="text-gray-500 dark:text-gray-400" />
+								<EyeOutline class="text-gray-500" />
 							{/if}
 						</button>
 					</div>
 
-					<Label for="confirmPassword" class="mb-2 mt-2 dark:text-gray-200"
-						>Confirm New Password</Label
-					>
+					<Label for="confirmPassword" class="mb-2 mt-2">Confirm New Password</Label>
 					<div class="relative">
 						<Input
 							type="password"
