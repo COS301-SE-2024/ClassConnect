@@ -39,9 +39,10 @@ async function createSessionAndSetCookie(
 	event: RequestEvent,
 	userId: ObjectId,
 	role: string,
-	organisation: ObjectId
+	organisation: ObjectId,
+	custom_password: boolean
 ) {
-	const session = await lucia.createSession(userId, { role, organisation });
+	const session = await lucia.createSession(userId, { role, organisation, custom_password });
 	const sessionCookie = lucia.createSessionCookie(session.id);
 
 	event.cookies.set(sessionCookie.name, sessionCookie.value, {
@@ -70,7 +71,7 @@ export const actions: Actions = {
 			role = user.role;
 			const organisation = user.organisation || '';
 
-			await createSessionAndSetCookie(event, user._id, role, organisation);
+			await createSessionAndSetCookie(event, user._id, role, organisation, user.custom_password);
 		} catch (e) {
 			console.error('Authentication error:', e);
 

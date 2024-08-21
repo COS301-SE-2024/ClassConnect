@@ -1,29 +1,10 @@
 import { fail } from '@sveltejs/kit';
-import { sha256 } from 'oslo/crypto';
 import type { ObjectId } from 'mongodb';
 import type { Actions } from './$types';
-import { encodeHex } from 'oslo/encoding';
-import { TimeSpan, createDate } from 'oslo';
-import { generateIdFromEntropySize } from 'lucia';
 
 import User from '$db/schemas/User';
-import PasswordResetToken from '$db/schemas/PasswordResetToken';
 import { sendPasswordResetEmail } from '$lib/server/utils/email';
-
-async function createPasswordResetToken(userId: string): Promise<string> {
-	await PasswordResetToken.deleteMany({ user_id: userId });
-
-	const tokenId = generateIdFromEntropySize(25);
-	const tokenHash = encodeHex(await sha256(new TextEncoder().encode(tokenId)));
-
-	await PasswordResetToken.create({
-		user_id: userId,
-		token_hash: tokenHash,
-		expires_at: createDate(new TimeSpan(2, 'h'))
-	});
-
-	return tokenId;
-}
+import { createPasswordResetToken } from '$lib/server/utils/auth';
 
 export const actions: Actions = {
 	default: async ({ request }) => {

@@ -38,13 +38,14 @@ async function createUser(data: SignUpData, username: string): Promise<void> {
 	const hashedPassword = await hash(data.password, HASH_OPTIONS);
 
 	const newUser = new User({
-		name: data.name,
-		surname: data.surname,
 		username,
-		email: data.email,
 		role: 'admin',
-		image: 'images/profile-placeholder.png',
-		password: hashedPassword
+		name: data.name,
+		email: data.email,
+		surname: data.surname,
+		custom_password: true,
+		password: hashedPassword,
+		image: 'images/profile-placeholder.png'
 	});
 
 	await newUser.save();

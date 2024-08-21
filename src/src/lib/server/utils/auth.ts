@@ -1,4 +1,10 @@
 import crypto from 'crypto';
+import { sha256 } from 'oslo/crypto';
+import { encodeHex } from 'oslo/encoding';
+import { TimeSpan, createDate } from 'oslo';
+import { generateIdFromEntropySize } from 'lucia';
+
+import PasswordResetToken from '$db/schemas/PasswordResetToken';
 
 export function validatePassword(
 	password: FormDataEntryValue | null,
@@ -12,6 +18,21 @@ export function validatePassword(
 	if (password !== confirmPassword) throw new Error('Passwords do not match');
 
 	return password;
+}
+
+export async function createPasswordResetToken(userId: string): Promise<string> {
+	await PasswordResetToken.deleteMany({ user_id: userId });
+
+	const tokenId = generateIdFromEntropySize(25);
+	const tokenHash = encodeHex(await sha256(new TextEncoder().encode(tokenId)));
+
+	await PasswordResetToken.create({
+		user_id: userId,
+		token_hash: tokenHash,
+		expires_at: createDate(new TimeSpan(2, 'h'))
+	});
+
+	return tokenId;
 }
 
 export function generateUsername(role: string, email: string): string {
