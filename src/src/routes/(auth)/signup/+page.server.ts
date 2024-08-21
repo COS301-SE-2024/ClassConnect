@@ -6,7 +6,7 @@ import type { Actions } from './$types';
 import User from '$db/schemas/User';
 import { retry_connection } from '$db/db';
 import { HASH_OPTIONS } from '$src/constants';
-import { sendAdminWelcomeEmail } from '$lib/server/utils/email';
+import { sendWelcomeEmail } from '$lib/server/utils/email';
 import { generateUsername, validatePassword } from '$lib/server/utils/auth';
 
 export async function load({ locals }) {
@@ -70,7 +70,7 @@ async function handleSignup(
 
 		const username = generateUsername('admin', data.email);
 		await createUser(data, username);
-		await sendAdminWelcomeEmail(data.email, data.name, username);
+		await sendWelcomeEmail(data.email, data.name, username);
 
 		return { success: true, name: data.name };
 	} catch (error) {

@@ -21,25 +21,26 @@ export async function sendEmail({ to, subject, html }: EmailOptions): Promise<vo
 	try {
 		await sgMail.send(msg);
 		console.log('Email sent successfully.');
-	} catch (error) {
-		console.error('Error sending email: ', error);
+	} catch (err) {
+		console.error('Error sending email: ', err);
 		throw new Error('Failed to send email');
 	}
 }
 
-export async function sendAdminWelcomeEmail(
+export async function sendWelcomeEmail(
 	to: string,
+	role: string,
 	name: string,
-	username: string
+	username: string,
+	password?: string,
+	organisation?: string
 ): Promise<void> {
 	const subject = "🎉 Welcome to ClassConnect! Let's get started!";
 
 	try {
-		const response = await fetch(`${DOMAIN}/templates/admin-welcome.html`);
+		const response = await fetch(`${DOMAIN}/templates/${role}-welcome.html`);
 
-		if (!response.ok) {
-			throw error(404, 'Email template not found');
-		}
+		if (!response.ok) throw error(404, 'Email template not found');
 
 		let html = await response.text();
 
@@ -47,6 +48,9 @@ export async function sendAdminWelcomeEmail(
 		html = html.replace('{{name}}', name);
 		html = html.replace('{{domain}}', DOMAIN);
 		html = html.replace('{{username}}', username);
+
+		if (password) html = html.replace('{{password}}', password);
+		if (organisation) html = html.replace('{{organisation}}', organisation);
 
 		await sendEmail({ to, subject, html });
 	} catch (err) {
@@ -59,11 +63,9 @@ export async function sendPasswordResetEmail(email: string, token: string): Prom
 	const subject = '🔐 ClassConnect Password Reset Request';
 
 	try {
-		const response = await fetch(`${DOMAIN}/templates/password-reset.html`);
+		const response = await fetch(`${DOMAIN}/templates/password-reset`);
 
-		if (!response.ok) {
-			throw error(404, 'Email template not found');
-		}
+		if (!response.ok) throw error(404, 'Email template not found');
 
 		const resetLink = `${DOMAIN}/reset-password/${token}`;
 

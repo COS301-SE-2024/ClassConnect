@@ -3,7 +3,9 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 		<title>Welcome to ClassConnect - Admin Account</title>
+
 		<style>
 			body {
 				font-family: Arial, sans-serif;
@@ -47,19 +49,19 @@
 		</style>
 	</head>
 	<body>
-		<!-- The rest of the HTML content remains the same -->
 		<div class="header">
 			<h1>🎓 Welcome to ClassConnect!</h1>
 		</div>
+
 		<div class="content">
 			<h2>Congratulations, {{name}}! 🎉</h2>
 			<p>
-				Your application to work as an administrator for {{organization}} has been approved! We're
+				Your application to work as an administrator for {{organisation}} has been approved! We're
 				thrilled to have you join the ClassConnect community.
 			</p>
 			<h3>🔑 Your Account Details</h3>
 			<p>Your generated username is: <strong>{{username}}</strong></p>
-			<p>Your temporary password is: <strong>{{temp_password}}</strong></p>
+			<p>Your temporary password is: <strong>{{password}}</strong></p>
 			<p>
 				Please use these credentials to log in to your account. You will be prompted to change your
 				password upon your first login.
@@ -80,6 +82,7 @@
 			<p>We're excited to see the positive impact you'll make in your new role! 🚀</p>
 			<p>Best regards,<br />The ClassConnect Team</p>
 		</div>
+
 		<div class="footer">
 			<p>
 				This email was sent to {{email}}. If you didn't apply for an administrator position at

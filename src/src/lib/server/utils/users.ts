@@ -6,9 +6,10 @@ import type { ObjectId } from 'mongoose';
 
 import Users from '$db/schemas/User';
 import { generateUsername } from './auth';
-import { sendAdminWelcomeEmail } from './email';
+import { sendWelcomeEmail } from './email';
 import { HASH_OPTIONS } from '$src/constants';
 import { upload, deleteFile } from '../storage';
+import Organisation from '$db/schemas/Organisation';
 
 export function formatUser(user: any): User {
 	return {
@@ -45,7 +46,11 @@ export async function addUser(data: FormData, organisation: ObjectId | undefined
 	if (image_file && image_file.size !== 0) image = await upload(image_file);
 
 	const username = generateUsername(role, email);
-	const hashedPassword = await hash(username, HASH_OPTIONS);
+
+	const password = Math.random().toString(36).slice(-8);
+	const hashedPassword = await hash(password, HASH_OPTIONS);
+
+	const organisationData = await Organisation.findById(organisation).select('name');
 
 	const newUser = new Users({
 		name,
@@ -59,7 +64,7 @@ export async function addUser(data: FormData, organisation: ObjectId | undefined
 	});
 
 	await newUser.save();
-	sendAdminWelcomeEmail(email, name, username);
+	sendWelcomeEmail(role, email, name, username, password, organisationData.name);
 
 	return { success: true };
 }
