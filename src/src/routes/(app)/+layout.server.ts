@@ -9,7 +9,10 @@ export async function load({ locals, params, url }) {
 
 	const token = await createPasswordResetToken(locals.user.id);
 
-	if (!locals.user.custom_password && !url.pathname.includes('reset-password')) {
+	if (
+		!locals.user.custom_password &&
+		!url.pathname.includes('reset-password', 'signin', 'signup')
+	) {
 		throw redirect(303, `/reset-password/${token}`);
 	}
 

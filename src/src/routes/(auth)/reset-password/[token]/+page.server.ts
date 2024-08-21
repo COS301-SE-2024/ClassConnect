@@ -7,13 +7,14 @@ import { isWithinExpirationDate } from 'oslo';
 import type { Actions } from './$types';
 
 import User from '$db/schemas/User';
+import { lucia } from '$lib/server/auth';
 import Session from '$db/schemas/Session';
 import { HASH_OPTIONS } from '$src/constants';
 import { validatePassword } from '$lib/server/utils/auth';
 import PasswordResetToken from '$db/schemas/PasswordResetToken';
 
 export const actions: Actions = {
-	default: async ({ request, params }) => {
+	default: async ({ request, params, locals, cookies }) => {
 		const data = await request.formData();
 		const password = data.get('password');
 		const confirmPassword = data.get('confirmPassword');
@@ -45,8 +46,6 @@ export const actions: Actions = {
 				await PasswordResetToken.deleteOne({ token_hash: tokenHash });
 			}
 
-			console.log(token);
-
 			if (!token || !isWithinExpirationDate(token.expires_at)) {
 				return fail(400, { error: 'Invalid or expired password reset token' });
 			}
@@ -54,7 +53,20 @@ export const actions: Actions = {
 			const hashedPassword = await hash(password, HASH_OPTIONS);
 
 			await Session.deleteMany({ user_id: token.user_id.toString() });
-			await User.findByIdAndUpdate(token.user_id, { password: hashedPassword });
+			await User.findByIdAndUpdate(token.user_id, {
+				password: hashedPassword,
+				custom_password: true
+			});
+
+			if (locals.session) {
+				await lucia.invalidateSession(locals.session.id);
+				const sessionCookie = lucia.createBlankSessionCookie();
+
+				cookies.set(sessionCookie.name, sessionCookie.value, {
+					path: '.',
+					...sessionCookie.attributes
+				});
+			}
 		} catch (error) {
 			console.error('Password reset failed:', error);
 			return fail(500, {

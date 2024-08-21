@@ -40,7 +40,9 @@
 			>
 				<div class="p-2 text-center">
 					<h1 class="text-center text-3xl font-bold dark:text-white">Password Reset</h1>
+
 					<p class="dark:text-gray-200">Your password has been reset successfully.</p>
+
 					<Button href="/signin" class="mt-4">Go back to Sign In</Button>
 				</div>
 			</div>
@@ -55,10 +57,6 @@
 
 				{#if form?.error}
 					<p class="mt-2 text-center text-red-500 dark:text-red-400">{form.error}</p>
-				{/if}
-
-				{#if form?.success}
-					<p class="mt-2 text-center text-green-500 dark:text-green-400">{form.success}</p>
 				{/if}
 
 				<form method="POST" use:enhance={activateLoading}>
