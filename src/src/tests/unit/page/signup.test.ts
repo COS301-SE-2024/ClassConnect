@@ -1,7 +1,7 @@
-import SignUp from './+page.svelte';
-
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, fireEvent, screen } from '@testing-library/svelte';
+
+import SignUp from '$src/routes/(auth)/signup/+page.svelte';
 
 vi.mock('$app/forms', () => ({
 	enhance: vi.fn()

@@ -10,7 +10,9 @@ import { sendWelcomeEmail } from '$lib/server/utils/email';
 import { generateUsername, validatePassword } from '$lib/server/utils/auth';
 
 export async function load({ locals }) {
-	if (locals.user) redirect(302, '/home');
+	if (locals.user) {
+		locals.user.role === 'lecturer' ? redirect(302, '/workspaces') : redirect(302, '/dashboard');
+	}
 }
 
 function validateName(name: FormDataEntryValue | null): string {
@@ -74,8 +76,8 @@ async function handleSignup(
 		await sendWelcomeEmail(data.email, 'owner', data.name, username);
 
 		return { success: true, name: data.name };
-	} catch (error) {
-		console.error('Signup error:', error);
+	} catch (e) {
+		console.error('Signup error:', e);
 
 		return {
 			success: false,

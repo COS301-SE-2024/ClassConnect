@@ -5,7 +5,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import User from '$db/schemas/User';
 import { lucia } from '$lib/server/auth';
-import * as signInModule from './+page.server';
+import * as signInModule from '$src/routes/(auth)/signin/+page.server';
 
 vi.mock('$db/schemas/User', () => {
 	const UserMock: any = vi.fn().mockImplementation(() => ({}));
