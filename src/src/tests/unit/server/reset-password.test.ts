@@ -8,7 +8,6 @@ import User from '$db/schemas/User';
 import Session from '$db/schemas/Session';
 import { lucia } from '$lib/server/auth';
 import { isWithinExpirationDate } from 'oslo';
-import { HASH_OPTIONS } from '$src/constants';
 import * as passwordResetModule from '$src/routes/(auth)/reset-password/[token]/+page.server';
 
 vi.mock('oslo/crypto', () => ({

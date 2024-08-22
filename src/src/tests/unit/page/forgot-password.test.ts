@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, fireEvent, screen } from '@testing-library/svelte';
+import { render, screen } from '@testing-library/svelte';
 
 import ForgotPassword from '$src/routes/(auth)/forgot-password/+page.svelte';
 
