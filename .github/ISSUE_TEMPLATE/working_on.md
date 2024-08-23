@@ -4,22 +4,15 @@ about: Indicate a feature or bug that you will be working towards implementing
 title: ''
 labels: ''
 assignees: ''
-
----
-
----
-name: Stand-up
-about: Indicate a feature or bug that you will be working towards implementing
-labels: enhancement
 ---
 
 # Working-On
 
 ## Description
 
+[Write a description of what you will be working on]
+
+## Checklist
+
 - [ ] item 1
 - [ ] item 2
-
-## Additional Information
-
-[Any additional details or context that might be helpful.]
