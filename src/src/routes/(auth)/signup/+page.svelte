@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Input, Label, Button, A, Spinner } from 'flowbite-svelte';
 	import { EyeOutline, EyeSlashOutline } from 'flowbite-svelte-icons';
+	import { Input, Label, Button, A, Spinner, Helper } from 'flowbite-svelte';
 
 	export let form;
 
@@ -90,6 +90,9 @@
 							{/if}
 						</button>
 					</div>
+					<Helper>
+						Must contain at least 6 characters, lowercase, uppercase, number, and special character
+					</Helper>
 
 					<Label for="confirm-password" class="mb-2 mt-2">Confirm Password</Label>
 					<Input

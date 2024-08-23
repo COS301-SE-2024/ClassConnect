@@ -10,12 +10,33 @@ export function validatePassword(
 	password: FormDataEntryValue | null,
 	confirmPassword: FormDataEntryValue | null
 ): string {
-	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{6,}$/;
+	if (typeof password !== 'string') {
+		throw new Error('Password must be a string');
+	}
 
-	if (typeof password !== 'string' || !passwordRegex.test(password))
-		throw new Error('Invalid password');
+	if (password.length < 6) {
+		throw new Error('Password must be at least 6 characters long');
+	}
 
-	if (password !== confirmPassword) throw new Error('Passwords do not match');
+	if (!/[a-z]/.test(password)) {
+		throw new Error('Password must contain at least one lowercase letter');
+	}
+
+	if (!/[A-Z]/.test(password)) {
+		throw new Error('Password must contain at least one uppercase letter');
+	}
+
+	if (!/\d/.test(password)) {
+		throw new Error('Password must contain at least one number');
+	}
+
+	if (!/[@$!%*?&]/.test(password)) {
+		throw new Error('Password must contain at least one special character (@$!%*?&)');
+	}
+
+	if (password !== confirmPassword) {
+		throw new Error('Passwords do not match');
+	}
 
 	return password;
 }

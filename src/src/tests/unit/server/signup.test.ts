@@ -125,7 +125,7 @@ describe('Signup Process', () => {
 
 			await signupModule.actions.default(event as any);
 
-			expect(fail).toHaveBeenCalledWith(400, { error: 'Failed to sign up' });
+			expect(fail).toHaveBeenCalledWith(400, { error: 'Invalid name' });
 		});
 
 		it('should handle existing email', async () => {

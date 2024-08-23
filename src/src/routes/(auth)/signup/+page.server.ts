@@ -57,32 +57,47 @@ async function handleSignup(
 	formData: FormData
 ): Promise<{ success: boolean; name?: string; error?: string }> {
 	try {
-		const data: SignUpData = {
-			name: validateName(formData.get('name')),
-			surname: validateName(formData.get('surname')),
-			email: validateEmail(formData.get('email')),
-			password: validatePassword(formData.get('password'), formData.get('confirm-password'))
-		};
+		const data = await validateAndProcessFormData(formData);
 
-		const emailExists = await checkEmailExists(data.email);
-
-		if (emailExists) {
-			return { success: false, error: 'Email already exists' };
-		}
+		await checkForExistingEmail(data.email);
 
 		const username = generateUsername('admin', data.email);
 
-		await createUser(data, username);
-		await sendWelcomeEmail(data.email, 'owner', data.name, username);
+		await createUserAndSendWelcomeEmail(data, username);
 
 		return { success: true, name: data.name };
-	} catch (e) {
-		console.error('Signup error:', e);
+	} catch (error) {
+		console.error('Signup error:', error);
 
 		return {
 			success: false,
-			error: 'Failed to sign up'
+			error: error instanceof Error ? error.message : 'An unexpected error occurred'
 		};
+	}
+}
+
+async function validateAndProcessFormData(formData: FormData): Promise<SignUpData> {
+	return {
+		name: validateName(formData.get('name')),
+		surname: validateName(formData.get('surname')),
+		email: validateEmail(formData.get('email')),
+		password: validatePassword(formData.get('password'), formData.get('confirm-password'))
+	};
+}
+
+async function checkForExistingEmail(email: string): Promise<void> {
+	const emailExists = await checkEmailExists(email);
+	if (emailExists) {
+		throw new Error('Email already exists');
+	}
+}
+
+async function createUserAndSendWelcomeEmail(data: SignUpData, username: string): Promise<void> {
+	try {
+		await createUser(data, username);
+		await sendWelcomeEmail(data.email, 'owner', data.name, username);
+	} catch (error) {
+		throw new Error('Failed to sign up');
 	}
 }
 
