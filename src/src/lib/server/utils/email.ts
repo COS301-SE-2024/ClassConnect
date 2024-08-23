@@ -63,7 +63,7 @@ export async function sendPasswordResetEmail(email: string, token: string): Prom
 	const subject = '🔐 ClassConnect Password Reset Request';
 
 	try {
-		const response = await fetch(`${DOMAIN}/templates/password-reset`);
+		const response = await fetch(`${DOMAIN}/templates/password-reset.html`);
 
 		if (!response.ok) throw error(404, 'Email template not found');
 
