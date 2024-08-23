@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Welcome to ClassConnect - Student Account</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				line-height: 1.6;
+				color: #333;
+				max-width: 600px;
+				margin: 0 auto;
+				padding: 20px;
+			}
+			.header {
+				background-color: #16a085;
+				color: white;
+				text-align: center;
+				padding: 20px;
+				border-radius: 5px 5px 0 0;
+			}
+			.content {
+				background-color: #d8f3e8;
+				padding: 20px;
+				border-radius: 0 0 5px 5px;
+			}
+			.button {
+				display: inline-block;
+				background-color: #2ecc71;
+				color: white;
+				padding: 10px 20px;
+				text-decoration: none;
+				border-radius: 5px;
+				margin-top: 20px;
+			}
+			.footer {
+				text-align: center;
+				margin-top: 20px;
+				font-size: 0.8em;
+				color: #666;
+			}
+			a {
+				color: #2ecc71;
+				text-decoration: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<h1>🎓 Welcome to ClassConnect!</h1>
+		</div>
+
+		<div class="content">
+			<h2>Congratulations, {{name}}! 🎉</h2>
+			<p>
+				Your application to attend <strong>{{organisation</strong> has been approved! We're thrilled
+				to welcome you to our learning community on the ClassConnect platform.
+			</p>
+			<h3>🔑 Your Account Details</h3>
+			<p>Your generated username is: <strong>{{username}}</strong></p>
+			<p>Your temporary password is: <strong>{{password}}</strong></p>
+			<p>
+				Please use these credentials to log in to your account. You will be prompted to change your
+				password upon your first login.
+			</p>
+			<h3>🌟 Next Steps</h3>
+			<ol>
+				<li>Click the button below to sign in</li>
+				<li>Change your temporary password</li>
+				<li>Complete your student profile</li>
+				<li>Explore available courses</li>
+				<li>Connect with classmates and lecturers</li>
+			</ol>
+			<p>
+				As a student, you'll have access to a wide range of courses, interactive learning tools, and
+				a supportive community. If you need any help getting started, our support team is always
+				here for you.
+			</p>
+			<a href="{{domain}}/signin" class="button">Sign In to Your Account</a>
+			<p>We're excited to be part of your educational journey. Let's start learning! 📚</p>
+			<p>Best regards,<br />The ClassConnect Team</p>
+		</div>
+
+		<div class="footer">
+			<p>
+				This email was sent to {{email}}. If you didn't apply to attend courses at ClassConnect,
+				please contact our support team immediately.
+			</p>
+		</div>
+	</body>
+</html>

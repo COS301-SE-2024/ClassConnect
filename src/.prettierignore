@@ -3,6 +3,7 @@
 
 # Directories
 build
+static
 .vscode
 .vercel
 coverage
