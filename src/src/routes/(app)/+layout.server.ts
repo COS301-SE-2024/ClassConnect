@@ -2,9 +2,19 @@ import { error, redirect } from '@sveltejs/kit';
 
 import User from '$db/schemas/User';
 import Workspace from '$db/schemas/Workspace';
+import { createPasswordResetToken } from '$lib/server/utils/auth';
 
-export async function load({ locals, params }) {
+export async function load({ locals, params, url }) {
 	if (!locals.user) redirect(302, '/signin');
+
+	const token = await createPasswordResetToken(locals.user.id);
+
+	if (
+		!locals.user.custom_password &&
+		!url.pathname.includes('reset-password', 'signin', 'signup')
+	) {
+		throw redirect(303, `/reset-password/${token}`);
+	}
 
 	try {
 		const user = await User.findById(locals.user.id);

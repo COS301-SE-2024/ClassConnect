@@ -6,11 +6,13 @@ import type { Actions } from './$types';
 import User from '$db/schemas/User';
 import { retry_connection } from '$db/db';
 import { HASH_OPTIONS } from '$src/constants';
-import { generateUsername } from '$src/lib/server/utils/auth';
-import { sendWelcomeEmail } from '$src/lib/server/utils/email';
+import { sendWelcomeEmail } from '$lib/server/utils/email';
+import { generateUsername, validatePassword } from '$lib/server/utils/auth';
 
 export async function load({ locals }) {
-	if (locals.user) redirect(302, '/home');
+	if (locals.user) {
+		locals.user.role === 'lecturer' ? redirect(302, '/workspaces') : redirect(302, '/dashboard');
+	}
 }
 
 function validateName(name: FormDataEntryValue | null): string {
@@ -29,20 +31,6 @@ function validateEmail(email: FormDataEntryValue | null): string {
 	return email;
 }
 
-function validatePassword(
-	password: FormDataEntryValue | null,
-	confirmPassword: FormDataEntryValue | null
-): string {
-	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{6,}$/;
-
-	if (typeof password !== 'string' || !passwordRegex.test(password))
-		throw new Error('Invalid password');
-
-	if (password !== confirmPassword) throw new Error('Passwords do not match');
-
-	return password;
-}
-
 async function checkEmailExists(email: string): Promise<boolean> {
 	const user = await User.findOne({ email });
 	return !!user;
@@ -52,13 +40,14 @@ async function createUser(data: SignUpData, username: string): Promise<void> {
 	const hashedPassword = await hash(data.password, HASH_OPTIONS);
 
 	const newUser = new User({
-		name: data.name,
-		surname: data.surname,
 		username,
-		email: data.email,
 		role: 'admin',
-		image: 'images/profile-placeholder.png',
-		password: hashedPassword
+		name: data.name,
+		email: data.email,
+		surname: data.surname,
+		custom_password: true,
+		password: hashedPassword,
+		image: 'images/profile-placeholder.png'
 	});
 
 	await newUser.save();
@@ -82,16 +71,17 @@ async function handleSignup(
 		}
 
 		const username = generateUsername('admin', data.email);
+
 		await createUser(data, username);
-		await sendWelcomeEmail(data.email, data.name, username);
+		await sendWelcomeEmail(data.email, 'owner', data.name, username);
 
 		return { success: true, name: data.name };
-	} catch (error) {
-		console.error('Signup error:', error);
+	} catch (e) {
+		console.error('Signup error:', e);
 
 		return {
 			success: false,
-			error: error instanceof Error ? error.message : 'An unknown error occurred'
+			error: 'Failed to sign up'
 		};
 	}
 }

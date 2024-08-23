@@ -1,4 +1,4 @@
-import { Lucia } from 'lucia';
+import { Lucia, TimeSpan } from 'lucia';
 import mongoose from '$db/db';
 import { dev } from '$app/environment';
 import type { ObjectId } from 'mongoose';
@@ -10,6 +10,7 @@ const sessions = mongoose.connection.collection<SessionDoc>('sessions');
 const adapter = new MongodbAdapter(sessions as any, users as any);
 
 export const lucia = new Lucia(adapter, {
+	sessionExpiresIn: new TimeSpan(1, 'w'),
 	sessionCookie: {
 		attributes: {
 			secure: !dev
@@ -18,7 +19,8 @@ export const lucia = new Lucia(adapter, {
 	getUserAttributes: (attributes) => {
 		return {
 			role: attributes.role,
-			organisation: attributes.organisation
+			organisation: attributes.organisation,
+			custom_password: attributes.custom_password
 		};
 	}
 });
@@ -44,4 +46,5 @@ interface SessionDoc {
 interface DatabaseUserAttributes {
 	role: string;
 	organisation: ObjectId;
+	custom_password: boolean;
 }

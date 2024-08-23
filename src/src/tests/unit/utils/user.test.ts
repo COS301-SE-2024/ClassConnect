@@ -4,6 +4,8 @@ import { error, fail } from '@sveltejs/kit';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import Users from '$db/schemas/User';
+import Organisation from '$db/schemas/Organisation';
+
 import { upload } from '$lib/server/storage';
 import { generateUsername } from '$lib/server/utils/auth';
 import {
@@ -28,6 +30,10 @@ vi.mock('$lib/server/utils/auth', () => ({
 	generateUsername: vi.fn()
 }));
 
+vi.mock('$lib/server/utils/email', () => ({
+	sendWelcomeEmail: vi.fn()
+}));
+
 vi.mock('$db/schemas/User', () => {
 	const UserMock: any = vi.fn().mockImplementation(() => ({}));
 
@@ -37,6 +43,14 @@ vi.mock('$db/schemas/User', () => {
 	UserMock.findByIdAndDelete = vi.fn();
 
 	return { default: UserMock };
+});
+
+vi.mock('$db/schemas/Organisation', () => {
+	const OrganisationMock: any = vi.fn().mockImplementation(() => ({}));
+
+	OrganisationMock.findById = vi.fn();
+
+	return { default: OrganisationMock };
 });
 
 vi.mock('$lib/server/storage', () => ({
@@ -122,6 +136,9 @@ describe('userUtils', () => {
 			Users.findOne = vi.fn().mockResolvedValue(null);
 			(generateUsername as any).mockReturnValue('a12345678');
 			(hash as any).mockResolvedValue('hashedPassword');
+			(Organisation.findById as any).mockReturnValue({
+				select: vi.fn().mockResolvedValue({ _id: orgId, name: 'Org Name' })
+			});
 			Users.prototype.save = vi.fn().mockResolvedValue({});
 
 			const result = await addUser(mockFormData, orgId, 'admin');

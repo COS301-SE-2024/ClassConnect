@@ -26,17 +26,15 @@
 				<h1 class="font-roboto m-4 text-5xl font-bold">ClassConnect</h1>
 			</div>
 
-			<div
-				class="w-1/2 rounded-xl bg-white bg-opacity-80 p-4 dark:bg-gray-800 dark:bg-opacity-80 dark:text-gray-200"
-			>
+			<div class="w-1/2 rounded-xl bg-white bg-opacity-80 p-4">
 				<h1 class="text-center text-3xl font-bold">Get Started Now</h1>
 
 				{#if form?.error}
-					<p class="mt-2 text-center text-red-500 dark:text-red-400">{form.error}</p>
+					<p class="mt-2 text-center text-red-500">{form.error}</p>
 				{/if}
 
 				<form method="POST" use:enhance={activateLoading}>
-					<Label for="name" class="mb-2 mt-2 dark:text-gray-200">Name</Label>
+					<Label for="name" class="mb-2 mt-2">Name</Label>
 					<Input
 						type="text"
 						id="name"
@@ -47,7 +45,7 @@
 						required
 					/>
 
-					<Label for="surname" class="mb-2 mt-2 dark:text-gray-200">Surname</Label>
+					<Label for="surname" class="mb-2 mt-2">Surname</Label>
 					<Input
 						type="text"
 						id="surname"
@@ -58,7 +56,7 @@
 						required
 					/>
 
-					<Label for="email" class="mb-2 mt-2 dark:text-gray-200">Email</Label>
+					<Label for="email" class="mb-2 mt-2">Email</Label>
 					<Input
 						type="email"
 						id="email"
@@ -68,7 +66,7 @@
 						required
 					/>
 
-					<Label for="password" class="mb-2 mt-2 dark:text-gray-200">Password</Label>
+					<Label for="password" class="mb-2 mt-2">Password</Label>
 					<div class="relative">
 						<Input
 							type={showPassword ? 'text' : 'password'}
@@ -86,15 +84,14 @@
 							on:click={() => (showPassword = !showPassword)}
 						>
 							{#if showPassword}
-								<EyeSlashOutline class="text-gray-500 dark:text-gray-400" />
+								<EyeSlashOutline class="text-gray-500" />
 							{:else}
-								<EyeOutline class="text-gray-500 dark:text-gray-400" />
+								<EyeOutline class="text-gray-500" />
 							{/if}
 						</button>
 					</div>
 
-					<Label for="confirm-password" class="mb-2 mt-2 dark:text-gray-200">Confirm Password</Label
-					>
+					<Label for="confirm-password" class="mb-2 mt-2">Confirm Password</Label>
 					<Input
 						type="password"
 						id="confirm-password"
@@ -117,7 +114,7 @@
 					<div class="text-center">
 						<p>
 							Already have an account?{' '}
-							<A href="/signin" class="text-green-600 dark:text-green-400">Sign In</A>
+							<A href="/signin" class="text-green-600">Sign In</A>
 						</p>
 					</div>
 				</div>

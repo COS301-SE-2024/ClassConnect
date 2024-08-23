@@ -26,20 +26,18 @@
 				<h1 class="font-roboto m-4 text-5xl font-bold">ClassConnect</h1>
 			</div>
 
-			<div
-				class="w-1/2 rounded-xl bg-white bg-opacity-80 p-4 dark:bg-gray-800 dark:bg-opacity-80 dark:text-gray-200"
-			>
+			<div class="w-1/2 rounded-xl bg-white bg-opacity-80 p-4">
 				<div class="p-2 text-center">
-					<h1 class="text-center text-3xl font-bold dark:text-white">Welcome Back 👋</h1>
-					<p class="dark:text-gray-200">Today is a new day. It's your day. You shape it.</p>
+					<h1 class="text-center text-3xl font-bold">Welcome Back 👋</h1>
+					<p>Today is a new day. It's your day. You shape it.</p>
 				</div>
 
 				{#if form?.error}
-					<p class="mt-2 text-center text-red-500 dark:text-red-400">{form.error}</p>
+					<p class="mt-2 text-center text-red-500">{form.error}</p>
 				{/if}
 
 				<form method="POST" use:enhance={activateLoading}>
-					<Label for="username" class="mb-2 mt-2 dark:text-gray-200">Username</Label>
+					<Label for="username" class="mb-2 mt-2">Username</Label>
 					<Input
 						type="text"
 						id="username"
@@ -49,7 +47,7 @@
 						disabled={loading}
 						required
 					/>
-					<Label for="password" class="mb-2 mt-2 dark:text-gray-200">Password</Label>
+					<Label for="password" class="mb-2 mt-2">Password</Label>
 					<div class="relative">
 						<Input
 							type={showPassword ? 'text' : 'password'}
@@ -66,9 +64,9 @@
 							on:click={() => (showPassword = !showPassword)}
 						>
 							{#if showPassword}
-								<EyeSlashOutline class="text-gray-500 dark:text-gray-400" />
+								<EyeSlashOutline class="text-gray-500" />
 							{:else}
-								<EyeOutline class="text-gray-500 dark:text-gray-400" />
+								<EyeOutline class="text-gray-500" />
 							{/if}
 						</button>
 					</div>
@@ -81,10 +79,12 @@
 					{/if}
 				</form>
 				<div class="p-2">
-					<div class="text-center">
-						<p class="dark:text-gray-200">
+					<div class="flex justify-between">
+						<A href="/forgot-password" class="text-green-600">Forgot your password?</A>
+
+						<p>
 							Don't have an account?{' '}
-							<A href="/signup" class="text-green-600 dark:text-green-400">Sign Up</A>
+							<A href="/signup" class="text-green-600">Sign Up</A>
 						</p>
 					</div>
 				</div>
