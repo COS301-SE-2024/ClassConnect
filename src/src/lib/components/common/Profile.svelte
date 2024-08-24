@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, Modal, Gallery } from 'flowbite-svelte';
+	import { Button, Modal, Gallery, ImagePlaceholder } from 'flowbite-svelte';
 	import DeleteProfilePic from '$lib/components/modals/settings/DeleteProfilePic.svelte';
 	import UploadPicture from '$lib/components/modals/settings/UploadPicture.svelte';
 	import Settings from '$lib/components/common/ProfileSettings.svelte';
@@ -12,16 +12,19 @@
 	let openDeleteModal = false;
 	let openFileHandlingModal = false;
 	let update = false;
+	let loading = true;
 
 	const apiUrl = '/api/user';
 
 	async function getUserData() {
+		loading = true;
 		try {
 			axios
 				.get(apiUrl)
 				.then((response) => {
 					console.log('User data:', response.data);
 					user = response.data;
+					loading = false;
 				})
 				.catch((error) => {
 					if (error.response) {
@@ -32,14 +35,16 @@
 					} else {
 						console.error('Error message:', error.message);
 					}
+					loading = false;
 				});
 		} catch (error) {
 			console.error('There was a problem with the get operation:', error);
 		}
 	}
 
-	onMount(() => {
-		getUserData();
+	onMount(async () => {
+		await getUserData();
+		loading = false;
 	});
 
 	$: {
@@ -61,12 +66,19 @@
 			/>
 			<!-- User Profile Image -->
 			<div class="mx-auto flex w-full justify-center">
-				<img
-					src={user.image}
-					on:click={() => (openEditProfile = true)}
-					alt="User Profile"
-					class="xs:w-[8rem] xs:h-[8rem] xs:bottom-[4.3rem] relative rounded-full object-cover shadow-xl outline outline-2 outline-offset-2 outline-green-500 sm:bottom-[5rem] sm:h-[10rem] sm:w-[10rem] md:bottom-[6rem] md:h-[12rem] md:w-[12rem] lg:bottom-[8rem] lg:h-[16rem] lg:w-[16rem] xl:bottom-[7rem] xl:h-[16rem] xl:w-[16rem]"
-				/>
+				{#if loading}
+					<svg class="animate-pulse xs:w-[8rem] xs:h-[8rem] xs:bottom-[4.3rem] relative rounded-full object-cover shadow-xl outline outline-2 outline-offset-2 outline-green-500 sm:bottom-[5rem] sm:h-[10rem] sm:w-[10rem] md:bottom-[6rem] md:h-[12rem] md:w-[12rem] lg:bottom-[8rem] lg:h-[16rem] lg:w-[16rem] xl:bottom-[7rem] xl:h-[16rem] xl:w-[16rem] w-8 h-8 text-gray-200 dark:text-gray-700 me-4"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><title>ProfileIcon</title><circle cx="16" cy="16" r="16" fill="#666"/>
+						<path d="M12.73 13.1a3.271 3.271 0 1 1 3.27 3.2 3.237 3.237 0 0 1-3.27-3.2zm-2.73 9.069h1.088a4.91 4.91 0 0 1 9.818 0h1.094a5.884 5.884 0 0 0-3.738-5.434 4.238 4.238 0 0 0 2.1-3.635 4.366 4.366 0 0 0-8.73 0 4.238 4.238 0 0 0 2.1 3.635 5.878 5.878 0 0 0-3.732 5.434z" fill="#eee"/>
+						<path fill="none" d="M0 0h32v32h-32z"/>
+					</svg>
+				{:else}
+					<img
+						src={user.image}
+						on:click={() => (openEditProfile = true)}
+						alt="User Profile"
+						class="xs:w-[8rem] xs:h-[8rem] xs:bottom-[4.3rem] relative rounded-full object-cover shadow-xl outline outline-2 outline-offset-2 outline-green-500 sm:bottom-[5rem] sm:h-[10rem] sm:w-[10rem] md:bottom-[6rem] md:h-[12rem] md:w-[12rem] lg:bottom-[8rem] lg:h-[16rem] lg:w-[16rem] xl:bottom-[7rem] xl:h-[16rem] xl:w-[16rem]"
+					/>
+				{/if}
 			</div>
 
 			<div
