@@ -21,9 +21,6 @@
 			}
 
 			if (index > 0 && path[index - 1].toLowerCase() === 'quizzes') {
-				console.log(segment);
-				console.log($quizzes);
-				console.log($quizzes[segment]);
 				segment = $quizzes[segment] || 'Quiz';
 			}
 

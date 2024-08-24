@@ -34,8 +34,6 @@ export async function load({ locals, params, url }) {
 			return acc;
 		}, {});
 
-		console.log('Map', quizzesMap);
-
 		let formattedWorkspace = null;
 
 		if (params.workspace) {
