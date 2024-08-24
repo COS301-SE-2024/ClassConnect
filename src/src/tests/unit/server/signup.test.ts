@@ -5,7 +5,8 @@ import { TEST_PASSWORD } from '$env/static/private';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import User from '$db/schemas/User';
-import * as signupModule from './+page.server';
+import * as signupModule from '$src/routes/(auth)/signup/+page.server';
+
 import { generateUsername } from '$lib/server/utils/auth';
 
 vi.mock('$db/schemas/User', () => {
@@ -26,12 +27,17 @@ vi.mock('@sendgrid/mail', () => ({
 	}
 }));
 
+vi.mock('$lib/server/utils/email', () => ({
+	sendWelcomeEmail: vi.fn()
+}));
+
 vi.mock('@node-rs/argon2', () => ({
 	hash: vi.fn()
 }));
 
 vi.mock('$lib/server/utils/auth', () => ({
-	generateUsername: vi.fn()
+	generateUsername: vi.fn(),
+	validatePassword: vi.fn()
 }));
 
 vi.mock('@sveltejs/kit', async () => {
@@ -54,7 +60,7 @@ describe('Signup Process', () => {
 			const locals = { user: { id: '123' } };
 			await signupModule.load({ locals });
 
-			expect(redirect).toHaveBeenCalledWith(302, '/home');
+			expect(redirect).toHaveBeenCalledWith(302, '/dashboard');
 		});
 
 		it('should not redirect if in signed in', async () => {
@@ -95,8 +101,9 @@ describe('Signup Process', () => {
 				username: 'johndoe',
 				email: 'john@example.com',
 				role: 'admin',
-				image: 'images/profile-placeholder.png',
-				password: 'hashedPassword'
+				custom_password: true,
+				password: 'hashedPassword',
+				image: 'images/profile-placeholder.png'
 			});
 
 			expect(redirect).toHaveBeenCalledWith(303, '/signup/successful?name=John');

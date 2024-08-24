@@ -29,6 +29,10 @@ const userSchema = new mongoose.Schema({
 		required: true,
 		enum: ['admin', 'lecturer', 'student']
 	},
+	custom_password: {
+		type: Boolean,
+		default: false
+	},
 	organisation: {
 		type: mongoose.Types.ObjectId,
 		ref: 'Organisation'

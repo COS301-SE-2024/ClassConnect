@@ -1,7 +1,7 @@
-import SignOut from './+page.svelte';
-
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/svelte';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+
+import SignOut from '$src/routes/(auth)/signout/+page.svelte';
 
 vi.mock('$app/forms', () => ({
 	enhance: vi.fn()
