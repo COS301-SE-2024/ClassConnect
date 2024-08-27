@@ -25,10 +25,10 @@
 		});
 
 		if (response.ok) {
-			toast.dismiss(toastId);
-			toast.success('Profile picture updated successfully');
 			const log: string = 'change at timestamp: ' + new Date().toISOString();
 			change.set(log);
+			toast.dismiss(toastId);
+			toast.success('Profile picture updated successfully');
 		} else {
 			const result = await response.json();
 			toast.dismiss(toastId);
