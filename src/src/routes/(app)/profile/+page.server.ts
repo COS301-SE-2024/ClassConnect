@@ -20,7 +20,7 @@ export async function load({ locals }) {
 	}
 }
 
-async function getUserDetails(user_id: ObjectId): Promise<User> {
+export async function getUserDetails(user_id: ObjectId): Promise<User> {
 	const USER = await Users.findById(user_id);
 	const ret_user: User = {
 		id: USER._id.toString(),
@@ -34,7 +34,7 @@ async function getUserDetails(user_id: ObjectId): Promise<User> {
 	return ret_user;
 }
 
-async function uploadToS3(image: File, locals: any) {
+export async function uploadToS3(image: File, locals: any) {
 	const maxFileSize = 1 * 1024 * 1024; // 1MB in bytes
 	if (image.size > maxFileSize) {
 		return fail(400, { error: 'File size too large' });
@@ -54,7 +54,7 @@ async function uploadToS3(image: File, locals: any) {
 	}
 }
 
-async function deleteFromS3(locals: any) {
+export async function deleteFromS3(locals: any) {
 	try {
 		if (locals.user) {
 			const user_id: ObjectId = locals.user.id;
@@ -80,7 +80,7 @@ async function deleteFromS3(locals: any) {
 	}
 }
 
-async function verifyOldPassword(objID: ObjectId, old_password: string): Promise<boolean> {
+export async function verifyOldPassword(objID: ObjectId, old_password: string): Promise<boolean> {
 	const user = await Users.findById(objID);
 	if (!user) return false;
 
@@ -90,7 +90,7 @@ async function verifyOldPassword(objID: ObjectId, old_password: string): Promise
 	return true;
 }
 
-function validatePassword(password: string | null, confirmPassword: string | null): string {
+export function validatePassword(password: string | null, confirmPassword: string | null): string {
 	const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[a-zA-Z\d@$!%*?&]{6,}$/;
 
 	if (typeof password !== 'string' || !passwordRegex.test(password))
@@ -101,7 +101,7 @@ function validatePassword(password: string | null, confirmPassword: string | nul
 	return password;
 }
 
-async function updatePassword(userID: ObjectId, password: string) {
+export async function updatePassword(userID: ObjectId, password: string) {
 	const hashedPassword = await hash(password, HASH_OPTIONS);
 
 	const newPassword = {
