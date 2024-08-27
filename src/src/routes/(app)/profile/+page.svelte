@@ -3,7 +3,6 @@
 	export let data;
 
 	import Profile from '$lib/components/common/Profile.svelte';
-	
 </script>
 
 <main>
