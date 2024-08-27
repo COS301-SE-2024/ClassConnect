@@ -1,73 +1,10 @@
-<!-- <script>
-    import { Button } from 'flowbite-svelte';
-    let pinPosition = { x: 0, y: 0 };
-    let isPinPlaced = false;
-  
-    function handleImageClick(event) {
-      const rect = event.target.getBoundingClientRect();
-      const x = event.clientX - rect.left;
-      const y = event.clientY - rect.top;
-  
-      pinPosition = { x, y };
-      isPinPlaced = true;
-    }
-  
-    function checkAnswer() {
-      const correctArea = { x1: 200, y1: 200, x2: 350, y2: 300 };
-  
-      if (pinPosition.x >= correctArea.x1 && pinPosition.x <= correctArea.x2 &&
-          pinPosition.y >= correctArea.y1 && pinPosition.y <= correctArea.y2) {
-        alert('Correct!');
-      } else {
-        console.log('x:' ,pinPosition.x);
-        console.log('y:' ,pinPosition.y);
-        alert('Incorrect. Try again.');
-      }
-    }
-  </script>
-  
-  <h1>Where is nose?</h1>
-  <button class="image-container" on:click={handleImageClick} on:keydown={handleImageClick}>
-    <img src="/images/class-connect-logo.png" alt="Rubik's cube" />
-    {#if isPinPlaced}
-      <div class="pin" style="left: {pinPosition.x}px; top: {pinPosition.y}px;"></div>
-    {/if}
-  </button>
-  
-  <Button on:click={checkAnswer}>Check Answer</Button>
-  
-  
-  <style>
-    .image-container {
-      position: relative;
-      display: inline-block;
-      background: none;
-      border: none;
-      padding: 0;
-      cursor: pointer;
-    }
-  
-    .image-container:focus {
-      outline: 2px solid blue; 
-    }
-  
-    .pin {
-      position: absolute;
-      width: 10px;
-      height: 10px;
-      background-color: red;
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-    }
-  </style>
-   -->
 
    <script>
     import { Button } from 'flowbite-svelte';
 
     export let data;
-	let {role: userRole}=data;
-    console.log(userRole);
+	$: ({role, material}=data);
+    console.log(role);
     
     let pinPosition = { x: 0, y: 0 };
     let isPinPlaced = false;
@@ -75,7 +12,7 @@
     let isDraggingCircle = false;
 
     function handleImageClick(event) {
-        if (userRole === 'student') {
+        if (role === 'student') {
             const rect = event.target.getBoundingClientRect();
             const x = event.clientX - rect.left;
             const y = event.clientY - rect.top;
@@ -86,7 +23,7 @@
     }
 
     function handleCircleMouseDown() {
-        if (userRole === 'lecturer') {
+        if (role === 'lecturer') {
             isDraggingCircle = true;
             document.addEventListener('mousemove', handleMouseMove);
             document.addEventListener('mouseup', handleMouseUp);
@@ -94,7 +31,7 @@
     }
 
     function handleMouseMove(event) {
-        if (isDraggingCircle && userRole === 'lecturer') {
+        if (isDraggingCircle && role === 'lecturer') {
             const rect = event.target.getBoundingClientRect();
             circle.x = event.clientX - rect.left;
             circle.y = event.clientY - rect.top;
@@ -108,13 +45,13 @@
     }
 
     function handleRadiusChange(event) {
-        if (userRole === 'lecturer') {
+        if (role === 'lecturer') {
             circle.radius = parseInt(event.target.value);
         }
     }
 
     function checkAnswer() {
-        if (userRole === 'student') {
+        if (role === 'student') {
             const dx = pinPosition.x - circle.x;
             const dy = pinPosition.y - circle.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
@@ -136,10 +73,10 @@
 >
     <img src="/images/class-connect-logo.png" alt="Hotspot Image" />
 
-    {#if isPinPlaced && userRole === 'student'}
+    {#if isPinPlaced && role === 'student'}
         <div class="pin" style="left: {pinPosition.x}px; top: {pinPosition.y}px;"></div>
     {/if}
-    {#if userRole === 'lecturer'}
+    {#if role === 'lecturer'}
         <div
             class="circle"
             role="button"
@@ -153,7 +90,7 @@
     {/if}
 </button>
 
-{#if userRole === 'student'}
+{#if role === 'student'}
     <Button on:click={checkAnswer}>Check Answer</Button>
 {/if}
 
