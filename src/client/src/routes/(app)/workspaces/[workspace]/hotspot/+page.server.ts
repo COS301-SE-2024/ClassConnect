@@ -9,8 +9,12 @@ import type { ObjectId } from 'mongoose';
 
 
 export async function load({ locals }) {
-    if (!locals.user || locals.user.role !== 'student') {
+    if (!locals.user ) {
         throw error(401, 'Unauthorised');
+    }
+    else{
+        const role=locals.user.role;
+        return {role};
     }
 }
 
