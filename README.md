@@ -1,6 +1,6 @@
 <div align="center">
 <h1>ClassConnect</h1>
-  <img src="./resources/images/class-connect-logo.png" alt="class-connect logo"/>
+  <img src="./images/class-connect-logo.png" alt="class-connect logo"/>
   
   [![Issue Tracking](https://img.shields.io/badge/Issue_Tracking-GitHub_Issues-yellow)](https://github.com/COS301-SE-2024/ClassConnect/issues)
   [![Build Status](https://img.shields.io/badge/Build_Status-GitHub_Actions-brightgreen)](https://github.com/COS301-SE-2024/ClassConnect/actions/workflows/linter.yml)
@@ -33,6 +33,16 @@ ClassConnect is an innovative educational platform that blends the traditional l
 
 <details>
   <summary>
+    Architecture Requirements V2 Final
+  </summary>
+
+  - [Architecture Requirements V2](https://docs.google.com/document/d/1qie5X2l-FExMTBpcV_Qm7TuwOD5xbdHtiMnQwvagRGk/edit?usp=sharing)
+  - [Architecture Requirements V2 Final Image](https://drive.google.com/drive/u/1/folders/1pX-jACK1nHKIBV6UBd4qwsSaMOMVVXQy)
+</details>
+
+
+<details>
+  <summary>
     Technical Installation manual
   </summary>
 
@@ -50,6 +60,7 @@ For any additional documentation please have look at our [Wiki](https://github.c
 
   - [Demo 1 Video](https://drive.google.com/file/d/1AJAgftIAKCBaGVa4KQGHvoX01R3dvBUb/view?usp=sharing)
   - [Demo 2 Video](https://drive.google.com/file/d/1ghBQ9XuCCzSb2AlCx-fG7FqwTJvoJDyO/view?usp=sharing)
+  - [Demo 3 Video](https://drive.google.com/file/d/1oFY1ZnJQr0eJqLPSz5RA8juzSl_HmWHp/view?usp=sharing)
 </details>
 
 <h2>💽 Demo Drives</h2>
@@ -81,17 +92,17 @@ For any additional documentation please have look at our [Wiki](https://github.c
 
 | Name           | Profile Picture                                                                                                    | Role              | Socials                                                                                                                                                                                           |
 | -------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Joshua Wereley** | <img src="./resources/images/joshua.jpeg" alt="Joshua's Profile Picture" width="200"> | Project Manager   | <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=github" alt="GitHub"></a> <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn"></a> |
-| **Ashley Kapaso**  | <img src="./resources/images/ashley.jpeg" alt="Ashley's Profile Picture" width="200"> | Architect         | <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=github" alt="GitHub"></a> <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn"></a> |
-| **Eugene Mpande**  | <img src="./resources/images/eugene.jpeg" alt="Eugene's Profile Picture" width="200"> | DevOps Engineer   | <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=github" alt="GitHub"></a> <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn"></a> |
-| **Lunga Ndlovu**   | <img src="./resources/images/lunga.jpeg" alt="Lunga's Profile Picture" width="200">   | Frontend Engineer | <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=github" alt="GitHub"></a> <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn"></a> |
-| **Ayanda Juqu**    | <img src="./resources/images/ayanda.jpeg" alt="Ayanda's Profile Picture" width="200"> | Backend Engineer  | <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=github" alt="GitHub"></a> <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn"></a> |
+| **Joshua Wereley** | <img src="./images/joshua.jpeg" alt="Joshua's Profile Picture" width="200"> | Project Manager   | <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=github" alt="GitHub"></a> <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn"></a> |
+| **Ashley Kapaso**  | <img src="./images/ashley.jpeg" alt="Ashley's Profile Picture" width="200"> | Architect         | <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=github" alt="GitHub"></a> <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn"></a> |
+| **Eugene Mpande**  | <img src="./images/eugene.jpeg" alt="Eugene's Profile Picture" width="200"> | DevOps Engineer   | <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=github" alt="GitHub"></a> <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn"></a> |
+| **Lunga Ndlovu**   | <img src="./images/lunga.jpeg" alt="Lunga's Profile Picture" width="200">   | Frontend Engineer | <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=github" alt="GitHub"></a> <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn"></a> |
+| **Ayanda Juqu**    | <img src="./images/ayanda.jpeg" alt="Ayanda's Profile Picture" width="200"> | Backend Engineer  | <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=github" alt="GitHub"></a> <a href="#" target="_blank"><img src="https://skillicons.dev/icons?i=linkedin" alt="LinkedIn"></a> |
 
 <h2>✉️ Contact</h2>
 
 <div align="center">
   <h3>phantomworks.capstone@gmail.com</h3>
   <br>
-  <img src="./resources/images/phantom-works-logo.jpg" alt="phantom-works logo" height="300" width="300" />
+  <img src="./images/phantom-works-logo.jpg" alt="phantom-works logo" height="300" width="300" />
 </div>
 
