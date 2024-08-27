@@ -1,149 +1,196 @@
 <script lang="ts">
-	import {
-		Button,
-		TableHead,
-		TableBody,
-		TableSearch,
-		TableBodyRow,
-		TableBodyCell,
-		TableHeadCell
-	} from 'flowbite-svelte';
-	import { ArrowRightOutline, EditOutline, TrashBinOutline } from 'flowbite-svelte-icons';
+  import { onMount } from 'svelte';
+  import { Table, TableBody, TableBodyCell, TableBodyRow, TableHead, TableHeadCell, TableSearch, Button, Dropdown, DropdownItem, Checkbox, ButtonGroup, ImagePlaceholder, Modal, Radio } from 'flowbite-svelte';
+  import { Section } from 'flowbite-svelte-blocks';
+  import RemoveModal from '$lib/components/modals/Delete.svelte';
+  import AddModal from '$lib/components/modals/workspace/Add.svelte';
+  import EditModal from '$lib/components/modals/workspace/Edit.svelte';
+  import { PlusOutline, ChevronDownOutline, FilterSolid, ChevronRightOutline, ChevronLeftOutline } from 'flowbite-svelte-icons';
+	import { slide } from 'svelte/transition';
 
-	import RemoveModal from '$lib/components/modals/Delete.svelte';
-	import AddModal from '$lib/components/modals/workspace/Add.svelte';
-	import EditModal from '$lib/components/modals/workspace/Edit.svelte';
+  let divClass='bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden';
+  let innerDivClass='flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4';
+  let searchClass='w-full md:w-1/2 relative';
+  let svgDivClass='absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none';
+  let classInput="text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2  pl-10";
 
-	export let data;
+  export let data;
+	let filter = 2;
+	$: ({ lecturers, students, workspaces } = data);
+  let id: string;
+  let searchTerm: string = '';
+  let currentPosition: number = 0;
+  const itemsPerPage: number = 10;
+  const showPage: number = 5;
+  let totalPages: number = 0;
+  let pagesToShow: number[] = [];
+  let totalItems: number = workspaces?.length ?? 0;
+  let startPage: number;
+  let endPage: number;
+  let isAddModalOpen: boolean = false;
+  let isEditModalOpen: boolean = false;
+  let isRemoveModalOpen: boolean = false;
+	let openRow: number | null = null;
+  let details: { name: any; }
+  let doubleClickModal = false
 
-	let id: string;
-	let searchTerm = '';
+  const updateDataAndPagination = () => {
+    const currentPageItems = workspaces.slice(currentPosition, currentPosition + itemsPerPage);
+    renderWorkspaces(currentPageItems.length);
+  }
 
-	let isAddModalOpen = false;
-	let isEditModalOpen = false;
-	let isRemoveModalOpen = false;
+  const loadNextPage = () => {
+    if (currentPosition + itemsPerPage < workspaces.length) {
+      currentPosition += itemsPerPage;
+      updateDataAndPagination();
+    }
+  }
 
-	$: ({ lecturers, workspaces } = data);
+  const loadPreviousPage = () => {
+    if (currentPosition - itemsPerPage >= 0) {
+      currentPosition -= itemsPerPage;
+      updateDataAndPagination();
+    }
+  }
 
-	$: filteredWorkspaces = workspaces.filter(
-		(workspace: { name: string; owner: string }) =>
-			workspace.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-			workspace.owner.toLowerCase().includes(searchTerm.toLowerCase())
-	);
+  const renderWorkspaces = (totalItems: number) => {
+    totalPages = Math.ceil(workspaces.length / itemsPerPage);
+    const currentPage = Math.ceil((currentPosition + 1) / itemsPerPage);
 
-	function handleEditModalOpen(lecturerId: string) {
-		id = lecturerId;
-		isEditModalOpen = true;
+    startPage = currentPage - Math.floor(showPage / 2);
+    startPage = Math.max(1, startPage);
+    endPage = Math.min(startPage + showPage - 1, totalPages);
+
+    pagesToShow = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+  }
+
+  const goToPage = (pageNumber: number) => {
+    currentPosition = (pageNumber - 1) * itemsPerPage;
+    updateDataAndPagination();
+  }
+
+  $: startRange = currentPosition + 1;
+  $: endRange = Math.min(currentPosition + itemsPerPage, totalItems);
+
+  onMount(() => {
+    renderWorkspaces(workspaces.length);
+  });
+
+  $: currentPageItems = workspaces.slice(currentPosition, currentPosition + itemsPerPage);
+	$: filteredItems = workspaces.filter(
+    (workspace: { name: string; owner: string }) =>
+      workspace.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      workspace.owner.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+	const toggleRow = (id: number) => {
+  	openRow = openRow === id ? null : id;
 	}
 
-	function handleRemoveModalOpen(lecturerId: string) {
-		id = lecturerId;
-		isRemoveModalOpen = true;
-	}
 </script>
 
-<div class="container mx-auto h-[calc(100vh-64px)] px-4 py-8">
-	{#if workspaces.length === 0}
-		<img
-			class="mb-4 h-1/2 w-full rounded-lg object-cover"
-			alt="workspace"
-			src="/images/workspace.jpg"
-		/>
+<Section name="advancedTable" classSection='dark:bg-gray-900 p-3 sm:p-5'>
+    <TableSearch placeholder="Search" hoverable={true} bind:inputValue={searchTerm} {divClass} {innerDivClass} {searchClass} {classInput} >
 
-		<h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-			Boost Productivity With Workspaces Now!
-		</h5>
-
-		<p class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400">
-			Create dynamic workspaces to facilitate collaboration between lecturers and students.
-		</p>
-
-		<Button on:click={() => (isAddModalOpen = true)} class="w-full sm:w-auto">
-			Create Your First Workspace <ArrowRightOutline class="ms-2 h-6 w-6 text-white" />
-		</Button>
-	{:else}
-		<div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
-			<div class="mb-4 sm:mb-0">
-				<div class="flex items-center gap-x-3">
-					<h2 class="text-xl font-bold text-gray-800 dark:text-white">Workspaces</h2>
-
-					<span
-						class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
-					>
-						{workspaces.length}
-						{workspaces.length === 1 ? 'workspace' : 'workspaces'}
-					</span>
-				</div>
-			</div>
-
-			<div class="flex items-center gap-x-3">
-				<Button on:click={() => (isAddModalOpen = true)}>Add Workspace</Button>
-			</div>
-		</div>
-
-		<div class="overflow-x-auto">
-			<TableSearch placeholder="Search by workspace" hoverable={true} bind:inputValue={searchTerm}>
-				<TableHead>
-					<TableHeadCell class="text-sm sm:text-base">Workspace</TableHeadCell>
-					<TableHeadCell class="text-sm sm:text-base">Lecturer</TableHeadCell>
-				</TableHead>
-
-				<TableBody tableBodyClass="divide-y">
-					{#each filteredWorkspaces as workspace}
-						<TableBodyRow>
-							<TableBodyCell>
-								<div class="flex items-center">
-									<img
-										src={workspace.image}
-										alt={`${workspace.name}`}
-										class="mr-2 h-8 w-8 rounded-full sm:mr-4 sm:h-10 sm:w-10"
-									/>
-									<div class="text-sm font-semibold sm:text-base">{workspace.name}</div>
-								</div>
-							</TableBodyCell>
-
-							<TableBodyCell>
-								<div class="flex items-center">
-									<img
-										src={workspace.ownerImage}
-										alt={`${workspace.name}`}
-										class="mr-2 h-8 w-8 rounded-full sm:mr-4 sm:h-10 sm:w-10"
-									/>
-									<div>
-										<div class="text-sm font-semibold sm:text-base">{workspace.owner}</div>
-									</div>
-								</div>
-							</TableBodyCell>
-
-							<TableBodyCell>
-								<div class="flex justify-center space-x-2">
-									<Button
-										color="green"
-										on:click={() => handleEditModalOpen(workspace.id)}
-										class="p-1.5 sm:p-2"
-									>
-										<EditOutline class="h-4 w-4 sm:h-5 sm:w-5" />
-										<span class="ml-2 hidden text-sm sm:inline">Edit</span>
-									</Button>
-
-									<Button
-										color="red"
-										on:click={() => handleRemoveModalOpen(workspace.id)}
-										class="p-1.5 sm:p-2"
-									>
-										<TrashBinOutline class="h-4 w-4 sm:h-5 sm:w-5" />
-										<span class="ml-2 hidden text-sm sm:inline">Delete</span>
-									</Button>
-								</div>
-							</TableBodyCell>
+    <div slot="header" class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
+      <Button>
+        <PlusOutline class="h-3.5 w-3.5 mr-2" />Add
+      </Button>
+      <Button color='alternative'>Actions<ChevronDownOutline class="w-3 h-3 ml-2 " /></Button>
+        <Dropdown class="w-44 divide-y divide-gray-100">
+          <DropdownItem>Mass Edit</DropdownItem>
+          <DropdownItem>Delete all</DropdownItem>
+        </Dropdown>
+      <Button color='alternative'>Filter<FilterSolid class="w-3 h-3 ml-2 " /></Button>
+        <Dropdown class="w-48 p-3 space-y-2 text-sm">
+          <li>
+						<Radio name="filter" bind:group={filter} value={1}>Workspace: Ascending</Radio>
+          </li>
+					<li>
+						<Radio name="filter" bind:group={filter} value={1}>Workspace: Descending</Radio>
+          </li>
+          <li>
+            <Radio name="filter" bind:group={filter} value={2}>Lecturers: Ascending</Radio>
+          </li>
+          <li>
+            <Radio name="filter" bind:group={filter} value={3}>Lecturers: Descending</Radio>
+          </li>
+          <li>
+            <Radio name="filter" bind:group={filter} value={4}>Students: Ascending</Radio>
+          </li>
+          <li>
+            <Radio name="filter" bind:group={filter} value={1}>Students: Descending</Radio>
+          </li>
+        </Dropdown>
+    </div>
+      <TableHead>
+        <TableHeadCell padding="px-4 py-3" scope="col">Workspace</TableHeadCell>
+        <TableHeadCell padding="px-4 py-3" scope="col">No. of Lecturers</TableHeadCell>
+        <TableHeadCell padding="px-4 py-3" scope="col">No. of Students</TableHeadCell>
+        <TableHeadCell padding="px-4 py-3" scope="col">Actions</TableHeadCell>
+      </TableHead>
+      <TableBody tableBodyClass="divide-y">
+        {#if searchTerm !== ''}
+          {#each filteredItems as item (item.id)}
+						<TableBodyRow on:click={() => toggleRow(item.id)}>
+							<TableBodyCell tdClass="px-4 py-3">{item.name}</TableBodyCell>
+							<TableBodyCell tdClass="px-4 py-3">{item.numberOfLecturers}</TableBodyCell>
+							<TableBodyCell tdClass="px-4 py-3">{item.numberOfStudents}</TableBodyCell>
+							<TableBodyCell tdClass="px-4 py-3">{item.actions}</TableBodyCell>
 						</TableBodyRow>
-					{/each}
-				</TableBody>
-			</TableSearch>
-		</div>
-	{/if}
-</div>
-
-<AddModal bind:open={isAddModalOpen} {lecturers} />
-<EditModal bind:open={isEditModalOpen} {id} {lecturers} />
-<RemoveModal bind:open={isRemoveModalOpen} {id} item="workspace" />
+						{#if openRow === item.id}
+							<TableBodyRow on:dblclick={() => {
+								doubleClickModal = true;
+								details = item;
+							}}>
+								<TableBodyCell colspan="4" class="p-0">
+									<div class="px-2 py-3" transition:slide={{ duration: 300, axis: 'y' }}>
+										<ImagePlaceholder />
+									</div>
+								</TableBodyCell>
+							</TableBodyRow>
+						{/if}
+          {/each}
+        {:else}
+          {#each currentPageItems as item (item.id)}
+						<TableBodyRow on:click={() => toggleRow(item.id)}>
+							<TableBodyCell tdClass="px-4 py-3">{item.name}</TableBodyCell>
+							<TableBodyCell tdClass="px-4 py-3">{item.numberOfLecturers}</TableBodyCell>
+							<TableBodyCell tdClass="px-4 py-3">{item.numberOfStudents}</TableBodyCell>
+							<TableBodyCell tdClass="px-4 py-3">{item.actions}</TableBodyCell>
+						</TableBodyRow>
+						{#if openRow === item.id}
+							<TableBodyRow on:dblclick={() => {
+								doubleClickModal = true;
+								details = item;
+							}}>
+								<TableBodyCell colspan="4" class="p-0">
+									<div class="px-2 py-3" transition:slide={{ duration: 300, axis: 'y' }}>
+										<ImagePlaceholder />
+									</div>
+								</TableBodyCell>
+							</TableBodyRow>
+						{/if}
+          {/each}
+        {/if}
+      </TableBody>
+      <div slot="footer" class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
+      <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+        Showing
+        <span class="font-semibold text-gray-900 dark:text-white">{startRange}-{endRange}</span>
+        of
+        <span class="font-semibold text-gray-900 dark:text-white">{totalItems}</span>
+      </span>
+        <ButtonGroup>
+          <Button on:click={loadPreviousPage} disabled={currentPosition === 0}><ChevronLeftOutline size='xs' class='m-1.5'/></Button>
+          {#each pagesToShow as pageNumber}
+            <Button on:click={() => goToPage(pageNumber)}>{pageNumber}</Button>
+          {/each}
+          <Button on:click={loadNextPage} disabled={ totalPages === endPage }><ChevronRightOutline size='xs' class='m-1.5'/></Button>
+        </ButtonGroup>
+      </div>
+    </TableSearch>
+		<Modal title={details?.name} bind:open={doubleClickModal} autoclose outsideclose>
+			<ImagePlaceholder />
+		</Modal>
+</Section>
