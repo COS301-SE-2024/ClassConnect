@@ -112,8 +112,6 @@
   }
 
 	let a = 1, b = 0, c = 0;
-  let canvas;
-  let ctx;
 
   $: equation = `f(x) = ${a}x² ${b >= 0 ? '+' : ''}${b}x ${c >= 0 ? '+' : ''}${c}`;
 
@@ -229,9 +227,6 @@
 
 	let baseNote = 'C4';
   let interval = 'perfectFifth';
-  let audioContext;
-  let selectedAnswer = '';
-  let feedback = '';
 
   const noteFrequencies = {
     'C4': 261.63, 'C#4': 277.18, 'D4': 293.66, 'D#4': 311.13, 'E4': 329.63, 'F4': 349.23,
@@ -281,6 +276,138 @@
     } else {
       feedback = `Incorrect. Listen carefully and try again. The interval played was a ${interval.replace(/([A-Z])/g, ' $1').toLowerCase()}.`;
     }
+  }
+
+	let numCoins = 1;
+  let numFlips = 100;
+  let results = [];
+  let headsCount = 0;
+  let tailsCount = 0;
+  let canvas;
+  let ctx;
+
+  onMount(() => {
+    ctx = canvas.getContext('2d');
+    simulateFlips();
+  });
+
+  function simulateFlips() {
+    results = [];
+    headsCount = 0;
+    tailsCount = 0;
+
+    for (let i = 0; i < numFlips; i++) {
+      let flips = [];
+      for (let j = 0; j < numCoins; j++) {
+        flips.push(Math.random() < 0.5 ? 'H' : 'T');
+      }
+      const allHeads = flips.every(flip => flip === 'H');
+      results.push(allHeads);
+      if (allHeads) headsCount++;
+      else tailsCount++;
+    }
+
+    drawGraph2();
+  }
+
+  function drawGraph2() {
+    ctx.clearRect(0, 0, 300, 150);
+    ctx.fillStyle = 'blue';
+    ctx.fillRect(0, 0, 150, 150 - (headsCount / numFlips) * 150);
+    ctx.fillStyle = 'red';
+    ctx.fillRect(150, 0, 150, 150 - (tailsCount / numFlips) * 150);
+
+    ctx.fillStyle = 'black';
+    ctx.font = '12px Arial';
+    ctx.fillText(`All Heads: ${(headsCount / numFlips * 100).toFixed(2)}%`, 10, 140);
+    ctx.fillText(`Not All Heads: ${(tailsCount / numFlips * 100).toFixed(2)}%`, 160, 140);
+  }
+
+  function checkAnswerMath2() {
+    const expectedProbability = Math.pow(0.5, numCoins);
+    const actualProbability = headsCount / numFlips;
+    const isClose = Math.abs(actualProbability - expectedProbability) < 0.1;
+
+    if (selectedAnswer === 'yes' && isClose) {
+      feedback = "Correct! The simulated probability is close to the expected probability.";
+    } else if (selectedAnswer === 'no' && !isClose) {
+      feedback = "Correct! The simulated probability differs significantly from the expected probability. This can happen due to randomness, especially with a small number of flips.";
+    } else {
+      feedback = `Incorrect. The expected probability of all heads with ${numCoins} coin(s) is ${(expectedProbability * 100).toFixed(2)}%. The simulated probability is ${(actualProbability * 100).toFixed(2)}%.`;
+    }
+  }
+
+  $: {
+    if (ctx) simulateFlips();
+  }
+
+	let audioContext;
+  let progression = ['C', 'Am', 'F', 'G'];
+  let currentChord = 0;
+  let isPlaying = false;
+  let selectedAnswer = '';
+  let feedback = '';
+
+  const chords = {
+    'C': [261.63, 329.63, 392.00],
+    'Am': [220.00, 261.63, 329.63],
+    'F': [349.23, 440.00, 523.25],
+    'G': [392.00, 492.00, 587.33],
+    'Dm': [293.66, 349.23, 440.00],
+    'Em': [329.63, 392.00, 493.88]
+  };
+
+  onMount(() => {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  });
+
+  function playChord(chord, duration) {
+    const now = audioContext.currentTime;
+    chord.forEach(frequency => {
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      oscillator.type = 'sine';
+      oscillator.frequency.value = frequency;
+
+      gainNode.gain.setValueAtTime(0.3, now);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration - 0.1);
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      oscillator.start(now);
+      oscillator.stop(now + duration);
+    });
+  }
+
+  async function playProgression() {
+    isPlaying = true;
+    for (let i = 0; i < progression.length; i++) {
+      currentChord = i;
+      playChord(chords[progression[i]], 1);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      if (!isPlaying) break;
+    }
+    currentChord = 0;
+    isPlaying = false;
+  }
+
+  function stopProgression() {
+    isPlaying = false;
+  }
+
+  function checkAnswerMusic2() {
+    if (selectedAnswer === progression[progression.length - 1]) {
+      feedback = "Correct! You've identified the last chord in the progression.";
+    } else {
+      feedback = `Incorrect. The last chord in the progression is ${progression[progression.length - 1]}.`;
+    }
+  }
+
+  function updateProgression(index, value) {
+    progression[index] = value;
+    progression = progression; // trigger reactivity
   }
 </script>
 
@@ -557,6 +684,80 @@
 
   <div class="mb-4">
     <Button on:click={checkAnswerMusic}>Submit Answer</Button>
+  </div>
+
+  {#if feedback}
+    <Alert color="blue">{feedback}</Alert>
+  {/if}
+</Card>
+
+<Card>
+  <h2 class="text-2xl font-bold mb-4">Coin Flip Probability Simulator</h2>
+
+  <div class="mb-4">
+    <Label for="coins-slider" class="mb-2">Number of Coins:</Label>
+    <Range id="coins-slider" min="1" max="5" bind:value={numCoins} />
+  </div>
+
+  <div class="mb-4">
+    <Label for="flips-slider" class="mb-2">Number of Flips:</Label>
+    <Range id="flips-slider" min="100" max="10000" step="100" bind:value={numFlips} />
+  </div>
+
+  <canvas bind:this={canvas} width="300" height="150" class="border border-gray-300 mb-4"></canvas>
+
+  <p class="mb-2">Probability of all heads: {(Math.pow(0.5, numCoins) * 100).toFixed(2)}%</p>
+  <p class="mb-2">Simulated probability: {(headsCount / numFlips * 100).toFixed(2)}%</p>
+
+  <div class="mb-4">
+    <p class="mb-2">Does the simulated probability match the expected probability?</p>
+    <Radio name="answer" value="yes" bind:group={selectedAnswer}>Yes, it's close</Radio>
+    <Radio name="answer" value="no" bind:group={selectedAnswer}>No, it's significantly different</Radio>
+  </div>
+
+  <div class="mb-4">
+    <Button on:click={checkAnswerMath2}>Submit Answer</Button>
+  </div>
+
+  {#if feedback}
+    <Alert color="blue">{feedback}</Alert>
+  {/if}
+</Card>
+
+<Card>
+  <h2 class="text-2xl font-bold mb-4">Chord Progression Trainer</h2>
+
+  {#each progression as chord, i}
+    <div class="mb-4">
+      <Label for="chord-select-{i}" class="mb-2">Chord {i + 1}:</Label>
+      <Select id="chord-select-{i}" bind:value={chord} on:change={() => updateProgression(i, chord)}>
+        {#each Object.keys(chords) as chordName}
+          <option value={chordName}>{chordName}</option>
+        {/each}
+      </Select>
+    </div>
+  {/each}
+
+  <div class="mb-4">
+    <Button on:click={playProgression} disabled={isPlaying}>Play Progression</Button>
+    <Button on:click={stopProgression} disabled={!isPlaying}>Stop</Button>
+  </div>
+
+  <div class="mb-4 flex justify-around">
+    {#each progression as chord, i}
+      <div class={`p-2 border ${currentChord === i ? 'bg-blue-200' : ''}`}>{chord}</div>
+    {/each}
+  </div>
+
+  <div class="mb-4">
+    <p class="mb-2">What is the last chord in the progression?</p>
+    {#each Object.keys(chords) as chordName}
+      <Radio name="answer" value={chordName} bind:group={selectedAnswer}>{chordName}</Radio>
+    {/each}
+  </div>
+
+  <div class="mb-4">
+    <Button on:click={checkAnswerMusic2}>Submit Answer</Button>
   </div>
 
   {#if feedback}
