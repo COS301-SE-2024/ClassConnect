@@ -1,39 +1,22 @@
-<script lang="ts">
-	import { VRButton } from '@threlte/xr';
-	import { Canvas } from '@threlte/core';
-	import { tweened } from 'svelte/motion';
-	import { fade } from 'svelte/transition';
-	import { useProgress } from '@threlte/extras';
+<script >
+   import { T, useFrame } from '@threlte/core';
+    import { OrbitControls, HTML, interactivity } from '@threlte/extras';
+    import * as THREE from 'three';
 
-	import Scene from '$lib/components/sandbox/Scene.svelte';
+    const geometry = new THREE.BoxGeometry( 1, 1, 1 );
+    const material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
+    const mesh = new THREE.Mesh( geometry, material );
 
-	export let data: any;
+    var mouse, raycaster;
+    mouse=new THREE.Vector2();
+    raycaster= new THREE.Raycaster();
+    
+    //ormalisationo of mouse coordinates
+    function onMouseMove(event){
+        mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	    mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-	let { models } = data;
+    }
 
-	const { progress } = useProgress();
-	const tweenedProgress = tweened($progress, { duration: 800 });
 
-	$: tweenedProgress.set($progress);
 </script>
-
-{#if $tweenedProgress < 1}
-	<div
-		transition:fade|local={{ duration: 200 }}
-		class="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-white text-black"
-	>
-		<p class="text-sm">Loading</p>
-
-		<div class="relative h-2.5 w-1/3 border border-black">
-			<div class="absolute h-full bg-green-500" style="width: {$tweenedProgress * 100}%" />
-		</div>
-	</div>
-{/if}
-
-<main class="webgl h-screen bg-black">
-	<Canvas>
-		<Scene {models} />
-	</Canvas>
-
-	<VRButton />
-</main>

@@ -24,7 +24,7 @@ export async function load({ locals, params }) {
     else{
         const models = await getModels(params.workspace, true);
         const role=locals.user.role;
-        return {role, models};
+        return {role};
     }
 }
 
