@@ -1,37 +1,32 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Button, Modal } from 'flowbite-svelte';
-	import Banner from '$lib/components/common/Banner.svelte';
+	import toast, { Toaster } from 'svelte-french-toast';
 	import { ExclamationCircleOutline } from 'flowbite-svelte-icons';
+	import { change } from '$lib/store';
 
 	export let open: boolean;
 
-	let message: string;
-	let color: string;
-	let display: boolean = false;
-
 	function close() {
+		open = false;
+		const toastId = toast.loading('Deleting profile picture...');
 		return async ({ result, update }: any) => {
 			if (result.type === 'success') {
 				await update();
-				message = 'Deleted profile picture successfully';
-				color = 'green';
-				open = false;
-				display = true;
+				const log: string = 'change at timestamp: ' + new Date().toISOString();
+				change.set(log);
+				toast.dismiss(toastId);
+				toast.success('Profile picture deleted successfully');
 			} else {
-				console.error(result.data?.error);
-				message = 'Delete failed';
-				color = 'red';
-				open = false;
-				display = true;
+				const error = result.data?.error;
+				toast.dismiss(toastId);
+				toast.error('Deletion failed: ' + error);
 			}
 		};
 	}
 </script>
 
-{#if display}
-	<Banner type="Delete" {color} {message} />
-{/if}
+<Toaster />
 
 <!-- Delete Modal -->
 <Modal id="deleteModal" bind:open size="md" placement="center">
