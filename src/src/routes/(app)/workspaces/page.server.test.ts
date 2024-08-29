@@ -162,7 +162,7 @@ describe('Workspace Management', () => {
 				name: 'New Workspace',
 				owner: 'owner1',
 				organisation: 'org1',
-				image: '/images/organisation-placeholder.png'
+				image: '/images/workspace-placeholder.png'
 			});
 			expect(mockWorkspace.save).toHaveBeenCalled();
 		});

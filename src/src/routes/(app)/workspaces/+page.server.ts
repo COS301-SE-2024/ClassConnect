@@ -147,7 +147,8 @@ async function deleteWorkspace(id: string) {
 	if (!deletedWorkspace) return fail(404, { error: 'Workspace not found' });
 
 	const { image } = deletedWorkspace;
-	if (image !== '/images/workspace-placeholder.png') await deleteFile(image);
+	console.log('image', image);
+	if (image && image !== '/images/workspace-placeholder.png') await deleteFile(image);
 
 	await Users.findByIdAndUpdate(deletedWorkspace.owner, { $pull: { workspaces: id } });
 	await Users.updateMany({ workspaces: id }, { $pull: { workspaces: id } });

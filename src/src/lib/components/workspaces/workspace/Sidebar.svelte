@@ -5,7 +5,6 @@
 		UsersGroupSolid,
 		ChartPieSolid,
 		ArrowLeftOutline,
-		ChartLineUpOutline,
 		ClipboardListSolid,
 		GlobeSolid,
 		BookOpenSolid,

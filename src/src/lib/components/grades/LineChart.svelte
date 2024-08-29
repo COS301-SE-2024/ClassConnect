@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Chart } from 'flowbite-svelte';
 
-	export let stats: AssessmentStat[] = [];
+	export let stats;
 
 	$: options = {
 		chart: {
