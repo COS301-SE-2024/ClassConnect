@@ -17,7 +17,8 @@ export function formatUser(user: any): User {
 		email: user.email,
 		image: user.image,
 		surname: user.surname,
-		username: user.username
+		username: user.username,
+		workspaces: user.workspaces.map((ws: any) => ws.toString())
 	};
 }
 

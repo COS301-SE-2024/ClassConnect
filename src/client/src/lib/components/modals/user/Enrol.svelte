@@ -7,6 +7,14 @@
 	export let open: boolean;
 	export let workspaces: any;
 
+	export let assignedWorkspaces: any;
+	$: availableWorkspace = workspaces.filter(
+		(workspace: { id: string }) => !assignedWorkspaces.includes(workspace.id)
+	);
+	$: studentWorkspaces = workspaces.filter((workspace: { id: string }) =>
+		assignedWorkspaces.includes(workspace.id)
+	);
+
 	let error: string;
 	let isEnrolling = true;
 
@@ -49,10 +57,31 @@
 		<Input type="hidden" id="id" name="id" value={id} size="md" readonly />
 
 		<fieldset>
-			{#if workspaces.length > 0}
+			{#if availableWorkspace.length > 0 && isEnrolling}
 				<legend class="mb-2 mt-2 text-left">Select Workspaces</legend>
 
-				{#each workspaces as workspace}
+				{#each availableWorkspace as workspace}
+					<label class="mb-2 flex items-center space-x-2">
+						<input
+							type="checkbox"
+							name="workspaces"
+							value={workspace.id}
+							bind:group={selectedWorkspaces}
+						/>
+
+						<Avatar size="md" src={workspace.image} alt={workspace.name} />
+
+						<span class="text-xl">{workspace.name}</span>
+					</label>
+				{/each}
+
+				<Button type="submit" class="mt-4 w-full">
+					{isEnrolling ? 'Enrol' : 'Unenrol'}
+				</Button>
+			{:else if assignedWorkspaces.length > 0 && !isEnrolling}
+				<legend class="mb-2 mt-2 text-left">Select Workspaces</legend>
+
+				{#each studentWorkspaces as workspace}
 					<label class="mb-2 flex items-center space-x-2">
 						<input
 							type="checkbox"

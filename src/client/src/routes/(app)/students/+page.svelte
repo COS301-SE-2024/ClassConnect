@@ -28,6 +28,7 @@
 
 	export let data;
 	$: ({ students, workspaces, organisation } = data);
+	let assignedWorkspaces: any[] = [];
 	let searchTerm = '';
 	$: filteredStudents = students.filter(
 		(student: any) =>
@@ -54,7 +55,8 @@
 		isEditModalOpen = true;
 	}
 
-	function handleEnrolModalOpen(studentId: string) {
+	function handleEnrolModalOpen(studentId: string, studentWorkspaces: any) {
+		assignedWorkspaces = [...studentWorkspaces];
 		id = studentId;
 		isEnrolModalOpen = true;
 	}
@@ -140,7 +142,7 @@
 									<div class="flex justify-center space-x-2">
 										<Button
 											color="yellow"
-											on:click={() => handleEnrolModalOpen(student.id)}
+											on:click={() => handleEnrolModalOpen(student.id, student.workspaces)}
 											class="p-1.5 sm:p-2"
 										>
 											<UserAddSolid class="h-4 w-4 sm:h-5 sm:w-5" />
@@ -182,5 +184,5 @@
 	<AddModal bind:open={isAddModalOpen} role="Student" />
 	<EditModal bind:open={isEditModalOpen} {id} {_name} {surname} {email} role="Student" />
 	<RemoveModal bind:open={isRemoveModalOpen} {id} item={'student'} />
-	<EnrolModal bind:open={isEnrolModalOpen} {id} {workspaces} role="Student" />
+	<EnrolModal bind:open={isEnrolModalOpen} {id} {workspaces} {assignedWorkspaces} role="Student" />
 {/if}

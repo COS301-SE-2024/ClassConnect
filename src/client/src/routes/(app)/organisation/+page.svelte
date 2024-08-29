@@ -26,9 +26,11 @@
 			<div class="flex space-x-4">
 				<Button on:click={() => (isEditModalOpen = true)}>
 					<EditOutline class="h-4 w-4 sm:h-5 sm:w-5" />
-					Edit</Button>
+					Edit</Button
+				>
 				<Button color="red" on:click={() => (isDeleteModalOpen = true)}>
-					<TrashBinOutline class="h-4 w-4 sm:h-5 sm:w-5" />Delete</Button>
+					<TrashBinOutline class="h-4 w-4 sm:h-5 sm:w-5" />Delete</Button
+				>
 			</div>
 
 			<div class="mt-8 grid w-full max-w-3xl grid-cols-1 gap-4 md:grid-cols-3">

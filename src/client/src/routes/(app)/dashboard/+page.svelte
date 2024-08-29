@@ -10,11 +10,11 @@
 </script>
 
 {#if role === 'admin'}
-{#if organisation === undefined}
- <NoAccess/>
-{:else}
-	<AdminDashboard />
-{/if}
+	{#if organisation === undefined}
+		<NoAccess />
+	{:else}
+		<AdminDashboard />
+	{/if}
 {:else if role === 'student'}
 	<StudentDashboard />
 {/if}
