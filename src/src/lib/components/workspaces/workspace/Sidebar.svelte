@@ -33,7 +33,6 @@
 	const navLinks = {
 		lecturer: [
 			{ icon: BullhornSolid, name: 'Dashboard', href: workspaceURL + '/dashboard' },
-			{ icon: ChartLineUpOutline, name: 'Analytics', href: workspaceURL + '/analytics' },
 			{ icon: ClipboardListSolid, name: 'Grade Center', href: workspaceURL + '/gradecenter' },
 			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
 			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },

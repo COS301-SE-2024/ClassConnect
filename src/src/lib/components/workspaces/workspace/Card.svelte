@@ -7,8 +7,6 @@
 	export let role: string;
 	let { id, name, image, description } = workspace;
 
-	console.log('Huh', workspace);
-
 	function openWorkspace() {
 		if (role === 'lecturer') {
 			goto(`/workspaces/${id}/dashboard`);

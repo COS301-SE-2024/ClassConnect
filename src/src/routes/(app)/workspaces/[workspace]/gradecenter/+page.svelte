@@ -9,11 +9,12 @@
 		TableHeadCell
 	} from 'flowbite-svelte';
 
+	import LineChart from '$lib/components/grades/LineChart.svelte';
+
 	export let data: any;
 
-	let { students, assessments } = data;
-
 	let searchTerm = '';
+	let { students, assessments, stats } = data;
 
 	$: filteredStudents = students.filter((student: any) =>
 		student.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -28,37 +29,49 @@
 </script>
 
 <div class="container mx-auto p-4">
-	<h1 class="mb-4 text-2xl font-bold dark:text-white">Grade Book</h1>
+	<h1 class="mb-4 text-2xl font-bold dark:text-white">Grade Center</h1>
 
-	{#if students.length === 0}
-		<p class="text-lg dark:text-white">No grades available</p>
-	{:else}
-		<Input type="text" placeholder="Search student" bind:value={searchTerm} class="mb-4 w-1/4" />
+	<section class="mb-2">
+		{#if data.stats.length === 0}
+			<p class="text-lg dark:text-white">No data available</p>
+		{:else}
+			<div class="mt-8">
+				<LineChart {stats} />
+			</div>
+		{/if}
+	</section>
 
-		<Table striped={true}>
-			<TableHead>
-				<TableHeadCell>Name</TableHeadCell>
-				<TableHeadCell>Student No.</TableHeadCell>
-				{#each assessments as assessment}
-					<TableHeadCell>{assessment}</TableHeadCell>
-				{/each}
-			</TableHead>
+	<section>
+		{#if students.length === 0}
+			<p class="text-lg dark:text-white">No grades available</p>
+		{:else}
+			<Input type="text" placeholder="Search student" bind:value={searchTerm} class="mb-4 w-1/4" />
 
-			<TableBody>
-				{#each filteredStudents as student}
-					<TableBodyRow>
-						<TableBodyCell>{student.name}</TableBodyCell>
+			<Table striped={true}>
+				<TableHead>
+					<TableHeadCell>Name</TableHeadCell>
+					<TableHeadCell>Student No.</TableHeadCell>
+					{#each assessments as assessment}
+						<TableHeadCell>{assessment}</TableHeadCell>
+					{/each}
+				</TableHead>
 
-						<TableBodyCell>{student.username}</TableBodyCell>
+				<TableBody>
+					{#each filteredStudents as student}
+						<TableBodyRow>
+							<TableBodyCell>{student.name}</TableBodyCell>
 
-						{#each student.grades as grade}
-							<TableBodyCell class={getColorClass(grade)}>
-								{grade}%
-							</TableBodyCell>
-						{/each}
-					</TableBodyRow>
-				{/each}
-			</TableBody>
-		</Table>
-	{/if}
+							<TableBodyCell>{student.username}</TableBodyCell>
+
+							{#each student.grades as grade}
+								<TableBodyCell class={getColorClass(grade)}>
+									{grade}%
+								</TableBodyCell>
+							{/each}
+						</TableBodyRow>
+					{/each}
+				</TableBody>
+			</Table>
+		{/if}
+	</section>
 </div>

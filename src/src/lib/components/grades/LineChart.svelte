@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { Chart } from 'flowbite-svelte';
 
-	import type { AssessmentStat } from '$src/types';
-
-	export let data: AssessmentStat[] = [];
+	export let stats: AssessmentStat[] = [];
 
 	$: options = {
 		chart: {
@@ -43,17 +41,17 @@
 		series: [
 			{
 				name: 'Class Submitted (%)',
-				data: data.map((item) => item.submitted),
+				data: stats.map((item) => item.submitted),
 				color: '#E74C3C'
 			},
 			{
 				name: 'Class Average (%)',
-				data: data.map((item) => item.average),
+				data: stats.map((item) => item.average),
 				color: '#1ABC9C'
 			},
 			{
 				name: 'Pass Rate (%)',
-				data: data.map((item) => item.passRate),
+				data: stats.map((item) => item.passRate),
 				color: '#F1C40F'
 			}
 		],
@@ -61,7 +59,7 @@
 			show: true
 		},
 		xaxis: {
-			categories: data.map((item) => item.name),
+			categories: stats.map((item) => item.name),
 			labels: {
 				show: true,
 				style: {

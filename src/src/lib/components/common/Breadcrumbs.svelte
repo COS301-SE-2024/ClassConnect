@@ -6,13 +6,11 @@
 	import { workspaces, quizzes } from '$lib/store/user';
 
 	export let maps;
-
 	let breadcrumbItems: any[] = [];
 	let { workspacesMap, quizzesMap } = maps;
 
 	function updateBreadcrumbs() {
 		const path = $page.url.pathname.split('/').filter(Boolean);
-
 		breadcrumbItems = path.map((segment, index) => {
 			const href = '/' + path.slice(0, index + 1).join('/');
 
@@ -24,6 +22,9 @@
 				segment = $quizzes[segment] || 'Quiz';
 			}
 
+			if (segment.toLowerCase() === 'gradecenter') {
+				segment = 'Grade Center';
+			}
 			return { href, name: segment.charAt(0).toUpperCase() + segment.slice(1) };
 		});
 	}
@@ -32,7 +33,6 @@
 	$: workspaces.set(workspacesMap);
 
 	afterNavigate(updateBreadcrumbs);
-
 	updateBreadcrumbs();
 </script>
 
