@@ -15,23 +15,12 @@
 			await axios
 				.get(apiUrl)
 				.then((response) => {
-					console.log('User data:', response.data);
 					const user = response.data;
 					name = user.name;
 					image = user.image;
 				})
 				.catch((error) => {
-					if (error) {
-						console.log('An error occurred');
-					}
-					// if (error.response) {
-					// 	console.error('Error response data:', error.response.data);
-					// 	console.error('Error response status:', error.response.status);
-					// } else if (error.request) {
-					// 	console.error('Error request:', error.request);
-					// } else {
-					// 	console.error('Error message:', error.message);
-					// }
+					console.error('There was a problem with the get operation:', error);
 				});
 		} catch (error) {
 			console.error('There was a problem with the get operation:', error);

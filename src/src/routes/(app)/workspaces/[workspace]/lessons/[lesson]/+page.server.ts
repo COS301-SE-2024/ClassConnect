@@ -91,14 +91,7 @@ async function saveRecording(data: FormData) {
 	const workspace = Lesson.workspace;
 
 	const url: string = await upload(video_file);
-
-	console.log('Topic: ', topic);
-	console.log('Description: ', description);
-	console.log('Time: ', time);
-	console.log('Date: ', date);
-	console.log('Workspace: ', workspace);
-	console.log('URL: ', url);
-
+	
 	const newRecording = new Recording({
 		topic,
 		description,

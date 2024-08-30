@@ -77,7 +77,6 @@ async function deleteMaterial(id: string) {
 
 export const actions: Actions = {
 	uploadMat: async ({ request, locals, params }) => {
-		console.log('Uploading material...');
 		validateLecturer(locals);
 		try {
 			const data = await request.formData();
@@ -89,9 +88,7 @@ export const actions: Actions = {
 				workspace: params.workspace
 			};
 
-			const mat = await uploadFile(upload_data);
-
-			console.log(mat);
+			await uploadFile(upload_data);
 		} catch (e) {
 			console.error('Error uploading material:', e);
 			return fail(500, { message: 'Failed to upload material' });
@@ -112,9 +109,8 @@ export const actions: Actions = {
 			const name = data.get('name') as string;
 			const folder = determineFolderFromName(name);
 
-			const mat = await multipartUploadFile(upload_data, folder);
+			await multipartUploadFile(upload_data, folder);
 
-			console.log(mat);
 		} catch (e) {
 			console.error('Error uploading material:', e);
 			return fail(500, { message: 'Failed to upload material' });

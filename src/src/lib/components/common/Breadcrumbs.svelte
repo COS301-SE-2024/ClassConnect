@@ -18,7 +18,6 @@
 			if (!workID || workID === 'work-id') return 'workspace';
 			try {
 				const response = await axios.get(apiUrl, { params: { workID } });
-				console.log('Workspace data:', response.data);
 				workspace = response.data;
 				return workspace.name.charAt(0).toUpperCase() + workspace.name.slice(1);
 			} catch (error: any) {
@@ -33,7 +32,6 @@
 				return 'workspace';
 			}
 		} else {
-			console.log('Workspace already updated');
 			return workspace.name;
 		}
 	}
@@ -61,7 +59,6 @@
 			const href = '/' + path.slice(0, index + 1).join('/');
 			return { name: segment.charAt(0).toUpperCase() + segment.slice(1), href };
 		});
-		console.log(breadcrumbItems);
 		await checkForWorkspace();
 	}
 

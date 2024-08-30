@@ -14,7 +14,6 @@
 			axios
 				.get(apiUrl)
 				.then((response) => {
-					console.log('User data:', response.data);
 					user = response.data;
 				})
 				.catch((error) => {

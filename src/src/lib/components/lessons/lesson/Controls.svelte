@@ -37,8 +37,6 @@
 	// Extract the lesson ID from the URL parameters
 	$: lessonId = $page.params.lesson;
 
-	console.log('Lesson ID:', lessonId);
-
 	function toggleMicrophone() {
 		isMicOn = !isMicOn;
 		$callStore?.microphone.toggle();
@@ -161,19 +159,10 @@
 		const blob: Blob = new Blob(recordedChunks, { type: mimeType });
 		const fileName = `screen-recording.${mimeType.split('/')[1].split(';')[0]}`;
 
-		console.log('File size:', blob.size, 'bytes');
-
 		if (blob.size <= 4 * 1024 * 1024) {
 			// 4MB in bytes
 			// Convert Blob to File object
 			const file = new File([blob], fileName, { type: mimeType });
-
-			console.log('File object created:', file);
-
-			// For demonstration, let's log some file properties
-			console.log('File name:', file.name);
-			console.log('File type:', file.type);
-			console.log('File size:', file.size, 'bytes');
 
 			const formData = new FormData();
 

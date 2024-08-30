@@ -11,9 +11,6 @@ export async function upload(file: File): Promise<string> {
 			throw new Error('No bucket name');
 		}
 
-		console.log('File size: ', file.size);
-		console.log('File name: ', file.name);
-
 		const key: string = generateFileName(file.name);
 		const fileSize = 7 * 1024 * 1024; // 7MB in bytes
 		const folder: string = determineFolder(file);
@@ -41,13 +38,12 @@ export async function deleteFile(url: string): Promise<void> {
 	// Check if the key contains the word 'default'
 	const defaultRegex = /default/;
 	if (defaultRegex.test(key)) {
-		console.log(`File could not be deleted as it is a default file: ${key}`);
+		console.error(`File could not be deleted as it is a default file: ${key}`);
 		return;
 	}
 
 	try {
 		await S3.deleteObject(params).promise();
-		console.log(`Successfully deleted ${key} from ${BUCKET}`);
 	} catch (error) {
 		console.error(`Failed to delete ${key} from ${BUCKET}`, error);
 		throw new Error('Error deleting file');
@@ -60,7 +56,6 @@ async function smallFile(
 	folder: string,
 	contentType: string
 ): Promise<string> {
-	console.log('File name for s3: ', filename);
 
 	if (!file || !(file instanceof Blob)) {
 		throw new Error('No file uploaded');

@@ -22,7 +22,6 @@
 			axios
 				.get(apiUrl)
 				.then((response) => {
-					console.log('User data:', response.data);
 					user = response.data;
 					loading = false;
 				})

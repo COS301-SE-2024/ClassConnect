@@ -39,13 +39,10 @@
 			material.description.toLowerCase().includes(materialSearchTerm.toLowerCase())
 	);
 
-	console.log(renderedMaterials);
-
 	let uploadModal = false;
 
 	const handleFileOpening = (url: string, type: boolean) => {
 		if (!type) {
-			console.log(url);
 			objURL.set(url);
 			goto($page.url + '/material');
 		} else {
@@ -63,7 +60,6 @@
 	};
 
 	const handlePreview = (mat_url: string, mat_title: string, mat_type: boolean) => {
-		console.log(mat_url);
 		url = mat_url;
 		displayedSandboxObjectURL.set(url);
 		title = mat_title;
@@ -95,7 +91,6 @@
 	}
 
 	const copyToClipboard = (url: string) => {
-		console.log(url);
 		try {
 			navigator.clipboard.writeText(url);
 			toast.success('Url copied to clipboard!');

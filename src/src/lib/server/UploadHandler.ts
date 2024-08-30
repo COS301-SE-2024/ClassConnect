@@ -54,8 +54,6 @@ async function materialUpload(fileData: UploadData, file_type: boolean) {
 		thumbnail_path = responseBody.thumbnail_url;
 	}
 
-	console.log('This is the thumbnail path:', thumbnail_path);
-
 	const workspace = await Workspace.findById(fileData.workspace);
 
 	if (!workspace) {
@@ -101,8 +99,6 @@ async function materialUploadFromLink(fileData: UploadInfo, file_type: boolean) 
 	if (responseBody.thumbnail_url) {
 		thumbnail_path = responseBody.thumbnail_url;
 	}
-
-	console.log('This is the thumbnail path:', thumbnail_path);
 
 	const workspace = await Workspace.findById(fileData.workspace);
 

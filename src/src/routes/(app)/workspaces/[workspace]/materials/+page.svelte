@@ -10,7 +10,6 @@
 	let role = data.role;
 
 	onMount(() => {
-		console.log('This is the role', role);
 		materials = data.materials;
 		ObjectMaterials = data.materials.filter((material: any) => material.type);
 		DocumentMaterials = data.materials.filter((material: any) => !material.type);
