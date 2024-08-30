@@ -23,6 +23,7 @@
 	export let tabName: any;
 	export let tabBoolean: boolean;
 	export let renderedMaterials: any[] = [];
+	export let role: string;
 
 	let id: string;
 	let title: string;
@@ -132,7 +133,7 @@
 					</div>
 					<input
 						bind:value={materialSearchTerm}
-						class="block w-full rounded-lg border-gray-200 py-3 pe-4 ps-10 text-lg focus:border-green-500 focus:ring-green-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+						class="block w-full rounded-lg border-gray-200 py-3 pe-4 ps-10 text-lg focus:border-green-500 focus:ring-green-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-gray-500 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
 						type="text"
 						placeholder="Search"
 						data-hs-combo-box-input=""
@@ -141,10 +142,12 @@
 			</div>
 			<!-- End SearchBox -->
 		</div>
-		<Button on:click={() => (uploadModal = true)} class="flex items-center space-x-1">
-			<ArrowUpFromBracketOutline class="h-5 w-5" />
-			<span>Upload File</span>
-		</Button>
+		{#if role === 'lecturer'}
+			<Button on:click={() => (uploadModal = true)} class="flex items-center space-x-1">
+				<ArrowUpFromBracketOutline class="h-5 w-5" />
+				<span>Upload File</span>
+			</Button>
+		{/if}
 	</div>
 
 	{#if filteredItems && filteredItems.length > 0}
@@ -168,13 +171,15 @@
 									class="dark:text-gray-400"
 								/>
 								<Dropdown placement="bottom" triggeredBy={`#card-dot-menu-${material.id}`}>
-									<DropdownItem
-										class="flex dark:text-gray-200"
-										on:click={() => copyToClipboard(material.file_path)}
-									>
-										<ShareNodesOutline class="me-2 dark:text-gray-400" />
-										Share
-									</DropdownItem>
+									{#if !material.type}
+										<DropdownItem
+											class="flex dark:text-gray-200"
+											on:click={() => copyToClipboard(material.file_path)}
+										>
+											<ShareNodesOutline class="me-2 dark:text-gray-400" />
+											Share
+										</DropdownItem>
+									{/if}
 									<DropdownItem
 										class="flex dark:text-gray-200"
 										on:click={() =>
@@ -191,13 +196,15 @@
 										Download
 									</DropdownItem>
 									<DropdownDivider class="dark:border-gray-600" />
-									<DropdownItem
-										class="flex dark:text-gray-200"
-										on:click={() => handleDelete(material.id, material.title)}
-									>
-										<TrashBinOutline color="red" class="me-2 dark:text-red-400" />
-										Delete
-									</DropdownItem>
+									{#if role === 'lecturer'}
+										<DropdownItem
+											class="flex dark:text-gray-200"
+											on:click={() => handleDelete(material.id, material.title)}
+										>
+											<TrashBinOutline color="red" class="me-2 dark:text-red-400" />
+											Delete
+										</DropdownItem>
+									{/if}
 								</Dropdown>
 							</div>
 						</div>
