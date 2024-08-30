@@ -4,6 +4,7 @@ import type { Material } from '$src/types';
 import Materials from '$db/schemas/Material';
 import { error } from '@sveltejs/kit';
 
+
 function formatModel(model: any): Partial<Material> {
 	return {
 		title: model.title,

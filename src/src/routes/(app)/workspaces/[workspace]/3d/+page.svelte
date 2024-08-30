@@ -6,6 +6,7 @@
     export let data: any;
 
 	let { models } = data;
+    console.log('Data: ', models[0].file_path);
  
     let canvas: HTMLCanvasElement;
     let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer, raycaster: THREE.Raycaster, mouse: THREE.Vector2;
@@ -13,33 +14,25 @@
  
     onMount(() => {
         initScene();
-        loadModel();
-        animate();
- 
-        window.addEventListener('mousemove', onMouseMove, false);
-        window.addEventListener('click', onMouseClick, false);
     });
  
     function initScene() {
-        scene = new THREE.Scene();
-        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.z = 5;
- 
-        renderer = new THREE.WebGLRenderer({ canvas });
-        renderer.setSize(window.innerWidth, window.innerHeight);
- 
         raycaster = new THREE.Raycaster();
         mouse = new THREE.Vector2();
+
+        window.addEventListener('mousemove', onMouseMove, false);
+        window.addEventListener('click', onMouseClick, false);
     }
  
     function loadModel() {
+        
         const loader = new GLTFLoader();
-        loader.load(models.file_path, (gltf) => {
+        loader.load(models[0].file_path, (gltf) => {
             scene.add(gltf.scene);
         });
     }
  
-    function onMouseMove(event: MouseEvent) {
+    function onMouseMove(event: MouseEvent) {//does the normalisation mouse coordinats
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     }
@@ -53,7 +46,7 @@
             intersectionPoints.push(intersectionPoint);
             console.log('Intersection point:', intersectionPoint);
  
-            // Visualize the selected point
+            //This will use shere on the clicked or  this will
             const sphereGeometry = new THREE.SphereGeometry(0.05);
             const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
             const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
