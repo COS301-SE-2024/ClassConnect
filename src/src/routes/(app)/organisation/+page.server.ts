@@ -92,8 +92,6 @@ async function editOrganisation(data: FormData) {
 
 	if (name !== '') updateData.name = name;
 
-	console.log('edit organisation', image);
-
 	if (image && image.size !== 0) {
 		const { image: organisationImage } = await Organisation.findById(id).select('image');
 
@@ -121,8 +119,6 @@ async function deleteOrganisation(data: FormData, userId: ObjectId) {
 	}
 
 	const deletedOrganisation = await Organisation.findByIdAndDelete(id);
-
-	console.log('deletedOrganisation', deletedOrganisation);
 
 	const { image } = deletedOrganisation;
 	if (image !== '/images/organisation-placeholder.png') await deleteFile(image);
