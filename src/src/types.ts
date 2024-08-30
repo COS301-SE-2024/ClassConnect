@@ -68,6 +68,12 @@ export interface UploadData {
 	workspace: string;
 	file: File;
 }
+export interface UploadInfo {
+	title: string;
+	description: string;
+	workspace: string;
+	link: string;
+}
 
 export type FAQItem = {
 	question: string;

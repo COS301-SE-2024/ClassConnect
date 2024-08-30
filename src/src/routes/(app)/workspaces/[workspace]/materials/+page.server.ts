@@ -1,10 +1,11 @@
 import type { Actions } from './$types';
 import Materials from '$db/schemas/Material';
 import type { Material } from '$src/types';
-import type { UploadData } from '$src/types';
+import type { UploadData, UploadInfo } from '$src/types';
 import { fail, error } from '@sveltejs/kit';
+import { determineFolderFromName } from '$lib/server/storage';
 import { deleteFile } from '$lib/server/storage';
-import { uploadFile } from '$lib/server/UploadHandler';
+import { uploadFile, multipartUploadFile } from '$lib/server/UploadHandler';
 
 function formatMaterial(material: any): Partial<Material> {
 	return {
@@ -89,6 +90,29 @@ export const actions: Actions = {
 			};
 
 			const mat = await uploadFile(upload_data);
+
+			console.log(mat);
+		} catch (e) {
+			console.error('Error uploading material:', e);
+			return fail(500, { message: 'Failed to upload material' });
+		}
+	},
+	multiPartUploadFinal: async ({ request, locals, params }) => {
+		validateLecturer(locals);
+		try {
+			const data = await request.formData();
+
+			const upload_data: UploadInfo = {
+				link: data.get('link') as string,
+				title: data.get('title') as string,
+				description: data.get('description') as string,
+				workspace: params.workspace
+			};
+
+			const name = data.get('name') as string;
+			const folder = determineFolderFromName(name);
+
+			const mat = await multipartUploadFile(upload_data, folder);
 
 			console.log(mat);
 		} catch (e) {

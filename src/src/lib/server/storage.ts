@@ -197,7 +197,7 @@ async function uploadPartWithRetry(partParams: any, maxTries: number): Promise<a
 	}
 }
 
-function generateFileName(originalFileName: string): string {
+export function generateFileName(originalFileName: string): string {
 	const lastDotIndex = originalFileName.lastIndexOf('.');
 	if (lastDotIndex === -1) {
 		throw new Error('Filename does not have an extension');
@@ -241,3 +241,30 @@ export function determineFolder(file: File): string {
 		throw new Error('Unsupported file format');
 	}
 }
+
+
+export function determineFolderFromName(filename: string): string {
+	const extension = filename.split('.').pop()?.toLowerCase();
+
+	if (!extension) {
+		throw new Error('File has no extension');
+	}
+
+	const picturesExtensions = ['png', 'jpeg', 'jpg', 'webp'];
+	const objectsExtensions = ['gltf', 'glb'];
+	const studyMaterialExtensions = ['pdf', 'pptx', 'epub'];
+	const videoExtensions = ['mp4', 'webm', 'mov'];
+
+	if (picturesExtensions.includes(extension)) {
+		return 'pictures';
+	} else if (objectsExtensions.includes(extension)) {
+		return 'objects';
+	} else if (studyMaterialExtensions.includes(extension)) {
+		return 'study-material';
+	} else if (videoExtensions.includes(extension)) {
+		return 'videos';
+	} else {
+		throw new Error('Unsupported file format');
+	}
+}
+
