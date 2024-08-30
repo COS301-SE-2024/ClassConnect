@@ -17,6 +17,7 @@
  
     onMount(() => {
         initScene();
+        animate();
     });
  
     function initScene() {
