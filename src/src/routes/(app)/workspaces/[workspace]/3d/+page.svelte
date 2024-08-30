@@ -20,12 +20,22 @@
     });
  
     function initScene() {
-        raycaster = new THREE.Raycaster();
-        mouse = new THREE.Vector2();
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
 
-        window.addEventListener('mousemove', onMouseMove, false);
-        window.addEventListener('click', onMouseClick, false);
-    }
+    renderer = new THREE.WebGLRenderer({ canvas });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2();
+
+    loadModel();
+
+    window.addEventListener('mousemove', onMouseMove, false);
+    window.addEventListener('click', onMouseClick, false);
+   
+}
  
     function loadModel() {
         
@@ -35,7 +45,8 @@
         });
     }
  
-    function onMouseMove(event: MouseEvent) {//does the normalisation mouse coordinats
+    //does the normalisation mouse coordinats
+    function onMouseMove(event: MouseEvent) {
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     }
@@ -44,11 +55,14 @@
     raycaster.setFromCamera(mouse, camera);
     const intersects = raycaster.intersectObjects(scene.children, true);
 
+    //records the intersection points of the mouse
+    //usespoint for adding ray caster
     if (intersects.length > 0) {
         const intersectionPoint = intersects[0].point;
         intersectionPoints.push(intersectionPoint);
         console.log('Intersection point:', intersectionPoint);
 
+        //the sphere that will the lecturer will use to select correct range
         const sphereGeometry = new THREE.SphereGeometry(0.1);
         const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, transparent: true, opacity: 0.5 });
         const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
@@ -57,21 +71,34 @@
         hotspotSpheres.push(sphere);
 
         // Log distance from camera to intersection point
-        const distance = camera.position.distanceTo(intersectionPoint);
-        console.log('Distance from camera:', distance);
+        // const distance = camera.position.distanceTo(intersectionPoint);
+        // console.log('Distance from camera:', distance);
 
-        // Log coordinates relative to the model's center
-        const modelCenter = new THREE.Vector3();
-        scene.children[0].getWorldPosition(modelCenter);
-        const relativeCoordinates = intersectionPoint.sub(modelCenter);
-        console.log('Coordinates relative to model center:', relativeCoordinates);
+        // // Log coordinates relative to the model's center
+        // const modelCenter = new THREE.Vector3();
+        // scene.children[0].getWorldPosition(modelCenter);
+        // const relativeCoordinates = intersectionPoint.sub(modelCenter);
+        // console.log('Coordinates relative to model center:', relativeCoordinates);
     }
 }
  
-    function animate() {
-        requestAnimationFrame(animate);
-        renderer.render(scene, camera);
+function animate() {
+    requestAnimationFrame(animate);
+
+    // Highlight hotspots when mouse is over them
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(hotspotSpheres);
+
+    hotspotSpheres.forEach(sphere => {
+        (sphere.material as THREE.MeshBasicMaterial).opacity = 0.5;
+    });
+
+    if (intersects.length > 0) {
+        (intersects[0].object.material as THREE.MeshBasicMaterial).opacity = 1;
     }
+
+    renderer.render(scene, camera);
+}
  </script>
  
  <canvas bind:this={canvas}></canvas>
