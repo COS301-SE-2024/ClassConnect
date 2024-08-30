@@ -111,7 +111,7 @@
 				<div class="relative">
 					<div class="pointer-events-none absolute inset-y-0 start-0 z-20 flex items-center ps-3.5">
 						<svg
-							class="size-4 flex-shrink-0 text-gray-400 dark:text-white/60"
+							class="size-4 flex-shrink-0 text-gray-400 dark:text-white"
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
 							height="24"
@@ -128,7 +128,7 @@
 					</div>
 					<input
 						bind:value={materialSearchTerm}
-						class="block w-full rounded-lg border-gray-200 py-3 pe-4 ps-10 text-lg focus:border-green-500 focus:ring-green-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-gray-500 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+						class="block w-full rounded-lg border-gray-200 py-3 pe-4 ps-10 text-lg focus:border-green-500 focus:ring-green-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-gray-800 dark:text-white dark:placeholder-white dark:focus:ring-neutral-600"
 						type="text"
 						placeholder="Search"
 						data-hs-combo-box-input=""

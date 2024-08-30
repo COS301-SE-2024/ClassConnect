@@ -17,7 +17,7 @@
 </script>
 
 <div class="mt-2">
-	<Tabs>
+	<Tabs contentClass='p-4 px-8'>
 		<MaterialsTab tabName="All" tabBoolean={true} renderedMaterials={materials} role={role} />
 
 		<MaterialsTab tabName="Documents" tabBoolean={false} renderedMaterials={DocumentMaterials} role={role} />
