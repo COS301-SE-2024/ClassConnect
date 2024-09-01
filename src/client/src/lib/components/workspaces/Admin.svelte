@@ -15,6 +15,8 @@
 	import EditModal from '$lib/components/modals/workspace/Edit.svelte';
 
 	export let data;
+	let _name: string;
+	let _description: string;
 
 	let id: string;
 	let searchTerm = '';
@@ -31,7 +33,13 @@
 			workspace.owner.toLowerCase().includes(searchTerm.toLowerCase())
 	);
 
-	function handleEditModalOpen(lecturerId: string) {
+	function handleEditModalOpen(
+		lecturerId: string,
+		workpaceName: string,
+		workspaaceDescription: string
+	) {
+		_name = workpaceName;
+		_description = workspaaceDescription;
 		id = lecturerId;
 		isEditModalOpen = true;
 	}
@@ -117,7 +125,11 @@
 
 							<TableBodyCell>
 								<div class="flex justify-center space-x-2">
-									<Button on:click={() => handleEditModalOpen(workspace.id)} class="p-1.5 sm:p-2">
+									<Button
+										on:click={() =>
+											handleEditModalOpen(workspace.id, workspace.name, workspace.description)}
+										class="p-1.5 sm:p-2"
+									>
 										<EditOutline class="h-4 w-4 sm:h-5 sm:w-5" />
 										<span class="ml-2 hidden text-sm sm:inline">Edit</span>
 									</Button>
@@ -141,5 +153,5 @@
 </div>
 
 <AddModal bind:open={isAddModalOpen} {lecturers} />
-<EditModal bind:open={isEditModalOpen} {id} {lecturers} />
+<EditModal bind:open={isEditModalOpen} {id} {lecturers} {_name} {_description} />
 <RemoveModal bind:open={isRemoveModalOpen} {id} item="workspace" />

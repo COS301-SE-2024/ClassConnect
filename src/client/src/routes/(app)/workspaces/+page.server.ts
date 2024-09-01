@@ -94,6 +94,7 @@ async function createWorkspace(data: FormData, organisation: ObjectId | undefine
 	const owner = data.get('owner') as string;
 	const image_file = data.get('image') as File;
 	let image: string = '/images/organisation-placeholder.png';
+	const description = data.get('description') as string;
 
 	if (image_file && image_file.size !== 0) {
 		image = await upload(image_file);
@@ -102,7 +103,8 @@ async function createWorkspace(data: FormData, organisation: ObjectId | undefine
 		name,
 		owner,
 		organisation,
-		image
+		image,
+		description
 	});
 
 	await Users.findByIdAndUpdate(owner, { $push: { workspaces: newWorkspace._id } });
