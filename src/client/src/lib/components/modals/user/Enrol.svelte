@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Avatar, Button, Toggle, Modal, Input } from 'flowbite-svelte';
+	import toast from 'svelte-french-toast';
 
 	export let id: string;
 	export let role: string;
@@ -19,13 +20,32 @@
 	let isEnrolling = true;
 
 	function close() {
-		return async ({ result, update }: any) => {
-			if (result.type === 'success') {
-				await update();
-				open = false;
-			} else {
-				error = result.data?.error;
-			}
+		return ({ result, update }: any) => {
+			const promise = new Promise((resolve, reject) => {
+				setTimeout(async () => {
+					try {
+						if (result.type === 'success') {
+							await update();
+							open = false;
+							resolve(
+								isEnrolling ? 'Student enrolled successfully!' : 'Student unenrolled successfully!'
+							);
+						} else {
+							reject(result.data?.error || 'An unknown error occurred');
+						}
+					} catch (error) {
+						reject(error);
+					}
+				}, 500);
+			});
+
+			toast.promise(promise, {
+				loading: 'Changing detials...',
+				success: (message) => `${message}`,
+				error: (error) => `${error}`
+			});
+
+			return promise;
 		};
 	}
 
