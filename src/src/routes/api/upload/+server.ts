@@ -9,58 +9,58 @@ const S3 = new AWS.S3();
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ request }) {
-    if (!BUCKET) {
-        return json({ error: 'No bucket name specified' }, { status: 500 });
-    }
-    
-    const { action, filename, contentType, partNumber, uploadId, parts } = await request.json();
-    const folder = determineFolderFromName(filename);
-    const s3Key = `${folder}/${filename}`;
-    
-    updateConfig();
+	if (!BUCKET) {
+		return json({ error: 'No bucket name specified' }, { status: 500 });
+	}
 
-    try {
-        switch (action) {
-            case 'start': {
-                const multipartUpload = await S3.createMultipartUpload({
-                    Bucket: BUCKET,
-                    Key: s3Key,
-                    ContentType: contentType,
-                    ContentDisposition: `inline; filename="${filename}"`
-                }).promise();
+	const { action, filename, contentType, partNumber, uploadId, parts } = await request.json();
+	const folder = determineFolderFromName(filename);
+	const s3Key = `${folder}/${filename}`;
 
-                return json({ uploadId: multipartUpload.UploadId });
-            }
+	updateConfig();
 
-            case 'getSignedUrl': {
-                const signedUrl = await S3.getSignedUrlPromise('uploadPart', {
-                    Bucket: BUCKET,
-                    Key: s3Key,
-                    PartNumber: partNumber,
-                    UploadId: uploadId,
-                    Expires: 3600 // 1 hour
-                });
+	try {
+		switch (action) {
+			case 'start': {
+				const multipartUpload = await S3.createMultipartUpload({
+					Bucket: BUCKET,
+					Key: s3Key,
+					ContentType: contentType,
+					ContentDisposition: `inline; filename="${filename}"`
+				}).promise();
 
-                return json({ signedUrl });
-            }
+				return json({ uploadId: multipartUpload.UploadId });
+			}
 
-            case 'complete': {
-                await S3.completeMultipartUpload({
-                    Bucket: BUCKET,
-                    Key: s3Key,
-                    MultipartUpload: { Parts: parts },
-                    UploadId: uploadId
-                }).promise();
+			case 'getSignedUrl': {
+				const signedUrl = await S3.getSignedUrlPromise('uploadPart', {
+					Bucket: BUCKET,
+					Key: s3Key,
+					PartNumber: partNumber,
+					UploadId: uploadId,
+					Expires: 3600 // 1 hour
+				});
 
-                const fileUrl = `https://${BUCKET}.s3.amazonaws.com/${s3Key}`;
-                return json({ fileUrl });
-            }
+				return json({ signedUrl });
+			}
 
-            default:
-                return json({ error: 'Invalid action' }, { status: 400 });
-        }
-    } catch (error) {
-        console.error('Error during upload:', error);
-        return json({ error: 'Error processing upload' }, { status: 500 });
-    }
+			case 'complete': {
+				await S3.completeMultipartUpload({
+					Bucket: BUCKET,
+					Key: s3Key,
+					MultipartUpload: { Parts: parts },
+					UploadId: uploadId
+				}).promise();
+
+				const fileUrl = `https://${BUCKET}.s3.amazonaws.com/${s3Key}`;
+				return json({ fileUrl });
+			}
+
+			default:
+				return json({ error: 'Invalid action' }, { status: 400 });
+		}
+	} catch (error) {
+		console.error('Error during upload:', error);
+		return json({ error: 'Error processing upload' }, { status: 500 });
+	}
 }

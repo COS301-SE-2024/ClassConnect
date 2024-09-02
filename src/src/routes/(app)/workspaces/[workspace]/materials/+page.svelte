@@ -17,11 +17,21 @@
 </script>
 
 <div class="mt-2">
-	<Tabs contentClass='p-4 px-8'>
-		<MaterialsTab tabName="All" tabBoolean={true} renderedMaterials={materials} role={role} />
+	<Tabs contentClass="p-4 px-8">
+		<MaterialsTab tabName="All" tabBoolean={true} renderedMaterials={materials} {role} />
 
-		<MaterialsTab tabName="Documents" tabBoolean={false} renderedMaterials={DocumentMaterials} role={role} />
+		<MaterialsTab
+			tabName="Documents"
+			tabBoolean={false}
+			renderedMaterials={DocumentMaterials}
+			{role}
+		/>
 
-		<MaterialsTab tabName="3D Objects" tabBoolean={false} renderedMaterials={ObjectMaterials} role={role} />
+		<MaterialsTab
+			tabName="3D Objects"
+			tabBoolean={false}
+			renderedMaterials={ObjectMaterials}
+			{role}
+		/>
 	</Tabs>
 </div>

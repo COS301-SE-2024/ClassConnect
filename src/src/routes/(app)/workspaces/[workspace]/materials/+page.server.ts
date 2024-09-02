@@ -1,27 +1,11 @@
 import type { Actions } from './$types';
-import Materials from '$db/schemas/Material';
-import type { Material } from '$src/types';
 import type { UploadData, UploadInfo } from '$src/types';
 import { fail, error } from '@sveltejs/kit';
 import { determineFolderFromName } from '$lib/server/storage';
-import { deleteFile } from '$lib/server/storage';
 import { uploadFile, multipartUploadFile } from '$lib/server/UploadHandler';
-
-function formatMaterial(material: any): Partial<Material> {
-	return {
-		title: material.title,
-		description: material.description,
-		file_path: material.file_path,
-		thumbnail: material.thumbnail,
-		type: material.type,
-		id: material._id.toString()
-	};
-}
-
-async function getMaterials(workspace_id: string): Promise<Partial<Material>[]> {
-	const materials = await Materials.find({ workspace_id });
-	return materials.map(formatMaterial);
-}
+import { validateLecturer } from '$src/lib/server/utils';
+import { getMaterials } from '$src/lib/server/utils/material';
+import { deleteMaterial } from '$src/lib/server/utils/material';
 
 export async function load({ locals, params }) {
 	try {
@@ -32,47 +16,8 @@ export async function load({ locals, params }) {
 		};
 	} catch (e) {
 		console.error('Server error:', e);
-		throw error(500, 'An unexpected error occurred while loading lessons');
+		throw error(500, 'An unexpected error occurred while loading materials');
 	}
-}
-
-function validateLecturer(locals: any) {
-	if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorized');
-}
-
-async function deleteMaterial(id: string) {
-	if (!id) return fail(400, { message: 'Material ID is required' });
-
-	const material = await Materials.findById(id);
-
-	if (material) {
-		const file_path = material.file_path;
-		const thumbnail = material.thumbnail;
-
-		if (file_path) {
-			try {
-				await deleteFile(file_path);
-			} catch (e) {
-				console.error('Error deleting file:', e);
-			}
-		}
-
-		if (thumbnail) {
-			try {
-				await deleteFile(thumbnail);
-			} catch (e) {
-				console.error('Error deleting thumbnail:', e);
-			}
-		}
-	} else {
-		return fail(404, { message: 'Material not found' });
-	}
-
-	const deletedMaterial = await Materials.findByIdAndDelete(id);
-
-	if (!deletedMaterial) return fail(404, { message: 'Material not found' });
-
-	return { success: true };
 }
 
 export const actions: Actions = {
@@ -110,7 +55,6 @@ export const actions: Actions = {
 			const folder = determineFolderFromName(name);
 
 			await multipartUploadFile(upload_data, folder);
-
 		} catch (e) {
 			console.error('Error uploading material:', e);
 			return fail(500, { message: 'Failed to upload material' });

@@ -17,7 +17,7 @@ export async function uploadFile(fileData: UploadData) {
 	}
 }
 
-export async function multipartUploadFile(fileData: UploadInfo,folder: string) {
+export async function multipartUploadFile(fileData: UploadInfo, folder: string) {
 	if (folder === 'study-material') {
 		return materialUploadFromLink(fileData, false);
 	} else if (folder === 'objects') {

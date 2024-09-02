@@ -34,11 +34,11 @@
 			await multipartUploadFile();
 		} else {
 			const formData = new FormData();
-	
+
 			formData.append('file', file);
 			formData.append('title', title);
 			formData.append('description', description);
-	
+
 			await toast.promise(
 				fetch('?/uploadMat', {
 					method: 'POST',
@@ -172,7 +172,6 @@
 		console.log('File uploaded successfully:', fileUrl);
 	}
 
-	
 	function generateFileName(originalFileName: string): string {
 		const lastDotIndex = originalFileName.lastIndexOf('.');
 		if (lastDotIndex === -1) {

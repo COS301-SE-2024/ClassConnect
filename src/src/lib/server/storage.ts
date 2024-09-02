@@ -56,7 +56,6 @@ async function smallFile(
 	folder: string,
 	contentType: string
 ): Promise<string> {
-
 	if (!file || !(file instanceof Blob)) {
 		throw new Error('No file uploaded');
 	}
@@ -237,7 +236,6 @@ export function determineFolder(file: File): string {
 	}
 }
 
-
 export function determineFolderFromName(filename: string): string {
 	const extension = filename.split('.').pop()?.toLowerCase();
 
@@ -262,4 +260,3 @@ export function determineFolderFromName(filename: string): string {
 		throw new Error('Unsupported file format');
 	}
 }
-
