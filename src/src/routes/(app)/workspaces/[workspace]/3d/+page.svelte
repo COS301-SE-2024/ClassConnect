@@ -8,7 +8,7 @@
     export let data: any;
 
     let { models } = data;
-    console.log('Data: ', models[0].file_path);
+    console.log('Role: ', data.role);
 
     let canvas: HTMLCanvasElement;
     let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -16,9 +16,10 @@
     let dragControls: DragControls;
     let draggableSphere: THREE.Mesh;
     let spherePosition: THREE.Vector3 = new THREE.Vector3();
-    // let mouse: THREE.Vector2;
-    // let raycaster: THREE.Raycaster;
-    // let pins: THREE.Mesh[] = [];
+    let mouse: THREE.Vector2;
+    let raycaster: THREE.Raycaster;
+    let loadedModel: THREE.Object3D | undefined;
+    let currentPin: THREE.Mesh | null = null;
 
     onMount(() => {
         initScene();
@@ -34,8 +35,8 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setClearColor(0xffffff);
 
-        // raycaster = new THREE.Raycaster();
-        // mouse = new THREE.Vector2();
+        raycaster = new THREE.Raycaster();
+        mouse = new THREE.Vector2();
 
         // Add lighting
         const ambientLight = new THREE.AmbientLight(0x404040); 
@@ -44,12 +45,28 @@
         directionalLight.position.set(1, 1, 1).normalize();
         scene.add(directionalLight);
 
-        // Create a draggable sphere
-        const sphereGeometry = new THREE.SphereGeometry(0.1);
-        const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x0000FF, transparent: true, opacity: 0.7 });
-        draggableSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-        draggableSphere.position.set(1, 1, 0);
-        scene.add(draggableSphere);
+       
+        if(data.role === 'lecturer'){
+            // Create a draggable sphere
+            const sphereGeometry = new THREE.SphereGeometry(0.1);
+            const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x0000FF, transparent: true, opacity: 0.7 });
+            draggableSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+            draggableSphere.position.set(1, 1, 0);
+            scene.add(draggableSphere);
+
+            //sphere drag
+            dragControls = new DragControls([draggableSphere], camera, renderer.domElement);
+            dragControls.addEventListener('dragstart', () => {
+                controls.enabled = false; 
+            });
+            dragControls.addEventListener('dragend', () => {
+                controls.enabled = true; 
+                spherePosition.copy(draggableSphere.position);
+                console.log('Sphere Position:', spherePosition);
+                localStorage.setItem('spherePosition', JSON.stringify(draggableSphere.position.toArray()));
+            });
+        }
+    
 
         // Initialize OrbitControls
         controls = new OrbitControls(camera, renderer.domElement);
@@ -59,17 +76,12 @@
         controls.autoRotate = false;
         controls.autoRotateSpeed = 2.0;
 
-        dragControls = new DragControls([draggableSphere], camera, renderer.domElement);
-        dragControls.addEventListener('dragstart', () => {
-            controls.enabled = false; 
-        });
-        dragControls.addEventListener('dragend', () => {
-            controls.enabled = true; 
-            spherePosition.copy(draggableSphere.position);
-            console.log('Sphere Position:', spherePosition);
-        });
 
         loadModel();
+
+        if(data.role === 'student'){
+            canvas.addEventListener('click', placePin);
+        }
 
         window.addEventListener('resize', onWindowResize, false); 
     }
@@ -77,7 +89,8 @@
     function loadModel() {
         const loader = new GLTFLoader();
         loader.load(models[0].file_path, (gltf) => {
-            scene.add(gltf.scene);
+            loadedModel = gltf.scene;
+            scene.add(loadedModel);
         });
     }
 
@@ -87,32 +100,55 @@
         renderer.render(scene, camera);
     }
 
-    // function placePin(event: MouseEvent) {
-    //     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    //     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    function getSavedSpherePosition(): THREE.Vector3 {
+        const savedPosition = localStorage.getItem('spherePosition');
+        if (savedPosition) {
+            const [x, y, z] = JSON.parse(savedPosition);
+            return new THREE.Vector3(x, y, z);
+        }
+        return new THREE.Vector3(); // Default position if none saved
+}
 
-    //     raycaster.setFromCamera(mouse, camera);
-    //     const intersects = raycaster.intersectObject(scene.children.find(child => child instanceof THREE.Mesh && child !== draggableSphere));
+    function placePin(event: MouseEvent) {
+        if (currentPin) {
+            // Remove the existing pin from the scene
+            scene.remove(currentPin);
+            currentPin.geometry.dispose(); // Dispose of geometry
+            
+        }
 
-    //     if (intersects.length > 0) {
-    //         const pinGeometry = new THREE.SphereGeometry(0.05);
-    //         const pinMaterial = new THREE.MeshBasicMaterial({ color: 0xFF0000 });
-    //         const pin = new THREE.Mesh(pinGeometry, pinMaterial);
-    //         pin.position.copy(intersects[0].point);
-    //         scene.add(pin);
-    //         pins.push(pin);
-    //         checkProximity(pin);
-    //     }
-    // }
+        // Create and add the new pin
+        const pinGeometry = new THREE.SphereGeometry(0.05);
+        const pinMaterial = new THREE.MeshBasicMaterial({ color: 0xFF0000 });
+        const pin = new THREE.Mesh(pinGeometry, pinMaterial);
+        
+        pin.position.set(0, 1, 0);
+        scene.add(pin);
+        currentPin = pin; // Update the reference to the current pin
 
-    // function checkProximity(pin: THREE.Mesh) {
-    //     const distance = pin.position.distanceTo(draggableSphere.position);
-    //     if (distance <= proximityThreshold) {
-    //         console.log('Pin is in the correct vicinity.');
-    //     } else {
-    //         console.log('Pin is not in the correct vicinity.');
-    //     }
-    // }
+        // Initialize DragControls for the pin
+        const pinDragControls = new DragControls([pin], camera, renderer.domElement);
+        pinDragControls.addEventListener('dragstart', () => {
+            controls.enabled = false;
+        });
+        pinDragControls.addEventListener('dragend', () => {
+            controls.enabled = true;
+            checkProximity(pin);
+        });
+
+        console.log('Pin placed at', pin.position);     
+    }
+
+
+    function checkProximity(pin: THREE.Mesh) {
+        const savedSpherePosition = getSavedSpherePosition();
+        const distance = pin.position.distanceTo(savedSpherePosition);
+        if (distance <= 0.2) {
+            console.log('Pin is in the correct vicinity.');
+        } else {
+            console.log('Pin is not in the correct vicinity.');
+        }
+    }
 
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
