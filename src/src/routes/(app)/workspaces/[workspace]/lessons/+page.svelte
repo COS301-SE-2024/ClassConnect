@@ -26,15 +26,16 @@
   }
 </script>
 
-<Tabs tabStyle="pill">
+<div class="m-4">
+<Tabs tabStyle="underline" contentClass='p-4 bg-gray-50 rounded-lg dark:bg-gray-800 mt-4'>
   <TabItem title="Lessons" open>
-    <main class="container mx-auto my-2 px-4 ">
+    <main class="container mx-auto m-2 px-4">
       <div class="sm:flex sm:items-center sm:justify-between">
         <div>
           <div class="flex items-center gap-x-3">
             <h2 class="text-xl font-bold text-gray-800 dark:text-white">Lessons</h2>
             <span
-              class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
+              class="rounded-full bg-green-200 px-3 py-1 text-xs text-green-600 dark:bg-green-800 dark:text-green-400"
             >
               {lessons.length} lessons
             </span>
@@ -62,7 +63,7 @@
           <div class="flex items-center gap-x-3">
             <h2 class="text-xl font-bold text-gray-800 dark:text-white">Recordings</h2>
             <span
-              class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
+              class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-green-800 dark:text-green-400"
             >
               {recordings.length} recordings
             </span>
@@ -81,6 +82,6 @@
     </main>
   </TabItem>
 </Tabs>
-
+</div>
 <ScheduleModal bind:open={isScheduleModalOpen} />
 

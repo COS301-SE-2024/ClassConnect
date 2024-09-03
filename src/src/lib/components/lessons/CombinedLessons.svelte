@@ -21,7 +21,7 @@
 	export let role: string;
 	export let lessons: any[];
 
-	let divClass = 'bg-white dark:bg-gray-900 relative shadow-md sm:rounded-lg overflow-hidden';
+	let divClass = 'bg-zinc-200 dark:bg-gray-900 relative shadow-md sm:rounded-lg overflow-hidden';
 	let innerDivClass =
 		'flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4';
 	let searchClass = 'w-full md:w-1/2 relative';
@@ -109,7 +109,7 @@
 	>
 		<TableHead>
 			{#each headers as header}
-				<TableHeadCell padding="px-4 py-3">{header}</TableHeadCell>
+				<TableHeadCell padding="px-4 py-3">{header} </TableHeadCell>
 			{/each}
 		</TableHead>
 		<TableBody tableBodyClass="divide-y">
