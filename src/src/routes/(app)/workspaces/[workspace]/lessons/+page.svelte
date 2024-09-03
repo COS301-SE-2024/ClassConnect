@@ -2,8 +2,7 @@
 	import { Button, Tabs, TabItem } from 'flowbite-svelte';
 
 	import { formatDate } from '$utils/date';
-	import Upcoming from '$src/lib/components/lessons/Upcoming.svelte';
-	import InSession from '$src/lib/components/lessons/InSession.svelte';
+	import CombinedLessons from '$src/lib/components/lessons/CombinedLessons.svelte';
 	import Recordings from '$src/lib/components/lessons/lesson/Recordings.svelte';
 	import ScheduleModal from '$src/lib/components/modals/lessons/Schedule.svelte';
 
@@ -11,8 +10,7 @@
 
 	let isScheduleModalOpen = false;
 
-	let upcomingLessons: any[] = [];
-	let inSessionLessons: any[] = [];
+	let lessons: any[] = [];
 
 	$: ({ role, lessons, recordings } = data);
 
@@ -22,11 +20,9 @@
 		lessons = lessons.map((lesson: any) => ({
 			...lesson,
 			date: formatDate(new Date(lesson.date)),
-			unformattedDate: new Date(lesson.date)
+			unformattedDate: new Date(lesson.date),
+			isInSession: new Date(lesson.unformattedDate) <= now,
 		}));
-
-		upcomingLessons = lessons.filter((lesson: any) => lesson.unformattedDate > now);
-		inSessionLessons = lessons.filter((lesson: any) => lesson.unformattedDate <= now);
 	}
 </script>
 
@@ -55,8 +51,7 @@
 					There are no lessons scheduled at the moment.
 				</p>
 			{:else}
-				<InSession lessons={inSessionLessons} {role} />
-				<Upcoming lessons={upcomingLessons} {role} />
+				<CombinedLessons lessons={lessons} {role} />
 			{/if}
 		</main>
 	</TabItem>
