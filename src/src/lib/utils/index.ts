@@ -126,20 +126,34 @@ export function generateFileName(originalFileName: string): string {
 	return `${objectId}${extension}`;
 }
 
+/**
+ * Fetches user data from the server.
+ * 
+ * @returns {Promise<User>} - A promise that resolves to the user data.
+ * @throws Will throw an error if the request fails.
+ */
 export async function getUserData(): Promise<User> {
-	try {
-		const response = await axios.get('/api/user');
-		const user = response.data;
-		const data: User = {
-			id: user.id,
-			name: user.name,
-			email: user.email,
-			image: user.image,
-			surname: user.surname,
-			username: user.username
-		};
-		return data;
-	} catch (error) {
-		throw new Error('Error getting user data');
-	}
+    try {
+        // # Fetch user data from the API
+        const response = await axios.get('/api/user');
+        
+        // # Extract user data from the response
+        const user = response.data;
+        
+        // # Construct the User object
+        const data: User = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            image: user.image,
+            surname: user.surname,
+            username: user.username
+        };
+        
+        // # Return the constructed User object
+        return data;
+    } catch (error) {
+        // ! Throw an error if the request fails
+        throw new Error('Error getting user data');
+    }
 }
