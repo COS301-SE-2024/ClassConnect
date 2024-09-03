@@ -16,6 +16,7 @@
     let dragControls: DragControls;
     let draggableSphere: THREE.Mesh;
     let spherePosition: THREE.Vector3 = new THREE.Vector3();
+    let pinPos:THREE.Vector3 = new THREE.Vector3();
     let mouse: THREE.Vector2;
     let raycaster: THREE.Raycaster;
     let loadedModel: THREE.Object3D | undefined;
@@ -66,6 +67,29 @@
                 localStorage.setItem('spherePosition', JSON.stringify(draggableSphere.position.toArray()));
             });
         }
+
+        else if(data.role==='student'){
+            // Create and add the new pin
+            const pinGeometry = new THREE.SphereGeometry(0.05);
+            const pinMaterial = new THREE.MeshBasicMaterial({ color: 0xFF0000 });
+            const pin = new THREE.Mesh(pinGeometry, pinMaterial);
+            
+            pin.position.set(0, 1, 0);
+            scene.add(pin);
+            // Update the reference to the current pin
+
+            // Initialize DragControls for the pin
+            const pinDragControls = new DragControls([pin], camera, renderer.domElement);
+            pinDragControls.addEventListener('dragstart', () => {
+                controls.enabled = false;
+            });
+            pinDragControls.addEventListener('dragend', () => {
+                controls.enabled = true;
+                pinPos.copy(pin.position);
+                console.log('Pin placed at', pin.position);  
+                checkProximity(pin);
+            });
+    }
     
 
         // Initialize OrbitControls
@@ -78,10 +102,6 @@
 
 
         loadModel();
-
-        if(data.role === 'student'){
-            canvas.addEventListener('click', placePin);
-        }
 
         window.addEventListener('resize', onWindowResize, false); 
     }
@@ -109,42 +129,12 @@
         return new THREE.Vector3(); // Default position if none saved
 }
 
-    function placePin(event: MouseEvent) {
-        if (currentPin) {
-            // Remove the existing pin from the scene
-            scene.remove(currentPin);
-            currentPin.geometry.dispose(); // Dispose of geometry
-            
-        }
-
-        // Create and add the new pin
-        const pinGeometry = new THREE.SphereGeometry(0.05);
-        const pinMaterial = new THREE.MeshBasicMaterial({ color: 0xFF0000 });
-        const pin = new THREE.Mesh(pinGeometry, pinMaterial);
-        
-        pin.position.set(0, 1, 0);
-        scene.add(pin);
-        currentPin = pin; // Update the reference to the current pin
-
-        // Initialize DragControls for the pin
-        const pinDragControls = new DragControls([pin], camera, renderer.domElement);
-        pinDragControls.addEventListener('dragstart', () => {
-            controls.enabled = false;
-        });
-        pinDragControls.addEventListener('dragend', () => {
-            controls.enabled = true;
-            checkProximity(pin);
-        });
-
-        console.log('Pin placed at', pin.position);     
-    }
-
 
     function checkProximity(pin: THREE.Mesh) {
         const savedSpherePosition = getSavedSpherePosition();
         const distance = pin.position.distanceTo(savedSpherePosition);
         if (distance <= 0.2) {
-            console.log('Pin is in the correct vicinity.');
+            alert('Pin is in the correct vicinity.');
         } else {
             console.log('Pin is not in the correct vicinity.');
         }
