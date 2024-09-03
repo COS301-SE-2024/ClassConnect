@@ -68,10 +68,8 @@ export async function load({ locals }) {
 				getWorkspaces(locals.user.organisation),
 				getLecturers(locals.user.organisation)
 			]);
-			let organisation;
-			if (locals.user?.organisation) {
-				organisation = JSON.parse(JSON.stringify(locals.user?.organisation));
-			}
+
+			const organisation = locals.user.organisation.toString() || null;
 
 			return { role: locals.user.role, lecturers, workspaces, organisation };
 		} else {
@@ -80,8 +78,8 @@ export async function load({ locals }) {
 			return { workspaces };
 		}
 	} catch (e) {
-		console.error('Server error:', e);
-		throw error(500, 'An unexpected error occurred while fetching data');
+		console.error('Workspace error:', e);
+		throw error(500, 'An error occurred while fetching workspaces');
 	}
 }
 
@@ -93,16 +91,15 @@ async function createWorkspace(data: FormData, organisation: ObjectId | undefine
 	const name = data.get('name') as string;
 	const owner = data.get('owner') as string;
 	const image_file = data.get('image') as File;
-	let image: string = '/images/organisation-placeholder.png';
 
-	if (image_file && image_file.size !== 0) {
-		image = await upload(image_file);
-	}
+	let image: string = '/images/workspace-placeholder.png';
+	if (image_file && image_file.size !== 0) image = await upload(image_file);
+
 	const newWorkspace = new Workspaces({
 		name,
 		owner,
-		organisation,
-		image
+		image,
+		organisation
 	});
 
 	await Users.findByIdAndUpdate(owner, { $push: { workspaces: newWorkspace._id } });
@@ -113,31 +110,22 @@ async function createWorkspace(data: FormData, organisation: ObjectId | undefine
 
 async function editWorkspace(data: FormData) {
 	const id = data.get('id') as string;
-
-	if (!id) return fail(400, { error: 'Workspace ID is required' });
-
-	const workspace = await Workspaces.findById(id);
-	if (!workspace) return fail(404, { error: 'Workspace not found' });
-
+	const image = data.get('image') as File;
 	const name = data.get('name') as string;
 	const owner = data.get('owner') as string;
 	const description = data.get('description') as string;
 
-	let image: string;
-	const image_file: File = data.get('file') as File;
-
-	const updateData: { name?: string; owner?: string; description?: string; image?: string } = {};
+	const workspace = await Workspaces.findById(id);
 
 	if (name !== '') workspace.name = name;
 	if (description !== '') workspace.description = description;
 
-	if (image_file && workspace && image_file.size !== 0) {
-		image = await upload(image_file);
-
-		if (image) {
+	if (image && image.size !== 0) {
+		if (workspace.image !== '/images/workspace-placeholder.png') {
 			await deleteFile(workspace.image);
-			updateData.image = image;
 		}
+
+		workspace.image = await upload(image);
 	}
 
 	if (owner && owner !== workspace.owner.toString()) {
@@ -158,6 +146,10 @@ async function deleteWorkspace(id: string) {
 	const deletedWorkspace = await Workspaces.findByIdAndDelete(id);
 	if (!deletedWorkspace) return fail(404, { error: 'Workspace not found' });
 
+	const { image } = deletedWorkspace;
+	console.log('image', image);
+	if (image && image !== '/images/workspace-placeholder.png') await deleteFile(image);
+
 	await Users.findByIdAndUpdate(deletedWorkspace.owner, { $pull: { workspaces: id } });
 	await Users.updateMany({ workspaces: id }, { $pull: { workspaces: id } });
 
@@ -170,7 +162,7 @@ export const actions: Actions = {
 
 		try {
 			const data = await request.formData();
-			console.log(data);
+
 			return await createWorkspace(data, locals.user?.organisation);
 		} catch (error) {
 			console.error('Server error:', error);
