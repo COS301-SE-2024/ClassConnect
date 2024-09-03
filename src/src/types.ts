@@ -62,6 +62,11 @@ export interface Material {
 	workspace: string;
 }
 
+export interface FileUploadReturn {
+	name: string;
+	url: string;
+}
+
 export interface UploadData {
 	title: string;
 	description: string;

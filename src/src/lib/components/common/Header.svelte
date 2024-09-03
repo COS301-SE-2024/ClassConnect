@@ -3,37 +3,29 @@
 	import { onMount } from 'svelte';
 	import { change } from '$lib/store';
 	import BreadCrumbs from '$lib/components/common/Breadcrumbs.svelte';
-	import axios from 'axios';
+	import { getUserData } from '$lib/utils';
 
 	export let data;
 
 	let { name, image } = data;
-	const apiUrl = '/api/user';
 
-	async function getUserData() {
+	async function updateUserData() {
 		try {
-			await axios
-				.get(apiUrl)
-				.then((response) => {
-					const user = response.data;
-					name = user.name;
-					image = user.image;
-				})
-				.catch((error) => {
-					console.error('There was a problem with the get operation:', error);
-				});
+			const user = await getUserData();
+			name = user.name;
+			image = user.image;
 		} catch (error) {
 			console.error('There was a problem with the get operation:', error);
 		}
 	}
 
 	onMount(async () => {
-		getUserData();
+		updateUserData();
 	});
 
 	$: {
 		change.subscribe(async () => {
-			await getUserData();
+			await updateUserData();
 		});
 	}
 </script>

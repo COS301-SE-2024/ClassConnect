@@ -4,7 +4,7 @@
 	import UploadPicture from '$lib/components/modals/settings/UploadPicture.svelte';
 	import Settings from '$lib/components/common/ProfileSettings.svelte';
 	import { change } from '$lib/store';
-	import axios from 'axios';
+	import { getUserData } from '$lib/utils';
 	import { onMount } from 'svelte';
 	export let user: any;
 
@@ -14,30 +14,14 @@
 	let update = false;
 	let loading = true;
 
-	const apiUrl = '/api/user';
-
-	async function getUserData() {
+	async function updateUserData() {
 		loading = true;
 		try {
-			axios
-				.get(apiUrl)
-				.then((response) => {
-					user = response.data;
-					loading = false;
-				})
-				.catch((error) => {
-					if (error.response) {
-						console.error('Error response data:', error.response.data);
-						console.error('Error response status:', error.response.status);
-					} else if (error.request) {
-						console.error('Error request:', error.request);
-					} else {
-						console.error('Error message:', error.message);
-					}
-					loading = false;
-				});
+			user = await getUserData();
+			loading = false;
 		} catch (error) {
-			console.error('There was a problem with the get operation:', error);
+			console.error('There was a problem with the get operation');
+			loading = false;
 		}
 	}
 
@@ -48,13 +32,13 @@
 	}
 
 	onMount(async () => {
-		await getUserData();
+		await updateUserData();
 		loading = false;
 	});
 
 	$: {
 		change.subscribe(() => {
-			getUserData();
+			updateUserData();
 		});
 	}
 </script>
