@@ -2,111 +2,130 @@
     import { onMount } from 'svelte';
     import * as THREE from 'three';
     import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
- 
+    import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+    import { DragControls } from 'three/examples/jsm/controls/DragControls.js'; // Import DragControls
+
     export let data: any;
 
-	let { models } = data;
+    let { models } = data;
     console.log('Data: ', models[0].file_path);
- 
-    //defines the elements to be used
-    //will replace dummy scene with Lungas scene
+
     let canvas: HTMLCanvasElement;
-    let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer, raycaster: THREE.Raycaster, mouse: THREE.Vector2;
-    let intersectionPoints: THREE.Vector3[] = [];
-    let hotspotSpheres: THREE.Mesh[] = [];
- 
+    let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
+    let controls: OrbitControls;
+    let dragControls: DragControls;
+    let draggableSphere: THREE.Mesh;
+    let spherePosition: THREE.Vector3 = new THREE.Vector3();
+    // let mouse: THREE.Vector2;
+    // let raycaster: THREE.Raycaster;
+    // let pins: THREE.Mesh[] = [];
+
     onMount(() => {
         initScene();
         animate();
     });
- 
+
     function initScene() {
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 5;
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
 
-    renderer = new THREE.WebGLRenderer({ canvas });
-    renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer = new THREE.WebGLRenderer({ canvas });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0xffffff);
 
-    raycaster = new THREE.Raycaster();
-    mouse = new THREE.Vector2();
+        // raycaster = new THREE.Raycaster();
+        // mouse = new THREE.Vector2();
 
-    loadModel();
+        // Add lighting
+        const ambientLight = new THREE.AmbientLight(0x404040); 
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(1, 1, 1).normalize();
+        scene.add(directionalLight);
 
-    window.addEventListener('mousemove', onMouseMove, false);
-    window.addEventListener('click', onMouseClick, false);
-   
-}
- 
+        // Create a draggable sphere
+        const sphereGeometry = new THREE.SphereGeometry(0.1);
+        const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x0000FF, transparent: true, opacity: 0.7 });
+        draggableSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+        draggableSphere.position.set(1, 1, 0);
+        scene.add(draggableSphere);
+
+        // Initialize OrbitControls
+        controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.25;
+        controls.enableRotate = true;
+        controls.autoRotate = false;
+        controls.autoRotateSpeed = 2.0;
+
+        dragControls = new DragControls([draggableSphere], camera, renderer.domElement);
+        dragControls.addEventListener('dragstart', () => {
+            controls.enabled = false; 
+        });
+        dragControls.addEventListener('dragend', () => {
+            controls.enabled = true; 
+            spherePosition.copy(draggableSphere.position);
+            console.log('Sphere Position:', spherePosition);
+        });
+
+        loadModel();
+
+        window.addEventListener('resize', onWindowResize, false); 
+    }
+
     function loadModel() {
-        
         const loader = new GLTFLoader();
         loader.load(models[0].file_path, (gltf) => {
             scene.add(gltf.scene);
         });
     }
- 
-    //does the normalisation mouse coordinats
-    function onMouseMove(event: MouseEvent) {
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    }
- 
-    function onMouseClick(event: MouseEvent) {
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(scene.children, true);
 
-    //records the intersection points of the mouse
-    //usespoint for adding ray caster
-    if (intersects.length > 0) {
-        const intersectionPoint = intersects[0].point;
-        intersectionPoints.push(intersectionPoint);
-        console.log('Intersection point:', intersectionPoint);
-
-        //the sphere that will the lecturer will use to select correct range
-        const sphereGeometry = new THREE.SphereGeometry(0.1);
-        const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000, transparent: true, opacity: 0.5 });
-        const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-        sphere.position.copy(intersectionPoint);
-        scene.add(sphere);
-        hotspotSpheres.push(sphere);
-
-        // Log distance from camera to intersection point
-        // const distance = camera.position.distanceTo(intersectionPoint);
-        // console.log('Distance from camera:', distance);
-
-        // // Log coordinates relative to the model's center
-        // const modelCenter = new THREE.Vector3();
-        // scene.children[0].getWorldPosition(modelCenter);
-        // const relativeCoordinates = intersectionPoint.sub(modelCenter);
-        // console.log('Coordinates relative to model center:', relativeCoordinates);
-    }
-}
- 
-function animate() {
-    requestAnimationFrame(animate);
-
-    // Highlight hotspots when mouse is over them
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(hotspotSpheres);
-
-    hotspotSpheres.forEach(sphere => {
-        (sphere.material as THREE.MeshBasicMaterial).opacity = 0.5;
-    });
-
-    if (intersects.length > 0) {
-        (intersects[0].object.material as THREE.MeshBasicMaterial).opacity = 1;
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
     }
 
-    renderer.render(scene, camera);
-}
- </script>
- 
- <canvas bind:this={canvas}></canvas>
- 
- <style>
+    // function placePin(event: MouseEvent) {
+    //     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    //     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    //     raycaster.setFromCamera(mouse, camera);
+    //     const intersects = raycaster.intersectObject(scene.children.find(child => child instanceof THREE.Mesh && child !== draggableSphere));
+
+    //     if (intersects.length > 0) {
+    //         const pinGeometry = new THREE.SphereGeometry(0.05);
+    //         const pinMaterial = new THREE.MeshBasicMaterial({ color: 0xFF0000 });
+    //         const pin = new THREE.Mesh(pinGeometry, pinMaterial);
+    //         pin.position.copy(intersects[0].point);
+    //         scene.add(pin);
+    //         pins.push(pin);
+    //         checkProximity(pin);
+    //     }
+    // }
+
+    // function checkProximity(pin: THREE.Mesh) {
+    //     const distance = pin.position.distanceTo(draggableSphere.position);
+    //     if (distance <= proximityThreshold) {
+    //         console.log('Pin is in the correct vicinity.');
+    //     } else {
+    //         console.log('Pin is not in the correct vicinity.');
+    //     }
+    // }
+
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+</script>
+
+<canvas bind:this={canvas}></canvas>
+
+<style>
     canvas {
         width: 100%;
         height: 100%;
     }
- </style>
+</style>
