@@ -4,7 +4,6 @@
 	import { objURL, displayedSandboxObjectURL } from '$src/lib/store/objects';
 	import UploadMaterial from '$lib/components/modals/materials/UploadMaterial.svelte';
 	import {
-		SearchOutline,
 		ArrowUpFromBracketOutline,
 		ArrowRightOutline,
 		DotsVerticalOutline,
@@ -103,7 +102,9 @@
 
 <TabItem open={tabBoolean}>
 	<span slot="title">{tabName}</span>
-	<div class="m-4 flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+	<div
+		class="m-4 flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0"
+	>
 		<div class="w-full max-w-lg">
 			<div class="relative">
 				<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -129,7 +130,10 @@
 				/>
 			</div>
 		</div>
-		<Button on:click={() => (uploadModal = true)} class="flex items-center space-x-2 bg-green-600 hover:bg-green-700">
+		<Button
+			on:click={() => (uploadModal = true)}
+			class="flex items-center space-x-2 bg-green-600 hover:bg-green-700"
+		>
 			<ArrowUpFromBracketOutline class="h-5 w-5" />
 			<span>Upload File</span>
 		</Button>
@@ -138,7 +142,9 @@
 	{#if filteredItems && filteredItems.length > 0}
 		<div class="mx-4 my-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 			{#each filteredItems as material (material.id)}
-				<div class="flex flex-col overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800 dark:shadow-gray-700">
+				<div
+					class="flex flex-col overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800 dark:shadow-gray-700"
+				>
 					<div class="relative aspect-[5/6.455] overflow-hidden bg-gray-100 dark:bg-gray-700">
 						<img
 							class="absolute inset-0 h-full w-full object-contain"
@@ -148,7 +154,9 @@
 					</div>
 					<div class="flex flex-1 flex-col p-4">
 						<div class="mb-2 flex items-center justify-between">
-							<h3 class="text-base font-bold text-gray-900 line-clamp-1 dark:text-white">{material.title}</h3>
+							<h3 class="line-clamp-1 text-base font-bold text-gray-900 dark:text-white">
+								{material.title}
+							</h3>
 							<div>
 								<DotsVerticalOutline
 									id="card-dot-menu-{material.id}"
@@ -165,7 +173,8 @@
 									</DropdownItem>
 									<DropdownItem
 										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-										on:click={() => handlePreview(material.file_path, material.title, material.type)}
+										on:click={() =>
+											handlePreview(material.file_path, material.title, material.type)}
 									>
 										<EyeOutline class="h-4 w-4" />
 										<span>Preview</span>
@@ -188,7 +197,9 @@
 								</Dropdown>
 							</div>
 						</div>
-						<p class="mb-4 flex-1 text-sm text-gray-600 line-clamp-2 dark:text-gray-300">{material.description}</p>
+						<p class="mb-4 line-clamp-2 flex-1 text-sm text-gray-600 dark:text-gray-300">
+							{material.description}
+						</p>
 						<Button
 							on:click={() => handleFileOpening(material.file_path, material.type)}
 							class="w-full justify-center bg-green-600 text-sm hover:bg-green-700"

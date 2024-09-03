@@ -15,7 +15,6 @@
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import CancelModal from '$src/lib/components/modals/lessons/Cancel.svelte';
-	import { Section } from 'flowbite-svelte-blocks';
 
 	import { slide } from 'svelte/transition';
 	export let role: string;
@@ -98,136 +97,135 @@
 	};
 </script>
 
-	<TableSearch
-		placeholder="Search by topic"
-		hoverable={true}
-		bind:inputValue={searchTerm}
-		{divClass}
-		{innerDivClass}
-		{searchClass}
-		{classInput}
-	>
-		<TableHead>
-			{#each headers as header}
-				<TableHeadCell padding="px-4 py-3">{header} </TableHeadCell>
-			{/each}
-		</TableHead>
-		<TableBody tableBodyClass="divide-y">
-			{#if searchTerm !== ''}
-				{#each filteredItems as lesson (lesson.id)}
-					<TableBodyRow on:click={() => toggleRow(lesson.id)} class="bg-white dark:bg-gray-900">
-						<TableBodyCell tdClass="px-4 py-3">{lesson.topic}</TableBodyCell>
-						<TableBodyCell tdClass="px-4 py-3">{lesson.date}</TableBodyCell>
-						<TableBodyCell tdClass="px-4 py-3">{lesson.time}</TableBodyCell>
-						<TableBodyCell tdClass="px-4 py-3">
+<TableSearch
+	placeholder="Search by topic"
+	hoverable={true}
+	bind:inputValue={searchTerm}
+	{divClass}
+	{innerDivClass}
+	{searchClass}
+	{classInput}
+>
+	<TableHead>
+		{#each headers as header}
+			<TableHeadCell padding="px-4 py-3">{header}</TableHeadCell>
+		{/each}
+	</TableHead>
+	<TableBody tableBodyClass="divide-y">
+		{#if searchTerm !== ''}
+			{#each filteredItems as lesson (lesson.id)}
+				<TableBodyRow on:click={() => toggleRow(lesson.id)} class="bg-white dark:bg-gray-900">
+					<TableBodyCell tdClass="px-4 py-3">{lesson.topic}</TableBodyCell>
+					<TableBodyCell tdClass="px-4 py-3">{lesson.date}</TableBodyCell>
+					<TableBodyCell tdClass="px-4 py-3">{lesson.time}</TableBodyCell>
+					<TableBodyCell tdClass="px-4 py-3">
+						<Button
+							class="mr-2"
+							size="sm"
+							on:click={(event) => {
+								event.stopPropagation();
+								goto($page.url + '/' + lesson.id);
+							}}
+						>
+							{lesson.isInSession ? 'Join' : 'View'}
+						</Button>
+						{#if role === 'lecturer'}
 							<Button
-								class="mr-2"
 								size="sm"
+								color="red"
 								on:click={(event) => {
 									event.stopPropagation();
-									goto($page.url + '/' + lesson.id);
+									id = lesson.id;
+									isCancelModalOpen = true;
 								}}
 							>
-								{lesson.isInSession ? 'Join' : 'View'}
+								Cancel
 							</Button>
-							{#if role === 'lecturer'}
-								<Button
-									size="sm"
-									color="red"
-									on:click={(event) => {
-										event.stopPropagation();
-										id = lesson.id;
-										isCancelModalOpen = true;
-									}}
-								>
-									Cancel
-								</Button>
-							{/if}
+						{/if}
+					</TableBodyCell>
+				</TableBodyRow>
+				{#if openRow === lesson.id}
+					<TableBodyRow
+						on:dblclick={() => {
+							doubleClickModal = true;
+							details = lesson;
+						}}
+						class="bg-white dark:bg-gray-900"
+					>
+						<TableBodyCell colspan="4" class="p-0">
+							<div class="px-2 py-3" transition:slide={{ duration: 300, axis: 'y' }}>
+								<ImagePlaceholder />
+							</div>
 						</TableBodyCell>
 					</TableBodyRow>
-					{#if openRow === lesson.id}
-						<TableBodyRow
-							on:dblclick={() => {
-								doubleClickModal = true;
-								details = lesson;
+				{/if}
+			{/each}
+		{:else}
+			{#each currentPageItems as lesson (lesson.id)}
+				<TableBodyRow on:click={() => toggleRow(lesson.id)} class="bg-white dark:bg-gray-900">
+					<TableBodyCell tdClass="px-4 py-3">{lesson.topic}</TableBodyCell>
+					<TableBodyCell tdClass="px-4 py-3">{lesson.date}</TableBodyCell>
+					<TableBodyCell tdClass="px-4 py-3">{lesson.time}</TableBodyCell>
+					<TableBodyCell tdClass="px-4 py-3">
+						<Button
+							class="mr-2"
+							size="sm"
+							on:click={(event) => {
+								event.stopPropagation();
+								goto($page.url + '/' + lesson.id);
 							}}
-              class="bg-white dark:bg-gray-900"
 						>
-							<TableBodyCell colspan="4" class="p-0">
-								<div class="px-2 py-3" transition:slide={{ duration: 300, axis: 'y' }}>
-									<ImagePlaceholder />
-								</div>
-							</TableBodyCell>
-						</TableBodyRow>
-					{/if}
-				{/each}
-			{:else}
-				{#each currentPageItems as lesson (lesson.id)}
-					<TableBodyRow on:click={() => toggleRow(lesson.id)} class="bg-white dark:bg-gray-900">
-						<TableBodyCell tdClass="px-4 py-3">{lesson.topic}</TableBodyCell>
-						<TableBodyCell tdClass="px-4 py-3">{lesson.date}</TableBodyCell>
-						<TableBodyCell tdClass="px-4 py-3">{lesson.time}</TableBodyCell>
-						<TableBodyCell tdClass="px-4 py-3">
+							{lesson.isInSession ? 'Join' : 'View'}
+						</Button>
+						{#if role === 'lecturer'}
 							<Button
-								class="mr-2"
 								size="sm"
+								color="red"
 								on:click={(event) => {
 									event.stopPropagation();
-									goto($page.url + '/' + lesson.id);
+									id = lesson.id;
+									isCancelModalOpen = true;
 								}}
 							>
-								{lesson.isInSession ? 'Join' : 'View'}
+								Cancel
 							</Button>
-							{#if role === 'lecturer'}
-								<Button
-									size="sm"
-									color="red"
-									on:click={(event) => {
-										event.stopPropagation();
-										id = lesson.id;
-										isCancelModalOpen = true;
-									}}
-								>
-									Cancel
-								</Button>
-							{/if}
+						{/if}
+					</TableBodyCell>
+				</TableBodyRow>
+				{#if openRow === lesson.id}
+					<TableBodyRow
+						on:dblclick={() => {
+							doubleClickModal = true;
+							details = lesson;
+						}}
+						class="bg-white dark:bg-gray-900"
+					>
+						<TableBodyCell colspan="4" class="p-0">
+							<div class="px-2 py-3" transition:slide={{ duration: 300, axis: 'y' }}>
+								<ImagePlaceholder />
+							</div>
 						</TableBodyCell>
 					</TableBodyRow>
-					{#if openRow === lesson.id}
-						<TableBodyRow
-							on:dblclick={() => {
-								doubleClickModal = true;
-								details = lesson;
-							}}
-              class="bg-white dark:bg-gray-900"
-						>
-							<TableBodyCell colspan="4" class="p-0">
-								<div class="px-2 py-3" transition:slide={{ duration: 300, axis: 'y' }}>
-									<ImagePlaceholder />
-								</div>
-							</TableBodyCell>
-						</TableBodyRow>
-					{/if}
-				{/each}
-			{/if}
-		</TableBody>
-	</TableSearch>
-
-	{#if totalPages > 1}
-		<ButtonGroup>
-			<Button on:click={loadPreviousPage} disabled={startRange === 1} iconLeft>
-				<ChevronLeftOutline />
-				Previous
-			</Button>
-			{#each pagesToShow as pageNumber}
-				<Button on:click={() => goToPage(pageNumber)}>{pageNumber}</Button>
+				{/if}
 			{/each}
-			<Button on:click={loadNextPage} disabled={endRange === totalItems} iconRight>
-				<ChevronRightOutline />
-				Next
-			</Button>
-		</ButtonGroup>
-	{/if}
+		{/if}
+	</TableBody>
+</TableSearch>
 
-	<CancelModal bind:open={isCancelModalOpen} {id} />
+{#if totalPages > 1}
+	<ButtonGroup>
+		<Button on:click={loadPreviousPage} disabled={startRange === 1} iconLeft>
+			<ChevronLeftOutline />
+			Previous
+		</Button>
+		{#each pagesToShow as pageNumber}
+			<Button on:click={() => goToPage(pageNumber)}>{pageNumber}</Button>
+		{/each}
+		<Button on:click={loadNextPage} disabled={endRange === totalItems} iconRight>
+			<ChevronRightOutline />
+			Next
+		</Button>
+	</ButtonGroup>
+{/if}
 
+<CancelModal bind:open={isCancelModalOpen} {id} />

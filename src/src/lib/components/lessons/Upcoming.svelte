@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import {
-		Table,
 		TableBody,
 		TableBodyCell,
 		TableBodyRow,
@@ -11,14 +10,12 @@
 		Button,
 		Dropdown,
 		DropdownItem,
-		Checkbox,
 		ButtonGroup
 	} from 'flowbite-svelte';
 	import { Section } from 'flowbite-svelte-blocks';
 	import {
 		PlusOutline,
 		ChevronDownOutline,
-		FilterSolid,
 		ChevronRightOutline,
 		ChevronLeftOutline
 	} from 'flowbite-svelte-icons';
