@@ -76,9 +76,7 @@
             
             pin.position.set(0, 1, 0);
             scene.add(pin);
-            // Update the reference to the current pin
-
-            // Initialize DragControls for the pin
+            
             const pinDragControls = new DragControls([pin], camera, renderer.domElement);
             pinDragControls.addEventListener('dragstart', () => {
                 controls.enabled = false;
@@ -126,7 +124,7 @@
             const [x, y, z] = JSON.parse(savedPosition);
             return new THREE.Vector3(x, y, z);
         }
-        return new THREE.Vector3(); // Default position if none saved
+        return new THREE.Vector3(); 
 }
 
 
