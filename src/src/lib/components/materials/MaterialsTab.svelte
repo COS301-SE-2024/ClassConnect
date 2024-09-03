@@ -4,6 +4,7 @@
 	import { objURL, displayedSandboxObjectURL } from '$src/lib/store/objects';
 	import UploadMaterial from '$lib/components/modals/materials/UploadMaterial.svelte';
 	import {
+		SearchOutline,
 		ArrowUpFromBracketOutline,
 		ArrowRightOutline,
 		DotsVerticalOutline,
@@ -38,13 +39,10 @@
 			material.description.toLowerCase().includes(materialSearchTerm.toLowerCase())
 	);
 
-	console.log(renderedMaterials);
-
 	let uploadModal = false;
 
 	const handleFileOpening = (url: string, type: boolean) => {
 		if (!type) {
-			console.log(url);
 			objURL.set(url);
 			goto($page.url + '/material');
 		} else {
@@ -62,7 +60,6 @@
 	};
 
 	const handlePreview = (mat_url: string, mat_title: string, mat_type: boolean) => {
-		console.log(mat_url);
 		url = mat_url;
 		displayedSandboxObjectURL.set(url);
 		title = mat_title;
@@ -83,7 +80,6 @@
 			document.body.appendChild(link);
 			link.click();
 
-			// Clean up
 			document.body.removeChild(link);
 			URL.revokeObjectURL(url);
 			toast.dismiss(toastId);
@@ -94,12 +90,11 @@
 	}
 
 	const copyToClipboard = (url: string) => {
-		console.log(url);
 		try {
 			navigator.clipboard.writeText(url);
-			toast.success('Url copied to clipboard!');
+			toast.success('URL copied to clipboard!');
 		} catch (err) {
-			toast.error('Failed to copy url to clipboard!');
+			toast.error('Failed to copy URL to clipboard!');
 		}
 	};
 </script>
@@ -108,122 +103,110 @@
 
 <TabItem open={tabBoolean}>
 	<span slot="title">{tabName}</span>
-	<div class="mt-4 flex items-center justify-between space-x-2">
-		<div class="max-w-lg">
-			<!-- SearchBox -->
+	<div class="m-4 flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+		<div class="w-full max-w-lg">
 			<div class="relative">
-				<div class="relative">
-					<div class="pointer-events-none absolute inset-y-0 start-0 z-20 flex items-center ps-3.5">
-						<svg
-							class="size-4 flex-shrink-0 text-gray-400 dark:text-white/60"
-							xmlns="http://www.w3.org/2000/svg"
-							width="24"
-							height="24"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<circle cx="11" cy="11" r="8"></circle>
-							<path d="m21 21-4.3-4.3"></path>
-						</svg>
-					</div>
-					<input
-						bind:value={materialSearchTerm}
-						class="block w-full rounded-lg border-gray-200 py-3 pe-4 ps-10 text-lg focus:border-green-500 focus:ring-green-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-						type="text"
-						placeholder="Search"
-						data-hs-combo-box-input=""
-					/>
+				<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+					<svg
+						class="h-5 w-5 text-gray-400 dark:text-gray-300"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<circle cx="11" cy="11" r="6.5" />
+						<path d="m21 21-4.3-4.3" />
+					</svg>
 				</div>
+				<input
+					bind:value={materialSearchTerm}
+					class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 pl-10 text-sm focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-green-500 dark:focus:ring-green-600"
+					type="text"
+					placeholder="Search materials..."
+				/>
 			</div>
-			<!-- End SearchBox -->
 		</div>
-		<Button on:click={() => (uploadModal = true)} class="flex items-center space-x-1">
+		<Button on:click={() => (uploadModal = true)} class="flex items-center space-x-2 bg-green-600 hover:bg-green-700">
 			<ArrowUpFromBracketOutline class="h-5 w-5" />
 			<span>Upload File</span>
 		</Button>
 	</div>
 
 	{#if filteredItems && filteredItems.length > 0}
-		<div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+		<div class="mx-4 my-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 			{#each filteredItems as material (material.id)}
-				<div class="space-y-4">
-					<div
-						class="text-surface shadow-secondary-1 block max-w-[18rem] rounded-lg bg-white dark:border-2 dark:border-gray-500 dark:bg-gray-800 dark:text-white"
-					>
-						<div class="relative overflow-hidden bg-cover bg-no-repeat">
-							<img class="mx-auto rounded-t-lg" src={material.thumbnail} alt={material.title} />
-						</div>
-						<div class="flex items-center justify-between px-6">
-							<h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-								{material.title}
-							</h5>
+				<div class="flex flex-col overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800 dark:shadow-gray-700">
+					<div class="relative aspect-[5/6.455] overflow-hidden bg-gray-100 dark:bg-gray-700">
+						<img
+							class="absolute inset-0 h-full w-full object-contain"
+							src={material.thumbnail}
+							alt={material.title}
+						/>
+					</div>
+					<div class="flex flex-1 flex-col p-4">
+						<div class="mb-2 flex items-center justify-between">
+							<h3 class="text-base font-bold text-gray-900 line-clamp-1 dark:text-white">{material.title}</h3>
 							<div>
 								<DotsVerticalOutline
 									id="card-dot-menu-{material.id}"
-									size="xl"
-									class="dark:text-gray-400"
+									size="sm"
+									class="cursor-pointer text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
 								/>
 								<Dropdown placement="bottom" triggeredBy={`#card-dot-menu-${material.id}`}>
 									<DropdownItem
-										class="flex dark:text-gray-200"
+										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
 										on:click={() => copyToClipboard(material.file_path)}
 									>
-										<ShareNodesOutline class="me-2 dark:text-gray-400" />
-										Share
+										<ShareNodesOutline class="h-4 w-4" />
+										<span>Share</span>
 									</DropdownItem>
 									<DropdownItem
-										class="flex dark:text-gray-200"
-										on:click={() =>
-											handlePreview(material.file_path, material.title, material.type)}
+										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+										on:click={() => handlePreview(material.file_path, material.title, material.type)}
 									>
-										<EyeOutline class="me-2 dark:text-gray-400" />
-										Preview
+										<EyeOutline class="h-4 w-4" />
+										<span>Preview</span>
 									</DropdownItem>
 									<DropdownItem
-										class="flex dark:text-gray-200"
+										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
 										on:click={() => handleDownload(material.file_path, material.title)}
 									>
-										<ArrowDownToBracketOutline class="me-2 dark:text-gray-400" />
-										Download
+										<ArrowDownToBracketOutline class="h-4 w-4" />
+										<span>Download</span>
 									</DropdownItem>
-									<DropdownDivider class="dark:border-gray-600" />
+									<DropdownDivider />
 									<DropdownItem
-										class="flex dark:text-gray-200"
+										class="flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
 										on:click={() => handleDelete(material.id, material.title)}
 									>
-										<TrashBinOutline color="red" class="me-2 dark:text-red-400" />
-										Delete
+										<TrashBinOutline class="h-4 w-4" />
+										<span>Delete</span>
 									</DropdownItem>
 								</Dropdown>
 							</div>
 						</div>
-						<div class="px-6 py-2">
-							<p class="font-normal leading-tight text-gray-700 dark:text-gray-400">
-								{material.description}
-							</p>
-						</div>
-						<div class="px-6 py-2">
-							<Button on:click={() => handleFileOpening(material.file_path, material.type)}>
-								Open File <ArrowRightOutline class="ms-2 h-6 w-6 text-white dark:text-white" />
-							</Button>
-						</div>
+						<p class="mb-4 flex-1 text-sm text-gray-600 line-clamp-2 dark:text-gray-300">{material.description}</p>
+						<Button
+							on:click={() => handleFileOpening(material.file_path, material.type)}
+							class="w-full justify-center bg-green-600 text-sm hover:bg-green-700"
+						>
+							Open File
+							<ArrowRightOutline class="ml-2 h-4 w-4" />
+						</Button>
 					</div>
 				</div>
 			{/each}
 		</div>
 	{:else}
-		<p class="mt-4 text-center text-gray-600 dark:text-white">There are no materials available</p>
+		<p class="mt-8 text-center text-lg text-gray-600 dark:text-gray-300">No materials available</p>
 	{/if}
 </TabItem>
 
-<!-- Upload modal -->
 <UploadMaterial open={uploadModal} on:close={() => (uploadModal = false)} />
 
-<!-- Preview modal -->
 <Preview
 	bind:open={openPreviewModal}
 	{url}
@@ -232,7 +215,6 @@
 	on:close={() => (openPreviewModal = false)}
 />
 
-<!-- Delete modal -->
 <DeleteMaterial
 	{id}
 	bind:open={openDeleteModal}
