@@ -12,28 +12,6 @@ import Users from '$db/schemas/User';
 import type { User } from '$src/types';
 import { fail } from '@sveltejs/kit';
 
-async function tokenProvider(id: string, streamClient: StreamClient) {
-	const issuedAt = Math.floor(Date.now() / 1000) - 60;
-	const expirationTime = Math.floor(Date.now() / 1000) + 3600;
-	return streamClient.createToken(id, expirationTime, issuedAt);
-}
-
-function formatMaterial(material: any): Partial<Material> {
-	return {
-		title: material.title,
-		description: material.description,
-		file_path: material.file_path,
-		thumbnail: material.thumbnail,
-		type: material.type,
-		id: material._id.toString()
-	};
-}
-
-async function getMaterials(workspace_id: string): Promise<Partial<Material>[]> {
-	const materials = await Materials.find({ workspace_id });
-	return materials.map(formatMaterial);
-}
-
 export const load = async ({ locals, params }) => {
 	if (!STREAM_API_KEY || !STREAM_SECRET_KEY) throw error(403, 'Stream credentials not set');
 
@@ -58,10 +36,10 @@ export const load = async ({ locals, params }) => {
 
 		return {
 			token,
+			materials,
 			apiKey: STREAM_API_KEY,
 			user: formattedUser,
-			role: locals.user?.role,
-			materials
+			role: locals.user?.role
 		};
 	} catch (err) {
 		console.error('Error in Lesson load function:', err);
@@ -74,43 +52,48 @@ function validateLecturer(locals: any) {
 }
 
 async function saveRecording(data: FormData) {
-	const lesson_id = data.get('LessonID') as string;
 	const video_file = data.get('video') as File;
-	const Lesson = await Lessons.findById(lesson_id);
+	const lesson_id = data.get('LessonID') as string;
+	const lesson = await Lessons.findById(lesson_id);
 
-	if (!Lesson) return fail(404, { message: 'Lesson not found' });
-
-	const topic: string = Lesson.topic;
-
-	const description: string = Lesson.description;
-
-	const time: string = Lesson.time;
-
-	const date: Date = Lesson.date;
-
-	const workspace = Lesson.workspace;
+	if (!lesson) return fail(404, { message: 'Lesson not found' });
 
 	const url: string = await upload(video_file);
 
-	console.log('Topic: ', topic);
-	console.log('Description: ', description);
-	console.log('Time: ', time);
-	console.log('Date: ', date);
-	console.log('Workspace: ', workspace);
-	console.log('URL: ', url);
-
 	const newRecording = new Recording({
-		topic,
-		description,
-		time,
-		date,
-		workspace,
-		url
+		url,
+		date: lesson.date,
+		time: lesson.time,
+		topic: lesson.topic,
+		workspace: lesson.workspace,
+		description: lesson.description
 	});
 
 	await newRecording.save();
 
 	return { success: true };
+}
+
+async function tokenProvider(id: string, streamClient: StreamClient) {
+	const issuedAt = Math.floor(Date.now() / 1000) - 60;
+	const expirationTime = Math.floor(Date.now() / 1000) + 3600;
+	return streamClient.createToken(id, expirationTime, issuedAt);
+}
+
+function formatMaterial(material: any): Partial<Material> {
+	return {
+		title: material.title,
+		description: material.description,
+		file_path: material.file_path,
+		thumbnail: material.thumbnail,
+		type: material.type,
+		id: material._id.toString()
+	};
+}
+
+async function getMaterials(workspace_id: string): Promise<Partial<Material>[]> {
+	const materials = await Materials.find({ workspace_id });
+	return materials.map(formatMaterial);
 }
 
 export const actions: Actions = {
