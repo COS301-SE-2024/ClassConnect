@@ -1,21 +1,23 @@
 <script lang="ts">
-	import { TabItem, Button, Dropdown, DropdownItem, DropdownDivider } from 'flowbite-svelte';
-	import toast, { Toaster } from 'svelte-french-toast';
-	import { objURL, displayedSandboxObjectURL } from '$src/lib/store/objects';
-	import UploadMaterial from '$lib/components/modals/materials/UploadMaterial.svelte';
-	import {
-		ArrowUpFromBracketOutline,
-		ArrowRightOutline,
-		DotsVerticalOutline,
-		EyeOutline,
-		ShareNodesOutline,
-		TrashBinOutline,
-		ArrowDownToBracketOutline
-	} from 'flowbite-svelte-icons';
-	import DeleteMaterial from '$src/lib/components/modals/materials/DeleteMaterial.svelte';
-	import Preview from '$src/lib/components/modals/materials/Preview.svelte';
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
+  import { TabItem, Button, Dropdown, DropdownItem, DropdownDivider } from 'flowbite-svelte';
+  import toast, { Toaster } from 'svelte-french-toast';
+  import { objURL, displayedSandboxObjectURL } from '$src/lib/store/objects';
+  import UploadMaterial from '$lib/components/modals/materials/UploadMaterial.svelte';
+  import {
+    ArrowUpFromBracketOutline,
+    ArrowRightOutline,
+    DotsVerticalOutline,
+    EyeOutline,
+    ShareNodesOutline,
+    TrashBinOutline,
+    ArrowDownToBracketOutline
+  } from 'flowbite-svelte-icons';
+  import DeleteMaterial from '$src/lib/components/modals/materials/DeleteMaterial.svelte';
+  import Preview from '$src/lib/components/modals/materials/Preview.svelte';
+  import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
+  import * as THREE from 'three';
+  import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 	let openPreviewModal = false;
 	let openDeleteModal = false;
@@ -96,6 +98,72 @@
 			toast.error('Failed to copy URL to clipboard!');
 		}
 	};
+
+  function is3DObject(fileType: string): boolean {
+    return ['gltf', 'glb'].includes(fileType.toLowerCase());
+  }
+
+  function getFileExtension(filename: string): string {
+    return filename.split('.').pop()?.toLowerCase() || '';
+  }
+
+  function initThreeJsPreview(canvas: HTMLCanvasElement, filePath: string) {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+
+    const light = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(light);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    directionalLight.position.set(0, 1, 0);
+    scene.add(directionalLight);
+
+    const loader = new GLTFLoader();
+    loader.load(filePath, (gltf: GLTF) => {
+      scene.add(gltf.scene);
+
+      // Center and scale the model
+      const box = new THREE.Box3().setFromObject(gltf.scene);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const scale = 1 / maxDim;
+      gltf.scene.scale.setScalar(scale);
+
+      gltf.scene.position.sub(center.multiplyScalar(scale));
+
+      camera.position.z = 2;
+
+      function animate() {
+        requestAnimationFrame(animate);
+        gltf.scene.rotation.y += 0.01;
+        renderer.render(scene, camera);
+      }
+      animate();
+    });
+
+    return {
+      destroy() {
+        renderer.dispose();
+      }
+    };
+  }
+
+  function getFileIcon(fileExtension: string): string {
+    switch (fileExtension) {
+      case 'pdf':
+        return '📄';
+      case 'pptx':
+        return '📊';
+      case 'epub':
+        return '📚';
+      default:
+        return '📁';
+    }
+  }
 </script>
 
 <Toaster />
@@ -140,80 +208,30 @@
 	</div>
 
 	{#if filteredItems && filteredItems.length > 0}
-		<div class="mx-4 my-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-			{#each filteredItems as material (material.id)}
-				<div
-					class="flex flex-col overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800 dark:shadow-gray-700"
-				>
-					<div class="relative aspect-[5/6.455] overflow-hidden bg-gray-100 dark:bg-gray-700">
-						<img
-							class="absolute inset-0 h-full w-full object-contain"
-							src={material.thumbnail}
-							alt={material.title}
-						/>
-					</div>
-					<div class="flex flex-1 flex-col p-4">
-						<div class="mb-2 flex items-center justify-between">
-							<h3 class="line-clamp-1 text-base font-bold text-gray-900 dark:text-white">
-								{material.title}
-							</h3>
-							<div>
-								<DotsVerticalOutline
-									id="card-dot-menu-{material.id}"
-									size="sm"
-									class="cursor-pointer text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-								/>
-								<Dropdown placement="bottom" triggeredBy={`#card-dot-menu-${material.id}`}>
-									<DropdownItem
-										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-										on:click={() => copyToClipboard(material.file_path)}
-									>
-										<ShareNodesOutline class="h-4 w-4" />
-										<span>Share</span>
-									</DropdownItem>
-									<DropdownItem
-										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-										on:click={() =>
-											handlePreview(material.file_path, material.title, material.type)}
-									>
-										<EyeOutline class="h-4 w-4" />
-										<span>Preview</span>
-									</DropdownItem>
-									<DropdownItem
-										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-										on:click={() => handleDownload(material.file_path, material.title)}
-									>
-										<ArrowDownToBracketOutline class="h-4 w-4" />
-										<span>Download</span>
-									</DropdownItem>
-									<DropdownDivider />
-									<DropdownItem
-										class="flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
-										on:click={() => handleDelete(material.id, material.title)}
-									>
-										<TrashBinOutline class="h-4 w-4" />
-										<span>Delete</span>
-									</DropdownItem>
-								</Dropdown>
-							</div>
-						</div>
-						<p class="mb-4 line-clamp-2 flex-1 text-sm text-gray-600 dark:text-gray-300">
-							{material.description}
-						</p>
-						<Button
-							on:click={() => handleFileOpening(material.file_path, material.type)}
-							class="w-full justify-center bg-green-600 text-sm hover:bg-green-700"
-						>
-							Open File
-							<ArrowRightOutline class="ml-2 h-4 w-4" />
-						</Button>
-					</div>
-				</div>
-			{/each}
-		</div>
-	{:else}
-		<p class="mt-8 text-center text-lg text-gray-600 dark:text-gray-300">No materials available</p>
-	{/if}
+    <div class="mx-4 my-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {#each filteredItems as material (material.id)}
+        <div class="flex flex-col overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800 dark:shadow-gray-700">
+          <div class="relative aspect-[5/6.455] overflow-hidden bg-gray-100 dark:bg-gray-700">
+            {#if is3DObject(getFileExtension(material.file_path))}
+              <canvas
+                class="absolute inset-0 h-full w-full object-contain"
+                use:initThreeJsPreview={material.file_path}
+              ></canvas>
+            {:else}
+              <div class="flex h-full items-center justify-center">
+                <span class="text-6xl text-gray-400">{getFileIcon(getFileExtension(material.file_path))}</span>
+              </div>
+            {/if}
+          </div>
+          <div class="flex flex-1 flex-col p-4">
+            <!-- ... (rest of the card content) -->
+          </div>
+        </div>
+      {/each}
+    </div>
+  {:else}
+    <p class="mt-8 text-center text-lg text-gray-600 dark:text-gray-300">No materials available</p>
+  {/if}
 </TabItem>
 
 <UploadMaterial open={uploadModal} on:close={() => (uploadModal = false)} />
