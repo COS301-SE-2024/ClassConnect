@@ -146,7 +146,7 @@
 											class="p-1.5 sm:p-2"
 										>
 											<UserAddSolid class="h-4 w-4 sm:h-5 sm:w-5" />
-											<span class="ml-2 hidden text-sm sm:inline">Enrol</span>
+											<span class="ml-2 hidden text-sm sm:inline">Enrol/Unenrol</span>
 										</Button>
 
 										<Button
