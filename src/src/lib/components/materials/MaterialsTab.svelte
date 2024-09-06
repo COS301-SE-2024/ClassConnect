@@ -1,23 +1,24 @@
 <script lang="ts">
-  import { TabItem, Button, Dropdown, DropdownItem, DropdownDivider } from 'flowbite-svelte';
-  import toast, { Toaster } from 'svelte-french-toast';
-  import { objURL, displayedSandboxObjectURL } from '$src/lib/store/objects';
-  import UploadMaterial from '$lib/components/modals/materials/UploadMaterial.svelte';
-  import {
-    ArrowUpFromBracketOutline,
-    ArrowRightOutline,
-    DotsVerticalOutline,
-    EyeOutline,
-    ShareNodesOutline,
-    TrashBinOutline,
-    ArrowDownToBracketOutline
-  } from 'flowbite-svelte-icons';
-  import DeleteMaterial from '$src/lib/components/modals/materials/DeleteMaterial.svelte';
-  import Preview from '$src/lib/components/modals/materials/Preview.svelte';
-  import { goto } from '$app/navigation';
-  import { page } from '$app/stores';
-  import * as THREE from 'three';
-  import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
+	import { onMount } from 'svelte';
+	import { TabItem, Button, Dropdown, DropdownItem, DropdownDivider } from 'flowbite-svelte';
+	import toast, { Toaster } from 'svelte-french-toast';
+	import { objURL, displayedSandboxObjectURL } from '$src/lib/store/objects';
+	import UploadMaterial from '$lib/components/modals/materials/UploadMaterial.svelte';
+	import {
+		ArrowUpFromBracketOutline,
+		ArrowRightOutline,
+		DotsVerticalOutline,
+		EyeOutline,
+		ShareNodesOutline,
+		TrashBinOutline,
+		ArrowDownToBracketOutline
+	} from 'flowbite-svelte-icons';
+	import DeleteMaterial from '$src/lib/components/modals/materials/DeleteMaterial.svelte';
+	import Preview from '$src/lib/components/modals/materials/Preview.svelte';
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	import * as THREE from 'three';
+	import { type GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 	let openPreviewModal = false;
 	let openDeleteModal = false;
@@ -99,80 +100,74 @@
 		}
 	};
 
-  function is3DObject(fileType: string): boolean {
-    return ['gltf', 'glb'].includes(fileType.toLowerCase());
-  }
+	let hoveredMaterial: any = null;
 
-  function getFileExtension(filename: string): string {
-    return filename.split('.').pop()?.toLowerCase() || '';
-  }
+	function handleMouseEnter(material: any) {
+		hoveredMaterial = material;
+	}
 
-  function initThreeJsPreview(canvas: HTMLCanvasElement, filePath: string) {
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true });
-    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+	function handleMouseLeave() {
+		hoveredMaterial = null;
+	}
 
-    const light = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(light);
+	function create3DPreview(element: HTMLElement, material: any) {
+  if (!material || !material.type) return;
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    directionalLight.position.set(0, 1, 0);
-    scene.add(directionalLight);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 
-    const loader = new GLTFLoader();
-    loader.load(filePath, (gltf: GLTF) => {
+  renderer.setSize(element.clientWidth, element.clientHeight);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  element.appendChild(renderer.domElement);
+
+  const ambientLight = new THREE.AmbientLight(0x404040);
+  scene.add(ambientLight);
+
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+  directionalLight.position.set(5, 5, 5);
+  scene.add(directionalLight);
+
+  const loader = new GLTFLoader();
+  loader.load(
+    material.file_path,
+    (gltf: GLTF) => {
       scene.add(gltf.scene);
-
-      // Center and scale the model
       const box = new THREE.Box3().setFromObject(gltf.scene);
       const center = box.getCenter(new THREE.Vector3());
       const size = box.getSize(new THREE.Vector3());
-
       const maxDim = Math.max(size.x, size.y, size.z);
-      const scale = 1 / maxDim;
-      gltf.scene.scale.setScalar(scale);
+      const fov = camera.fov * (Math.PI / 180);
+      let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
 
-      gltf.scene.position.sub(center.multiplyScalar(scale));
+      camera.position.z = cameraZ * 2;
 
-      camera.position.z = 2;
-
-      function animate() {
+      const animate = () => {
         requestAnimationFrame(animate);
         gltf.scene.rotation.y += 0.01;
         renderer.render(scene, camera);
-      }
+      };
       animate();
-    });
-
-    return {
-      destroy() {
-        renderer.dispose();
-      }
-    };
-  }
-
-  function getFileIcon(fileExtension: string): string {
-    switch (fileExtension) {
-      case 'pdf':
-        return '📄';
-      case 'pptx':
-        return '📊';
-      case 'epub':
-        return '📚';
-      default:
-        return '📁';
+    },
+    undefined,
+    (error: ErrorEvent | unknown) => {
+      console.error('An error happened while loading the 3D model:', error);
     }
-  }
+  );
+
+  return {
+    destroy() {
+      element.removeChild(renderer.domElement);
+    }
+  };
+}
 </script>
 
 <Toaster />
 
 <TabItem open={tabBoolean}>
 	<span slot="title">{tabName}</span>
-	<div
-		class="m-4 flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0"
-	>
+	<div class="m-4 flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
 		<div class="w-full max-w-lg">
 			<div class="relative">
 				<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -208,30 +203,93 @@
 	</div>
 
 	{#if filteredItems && filteredItems.length > 0}
-    <div class="mx-4 my-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {#each filteredItems as material (material.id)}
-        <div class="flex flex-col overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800 dark:shadow-gray-700">
-          <div class="relative aspect-[5/6.455] overflow-hidden bg-gray-100 dark:bg-gray-700">
-            {#if is3DObject(getFileExtension(material.file_path))}
-              <canvas
-                class="absolute inset-0 h-full w-full object-contain"
-                use:initThreeJsPreview={material.file_path}
-              ></canvas>
-            {:else}
-              <div class="flex h-full items-center justify-center">
-                <span class="text-6xl text-gray-400">{getFileIcon(getFileExtension(material.file_path))}</span>
-              </div>
-            {/if}
-          </div>
-          <div class="flex flex-1 flex-col p-4">
-            <!-- ... (rest of the card content) -->
-          </div>
-        </div>
-      {/each}
-    </div>
-  {:else}
-    <p class="mt-8 text-center text-lg text-gray-600 dark:text-gray-300">No materials available</p>
-  {/if}
+		<div class="mx-4 my-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+			{#each filteredItems as material (material.id)}
+				<div
+					class="flex flex-col overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800 dark:shadow-gray-700"
+					on:mouseenter={() => handleMouseEnter(material)}
+					on:mouseleave={handleMouseLeave}
+					role="button"
+					tabindex="0"
+					on:keydown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ') {
+							handleMouseEnter(material);
+						}
+					}}
+				>
+					<div class="relative aspect-[5/6.455] overflow-hidden bg-gray-100 dark:bg-gray-700">
+						{#if hoveredMaterial === material && material.type}
+							<div use:create3DPreview={material} class="h-full w-full" />
+						{:else}
+							<img
+								class="absolute inset-0 h-full w-full object-contain"
+								src={material.previewImagePath || material.thumbnail}
+								alt={material.title}
+							/>
+						{/if}
+					</div>
+					<div class="flex flex-1 flex-col p-4">
+						<div class="mb-2 flex items-center justify-between">
+							<h3 class="line-clamp-1 text-base font-bold text-gray-900 dark:text-white">
+								{material.title}
+							</h3>
+							<div>
+								<DotsVerticalOutline
+									id="card-dot-menu-{material.id}"
+									size="sm"
+									class="cursor-pointer text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+								/>
+								<Dropdown placement="bottom" triggeredBy={`#card-dot-menu-${material.id}`}>
+									<DropdownItem
+										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+										on:click={() => copyToClipboard(material.file_path)}
+									>
+										<ShareNodesOutline class="h-4 w-4" />
+										<span>Share</span>
+									</DropdownItem>
+									<DropdownItem
+										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+										on:click={() =>
+											handlePreview(material.file_path, material.title, material.type)}
+									>
+										<EyeOutline class="h-4 w-4" />
+										<span>Preview</span>
+									</DropdownItem>
+									<DropdownItem
+										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+										on:click={() => handleDownload(material.file_path, material.title)}
+									>
+										<ArrowDownToBracketOutline class="h-4 w-4" />
+										<span>Download</span>
+									</DropdownItem>
+									<DropdownDivider />
+									<DropdownItem
+										class="flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+										on:click={() => handleDelete(material.id, material.title)}
+									>
+										<TrashBinOutline class="h-4 w-4" />
+										<span>Delete</span>
+									</DropdownItem>
+								</Dropdown>
+							</div>
+						</div>
+						<p class="mb-4 line-clamp-2 flex-1 text-sm text-gray-600 dark:text-gray-300">
+							{material.description}
+						</p>
+						<Button
+							on:click={() => handleFileOpening(material.file_path, material.type)}
+							class="w-full justify-center bg-green-600 text-sm hover:bg-green-700"
+						>
+							Open File
+							<ArrowRightOutline class="ml-2 h-4 w-4" />
+						</Button>
+					</div>
+				</div>
+			{/each}
+		</div>
+	{:else}
+		<p class="mt-8 text-center text-lg text-gray-600 dark:text-gray-300">No materials available</p>
+	{/if}
 </TabItem>
 
 <UploadMaterial open={uploadModal} on:close={() => (uploadModal = false)} />
