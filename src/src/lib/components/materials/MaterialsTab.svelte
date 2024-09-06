@@ -111,63 +111,65 @@
 	}
 
 	function create3DPreview(element: HTMLElement, material: any) {
-  if (!material || !material.type) return;
+		if (!material || !material.type) return;
 
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
-  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+		const scene = new THREE.Scene();
+		const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
+		const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
 
-  renderer.setSize(element.clientWidth, element.clientHeight);
-  renderer.setPixelRatio(window.devicePixelRatio);
-  element.appendChild(renderer.domElement);
+		renderer.setSize(element.clientWidth, element.clientHeight);
+		renderer.setPixelRatio(window.devicePixelRatio);
+		element.appendChild(renderer.domElement);
 
-  const ambientLight = new THREE.AmbientLight(0x404040);
-  scene.add(ambientLight);
+		const ambientLight = new THREE.AmbientLight(0x404040);
+		scene.add(ambientLight);
 
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-  directionalLight.position.set(5, 5, 5);
-  scene.add(directionalLight);
+		const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+		directionalLight.position.set(5, 5, 5);
+		scene.add(directionalLight);
 
-  const loader = new GLTFLoader();
-  loader.load(
-    material.file_path,
-    (gltf: GLTF) => {
-      scene.add(gltf.scene);
-      const box = new THREE.Box3().setFromObject(gltf.scene);
-      const center = box.getCenter(new THREE.Vector3());
-      const size = box.getSize(new THREE.Vector3());
-      const maxDim = Math.max(size.x, size.y, size.z);
-      const fov = camera.fov * (Math.PI / 180);
-      let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+		const loader = new GLTFLoader();
+		loader.load(
+			material.file_path,
+			(gltf: GLTF) => {
+				scene.add(gltf.scene);
+				const box = new THREE.Box3().setFromObject(gltf.scene);
+				const center = box.getCenter(new THREE.Vector3());
+				const size = box.getSize(new THREE.Vector3());
+				const maxDim = Math.max(size.x, size.y, size.z);
+				const fov = camera.fov * (Math.PI / 180);
+				let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
 
-      camera.position.z = cameraZ * 2;
+				camera.position.z = cameraZ * 2;
 
-      const animate = () => {
-        requestAnimationFrame(animate);
-        gltf.scene.rotation.y += 0.01;
-        renderer.render(scene, camera);
-      };
-      animate();
-    },
-    undefined,
-    (error: ErrorEvent | unknown) => {
-      console.error('An error happened while loading the 3D model:', error);
-    }
-  );
+				const animate = () => {
+					requestAnimationFrame(animate);
+					gltf.scene.rotation.y += 0.01;
+					renderer.render(scene, camera);
+				};
+				animate();
+			},
+			undefined,
+			(error: ErrorEvent | unknown) => {
+				console.error('An error happened while loading the 3D model:', error);
+			}
+		);
 
-  return {
-    destroy() {
-      element.removeChild(renderer.domElement);
-    }
-  };
-}
+		return {
+			destroy() {
+				element.removeChild(renderer.domElement);
+			}
+		};
+	}
 </script>
 
 <Toaster />
 
 <TabItem open={tabBoolean}>
 	<span slot="title">{tabName}</span>
-	<div class="m-4 flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
+	<div
+		class="m-4 flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0"
+	>
 		<div class="w-full max-w-lg">
 			<div class="relative">
 				<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
