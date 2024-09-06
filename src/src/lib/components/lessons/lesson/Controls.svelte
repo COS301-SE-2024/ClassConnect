@@ -50,11 +50,17 @@
 	}
 
 	function toggleScreenShare() {
+		isEnvironmentOn = false;
+		$callStore?.update({ custom: { environment: isEnvironmentOn } });
+
 		isScreenShareOn = !isScreenShareOn;
 		$callStore?.screenShare.toggle();
 	}
 
 	function toggleEnvironment() {
+		isScreenShareOn = false;
+		$callStore?.screenShare.disable();
+
 		isEnvironmentOn = !isEnvironmentOn;
 		$callStore?.update({ custom: { environment: isEnvironmentOn } });
 	}
@@ -160,8 +166,6 @@
 		const mimeType = mediaRecorder?.mimeType || 'video/webm';
 		const blob: Blob = new Blob(recordedChunks, { type: mimeType });
 		const fileName = `screen-recording.${mimeType.split('/')[1].split(';')[0]}`;
-
-		console.log('File size:', blob.size, 'bytes');
 
 		if (blob.size <= 4 * 1024 * 1024) {
 			// 4MB in bytes
@@ -274,7 +278,7 @@
 					<VisaSolid class="h-6 w-6" />
 				</Button>
 			{:else}
-				<Button color="primary" class="rounded-full p-2" on:click={startRecording}>
+				<Button color="light" class="rounded-full p-2" on:click={startRecording}>
 					<CameraPhotoOutline class="h-6 w-6" />
 				</Button>
 			{/if}

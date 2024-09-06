@@ -1,39 +1,54 @@
 import type { Actions } from './$types';
 import { error, fail } from '@sveltejs/kit';
-import Activities from '$db/schemas/Activity';
-import type { Lesson, Recording } from '$src/types';
+
 import Lessons from '$db/schemas/Lesson';
+import Activities from '$db/schemas/Activity';
 import Recordings from '$db/schemas/Recording';
 import { deleteFile } from '$lib/server/storage';
 
-function formatLesson(lesson: any): Partial<Lesson> {
+export function formatLesson(lesson: any): Partial<Lesson> {
 	return {
 		id: lesson._id.toString(),
 		date: lesson.date,
 		time: lesson.time,
 		topic: lesson.topic,
+		recurrence: lesson.recurrence,
 		description: lesson.description
 	};
 }
 
-function formatRecording(recording: any): Partial<Recording> {
+export function formatRecording(recording: any): Partial<Recording> {
 	return {
 		id: recording._id.toString(),
+		url: recording.url,
 		date: recording.date,
 		time: recording.time,
 		topic: recording.topic,
-		description: recording.description,
-		url: recording.url
+		description: recording.description
 	};
 }
 
-async function getLessons(workspace: string): Promise<Partial<Lesson>[]> {
+export async function getLessons(workspace: string): Promise<Partial<Lesson>[]> {
 	const lessons = await Lessons.find({ workspace });
 
-	return lessons.map(formatLesson);
+	const today = new Date();
+	return lessons.map((lesson) => {
+		if (lesson.recurrence === 'daily') {
+			lesson.date.setFullYear(today.getFullYear(), today.getMonth(), today.getDate());
+		}
+
+		if (lesson.recurrence === 'weekly') {
+			const daysDiff = today.getDay() - lesson.date.getDay();
+			const adjustedDate = new Date(today);
+			adjustedDate.setDate(today.getDate() - daysDiff);
+			lesson.date = adjustedDate;
+		}
+
+		return formatLesson(lesson);
+	});
 }
 
-async function getRecordings(workspace: string): Promise<Partial<Recording>[]> {
+export async function getRecordings(workspace: string): Promise<Partial<Recording>[]> {
 	const recordings = await Recordings.find({ workspace });
 
 	return recordings.map(formatRecording);
@@ -56,14 +71,15 @@ export async function load({ locals, params }) {
 	}
 }
 
-function validateLecturer(locals: any) {
+export function validateLecturer(locals: any) {
 	if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorized');
 }
 
-async function scheduleLesson(data: FormData, workspace: string) {
+export async function scheduleLesson(data: FormData, workspace: string) {
 	const topic = data.get('topic') as string;
 	const date = data.get('date') as string;
 	const time = data.get('time') as string;
+	const recurrence = data.get('recurrence') as string;
 	const description = data.get('description') as string;
 
 	if (!topic) return fail(400, { message: 'Topic is required' });
@@ -73,19 +89,20 @@ async function scheduleLesson(data: FormData, workspace: string) {
 	const newLesson = new Lessons({
 		time,
 		topic,
-		description,
 		workspace,
+		recurrence,
+		description,
 		date: new Date(`${date}T${time}`)
 	});
 
 	await newLesson.save();
-	//create activity
+
 	const newActivity = new Activities({
+		type: 'lesson',
+		owner: workspace,
 		title: `New Lesson: ${topic}`,
 		description: description || '',
-		date: new Date(`${date}T${time}`),
-		owner: workspace,
-		type: 'lesson'
+		date: new Date(`${date}T${time}`)
 	});
 
 	await newActivity.save();
@@ -93,17 +110,19 @@ async function scheduleLesson(data: FormData, workspace: string) {
 	return { success: true };
 }
 
-async function editLesson(data: FormData) {
+export async function editLesson(data: FormData) {
 	const id = data.get('id') as string;
 	const date = data.get('date') as string;
 	const time = data.get('time') as string;
 	const topic = data.get('topic') as string;
+	const recurrence = data.get('recurrence') as string;
 	const description = data.get('description') as string;
 
 	const updateData: { [key: string]: string | Date } = {};
 
 	if (time !== '') updateData.time = time;
 	if (topic !== '') updateData.topic = topic;
+	if (recurrence !== '') updateData.recurrence = recurrence;
 	if (description !== '') updateData.description = description;
 
 	if (date !== '' && time !== '') {
@@ -123,7 +142,7 @@ async function editLesson(data: FormData) {
 	return { success: true };
 }
 
-async function deleteLesson(id: string) {
+export async function deleteLesson(id: string) {
 	if (!id) return fail(400, { error: 'Lesson ID is required' });
 
 	const deletedLesson = await Lessons.findByIdAndDelete(id);
@@ -132,7 +151,7 @@ async function deleteLesson(id: string) {
 	return { success: true };
 }
 
-async function deleteRecording(id: string) {
+export async function deleteRecording(id: string) {
 	if (!id) return fail(400, { error: 'Lesson ID is required' });
 
 	const recording = await Recordings.findById(id);
