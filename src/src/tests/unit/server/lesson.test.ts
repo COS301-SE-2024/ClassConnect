@@ -4,7 +4,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import Users from '$db/schemas/User';
 import Materials from '$db/schemas/Material';
-import * as LessonLoad from './+page.server';
+import * as LessonLoad from '$src/routes/(app)/workspaces/[workspace]/lessons/[lesson]/+page.server';
 
 vi.mock('@sveltejs/kit', async () => {
 	const actual = await vi.importActual('@sveltejs/kit');
