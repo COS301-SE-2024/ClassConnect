@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Start up the frontend
-cd ../src/client || exit
+cd ../src || exit
 bun run dev &
 
 # Store the process ID (PID) of the server

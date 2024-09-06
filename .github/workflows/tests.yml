@@ -1,0 +1,39 @@
+name: Run Tests
+on:
+    push:
+      branches:
+        - main
+        - develop
+    pull_request:
+      branches:
+        - main
+        - develop
+jobs:
+  build:
+    name: Unit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 18.17.0
+      - uses: oven-sh/setup-bun@v1
+        with:
+            bun-version: latest
+      - name: Create .env file
+        run: |
+            echo AUTH_SECRET=${{ secrets.AUTH_SECRET }} >> src/.env
+            echo TEST_PASSWORD=${{ secrets.TEST_PASSWORD }} >> src/.env
+            echo SENDGRID_RECOVERY=${{ secrets.SENDGRID_RECOVERY }} >> src/.env
+            echo SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} >> src/.env
+            echo FROM_EMAIL=${{ secrets.FROM_EMAIL }} >> src/.env
+      - name: Install dependencies for the frontend
+        run: bun install
+        working-directory: src
+      - name: Run Frontend Tests
+        run: bun run test:coverage
+        working-directory: src
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
