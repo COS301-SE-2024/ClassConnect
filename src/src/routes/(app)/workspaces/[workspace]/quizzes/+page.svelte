@@ -1,3 +1,5 @@
+
+<!--
 <script>
 	import Canvas from './Canvas.svelte'
 	import Palette from './Palette.svelte'
@@ -60,3 +62,4 @@
 	}
 
 </style>
+-->

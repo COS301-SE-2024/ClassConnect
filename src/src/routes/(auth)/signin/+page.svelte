@@ -29,9 +29,11 @@
 	onMount(() => {
 		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 		updateTheme(mediaQuery.matches);
+
+		// Update the listener to correctly pass the event's matches property
 		mediaQuery.addEventListener('change', (e) => updateTheme(e.matches));
 
-		return () => mediaQuery.removeEventListener('change', updateTheme);
+		return () => mediaQuery.removeEventListener('change', (e) => updateTheme(e.matches));
 	});
 
 	const floatingElements = Array(20).fill(null).map(() => ({
@@ -42,6 +44,7 @@
 		delay: Math.random() * 5
 	}));
 </script>
+
 
 <main class="min-h-screen bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 dark:from-green-800 dark:via-green-900 dark:to-emerald-950 p-6 md:p-8 lg:p-10 flex flex-col lg:flex-row items-center justify-center relative overflow-hidden transition-colors duration-300">
 	<!-- Animated background elements -->
