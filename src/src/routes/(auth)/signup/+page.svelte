@@ -18,119 +18,126 @@
 	}
 </script>
 
-<main class="flex">
-	<section class="w-1/2" style="z-index: 1;">
-		<div class="flex h-screen flex-col items-center justify-center">
-			<div class="m-4 flex items-center justify-center">
-				<img class="w-1/4" src="/images/class-connect-logo.png" alt="ClassConnect logo" />
-				<h1 class="font-roboto m-4 text-5xl font-bold">ClassConnect</h1>
+<main class="flex flex-col md:flex-row min-h-screen bg-gray-100">
+	<section class="w-full md:w-1/2 p-4 md:p-8 flex items-center justify-center">
+		<div class="w-full max-w-md space-y-8">
+			<div class="flex flex-col items-center justify-center">
+				<img class="w-24 md:w-32" src="/images/class-connect-logo.png" alt="ClassConnect logo" />
+				<h1 class="font-roboto text-3xl md:text-4xl font-bold text-center mt-4">ClassConnect</h1>
 			</div>
 
-			<div class="w-1/2 rounded-xl bg-white bg-opacity-80 p-4">
-				<h1 class="text-center text-3xl font-bold">Get Started Now</h1>
+			<div class="bg-white shadow-md rounded-xl p-6 md:p-8">
+				<h2 class="text-center text-2xl font-bold mb-6">Get Started Now</h2>
 
 				{#if form?.error}
 					<p class="mt-2 text-center text-red-500">{form.error}</p>
 				{/if}
 
-				<form method="POST" use:enhance={activateLoading}>
-					<Label for="name" class="mb-2 mt-2">Name</Label>
-					<Input
-						type="text"
-						id="name"
-						name="name"
-						placeholder="John"
-						size="md"
-						disabled={loading}
-						required
-					/>
-
-					<Label for="surname" class="mb-2 mt-2">Surname</Label>
-					<Input
-						type="text"
-						id="surname"
-						name="surname"
-						placeholder="Doe"
-						size="md"
-						disabled={loading}
-						required
-					/>
-
-					<Label for="email" class="mb-2 mt-2">Email</Label>
-					<Input
-						type="email"
-						id="email"
-						name="email"
-						placeholder="john.doe@company.com"
-						disabled={loading}
-						required
-					/>
-
-					<Label for="password" class="mb-2 mt-2">Password</Label>
-					<div class="relative">
+				<form method="POST" use:enhance={activateLoading} class="space-y-4">
+					<div>
+						<Label for="name" class="block mb-2">Name</Label>
 						<Input
-							type={showPassword ? 'text' : 'password'}
-							id="password"
-							name="password"
+							type="text"
+							id="name"
+							name="name"
+							placeholder="John"
+							size="md"
+							disabled={loading}
+							required
+						/>
+					</div>
+
+					<div>
+						<Label for="surname" class="block mb-2">Surname</Label>
+						<Input
+							type="text"
+							id="surname"
+							name="surname"
+							placeholder="Doe"
+							size="md"
+							disabled={loading}
+							required
+						/>
+					</div>
+
+					<div>
+						<Label for="email" class="block mb-2">Email</Label>
+						<Input
+							type="email"
+							id="email"
+							name="email"
+							placeholder="john.doe@company.com"
+							disabled={loading}
+							required
+						/>
+					</div>
+
+					<div>
+						<Label for="password" class="block mb-2">Password</Label>
+						<div class="relative">
+							<Input
+								type={showPassword ? 'text' : 'password'}
+								id="password"
+								name="password"
+								placeholder="•••••••••"
+								disabled={loading}
+								required
+							/>
+
+							<button
+								type="button"
+								aria-label="Toggle password visibility"
+								class="absolute inset-y-0 right-0 flex items-center pr-3"
+								on:click={() => (showPassword = !showPassword)}
+							>
+								{#if showPassword}
+									<EyeSlashOutline class="text-gray-500" />
+								{:else}
+									<EyeOutline class="text-gray-500" />
+								{/if}
+							</button>
+						</div>
+						<Helper>
+							Must contain at least 6 characters, lowercase, uppercase, number, and special character
+						</Helper>
+					</div>
+
+					<div>
+						<Label for="confirm-password" class="block mb-2">Confirm Password</Label>
+						<Input
+							type="password"
+							id="confirm-password"
+							name="confirm-password"
 							placeholder="•••••••••"
 							disabled={loading}
 							required
 						/>
-
-						<button
-							type="button"
-							aria-label="Toggle password visibility"
-							class="absolute inset-y-0 right-0 flex items-center pr-3"
-							on:click={() => (showPassword = !showPassword)}
-						>
-							{#if showPassword}
-								<EyeSlashOutline class="text-gray-500" />
-							{:else}
-								<EyeOutline class="text-gray-500" />
-							{/if}
-						</button>
 					</div>
-					<Helper>
-						Must contain at least 6 characters, lowercase, uppercase, number, and special character
-					</Helper>
 
-					<Label for="confirm-password" class="mb-2 mt-2">Confirm Password</Label>
-					<Input
-						type="password"
-						id="confirm-password"
-						name="confirm-password"
-						placeholder="•••••••••"
-						disabled={loading}
-						required
-					/>
-
-					<Button type="submit" class="my-4 w-full">
+					<Button type="submit" class="w-full">
 						{#if loading}
-							<Spinner class="me-3" size="4" color="white" data-testid="spinner" />
-						{:else}
-							Sign Up
+							<Spinner class="mr-3" size="4" color="white" data-testid="spinner" />
 						{/if}
+						Sign Up
 					</Button>
 				</form>
 
-				<div class="p-2">
-					<div class="text-center">
-						<p>
-							Already have an account?{' '}
-							<A href="/signin" class="text-green-600">Sign In</A>
-						</p>
-					</div>
+				<div class="mt-4 text-center">
+					<p>
+						Already have an account?
+						<A href="/signin" class="text-green-600 hover:underline">Sign In</A>
+					</p>
 				</div>
 			</div>
 		</div>
 	</section>
 
-	<section class="w-1/2" style="z-index: 1;">
-		<div class="m2 flex h-screen items-center justify-center">
+	<section class="hidden md:block md:w-1/2 bg-green-50">
+		<div class="h-full flex items-center justify-center p-4">
 			<img
 				alt="Bookcase"
 				src="/images/bookcase.jpg"
-				class="h-[97%] w-[97%] rounded-xl object-cover"
+				class="h-full w-full object-cover rounded-xl shadow-lg"
 			/>
 		</div>
 	</section>
