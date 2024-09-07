@@ -7,7 +7,6 @@
 	import { goto } from '$app/navigation';
 
 	export let data: PageData;
-	export let form;
 
 	let loading = false;
 
