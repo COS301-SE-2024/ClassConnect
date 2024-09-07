@@ -2,42 +2,37 @@
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 
-	export let colors = [
-		'#d58141',
-		'#d7c44c',
-		'#4fa9cc',
-		'#3f8d27',
-	]
+	export let colors = ['#d58141', '#d7c44c', '#4fa9cc', '#3f8d27'];
 
-	export let paletteColor
-	export let background = '#fff'
+	export let paletteColor;
+	export let background = '#fff';
 </script>
 
 <section>
 	<div>
 		{#each colors as color}
-		<button
-						on:click="{() => {
-							dispatch('color', { color })
-							paletteColor = color
-						}}"
-						style:background={color}>
-			<span class="visually-hidden">
-				Select the color {color}
-			</span>
-		</button>
+			<button
+				on:click={() => {
+					dispatch('color', { color });
+					paletteColor = color;
+				}}
+				style:background={color}
+			>
+				<span class="visually-hidden">
+					Select the color {color}
+				</span>
+			</button>
 		{/each}
 	</div>
 
 	<button
-					on:click={() => {
-						dispatch('color', { color: background })
-						paletteColor = background
-					}}
-					style:background>
-		<span class="visually-hidden">
-			Select the background color to clear the canvas
-		</span>
+		on:click={() => {
+			dispatch('color', { color: background });
+			paletteColor = background;
+		}}
+		style:background
+	>
+		<span class="visually-hidden"> Select the background color to clear the canvas </span>
 	</button>
 
 	<svg style:color={paletteColor} viewBox="-50 -50 100 100">
@@ -46,7 +41,6 @@
 		</g>
 	</svg>
 </section>
-
 
 <style>
 	section {
@@ -94,7 +88,7 @@
 		height: var(--size);
 	}
 
-	button  {
+	button {
 		cursor: pointer;
 		border-radius: 50%;
 		margin: 0;

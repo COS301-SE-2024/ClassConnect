@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { TabItem, Button, Dropdown, DropdownItem, DropdownDivider } from 'flowbite-svelte';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { objURL, displayedSandboxObjectURL } from '$src/lib/store/objects';
@@ -134,7 +133,6 @@
 			(gltf: GLTF) => {
 				scene.add(gltf.scene);
 				const box = new THREE.Box3().setFromObject(gltf.scene);
-				const center = box.getCenter(new THREE.Vector3());
 				const size = box.getSize(new THREE.Vector3());
 				const maxDim = Math.max(size.x, size.y, size.z);
 				const fov = camera.fov * (Math.PI / 180);

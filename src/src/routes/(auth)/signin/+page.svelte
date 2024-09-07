@@ -36,38 +36,51 @@
 		return () => mediaQuery.removeEventListener('change', (e) => updateTheme(e.matches));
 	});
 
-	const floatingElements = Array(20).fill(null).map(() => ({
-		size: Math.random() * 100 + 50,
-		left: Math.random() * 100,
-		top: Math.random() * 100,
-		duration: Math.random() * 10 + 5,
-		delay: Math.random() * 5
-	}));
+	const floatingElements = Array(20)
+		.fill(null)
+		.map(() => ({
+			size: Math.random() * 100 + 50,
+			left: Math.random() * 100,
+			top: Math.random() * 100,
+			duration: Math.random() * 10 + 5,
+			delay: Math.random() * 5
+		}));
 </script>
 
-
-<main class="min-h-screen bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 dark:from-green-800 dark:via-green-900 dark:to-emerald-950 p-6 md:p-8 lg:p-10 flex flex-col lg:flex-row items-center justify-center relative overflow-hidden transition-colors duration-300">
+<main
+	class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 p-6 transition-colors duration-300 dark:from-green-800 dark:via-green-900 dark:to-emerald-950 md:p-8 lg:flex-row lg:p-10"
+>
 	<!-- Animated background elements -->
-	<div class="absolute inset-0 overflow-hidden pointer-events-none">
+	<div class="pointer-events-none absolute inset-0 overflow-hidden">
 		{#each floatingElements as element}
 			<div
-				class="absolute rounded-full bg-white bg-opacity-10 dark:bg-gray-300 dark:bg-opacity-10 animate-float"
+				class="animate-float absolute rounded-full bg-white bg-opacity-10 dark:bg-gray-300 dark:bg-opacity-10"
 				style="width: {element.size}px; height: {element.size}px; left: {element.left}%; top: {element.top}%; animation-duration: {element.duration}s; animation-delay: {element.delay}s;"
 			/>
 		{/each}
 	</div>
 
 	<!-- Login Section -->
-	<section class="w-full lg:w-1/2 max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl z-10">
-		<div class="flex flex-col items-center bg-white dark:bg-gray-800 bg-opacity-20 dark:bg-opacity-30 backdrop-blur-lg rounded-xl shadow-xl p-6 sm:p-8 md:p-10 border border-white border-opacity-20 dark:border-gray-700 dark:border-opacity-50 transition-colors duration-300">
-			<div class="flex items-center justify-center mb-6">
-				<img class="w-12 h-12 sm:w-16 sm:h-16 mr-3 sm:mr-4" src="/images/class-connect-logo.png" alt="ClassConnect logo" />
-				<h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white dark:text-gray-100">ClassConnect</h1>
+	<section class="z-10 w-full max-w-sm md:max-w-md lg:w-1/2 lg:max-w-lg xl:max-w-xl">
+		<div
+			class="flex flex-col items-center rounded-xl border border-white border-opacity-20 bg-white bg-opacity-20 p-6 shadow-xl backdrop-blur-lg transition-colors duration-300 dark:border-gray-700 dark:border-opacity-50 dark:bg-gray-800 dark:bg-opacity-30 sm:p-8 md:p-10"
+		>
+			<div class="mb-6 flex items-center justify-center">
+				<img
+					class="mr-3 h-12 w-12 sm:mr-4 sm:h-16 sm:w-16"
+					src="/images/class-connect-logo.png"
+					alt="ClassConnect logo"
+				/>
+				<h1 class="text-2xl font-bold text-white dark:text-gray-100 sm:text-3xl md:text-4xl">
+					ClassConnect
+				</h1>
 			</div>
 
-			<div class="w-full text-center mb-6">
-				<h2 class="text-xl sm:text-2xl font-bold text-white dark:text-gray-100">Welcome Back 👋</h2>
-				<p class="text-gray-200 dark:text-gray-300">Today is a new day. It's your day. You shape it.</p>
+			<div class="mb-6 w-full text-center">
+				<h2 class="text-xl font-bold text-white dark:text-gray-100 sm:text-2xl">Welcome Back 👋</h2>
+				<p class="text-gray-200 dark:text-gray-300">
+					Today is a new day. It's your day. You shape it.
+				</p>
 			</div>
 
 			{#if form?.error}
@@ -115,27 +128,35 @@
 						<Spinner class="me-3" size="4" color="white" data-testid="spinner" />
 					</Button>
 				{:else}
-					<Button type="submit" class="mt-2 w-full bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-800 transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">Sign In</Button>
+					<Button
+						type="submit"
+						class="mt-2 w-full transform bg-green-600 transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-green-700 hover:shadow-lg dark:bg-green-700 dark:hover:bg-green-800"
+						>Sign In</Button
+					>
 				{/if}
 			</form>
 
-			<div class="w-full mt-4 flex flex-col sm:flex-row justify-between items-center">
-				<A href="/forgot-password" class="text-white dark:text-gray-200 hover:underline mb-2 sm:mb-0">Forgot your password?</A>
+			<div class="mt-4 flex w-full flex-col items-center justify-between sm:flex-row">
+				<A
+					href="/forgot-password"
+					class="mb-2 text-white hover:underline dark:text-gray-200 sm:mb-0"
+					>Forgot your password?</A
+				>
 				<p class="text-white dark:text-gray-200">
 					Don't have an account?{' '}
-					<A href="/signup" class="text-green-300 dark:text-green-400 hover:underline">Sign Up</A>
+					<A href="/signup" class="text-green-300 hover:underline dark:text-green-400">Sign Up</A>
 				</p>
 			</div>
 		</div>
 	</section>
 
 	<!-- Image Section -->
-	<section class="mt-8 lg:mt-0 lg:ml-8 w-full md:w-1/2 max-w-md lg:max-w-lg xl:max-w-xl z-10">
-		<div class="rounded-xl overflow-hidden shadow-2xl max-h-[70vh] md:max-h-[80vh] lg:max-h-full">
+	<section class="z-10 mt-8 w-full max-w-md md:w-1/2 lg:ml-8 lg:mt-0 lg:max-w-lg xl:max-w-xl">
+		<div class="max-h-[70vh] overflow-hidden rounded-xl shadow-2xl md:max-h-[80vh] lg:max-h-full">
 			<img
 				alt="Bookcase"
 				src="/images/bookcase.jpg"
-				class="w-full h-auto object-cover hidden md:block"
+				class="hidden h-auto w-full object-cover md:block"
 				style="max-height: 100vh;"
 			/>
 		</div>
@@ -144,9 +165,15 @@
 
 <style>
 	@keyframes float {
-		0% { transform: translateY(0px); }
-		50% { transform: translateY(-20px); }
-		100% { transform: translateY(0px); }
+		0% {
+			transform: translateY(0px);
+		}
+		50% {
+			transform: translateY(-20px);
+		}
+		100% {
+			transform: translateY(0px);
+		}
 	}
 
 	.animate-float {

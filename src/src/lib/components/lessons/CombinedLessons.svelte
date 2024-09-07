@@ -9,14 +9,14 @@
 		TableSearch,
 		Button,
 		ButtonGroup,
-		ImagePlaceholder
+		ImagePlaceholder,
+		Modal
 	} from 'flowbite-svelte';
 	import { ChevronRightOutline, ChevronLeftOutline } from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import CancelModal from '$src/lib/components/modals/lessons/Cancel.svelte';
 
-	import { slide } from 'svelte/transition';
 	export let role: string;
 	export let lessons: any[];
 
@@ -61,7 +61,7 @@
 	};
 
 	const renderPagination = (totalItems: number) => {
-		totalPages = Math.ceil(lessons.length / itemsPerPage);
+		totalPages = Math.ceil(totalItems / itemsPerPage);
 		const currentPage = Math.ceil((currentPosition + 1) / itemsPerPage);
 
 		startPage = currentPage - Math.floor(showPage / 2);
@@ -153,9 +153,9 @@
 						class="bg-white dark:bg-gray-900"
 					>
 						<TableBodyCell colspan="4" class="p-0">
-							<div class="px-2 py-3" transition:slide={{ duration: 300, axis: 'y' }}>
+							<Modal title={details?.name} bind:open={doubleClickModal} autoclose outsideclose>
 								<ImagePlaceholder />
-							</div>
+							</Modal>
 						</TableBodyCell>
 					</TableBodyRow>
 				{/if}
@@ -201,9 +201,9 @@
 						class="bg-white dark:bg-gray-900"
 					>
 						<TableBodyCell colspan="4" class="p-0">
-							<div class="px-2 py-3" transition:slide={{ duration: 300, axis: 'y' }}>
+							<Modal title={details?.name} bind:open={doubleClickModal} autoclose outsideclose>
 								<ImagePlaceholder />
-							</div>
+							</Modal>
 						</TableBodyCell>
 					</TableBodyRow>
 				{/if}

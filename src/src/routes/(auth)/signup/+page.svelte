@@ -18,16 +18,16 @@
 	}
 </script>
 
-<main class="flex flex-col md:flex-row min-h-screen bg-gray-100">
-	<section class="w-full md:w-1/2 p-4 md:p-8 flex items-center justify-center">
+<main class="flex min-h-screen flex-col bg-gray-100 md:flex-row">
+	<section class="flex w-full items-center justify-center p-4 md:w-1/2 md:p-8">
 		<div class="w-full max-w-md space-y-8">
 			<div class="flex flex-col items-center justify-center">
 				<img class="w-24 md:w-32" src="/images/class-connect-logo.png" alt="ClassConnect logo" />
-				<h1 class="font-roboto text-3xl md:text-4xl font-bold text-center mt-4">ClassConnect</h1>
+				<h1 class="font-roboto mt-4 text-center text-3xl font-bold md:text-4xl">ClassConnect</h1>
 			</div>
 
-			<div class="bg-white shadow-md rounded-xl p-6 md:p-8">
-				<h2 class="text-center text-2xl font-bold mb-6">Get Started Now</h2>
+			<div class="rounded-xl bg-white p-6 shadow-md md:p-8">
+				<h2 class="mb-6 text-center text-2xl font-bold">Get Started Now</h2>
 
 				{#if form?.error}
 					<p class="mt-2 text-center text-red-500">{form.error}</p>
@@ -35,7 +35,7 @@
 
 				<form method="POST" use:enhance={activateLoading} class="space-y-4">
 					<div>
-						<Label for="name" class="block mb-2">Name</Label>
+						<Label for="name" class="mb-2 block">Name</Label>
 						<Input
 							type="text"
 							id="name"
@@ -48,7 +48,7 @@
 					</div>
 
 					<div>
-						<Label for="surname" class="block mb-2">Surname</Label>
+						<Label for="surname" class="mb-2 block">Surname</Label>
 						<Input
 							type="text"
 							id="surname"
@@ -61,7 +61,7 @@
 					</div>
 
 					<div>
-						<Label for="email" class="block mb-2">Email</Label>
+						<Label for="email" class="mb-2 block">Email</Label>
 						<Input
 							type="email"
 							id="email"
@@ -73,7 +73,7 @@
 					</div>
 
 					<div>
-						<Label for="password" class="block mb-2">Password</Label>
+						<Label for="password" class="mb-2 block">Password</Label>
 						<div class="relative">
 							<Input
 								type={showPassword ? 'text' : 'password'}
@@ -98,12 +98,13 @@
 							</button>
 						</div>
 						<Helper>
-							Must contain at least 6 characters, lowercase, uppercase, number, and special character
+							Must contain at least 6 characters, lowercase, uppercase, number, and special
+							character
 						</Helper>
 					</div>
 
 					<div>
-						<Label for="confirm-password" class="block mb-2">Confirm Password</Label>
+						<Label for="confirm-password" class="mb-2 block">Confirm Password</Label>
 						<Input
 							type="password"
 							id="confirm-password"
@@ -132,12 +133,12 @@
 		</div>
 	</section>
 
-	<section class="hidden md:block md:w-1/2 bg-green-50">
-		<div class="h-full flex items-center justify-center p-4">
+	<section class="hidden bg-green-50 md:block md:w-1/2">
+		<div class="flex h-full items-center justify-center p-4">
 			<img
 				alt="Bookcase"
 				src="/images/bookcase.jpg"
-				class="h-full w-full object-cover rounded-xl shadow-lg"
+				class="h-full w-full rounded-xl object-cover shadow-lg"
 			/>
 		</div>
 	</section>

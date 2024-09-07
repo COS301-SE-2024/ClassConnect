@@ -1,4 +1,3 @@
-
 <!--
 <script>
 	import Canvas from './Canvas.svelte'
