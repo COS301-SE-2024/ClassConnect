@@ -33,25 +33,6 @@ export interface Workspace {
 	description: string;
 }
 
-export interface Lesson {
-	id: string;
-	topic: string;
-	time: string;
-	date: string;
-	description: string;
-	workspace: string;
-}
-
-export interface Recording {
-	id: string;
-	topic: string;
-	time: string;
-	date: string;
-	description: string;
-	workspace: string;
-	url: string;
-}
-
 export interface Material {
 	id: string;
 	title: string;

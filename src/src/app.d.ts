@@ -26,7 +26,7 @@ declare global {
 		createdBy: string;
 	}
 
-	export interface GradeData {
+	interface GradeData {
 		_id: string;
 		studentID: string;
 		quizID: string;
@@ -34,22 +34,42 @@ declare global {
 		mark: number;
 	}
 
-	export interface QuizData {
+	interface QuizData {
 		_id: string;
 		title: string;
 		totalPossibleScore: number;
 	}
 
-	export interface AssessmentStat {
+	interface AssessmentStat {
 		name: string;
 		submitted: number;
 		average: number;
 		passRate: number;
 	}
 
-	export interface StudentGrade {
+	interface StudentGrade {
 		name: string;
 		grades: number[];
+	}
+
+	interface Lesson {
+		id: string;
+		time: string;
+		date: string;
+		topic: string;
+		workspace: string;
+		recurrence: string;
+		description: string;
+	}
+
+	interface Recording {
+		id: string;
+		url: string;
+		time: string;
+		date: string;
+		topic: string;
+		workspace: string;
+		description: string;
 	}
 }
 

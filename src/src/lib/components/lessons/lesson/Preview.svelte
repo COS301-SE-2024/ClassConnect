@@ -86,7 +86,8 @@
 
 			<Toggle checked={isCameraOn} on:change={toggleCamera}>Camera</Toggle>
 
-			<Button on:click={() => onJoin(isMicOn, isCameraOn)}>Join Call</Button>
+			<Button on:click={() => onJoin(isMicOn, isCameraOn)}>Join</Button>
+			<Button class="ml-2" color="red" on:click={() => history.back()}>Exit</Button>
 		</div>
 	</Card>
 </div>
