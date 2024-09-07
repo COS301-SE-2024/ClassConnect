@@ -128,7 +128,7 @@
 	}
 
 	:global(body) {
-		overflow: hidden;
+		overflow: auto;
 	}
 
 	:global(.dark) {

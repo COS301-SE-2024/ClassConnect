@@ -17,7 +17,6 @@
 		};
 	}
 
-	// Function to update theme
 	function updateTheme(isDark: boolean) {
 		if (isDark) {
 			document.documentElement.classList.add('dark');
@@ -30,7 +29,6 @@
 		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 		updateTheme(mediaQuery.matches);
 
-		// Update the listener to correctly pass the event's matches property
 		mediaQuery.addEventListener('change', (e) => updateTheme(e.matches));
 
 		return () => mediaQuery.removeEventListener('change', (e) => updateTheme(e.matches));
@@ -48,7 +46,7 @@
 </script>
 
 <main
-	class="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 p-6 transition-colors duration-300 dark:from-green-800 dark:via-green-900 dark:to-emerald-950 md:p-8 lg:flex-row lg:p-10"
+	class="relative flex min-h-screen flex-col items-center justify-center overflow-auto bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 p-6 transition-colors duration-300 dark:from-green-800 dark:via-green-900 dark:to-emerald-950 md:p-8 lg:flex-row lg:p-10"
 >
 	<!-- Animated background elements -->
 	<div class="pointer-events-none absolute inset-0 overflow-hidden">
@@ -61,7 +59,7 @@
 	</div>
 
 	<!-- Login Section -->
-	<section class="z-10 w-full max-w-sm md:max-w-md lg:w-1/2 lg:max-w-lg xl:max-w-xl">
+	<section class="z-10 w-full max-w-[494px] lg:w-1/2 lg:max-w-lg xl:max-w-xl">
 		<div
 			class="flex flex-col items-center rounded-xl border border-white border-opacity-20 bg-white bg-opacity-20 p-6 shadow-xl backdrop-blur-lg transition-colors duration-300 dark:border-gray-700 dark:border-opacity-50 dark:bg-gray-800 dark:bg-opacity-30 sm:p-8 md:p-10"
 		>
@@ -139,25 +137,24 @@
 			<div class="mt-4 flex w-full flex-col items-center justify-between sm:flex-row">
 				<A
 					href="/forgot-password"
-					class="mb-2 text-white hover:underline dark:text-gray-200 sm:mb-0"
+					class="mb-2 text-green-700 hover:underline dark:text-gray-200 sm:mb-0"
 					>Forgot your password?</A
 				>
 				<p class="text-white dark:text-gray-200">
 					Don't have an account?{' '}
-					<A href="/signup" class="text-green-300 hover:underline dark:text-green-400">Sign Up</A>
+					<A href="/signup" class="text-green-700 hover:underline dark:text-green-400">Sign Up</A>
 				</p>
 			</div>
 		</div>
 	</section>
 
 	<!-- Image Section -->
-	<section class="z-10 mt-8 w-full max-w-md md:w-1/2 lg:ml-8 lg:mt-0 lg:max-w-lg xl:max-w-xl">
-		<div class="max-h-[70vh] overflow-hidden rounded-xl shadow-2xl md:max-h-[80vh] lg:max-h-full">
+	<section class="z-10 ml-8 mt-8 hidden w-full max-w-md lg:mt-0 lg:flex lg:w-1/2 lg:max-w-lg lg:items-center xl:max-w-xl">
+		<div class="max-h-[70vh] w-full overflow-hidden rounded-xl shadow-2xl lg:max-h-[calc(100vh-5rem)]">
 			<img
 				alt="Bookcase"
 				src="/images/bookcase.jpg"
-				class="hidden h-auto w-full object-cover md:block"
-				style="max-height: 100vh;"
+				class="h-full w-full object-cover"
 			/>
 		</div>
 	</section>
@@ -181,7 +178,7 @@
 	}
 
 	:global(body) {
-		overflow: hidden;
+		overflow: auto;
 	}
 
 	:global(.dark) {
