@@ -137,7 +137,7 @@
 			<div class="mt-4 flex w-full flex-col items-center justify-between sm:flex-row">
 				<A
 					href="/forgot-password"
-					class="mb-2 text-green-700 hover:underline dark:text-gray-200 sm:mb-0"
+					class="mb-2 text-green-700 hover:underline dark:text-green-400 sm:mb-0"
 					>Forgot your password?</A
 				>
 				<p class="text-white dark:text-gray-200">
