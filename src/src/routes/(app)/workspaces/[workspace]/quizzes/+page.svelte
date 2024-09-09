@@ -12,21 +12,24 @@
 	import { goto } from '$app/navigation';
 
 	import AddModal from '$lib/components/modals/quizzes/Add.svelte';
-	//import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
+	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
-	//import Question from '$lib/components/questions/Form.svelte';
+	import Question from '$lib/components/questions/Form.svelte';
+	import ThreeD from '$lib/components/hotspot/3dhotspot.svelte';
+	import { log } from 'three/examples/jsm/nodes/Nodes.js';
 
 	export let data: any;
 	console.log(data);
 
 	let id: string;
-	//let isQuizFormOpen = false;
-	//let isEditModalOpen = false;
+	let isQuizFormOpen = false;
+	let is3DOpen=false;
+	let isEditModalOpen = false;
 	let isAddQuiz = false;
 
 	let isRemoveModalOpen = false;
 
-	//let selectedQuestionType = '';
+	let selectedQuestionType = '';
 
 	function openQuiz(quizID: string) {
 		const workspaceId = data.workspaceID;
@@ -43,14 +46,17 @@
 
 	function handleEditModalOpen(quizID: string) {
 		id = quizID;
-		openQuiz(quizID);
-		//isQuizFormOpen = true;
+		isEditModalOpen=true;
 	}
 
-	// function handleAddModalOpen(quizID: string) {
-	// 	id = quizID;
-	// 	isAddModalOpen = true;
-	// }
+	function handleAddModalOpen(quizID: string) {
+		id = quizID;
+		//isAddModalOpen = true;
+	}
+
+	function handle3dHotspot(){
+		is3DOpen=true;
+	}
 
 	function handleRemoveModalOpen(quizId: string) {
 		id = quizId;
@@ -67,12 +73,11 @@
 		}
 	}
 
-	// function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {
-	// 	selectedQuestionType = event.detail.type;
-	// 	const quizID = id;
-	// 	openQuiz(quizID);
-	// 	isQuizFormOpen = true;
-	// }
+	function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {
+		// isQuizFormOpen = true;
+		selectedQuestionType = event.detail.type;
+		openQuiz(id);
+	}
 </script>
 
 <main class="container mx-auto my-2 px-4">
@@ -126,7 +131,7 @@
 								<div class="flex items-center gap-x-6">
 									{#if data.role === 'lecturer'}
 										{#if quiz.graded === 'No'}
-											<Button on:click={() => handleEditModalOpen(quiz.id)}>Edit</Button>
+											<Button o on:click={() => handleEditModalOpen(quiz.id)}>Edit</Button>
 										{/if}
 										<Button color="yellow" on:click={() => handlePreview(quiz.id)}>Preview</Button>
 										<Button color="red" on:click={() => handleRemoveModalOpen(quiz.id)}>
@@ -146,8 +151,12 @@
 </main>
 
 <AddModal bind:open={isAddQuiz} />
-<!-- <EditModal bind:open={isEditModalOpen} on:select={handleQuestionTypeSelect} />
+<EditModal bind:open={isEditModalOpen} on:select={handleQuestionTypeSelect} />
 {#if selectedQuestionType === 'multiple-choice'}
 	<Question bind:open={isQuizFormOpen} />
-{/if} -->
+
+{:else if selectedQuestionType === '3d-hotspot'}
+	<ThreeD bind:open={is3DOpen} />
+{/if}
+
 <RemoveModal bind:open={isRemoveModalOpen} {id} item="quiz" />

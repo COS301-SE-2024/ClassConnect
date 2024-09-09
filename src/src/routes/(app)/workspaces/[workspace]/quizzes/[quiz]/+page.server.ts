@@ -20,8 +20,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			throw error(404, 'Quiz not found');
 		}
 		const duration = quiz.duration;
-		//const workspaceID = quiz.owner.toString();
-		//const quizID = quiz.id;
+		
 
 		return {
 			role,

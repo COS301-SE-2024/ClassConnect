@@ -133,6 +133,7 @@
 	<Heading tag="h1" class="mb-6 text-3xl font-bold text-gray-900 dark:text-white"
 		>Quiz Questions</Heading
 	>
+	
 
 	{#if role === 'student' || (role === 'lecturer' && isPreview)}
 		{#if questions.length === 0}
