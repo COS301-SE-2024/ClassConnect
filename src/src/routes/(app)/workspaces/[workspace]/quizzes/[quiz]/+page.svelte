@@ -11,6 +11,7 @@
 	import { goto } from '$app/navigation';
 	import MCQ from '$lib/components/questions/MCQ.svelte';
 	import ThreeD from "$lib/components/hotspot/3dhotspot.svelte";
+	import TwoD from "$lib/components/hotspot/3dhotspot.svelte";
 	import { selectedQuestionTypeStore } from '$lib/store/questions';
 
 	export let data: any;
@@ -176,7 +177,9 @@
 				{selectedAnswers}
 				{handleSelection}/>
 			{:else if selectedQuestionType === '3d-hostpot'}
-				<ThreeD/>
+				<ThreeD {data}/>
+			{:else}
+				<TwoD {data}/>
 			{/if}
 
 
