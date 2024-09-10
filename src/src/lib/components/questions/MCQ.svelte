@@ -3,7 +3,6 @@
     
     export let questions: any[] = [];
     export let selectedAnswers: { [key: string]: string } = {};
-  
     export let handleSelection: (questionId: string, optionContent: string) => void;
   </script>
   
