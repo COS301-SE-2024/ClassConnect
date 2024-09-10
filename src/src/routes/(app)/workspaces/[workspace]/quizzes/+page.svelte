@@ -14,9 +14,9 @@
 	import AddModal from '$lib/components/modals/quizzes/Add.svelte';
 	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
+	import { selectedQuestionTypeStore } from '$lib/store/questions';
 	import Question from '$lib/components/questions/Form.svelte';
-	import ThreeD from '$lib/components/hotspot/3dhotspot.svelte';
-	import { log } from 'three/examples/jsm/nodes/Nodes.js';
+	
 
 	export let data: any;
 	console.log(data);
@@ -75,7 +75,7 @@
 
 	function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {
 		// isQuizFormOpen = true;
-		selectedQuestionType = event.detail.type;
+		selectedQuestionTypeStore.set(event.detail.type);
 		openQuiz(id);
 	}
 </script>

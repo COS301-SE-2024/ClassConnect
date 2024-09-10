@@ -10,14 +10,25 @@
 	import { writingQuiz } from '$lib/store/sidebar';
 	import { goto } from '$app/navigation';
 	import MCQ from '$lib/components/questions/MCQ.svelte';
+	import ThreeD from "$lib/components/hotspot/3dhotspot.svelte";
+	import { selectedQuestionTypeStore } from '$lib/store/questions';
 
 	export let data: any;
+	console.log(data);
 	const workspaceID = data.workspaceID;
 	let elapsed = 0;
 	let isFormOpen = false;
 	let activeTimer = false;
 	let isPreview = false;
 	let submissionResult: any = null;
+
+
+	//selected question types
+	let selectedQuestionType = '';
+	selectedQuestionTypeStore.subscribe((value) => {
+		selectedQuestionType = value;
+		console.log('Selected Question Type:', selectedQuestionType);
+	});
 
 	$: ({ questions, role, duration } = data);
 	$: activeTimer = role === 'student' && !isPreview;
@@ -158,10 +169,16 @@
 				</div>
 			{/if}
 
-			<MCQ
-			{questions}
-			{selectedAnswers}
-			{handleSelection}/>
+			{#if selectedQuestionType === 'multiple-choice'}
+				<!-- this will display the question types-->
+				<MCQ
+				{questions}
+				{selectedAnswers}
+				{handleSelection}/>
+			{:else if selectedQuestionType === '3d-hostpot'}
+				<ThreeD/>
+			{/if}
+
 
 			{#if role === 'student' && !isPreview}
 				<form
