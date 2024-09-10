@@ -33,10 +33,10 @@ export const load = async ({ locals, params }) => {
 
 		return {
 			token,
+			materials,
 			apiKey: STREAM_API_KEY,
 			user: formattedUser,
-			role: locals.user?.role,
-			materials
+			role: locals.user?.role
 		};
 	} catch (err) {
 		console.error('Error in Lesson load function:', err);

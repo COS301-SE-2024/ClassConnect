@@ -21,7 +21,7 @@
 		{name}
 	</h4>
 
-	<h5 class="text-l mb-2 font-bold tracking-tight text-gray-900 dark:text-white">
+	<h5 class="text-l mb-2 tracking-tight text-gray-900 dark:text-white">
 		{description}
 	</h5>
 

@@ -1,13 +1,13 @@
 <script>
 	import { Avatar, Navbar, DarkMode } from 'flowbite-svelte';
-	import { onMount } from 'svelte';
-	import { change } from '$lib/store';
 	import BreadCrumbs from '$lib/components/common/Breadcrumbs.svelte';
+	import { change } from '$lib/store';
 	import { getUserData } from '$lib/utils';
+	import { onMount } from 'svelte';
 
 	export let data;
 
-	let { name, image } = data;
+	$: ({ name, image, maps } = data);
 
 	async function updateUserData() {
 		try {
@@ -31,7 +31,7 @@
 </script>
 
 <Navbar data-testid="navbar">
-	<BreadCrumbs />
+	<BreadCrumbs {maps} />
 
 	<div class="flex items-center md:order-2">
 		<DarkMode

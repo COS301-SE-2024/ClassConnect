@@ -49,11 +49,17 @@
 	}
 
 	function toggleScreenShare() {
+		isEnvironmentOn = false;
+		$callStore?.update({ custom: { environment: isEnvironmentOn } });
+
 		isScreenShareOn = !isScreenShareOn;
 		$callStore?.screenShare.toggle();
 	}
 
 	function toggleEnvironment() {
+		isScreenShareOn = false;
+		$callStore?.screenShare.disable();
+
 		isEnvironmentOn = !isEnvironmentOn;
 		$callStore?.update({ custom: { environment: isEnvironmentOn } });
 	}
@@ -239,7 +245,7 @@
 					<VisaSolid class="h-6 w-6" />
 				</Button>
 			{:else}
-				<Button color="primary" class="rounded-full p-2" on:click={startRecording}>
+				<Button color="light" class="rounded-full p-2" on:click={startRecording}>
 					<CameraPhotoOutline class="h-6 w-6" />
 				</Button>
 			{/if}

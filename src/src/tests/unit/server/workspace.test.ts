@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 import User from '$db/schemas/User';
 import Workspace from '$db/schemas/Workspace';
-import * as workspaceModule from './+page.server';
+import * as workspaceModule from '$src/routes/(app)/workspaces/+page.server';
 
 vi.mock('$db/schemas/User', () => {
 	const UserMock: any = vi.fn().mockImplementation(() => ({

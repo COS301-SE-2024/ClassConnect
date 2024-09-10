@@ -7,6 +7,25 @@ export interface User {
 	username: string;
 }
 
+export interface Lesson {
+	id: string;
+	topic: string;
+	time: string;
+	date: string;
+	description: string;
+	workspace: string;
+}
+
+export interface Recording {
+	id: string;
+	topic: string;
+	time: string;
+	date: string;
+	description: string;
+	workspace: string;
+	url: string;
+}
+
 export interface User_Details {
 	id: string;
 	first_name: string;
@@ -31,25 +50,6 @@ export interface Workspace {
 	owner: string;
 	ownerImage: string;
 	description: string;
-}
-
-export interface Lesson {
-	id: string;
-	topic: string;
-	time: string;
-	date: string;
-	description: string;
-	workspace: string;
-}
-
-export interface Recording {
-	id: string;
-	topic: string;
-	time: string;
-	date: string;
-	description: string;
-	workspace: string;
-	url: string;
 }
 
 export interface Material {
@@ -120,30 +120,4 @@ export interface Question {
 	questionContent: string;
 	questionType: string;
 	options: Option[];
-}
-
-export interface GradeData {
-	_id: string;
-	studentID: string;
-	quizID: string;
-	workspaceID: string;
-	mark: number;
-}
-
-export interface QuizData {
-	_id: string;
-	title: string;
-	totalPossibleScore: number;
-}
-
-export interface AssessmentStat {
-	name: string;
-	submitted: number;
-	average: number;
-	passRate: number;
-}
-
-export interface StudentGrade {
-	name: string;
-	grades: number[];
 }
