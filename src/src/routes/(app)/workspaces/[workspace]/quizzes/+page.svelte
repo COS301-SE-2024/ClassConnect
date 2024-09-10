@@ -152,11 +152,5 @@
 
 <AddModal bind:open={isAddQuiz} />
 <EditModal bind:open={isEditModalOpen} on:select={handleQuestionTypeSelect} />
-{#if selectedQuestionType === 'multiple-choice'}
-	<Question bind:open={isQuizFormOpen} />
-
-{:else if selectedQuestionType === '3d-hotspot'}
-	<ThreeD bind:open={is3DOpen} />
-{/if}
 
 <RemoveModal bind:open={isRemoveModalOpen} {id} item="quiz" />
