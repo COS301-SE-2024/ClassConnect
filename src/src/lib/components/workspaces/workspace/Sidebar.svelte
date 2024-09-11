@@ -38,7 +38,7 @@
 			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
 			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
 			{ icon: VideoCameraSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
-			{ icon: BookOpenSolid, name: 'Quizzes', href: workspaceURL + '/quizzes' },
+			{ icon: BookOpenSolid, name: 'Assessments', href: workspaceURL + '/quizzes' },
 			{ icon: UsersGroupSolid, name: 'Environments', href: workspaceURL + '/environments' }
 		],
 		student: [
@@ -46,7 +46,7 @@
 			{ icon: BullhornSolid, name: 'Activities', href: workspaceURL + '/activities' },
 			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
 			{ icon: VideoCameraSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
-			{ icon: BookOpenSolid, name: 'Quizzes', href: workspaceURL + '/quizzes' },
+			{ icon: BookOpenSolid, name: 'Assessments', href: workspaceURL + '/quizzes' },
 			{ icon: UsersGroupSolid, name: 'Environments', href: workspaceURL + '/environments' },
 			{ icon: ChartPieSolid, name: 'Grades', href: workspaceURL + '/grades' }
 		]

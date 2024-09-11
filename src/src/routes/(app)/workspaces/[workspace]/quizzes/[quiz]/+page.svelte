@@ -170,16 +170,12 @@
 				</div>
 			{/if}
 
+			
 			{#if selectedQuestionType === 'multiple-choice'}
-				<!-- this will display the question types-->
 				<MCQ
 				{questions}
 				{selectedAnswers}
 				{handleSelection}/>
-			{:else if selectedQuestionType === '3d-hostpot'}
-				<ThreeD {data}/>
-			{:else}
-				<TwoD {data}/>
 			{/if}
 
 
@@ -215,7 +211,11 @@
 			{/if}
 		{/if}
 	{:else if role === 'lecturer' && !isPreview}
-		<Form bind:open={isFormOpen} on:formSubmitted={handleFormSubmit} />
+		{#if selectedQuestionType==='multiple-choice'}
+			<Form bind:open={isFormOpen} on:formSubmitted={handleFormSubmit} />
+		{:else if selectedQuestionType==='3d-hotspot'}
+			<ThreeD/>
+		{/if}
 	{:else}
 		<P class="text-lg text-gray-700 dark:text-gray-300"
 			>You do not have permission to view this content.</P
