@@ -96,7 +96,7 @@
 							class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
 						>
 							{students.length}
-							{students.length === 1 ? 'student' : 'students'}
+							{students.length === 1 ? 'Student' : 'Students'}
 						</span>
 					</div>
 				</div>
