@@ -149,13 +149,13 @@
 	</section>
 
 	<!-- Image Section -->
-	<section class="z-10 ml-8 mt-8 hidden w-full max-w-md lg:mt-0 lg:flex lg:w-1/2 lg:max-w-lg lg:items-center xl:max-w-xl">
-		<div class="max-h-[70vh] w-full overflow-hidden rounded-xl shadow-2xl lg:max-h-[calc(100vh-5rem)]">
-			<img
-				alt="Bookcase"
-				src="/images/bookcase.jpg"
-				class="h-full w-full object-cover"
-			/>
+	<section
+		class="z-10 ml-8 mt-8 hidden w-full max-w-md lg:mt-0 lg:flex lg:w-1/2 lg:max-w-lg lg:items-center xl:max-w-xl"
+	>
+		<div
+			class="max-h-[70vh] w-full overflow-hidden rounded-xl shadow-2xl lg:max-h-[calc(100vh-5rem)]"
+		>
+			<img alt="Bookcase" src="/images/bookcase.jpg" class="h-full w-full object-cover" />
 		</div>
 	</section>
 </main>

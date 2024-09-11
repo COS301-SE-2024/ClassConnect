@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Input, Label, Button, A, Spinner, Helper, Popover } from 'flowbite-svelte';
+	import { Input, Label, Button, A, Spinner, Popover } from 'flowbite-svelte';
 	import { CheckOutline, CloseOutline, EyeOutline, EyeSlashOutline } from 'flowbite-svelte-icons';
 	import { onMount } from 'svelte';
 
@@ -59,7 +59,7 @@
 	</div>
 
 	<!-- Login Section -->
-	<section class="z-10 w-full max-w-[494px] lg:w-1/2 lg:max-w-lg xl:max-w-xl ">
+	<section class="z-10 w-full max-w-[494px] lg:w-1/2 lg:max-w-lg xl:max-w-xl">
 		<div
 			class="flex flex-col items-center rounded-xl border border-white border-opacity-20 bg-white bg-opacity-20 p-6 shadow-xl backdrop-blur-lg transition-colors duration-300 dark:border-gray-700 dark:border-opacity-50 dark:bg-gray-800 dark:bg-opacity-30 sm:p-8 md:p-10"
 		>
@@ -75,7 +75,9 @@
 			</div>
 
 			<div class="mb-6 w-full text-center">
-				<h2 class="text-xl font-bold text-white dark:text-gray-100 sm:text-2xl">Get Started Now 🏁</h2>
+				<h2 class="text-xl font-bold text-white dark:text-gray-100 sm:text-2xl">
+					Get Started Now 🏁
+				</h2>
 				<p class="text-gray-200 dark:text-gray-300">
 					Create a new admin account to run your new organisation.
 				</p>
@@ -143,7 +145,9 @@
 						</button>
 					</div>
 				</div>
-				<Label for="confirm-password" class="mb-2 mt-2 text-white dark:text-gray-200">Confirm Password</Label>
+				<Label for="confirm-password" class="mb-2 mt-2 text-white dark:text-gray-200"
+					>Confirm Password</Label
+				>
 				<div class="relative mb-4">
 					<Input
 						type="password"
@@ -155,7 +159,10 @@
 						class="mb-4"
 					/>
 				</div>
-				<Button type="submit" class="mt-2 w-full transform bg-green-600 transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-green-700 hover:shadow-lg dark:bg-green-700 dark:hover:bg-green-800">
+				<Button
+					type="submit"
+					class="mt-2 w-full transform bg-green-600 transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-green-700 hover:shadow-lg dark:bg-green-700 dark:hover:bg-green-800"
+				>
 					{#if loading}
 						<Spinner class="mr-3" size="4" color="white" data-testid="spinner" />
 					{/if}
@@ -172,16 +179,17 @@
 				</div>
 				<p class="py-2">It’s better to have:</p>
 				<ul>
-					<li class="flex items-center mb-1">
-						<CheckOutline class="me-2 w-4 h-4 text-green-400 dark:text-green-500" />
+					<li class="mb-1 flex items-center">
+						<CheckOutline class="me-2 h-4 w-4 text-green-400 dark:text-green-500" />
 						Upper &amp; lower case letters
 					</li>
-					<li class="flex items-center mb-1">
-						<CheckOutline class="me-2 w-4 h-4 text-green-400 dark:text-green-500" />
+					<li class="mb-1 flex items-center">
+						<CheckOutline class="me-2 h-4 w-4 text-green-400 dark:text-green-500" />
 						A symbol (#$&amp;)
 					</li>
 					<li class="flex items-center">
-						<CloseOutline class="me-2 w-4 h-4 text-gray-300 dark:text-gray-400" />A longer password (min. 12 chars.)
+						<CloseOutline class="me-2 h-4 w-4 text-gray-300 dark:text-gray-400" />A longer password
+						(min. 12 chars.)
 					</li>
 				</ul>
 			</Popover>
@@ -196,13 +204,13 @@
 	</section>
 
 	<!-- Image Section -->
-	<section class="z-10 ml-8 mt-8 hidden w-full max-w-md lg:mt-0 lg:flex lg:w-1/2 lg:max-w-lg lg:items-center xl:max-w-xl">
-		<div class="max-h-[70vh] w-full overflow-hidden rounded-xl shadow-2xl lg:max-h-[calc(100vh-5rem)]">
-			<img
-				alt="Bookcase"
-				src="/images/bookcase.jpg"
-				class="h-full w-full object-cover"
-			/>
+	<section
+		class="z-10 ml-8 mt-8 hidden w-full max-w-md lg:mt-0 lg:flex lg:w-1/2 lg:max-w-lg lg:items-center xl:max-w-xl"
+	>
+		<div
+			class="max-h-[70vh] w-full overflow-hidden rounded-xl shadow-2xl lg:max-h-[calc(100vh-5rem)]"
+		>
+			<img alt="Bookcase" src="/images/bookcase.jpg" class="h-full w-full object-cover" />
 		</div>
 	</section>
 </main>

@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Input, Label, Button, A, Spinner } from 'flowbite-svelte';
 	import { onMount } from 'svelte';
 
 	import type { PageData } from './$types';
 	import { goto } from '$app/navigation';
+	import { Button } from 'flowbite-svelte';
 
 	export let data: PageData;
 
@@ -64,18 +64,19 @@
 		<div
 			class="items-center rounded-xl border border-white border-opacity-20 bg-white bg-opacity-20 p-6 shadow-xl backdrop-blur-lg transition-colors duration-300 dark:border-gray-700 dark:border-opacity-50 dark:bg-gray-800 dark:bg-opacity-30 sm:p-8 md:p-10"
 		>
-
 			<div class="mb-6 w-full text-center">
 				<h2 class="text-xl font-bold text-white dark:text-gray-100 sm:text-2xl">Signing Out</h2>
-				<p class="text-gray-200 dark:text-gray-300">
-					Are you sure you want to sign out?
-				</p>
+				<p class="text-gray-200 dark:text-gray-300">Are you sure you want to sign out?</p>
 			</div>
 
 			<form method="POST" use:enhance={activateLoading} class="w-full">
-				<div class="flex flex-col lg:flex-row justify-between gap-4">
-					<Button type="submit" class="mt-2 w-full transform bg-green-600 transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-green-700 hover:shadow-lg dark:bg-green-700 dark:hover:bg-green-800">
-						Yes, I am sure
+				<div class="flex flex-col justify-between gap-4 lg:flex-row">
+					<Button
+						type="submit"
+						class="mt-2 w-full transform bg-green-600 transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-green-700 hover:shadow-lg dark:bg-green-700 dark:hover:bg-green-800"
+						disabled={loading}
+					>
+						<span>{loading ? 'Loading...' : 'Yes, I am sure'}</span>
 					</Button>
 					<Button
 						class="mt-2 w-full transform bg-red-600 transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-red-700 hover:shadow-lg dark:bg-red-700 dark:hover:bg-red-800"
@@ -85,10 +86,8 @@
 					</Button>
 				</div>
 			</form>
-
 		</div>
 	</section>
-
 </main>
 
 <style>
