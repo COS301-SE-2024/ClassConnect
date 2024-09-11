@@ -19,7 +19,7 @@ export function formatUser(user: any): User {
 		image: user.image,
 		surname: user.surname,
 		username: user.username,
-		workspaces: user.workspaces.map((ws: any) => ws.toString())
+		workspaces: user.workspaces ? user.workspaces.map((ws: any) => ws.toString()) : []
 	};
 }
 
