@@ -3,7 +3,7 @@
 	import { Button, Modal, Label, Input, Select, Fileupload } from 'flowbite-svelte';
 	import toast, { Toaster } from 'svelte-french-toast';
 	export let open: boolean;
-	export let lecturers: [{ id: string; name: string; surname: string }];
+	export let lecturers: { id: string; name: string; surname: string }[] = [];
 
 	let value: string;
 
