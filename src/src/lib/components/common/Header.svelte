@@ -1,10 +1,33 @@
 <script>
 	import { Avatar, Navbar, DarkMode } from 'flowbite-svelte';
 	import BreadCrumbs from '$lib/components/common/Breadcrumbs.svelte';
+	import { change } from '$lib/store';
+	import { getUserData } from '$lib/utils';
+	import { onMount } from 'svelte';
 
 	export let data;
 
 	$: ({ name, image, maps } = data);
+
+	async function updateUserData() {
+		try {
+			const user = await getUserData();
+			name = user.name;
+			image = user.image;
+		} catch (error) {
+			console.error('There was a problem with the get operation:', error);
+		}
+	}
+
+	onMount(async () => {
+		updateUserData();
+	});
+
+	$: {
+		change.subscribe(async () => {
+			await updateUserData();
+		});
+	}
 </script>
 
 <Navbar data-testid="navbar">

@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
 import Users from '$db/schemas/User';
+import type { User } from '$src/types';
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ locals }) {
@@ -19,13 +20,14 @@ export async function GET({ locals }) {
 				}
 
 				// Prepare and return the user data
-				const ret_user = {
+				const ret_user: User = {
+					id: userID.toString(),
 					name: user.name,
 					email: user.email,
 					image: user.image,
-					surname: user.surname
+					surname: user.surname,
+					username: user.username
 				};
-
 				return json(ret_user);
 			} catch (err) {
 				//console.error('Error fetching user:', err);

@@ -84,7 +84,7 @@
 		</Label>
 
 		<Label for="with_helper" class="pb-2">Upload material:</Label>
-		<Fileupload id="with_helper" name="file" class="mb-2" />
+		<Fileupload id="with_helper" name="file" class="mb-2" accept=".pdf, .glb, .gtlf, .epub" />
 		<Helper>PDF, GLB or GTLF (MAX. 100 MB).</Helper>
 
 		<Button type="submit" class="w-full1">Upload File</Button>
