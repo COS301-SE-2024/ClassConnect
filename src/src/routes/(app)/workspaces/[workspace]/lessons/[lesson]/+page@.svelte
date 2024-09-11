@@ -23,6 +23,8 @@
 	let { apiKey, token, user, role, materials } = data;
 
 	onMount(() => {
+		user.role = role;
+
 		chatClient = StreamChat.getInstance(apiKey);
 		videoClient = new StreamVideoClient({ apiKey, token, user });
 	});

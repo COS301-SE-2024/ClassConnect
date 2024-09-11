@@ -1,240 +1,174 @@
 import { describe, it, expect, vi } from 'vitest';
-import {
-	load,
-	actions,
-	_getUserDetails,
-	_uploadToS3,
-	_deleteFromS3,
-	_verifyOldPassword,
-	_validatePassword,
-	_updatePassword
-} from './+page.server';
-import { ObjectId } from 'mongodb';
-import { HASH_OPTIONS } from '$src/constants';
-import { upload, deleteFile } from '$src/lib/server/storage';
-import { verify, hash } from '@node-rs/argon2';
+import { load, actions } from './+page.server';
 import { fail } from '@sveltejs/kit';
 import Users from '$db/schemas/User';
+import {
+	getUserDetails,
+	uploadToS3,
+	deleteFromS3,
+	validatePassword,
+	verifyOldPassword,
+	updatePassword
+} from '$src/lib/server/utils/profile';
 
-vi.mock('$db/schemas/User', () => ({
-	default: {
-		findById: vi.fn(),
-		findByIdAndUpdate: vi.fn()
-	}
-}));
+// Mock dependencies
+vi.mock('$db/schemas/User', async () => {
+	const UserMock: any = vi.fn().mockImplementation(() => ({
+		save: vi.fn()
+	}));
+	UserMock.findByIdAndUpdate = vi.fn();
+	UserMock.findById = vi.fn();
 
-vi.mock('$src/lib/server/storage', () => ({
-	upload: vi.fn(),
-	deleteFile: vi.fn()
-}));
+	return {
+		default: UserMock
+	};
+});
 
-vi.mock('@node-rs/argon2', () => ({
-	verify: vi.fn(),
-	hash: vi.fn()
+vi.mock('$src/lib/server/utils/profile', () => ({
+	getUserDetails: vi.fn(),
+	uploadToS3: vi.fn(),
+	deleteFromS3: vi.fn(),
+	validatePassword: vi.fn(),
+	verifyOldPassword: vi.fn(),
+	updatePassword: vi.fn()
 }));
 
 vi.mock('@sveltejs/kit', () => ({
 	fail: vi.fn()
 }));
 
-describe('Page Server', () => {
-	describe('load', () => {
-		it('should return user data if user is logged in', async () => {
-			const locals = { user: { _id: '507f1f77bcf86cd799439011' } }; // Use a valid ObjectId string
-			const user = {
-				_id: new ObjectId('507f1f77bcf86cd799439011'),
-				name: 'John',
-				surname: 'Doe',
-				email: 'john@example.com',
-				image: 'image.jpg',
-				username: 'johndoe'
-			};
-			Users.findById.mockResolvedValue(user);
+describe('load function', () => {
+	it('should load user details if user is authenticated', async () => {
+		const mockUserDetails = { name: 'John Doe' };
+		getUserDetails.mockResolvedValue(mockUserDetails);
 
-			const result = await load({ locals });
+		const locals = { user: { id: 'user-id' } };
 
-			expect(result).toEqual({
-				user_data: {
-					id: user._id.toString(),
-					name: user.name,
-					surname: user.surname,
-					email: user.email,
-					image: user.image,
-					username: user.username
-				}
-			});
-		});
+		const result = await load({ locals });
 
-		it('should return undefined if user is not logged in', async () => {
-			const locals = {};
-			const result = await load({ locals });
-			expect(result).toBeUndefined();
-		});
+		expect(result).toEqual({ user_data: mockUserDetails });
+		expect(getUserDetails).toHaveBeenCalledWith('user-id');
 	});
 
-	describe('getUserDetails', () => {
-		it('should return user details', async () => {
-			const user_id = '507f1f77bcf86cd799439011';
-			const user = {
-				_id: new ObjectId('507f1f77bcf86cd799439011'),
-				name: 'John',
-				surname: 'Doe',
-				email: 'john@example.com',
-				image: 'image.jpg',
-				username: 'johndoe'
-			};
-			Users.findById.mockResolvedValue(user);
+	it('should return undefined if user is not authenticated', async () => {
+		const locals = {};
 
-			const result = await _getUserDetails(new ObjectId(user_id));
+		const result = await load({ locals });
 
-			expect(result).toEqual({
-				id: '507f1f77bcf86cd799439011',
-				name: 'John',
-				surname: 'Doe',
-				email: 'john@example.com',
-				image: 'image.jpg',
-				username: 'johndoe'
-			});
-		});
+		expect(result).toBeUndefined();
+	});
+});
+
+describe('actions.upload_picture', () => {
+	it('should upload picture successfully', async () => {
+		const request = {
+			formData: vi.fn().mockResolvedValue(new FormData())
+		};
+		const locals = {};
+
+		await actions.upload_picture({ request, locals });
+
+		expect(uploadToS3).toHaveBeenCalled();
 	});
 
-	describe('uploadToS3', () => {
-		it('should fail if file size is too large', async () => {
-			const image = { size: 2 * 1024 * 1024 }; // 2MB
-			const locals = { user: { id: '123' } };
+	it('should fail to upload picture and return error', async () => {
+		uploadToS3.mockRejectedValue(new Error('Upload error'));
 
-			await _uploadToS3(image, locals);
+		const request = {
+			formData: vi.fn().mockResolvedValue(new FormData())
+		};
+		const locals = {};
 
-			expect(fail).toHaveBeenCalledWith(400, { error: 'File size too large' });
-		});
+		const result = await actions.upload_picture({ request, locals });
 
-		it('should upload image and update user', async () => {
-			const image = { size: 500 * 1024 }; // 500KB
-			const locals = { user: { id: '123' } };
-			const user = { save: vi.fn() };
-			Users.findById.mockResolvedValue(user);
-			upload.mockResolvedValue('image_url');
+		expect(result).toEqual(fail(500, { error: 'Failed to upload picture' }));
+	});
+});
 
-			const result = await _uploadToS3(image, locals);
+describe('actions.delete_picture', () => {
+	it('should delete picture successfully', async () => {
+		const locals = {};
 
-			expect(upload).toHaveBeenCalledWith(image);
-			expect(user.save).toHaveBeenCalled();
-			expect(result).toEqual({ image_url: 'image_url' });
-		});
+		await actions.delete_picture({ locals });
+
+		expect(deleteFromS3).toHaveBeenCalled();
 	});
 
-	describe('deleteFromS3', () => {
-		it('should delete image and update user', async () => {
-			const locals = { user: { id: '123' } };
-			const user = { image: 'image_url', save: vi.fn() };
-			Users.findById.mockResolvedValue(user);
+	it('should fail to delete picture and return error', async () => {
+		deleteFromS3.mockRejectedValue(new Error('Delete error'));
 
-			const result = await _deleteFromS3(locals);
+		const locals = {};
 
-			expect(deleteFile).toHaveBeenCalledWith('image_url');
-			expect(user.save).toHaveBeenCalled();
-			expect(result).toEqual({
-				image_url: 'https://class-connect-file-storage.s3.amazonaws.com/pictures/default.svg'
-			});
-		});
+		const result = await actions.delete_picture({ locals });
+
+		expect(result).toEqual(fail(500, { error: 'Failed to delete picture' }));
+	});
+});
+
+describe('actions.update_general_details', () => {
+	it('should update general details successfully', async () => {
+		const request = {
+			formData: vi.fn().mockResolvedValue(new FormData())
+		};
+		const locals = { user: { id: 'user-id' } };
+
+		await actions.update_general_details({ request, locals });
+
+		expect(Users.findByIdAndUpdate).toHaveBeenCalledWith('user-id', expect.any(Object));
 	});
 
-	describe('verifyOldPassword', () => {
-		it('should return true if password is valid', async () => {
-			const objID = '123';
-			const old_password = 'password';
-			const user = { password: 'hashed_password' };
-			Users.findById.mockResolvedValue(user);
-			verify.mockResolvedValue(true);
+	it('should fail to update general details and return error', async () => {
+		Users.findByIdAndUpdate.mockRejectedValue(new Error('Update error'));
 
-			const result = await _verifyOldPassword(objID, old_password);
+		const request = {
+			formData: vi.fn().mockResolvedValue(new FormData())
+		};
+		const locals = { user: { id: 'user-id' } };
 
-			expect(result).toBe(true);
-		});
+		const result = await actions.update_general_details({ request, locals });
 
-		it('should return false if password is invalid', async () => {
-			const objID = '123';
-			const old_password = 'password';
-			const user = { password: 'hashed_password' };
-			Users.findById.mockResolvedValue(user);
-			verify.mockResolvedValue(false);
+		expect(result).toEqual(fail(500, { error: 'Failed to update general details' }));
+	});
+});
 
-			const result = await _verifyOldPassword(objID, old_password);
+describe('actions.update_password', () => {
+	it('should update password successfully', async () => {
+		const request = {
+			formData: vi.fn().mockResolvedValue(new FormData())
+		};
+		const locals = { user: { id: 'user-id' } };
 
-			expect(result).toBe(false);
-		});
+		verifyOldPassword.mockResolvedValue(true);
+		validatePassword.mockReturnValue('new-password');
+
+		await actions.update_password({ request, locals });
+
+		expect(updatePassword).toHaveBeenCalledWith('user-id', 'new-password');
 	});
 
-	describe('validatePassword', () => {
-		it('should throw error if password is invalid', () => {
-			expect(() => _validatePassword('invalid', 'invalid')).toThrow('Invalid password');
-		});
+	it('should fail to update password if old password is invalid', async () => {
+		const request = {
+			formData: vi.fn().mockResolvedValue(new FormData())
+		};
+		const locals = { user: { id: 'user-id' } };
 
-		it('should throw error if passwords do not match', () => {
-			expect(() => _validatePassword('Valid1@', 'Different1@')).toThrow('Passwords do not match');
-		});
+		verifyOldPassword.mockResolvedValue(false);
 
-		it('should return password if valid', () => {
-			const password = 'Valid1@';
-			const confirmPassword = 'Valid1@';
-			const result = _validatePassword(password, confirmPassword);
-			expect(result).toBe(password);
-		});
+		const result = await actions.update_password({ request, locals });
+
+		expect(result).toEqual(fail(400, { error: 'Invalid password' }));
 	});
 
-	describe('updatePassword', () => {
-		it('should update user password', async () => {
-			const userID = '123';
-			const password = 'new_password';
-			const hashedPassword = 'hashed_password';
-			hash.mockResolvedValue(hashedPassword);
-			Users.findByIdAndUpdate.mockResolvedValue({});
+	it('should fail to update password and return error', async () => {
+		updatePassword.mockRejectedValue(new Error('Update error'));
 
-			await _updatePassword(userID, password);
+		const request = {
+			formData: vi.fn().mockResolvedValue(new FormData())
+		};
+		const locals = { user: { id: 'user-id' } };
 
-			expect(hash).toHaveBeenCalledWith(password, HASH_OPTIONS);
-			expect(Users.findByIdAndUpdate).toHaveBeenCalledWith(userID, { password: hashedPassword });
-		});
-	});
+		const result = await actions.update_password({ request, locals });
 
-	describe('actions', () => {
-		describe('update_general_details', () => {
-			it('should update general details', async () => {
-				const request = {
-					formData: vi.fn().mockResolvedValue({
-						get: vi.fn().mockImplementation((key) => {
-							const data = { name: 'John', surname: 'Doe', email: 'john@example.com' };
-							return data[key];
-						})
-					})
-				};
-				const locals = { user: { id: '123' } };
-
-				await actions.update_general_details({ request, locals });
-
-				expect(Users.findByIdAndUpdate).toHaveBeenCalledWith('123', {
-					name: 'John',
-					surname: 'Doe',
-					email: 'john@example.com'
-				});
-			});
-		});
-
-		describe('get_user_details', () => {
-			it('should return user details', async () => {
-				const locals = { user: { id: '123' } };
-				const user = {
-					name: 'John',
-					surname: 'Doe',
-					email: 'john@example.com',
-					image: 'image.jpg'
-				};
-				Users.findById.mockResolvedValue(user);
-
-				const result = await actions.get_user_details({ locals });
-
-				expect(JSON.parse(result)).toEqual({ user });
-			});
-		});
+		expect(result).toEqual(fail(500, { error: 'Failed to update password' }));
 	});
 });

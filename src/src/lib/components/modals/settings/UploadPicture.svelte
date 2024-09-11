@@ -34,7 +34,7 @@
 <Modal id="uploadModal" bind:open size="lg" placement="center">
 	<form class="flex flex-col space-y-6" on:submit={handleFileUpload}>
 		<Label for="with_helper" class="pb-2">Upload picture</Label>
-		<Fileupload id="with_helper" name="file" class="mb-2" />
+		<Fileupload id="with_helper" name="file" class="mb-2" accept=".png, .jpg, .jpeg, .svg" />
 		<Helper>SVG, PNG or JPG (MAX. 1 MB).</Helper>
 
 		<Button type="submit" class="w-full">Upload Picture</Button>
