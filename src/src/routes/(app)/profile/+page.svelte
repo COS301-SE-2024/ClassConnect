@@ -6,5 +6,5 @@
 </script>
 
 <main>
-	<Profile user={data.user_data} />
+	<Profile user={data.user_data} loading={true} />
 </main>

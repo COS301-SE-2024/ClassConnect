@@ -1,138 +1,166 @@
-import { error } from '@sveltejs/kit';
-import { StreamClient } from '@stream-io/node-sdk';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { tokenProvider, saveRecording, saveRecordingLink } from '$lib/server/utils/lesson';
+import { upload } from '$lib/server/storage';
+import Lessons from '$db/schemas/Lesson';
+import Recording from '$db/schemas/Recording';
+import { StreamClient } from '@stream-io/node-sdk';
+import { fail } from '@sveltejs/kit';
 
-import Users from '$db/schemas/User';
-import Materials from '$db/schemas/Material';
-import * as LessonLoad from '$src/routes/(app)/workspaces/[workspace]/lessons/[lesson]/+page.server';
+vi.mock('$lib/server/storage', () => ({
+	upload: vi.fn()
+}));
 
-vi.mock('@sveltejs/kit', async () => {
-	const actual = await vi.importActual('@sveltejs/kit');
+vi.mock('$db/schemas/Lesson', () => {
+	const LessonMock = vi.fn().mockImplementation(() => ({
+		save: vi.fn()
+	}));
+	LessonMock.findById = vi.fn();
+	return { default: LessonMock };
+});
+
+vi.mock('$db/schemas/Recording', () => {
+	const save = vi.fn();
 	return {
-		...actual,
-		error: vi.fn()
+		default: vi.fn(() => ({ save }))
 	};
 });
 
-vi.mock('$lib/server/storage', () => ({
-	upload: vi.fn(),
-	deleteFile: vi.fn()
+vi.mock('@sveltejs/kit', () => ({
+	fail: vi.fn()
 }));
 
-vi.mock('@stream-io/node-sdk', () => ({
-	StreamClient: vi.fn().mockImplementation(() => ({
-		createToken: vi.fn()
-	}))
-}));
-
-vi.mock('$db/schemas/User', () => ({
-	default: {
-		findById: vi.fn()
-	}
-}));
-
-vi.mock('$db/schemas/Recording', () => ({
-	default: {
-		find: vi.fn()
-	}
-}));
-
-vi.mock('$db/schemas/Lesson', () => ({
-	default: {
-		findById: vi.fn()
-	}
-}));
-
-vi.mock('$db/schemas/Material', () => ({
-	default: {
-		find: vi.fn()
-	}
-}));
-
-describe('Stream Client Load Function', () => {
+describe('recording functions', () => {
 	beforeEach(() => {
-		vi.resetAllMocks();
+		vi.clearAllMocks();
 	});
 
-	describe('load function', () => {
-		it('should throw an error if Stream credentials are not set', async () => {
-			vi.mock('$env/static/private', () => ({
-				STREAM_API_KEY: undefined,
-				STREAM_SECRET_KEY: undefined
-			}));
+	describe('tokenProvider', () => {
+		it('should create a token with the correct parameters', async () => {
+			const streamClient = {
+				createToken: vi.fn().mockReturnValue('token')
+			} as unknown as StreamClient;
 
-			await expect(LessonLoad.load({ locals: {}, params: {} })).rejects.toEqual(
-				error(403, 'Stream credentials not set')
+			const id = 'user-id';
+			const token = await tokenProvider(id, streamClient);
+
+			expect(streamClient.createToken).toHaveBeenCalledWith(
+				id,
+				expect.any(Number),
+				expect.any(Number)
 			);
+			expect(token).toBe('token');
 		});
+	});
 
-		it('should return the correct data', async () => {
-			vi.mock('$env/static/private', () => ({
-				STREAM_API_KEY: 'mock-api-key',
-				STREAM_SECRET_KEY: 'mock-secret-key'
-			}));
-
-			const mockUser = {
-				id: '123',
-				name: 'John',
-				surname: 'Doe',
-				image: 'profile.jpg'
+	describe('saveRecording', () => {
+		it('should save a new recording successfully', async () => {
+			const lesson = {
+				topic: 'Test Topic',
+				description: 'Test Description',
+				time: '10:00 AM',
+				date: new Date(),
+				workspace: 'Test Workspace'
 			};
+			Lessons.findById.mockResolvedValue(lesson);
+			upload.mockResolvedValue('http://example.com/video.mp4');
 
-			const mockToken = 'mock-token';
+			const data = new FormData();
+			data.append('LessonID', 'lesson-id');
+			data.append('video', new File(['video content'], 'video.mp4'));
 
-			(Users.findById as any).mockReturnValue({
-				select: vi.fn().mockResolvedValue(mockUser)
+			const result = await saveRecording(data);
+
+			expect(Lessons.findById).toHaveBeenCalledWith('lesson-id');
+			expect(upload).toHaveBeenCalledWith(expect.any(File));
+			expect(Recording).toHaveBeenCalledWith({
+				topic: lesson.topic,
+				description: lesson.description,
+				time: lesson.time,
+				date: lesson.date,
+				workspace: lesson.workspace,
+				url: 'http://example.com/video.mp4'
 			});
-
-			(Materials.find as any).mockResolvedValue([
-				{ _id: '1', title: 'Title', description: 'Desc' }
-			]);
-
-			(StreamClient as any).mockImplementation(() => ({
-				createToken: vi.fn().mockResolvedValue(mockToken)
-			}));
-
-			const result = await LessonLoad.load({
-				locals: { user: { id: '123' } },
-				params: { workspace: '321' }
-			});
-
-			expect(result).toEqual({
-				apiKey: 'mock-api-key',
-				user: {
-					id: '123',
-					image: 'profile.jpg',
-					name: 'John Doe'
-				},
-				token: mockToken,
-				materials: [
-					{
-						id: '1',
-						title: 'Title',
-						description: 'Desc'
-					}
-				]
-			});
+			expect(Recording().save).toHaveBeenCalled();
+			expect(result).toEqual({ success: true });
 		});
 
-		it('should handle the case when user is not found', async () => {
-			vi.mock('$env/static/private', () => ({
-				STREAM_API_KEY: 'mock-api-key',
-				STREAM_SECRET_KEY: 'mock-secret-key'
-			}));
+		it('should return 404 if lesson is not found', async () => {
+			Lessons.findById.mockResolvedValue(null);
 
-			(Users.findById as any).mockReturnValue({
-				select: vi.fn().mockResolvedValue(null)
+			const data = new FormData();
+			data.append('LessonID', 'lesson-id');
+			data.append('video', new File(['video content'], 'video.mp4'));
+
+			const result = await saveRecording(data);
+
+			expect(Lessons.findById).toHaveBeenCalledWith('lesson-id');
+			expect(fail).toHaveBeenCalledWith(404, { message: 'Lesson not found' });
+			expect(result).toBeUndefined();
+		});
+	});
+
+	describe('saveRecordingLink', () => {
+		it('should save a new recording link successfully', async () => {
+			const lesson = {
+				topic: 'Test Topic',
+				description: 'Test Description',
+				time: '10:00 AM',
+				date: new Date(),
+				workspace: 'Test Workspace'
+			};
+			Lessons.findById.mockResolvedValue(lesson);
+
+			const data = new FormData();
+			data.append('LessonID', 'lesson-id');
+			data.append('videolink', 'http://example.com/video.mp4');
+
+			const result = await saveRecordingLink(data);
+
+			expect(Lessons.findById).toHaveBeenCalledWith('lesson-id');
+			expect(Recording).toHaveBeenCalledWith({
+				topic: lesson.topic,
+				description: lesson.description,
+				time: lesson.time,
+				date: lesson.date,
+				workspace: lesson.workspace,
+				url: 'http://example.com/video.mp4'
 			});
+			expect(Recording().save).toHaveBeenCalled();
+			expect(result).toEqual({ success: true });
+		});
 
-			(StreamClient as any).mockImplementation(() => ({
-				createToken: vi.fn().mockResolvedValue('mock-token')
-			}));
+		it('should return 404 if lesson is not found', async () => {
+			Lessons.findById.mockResolvedValue(null);
 
-			await expect(
-				LessonLoad.load({ locals: { user: { id: '123' } }, params: {} })
-			).rejects.toEqual(error(404, 'User not found'));
+			const data = new FormData();
+			data.append('LessonID', 'lesson-id');
+			data.append('videolink', 'http://example.com/video.mp4');
+
+			const result = await saveRecordingLink(data);
+
+			expect(Lessons.findById).toHaveBeenCalledWith('lesson-id');
+			expect(fail).toHaveBeenCalledWith(404, { message: 'Lesson not found' });
+			expect(result).toBeUndefined();
+		});
+
+		it('should return 400 if no video link is provided', async () => {
+			const lesson = {
+				topic: 'Test Topic',
+				description: 'Test Description',
+				time: '10:00 AM',
+				date: new Date(),
+				workspace: 'Test Workspace'
+			};
+			Lessons.findById.mockResolvedValue(lesson);
+
+			const data = new FormData();
+			data.append('LessonID', 'lesson-id');
+
+			const result = await saveRecordingLink(data);
+
+			expect(Lessons.findById).toHaveBeenCalledWith('lesson-id');
+			expect(fail).toHaveBeenCalledWith(400, { message: 'No video link provided}' });
+			expect(result).toBeUndefined();
 		});
 	});
 });

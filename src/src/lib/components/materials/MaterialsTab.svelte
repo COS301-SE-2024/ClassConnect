@@ -25,6 +25,7 @@
 	export let tabName: any;
 	export let tabBoolean: boolean;
 	export let renderedMaterials: any[] = [];
+	export const role: string = '';
 
 	let id: string;
 	let title: string;

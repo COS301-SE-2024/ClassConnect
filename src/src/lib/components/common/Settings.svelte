@@ -7,44 +7,28 @@
 	import UploadPicture from '$lib/components/modals/settings/UploadPicture.svelte';
 	import UpdateGeneralDetails from '$lib/components/forms/UpdateGeneralDetails.svelte';
 	import UpdatePassword from '$lib/components/forms/UpdatePassword.svelte';
-	import axios from 'axios';
+	import { getUserData } from '$lib/utils';
 
 	export let user: any;
 
 	let openDeleteModal = false;
 	let openFileHandlingModal = false;
-	const apiUrl = '/api/user';
 
-	async function getUserData() {
+	async function updateUserData() {
 		try {
-			axios
-				.get(apiUrl)
-				.then((response) => {
-					console.log('User data:', response.data);
-					user = response.data;
-				})
-				.catch((error) => {
-					if (error.response) {
-						console.error('Error response data:', error.response.data);
-						console.error('Error response status:', error.response.status);
-					} else if (error.request) {
-						console.error('Error request:', error.request);
-					} else {
-						console.error('Error message:', error.message);
-					}
-				});
+			user = await getUserData();
 		} catch (error) {
-			console.error('There was a problem with the get operation:', error);
+			console.error('There was a problem with the get operation');
 		}
 	}
 
-	onMount(() => {
-		getUserData();
+	onMount(async () => {
+		await updateUserData();
 	});
 
 	$: {
 		change.subscribe(() => {
-			getUserData();
+			updateUserData();
 		});
 	}
 </script>

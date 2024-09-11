@@ -85,7 +85,6 @@
 							on:click={() => {
 								id = lesson.id;
 								open = true;
-								console.log('This is the id of the recording', id);
 							}}
 						>
 							Delete

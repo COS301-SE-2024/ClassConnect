@@ -7,9 +7,9 @@
 	let materials: any[] = [];
 	let DocumentMaterials: any[] = [];
 	let ObjectMaterials: any[] = [];
+	let role = data.role;
 
 	onMount(() => {
-		console.log('This is the data passed in: ', data.materials);
 		materials = data.materials;
 		ObjectMaterials = data.materials.filter((material: any) => material.type);
 		DocumentMaterials = data.materials.filter((material: any) => !material.type);
@@ -20,8 +20,18 @@
 	<Tabs tabStyle="underline">
 		<MaterialsTab tabName="All" tabBoolean={true} renderedMaterials={materials} />
 
-		<MaterialsTab tabName="Documents" tabBoolean={false} renderedMaterials={DocumentMaterials} />
+		<MaterialsTab
+			tabName="Documents"
+			tabBoolean={false}
+			renderedMaterials={DocumentMaterials}
+			{role}
+		/>
 
-		<MaterialsTab tabName="3D Objects" tabBoolean={false} renderedMaterials={ObjectMaterials} />
+		<MaterialsTab
+			tabName="3D Objects"
+			tabBoolean={false}
+			renderedMaterials={ObjectMaterials}
+			{role}
+		/>
 	</Tabs>
 </div>

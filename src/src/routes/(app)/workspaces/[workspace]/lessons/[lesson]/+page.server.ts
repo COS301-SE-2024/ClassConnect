@@ -1,13 +1,10 @@
 import { error } from '@sveltejs/kit';
 import type { Actions } from './$types';
-import type { Material } from '$src/types';
-import Materials from '$db/schemas/Material';
-import { upload } from '$lib/server/storage';
-import Lessons from '$db/schemas/Lesson';
-import Recording from '$db/schemas/Recording';
 import { StreamClient } from '@stream-io/node-sdk';
+import { validateLecturer } from '$lib/server/utils';
+import { getMaterials } from '$lib/server/utils/material';
+import { tokenProvider, saveRecording, saveRecordingLink } from '$lib/server/utils/lesson';
 import { STREAM_API_KEY, STREAM_SECRET_KEY } from '$env/static/private';
-
 import Users from '$db/schemas/User';
 import type { User } from '$src/types';
 import { fail } from '@sveltejs/kit';
@@ -47,55 +44,6 @@ export const load = async ({ locals, params }) => {
 	}
 };
 
-function validateLecturer(locals: any) {
-	if (!locals.user || locals.user.role !== 'lecturer') throw error(401, 'Unauthorized');
-}
-
-async function saveRecording(data: FormData) {
-	const video_file = data.get('video') as File;
-	const lesson_id = data.get('LessonID') as string;
-	const lesson = await Lessons.findById(lesson_id);
-
-	if (!lesson) return fail(404, { message: 'Lesson not found' });
-
-	const url: string = await upload(video_file);
-
-	const newRecording = new Recording({
-		url,
-		date: lesson.date,
-		time: lesson.time,
-		topic: lesson.topic,
-		workspace: lesson.workspace,
-		description: lesson.description
-	});
-
-	await newRecording.save();
-
-	return { success: true };
-}
-
-async function tokenProvider(id: string, streamClient: StreamClient) {
-	const issuedAt = Math.floor(Date.now() / 1000) - 60;
-	const expirationTime = Math.floor(Date.now() / 1000) + 3600;
-	return streamClient.createToken(id, expirationTime, issuedAt);
-}
-
-function formatMaterial(material: any): Partial<Material> {
-	return {
-		title: material.title,
-		description: material.description,
-		file_path: material.file_path,
-		thumbnail: material.thumbnail,
-		type: material.type,
-		id: material._id.toString()
-	};
-}
-
-async function getMaterials(workspace_id: string): Promise<Partial<Material>[]> {
-	const materials = await Materials.find({ workspace_id });
-	return materials.map(formatMaterial);
-}
-
 export const actions: Actions = {
 	SaveRecording: async ({ request, locals }) => {
 		validateLecturer(locals);
@@ -103,6 +51,17 @@ export const actions: Actions = {
 			const data = await request.formData();
 
 			return await saveRecording(data);
+		} catch (e) {
+			console.error('Error saving recording:', e);
+			return fail(500, { message: 'Failed to save recording' });
+		}
+	},
+	SaveRecordingLink: async ({ request, locals }) => {
+		validateLecturer(locals);
+		try {
+			const data = await request.formData();
+
+			return await saveRecordingLink(data);
 		} catch (e) {
 			console.error('Error saving recording:', e);
 			return fail(500, { message: 'Failed to save recording' });
