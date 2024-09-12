@@ -7,6 +7,8 @@ import type { ObjectId } from 'mongoose';
 import Quizzes from '$db/schemas/Quiz';
 import Questions from '$db/schemas/Question';
 import Grade from '$db/schemas/Grades';
+import Materials from '$db/schemas/Material';
+import type { Material } from '$src/types';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	try {
@@ -14,6 +16,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		const workspaceID = params.workspace;
 		const quizId = params.quiz;
 		const questions = await Questions.find({ quiz: quizId });
+		const materials = await getMaterials(workspaceID);
 
 		const quiz = await Quizzes.findById(quizId);
 		if (!quiz) {
@@ -35,7 +38,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 					points: option.points
 				}))
 			})),
-			workspaceID
+			workspaceID,
+			materials
 		};
 	} catch (e) {
 		console.error('Failed to load Questions: ', e);
@@ -68,6 +72,22 @@ async function createQuestion(
 	return { success: true };
 }
 
+
+async function getMaterials(workspace_id: string): Promise<Partial<Material>[]> {
+	const materials = await Materials.find({ workspace_id });
+	return materials.map(formatMaterial);
+}
+
+function formatMaterial(material: any): Partial<Material> {
+	return {
+		title: material.title,
+		description: material.description,
+		file_path: material.file_path,
+		thumbnail: material.thumbnail,
+		type: material.type,
+		id: material._id.toString()
+	};
+}
 
 
 
