@@ -25,6 +25,52 @@ declare global {
 		content: string;
 		createdBy: string;
 	}
+
+	interface GradeData {
+		_id: string;
+		studentID: string;
+		quizID: string;
+		workspaceID: string;
+		mark: number;
+	}
+
+	interface QuizData {
+		_id: string;
+		title: string;
+		totalPossibleScore: number;
+	}
+
+	interface AssessmentStat {
+		name: string;
+		submitted: number;
+		average: number;
+		passRate: number;
+	}
+
+	interface StudentGrade {
+		name: string;
+		grades: number[];
+	}
+
+	interface Lesson {
+		id: string;
+		time: string;
+		date: string;
+		topic: string;
+		workspace: string;
+		recurrence: string;
+		description: string;
+	}
+
+	interface Recording {
+		id: string;
+		url: string;
+		time: string;
+		date: string;
+		topic: string;
+		workspace: string;
+		description: string;
+	}
 }
 
 export {};

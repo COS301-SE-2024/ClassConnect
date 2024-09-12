@@ -23,7 +23,7 @@
 <main class="container mx-auto my-4 px-4">
 	<h1 class="mb-4 text-2xl font-bold">Create a New Question</h1>
 
-	<form method="POST" action="?/postMCQ" class="flex flex-col" use:enhance={close}>
+	<form method="POST" action="?/post3D" class="flex flex-col" use:enhance={close}>
 		{#if error}
 			<p class="mt-2 text-center text-red-500">{error}</p>
 		{/if}
@@ -49,24 +49,7 @@
 				required
 			/>
 		</div>
-
-		{#each [0, 1, 2] as index}
-			<div class="mb-4">
-				<Label>
-					Option {index + 1}
-					<Input
-						type="text"
-						name="options[{index}].content"
-						placeholder="Write answer option"
-						size="lg"
-					/>
-				</Label>
-				<Label class="mb-4 space-y-2">
-					<span>Points</span>
-					<NumberInput name="options[{index}].points" />
-				</Label>
-			</div>
-		{/each}
+        
 		<Button type="submit" class="mt-4 w-full">Submit Question</Button>
 	</form>
 </main>

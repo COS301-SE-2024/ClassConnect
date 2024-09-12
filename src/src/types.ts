@@ -33,25 +33,6 @@ export interface Workspace {
 	description: string;
 }
 
-export interface Lesson {
-	id: string;
-	topic: string;
-	time: string;
-	date: string;
-	description: string;
-	workspace: string;
-}
-
-export interface Recording {
-	id: string;
-	topic: string;
-	time: string;
-	date: string;
-	description: string;
-	workspace: string;
-	url: string;
-}
-
 export interface Material {
 	id: string;
 	title: string;
@@ -108,31 +89,5 @@ export interface Question {
 	questionNumber: number;
 	questionContent: string;
 	questionType: string;
-	options: Option[];
-}
-
-export interface GradeData {
-	_id: string;
-	studentID: string;
-	quizID: string;
-	workspaceID: string;
-	mark: number;
-}
-
-export interface QuizData {
-	_id: string;
-	title: string;
-	totalPossibleScore: number;
-}
-
-export interface AssessmentStat {
-	name: string;
-	submitted: number;
-	average: number;
-	passRate: number;
-}
-
-export interface StudentGrade {
-	name: string;
-	grades: number[];
+	options: Option[] | null;
 }

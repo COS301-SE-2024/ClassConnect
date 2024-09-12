@@ -1,56 +1,14 @@
 <script>
 	import { Avatar, Navbar, DarkMode } from 'flowbite-svelte';
-	import { onMount } from 'svelte';
-	import { change } from '$lib/store';
 	import BreadCrumbs from '$lib/components/common/Breadcrumbs.svelte';
-	import axios from 'axios';
 
 	export let data;
 
-	let { name, image } = data;
-	const apiUrl = '/api/user';
-
-	async function getUserData() {
-		try {
-			await axios
-				.get(apiUrl)
-				.then((response) => {
-					console.log('User data:', response.data);
-					const user = response.data;
-					name = user.name;
-					image = user.image;
-				})
-				.catch((error) => {
-					if (error) {
-						console.log('An error occurred');
-					}
-					// if (error.response) {
-					// 	console.error('Error response data:', error.response.data);
-					// 	console.error('Error response status:', error.response.status);
-					// } else if (error.request) {
-					// 	console.error('Error request:', error.request);
-					// } else {
-					// 	console.error('Error message:', error.message);
-					// }
-				});
-		} catch (error) {
-			console.error('There was a problem with the get operation:', error);
-		}
-	}
-
-	onMount(async () => {
-		getUserData();
-	});
-
-	$: {
-		change.subscribe(async () => {
-			await getUserData();
-		});
-	}
+	$: ({ name, image, maps } = data);
 </script>
 
 <Navbar data-testid="navbar">
-	<BreadCrumbs />
+	<BreadCrumbs {maps} />
 
 	<div class="flex items-center md:order-2">
 		<DarkMode

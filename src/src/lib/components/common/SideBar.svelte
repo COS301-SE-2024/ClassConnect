@@ -13,6 +13,7 @@
 		AdjustmentsHorizontalSolid
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
+	import {speak, cancel} from '../webspeech/speechSynthesis';
 
 	export let role: 'lecturer' | 'admin' | 'student';
 
@@ -45,6 +46,14 @@
 	];
 
 	const currentLinks = navLinks[role];
+
+	function handleMouseEnter(name: string) {
+		speak(name);
+	}
+
+	function handleMouseLeave() {
+		cancel();
+	}
 </script>
 
 <aside
@@ -65,6 +74,8 @@
 					? 'active-sidebar dark:text-gray-800'
 					: ''}"
 				{href}
+				on:mouseenter={() => handleMouseEnter(name)}
+				on:mouseleave={handleMouseLeave}
 			>
 				<svelte:component this={icon} class="h-5 w-5" />
 				<span class="ml-4 text-base font-medium">{name}</span>
@@ -80,6 +91,8 @@
 					? 'active-sidebar dark:text-gray-800'
 					: ''}"
 				{href}
+				on:mouseenter={() => handleMouseEnter(name)}
+				on:mouseleave={handleMouseLeave}
 			>
 				<svelte:component this={icon} class="h-5 w-5" />
 				<span class="ml-4 text-base font-medium">{name}</span>
@@ -90,6 +103,8 @@
 	<a
 		class="mt-6 flex items-center rounded-lg px-4 py-2 text-gray-600 transition duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800"
 		href="/signout"
+		on:mouseenter={() => handleMouseEnter('Sign Out')}
+		on:mouseleave={handleMouseLeave}
 	>
 		<svelte:component this={ArrowLeftToBracketOutline} class="h-5 w-5" />
 		<span class="ml-4 text-base font-medium">Sign Out</span>

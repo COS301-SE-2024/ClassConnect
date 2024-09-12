@@ -53,7 +53,7 @@ async function createQuestion(
 	questionNumber: number,
 	questionContent: string,
 	questionType: string,
-	options: { content: string; points: number }[],
+	options: { content: string; points: number }[] | null,
 	quizId: ObjectId | undefined
 ) {
 	const newQuestion = new Questions({
@@ -63,10 +63,13 @@ async function createQuestion(
 		options,
 		quiz: quizId
 	});
-	//console.log(newQuestion);
+	
 	await newQuestion.save();
 	return { success: true };
 }
+
+
+
 
 async function saveGrade(
 	studentID: ObjectId,
@@ -87,7 +90,7 @@ async function saveGrade(
 
 //actions
 export const actions: Actions = {
-	post: async ({ request, locals, params }) => {
+	postMCQ: async ({ request, locals, params }) => {
 		validateLecturer(locals);
 		try {
 			const data = await request.formData();
@@ -114,6 +117,25 @@ export const actions: Actions = {
 			return fail(500, { error: 'Failed to create question' });
 		}
 	},
+
+	post3D: async ({ request, locals, params }) => {
+		validateLecturer(locals);
+		try {
+			const data = await request.formData();
+			const questionNumber = parseInt(data.get('questionNumber') as string, 10);
+			const questionContent = data.get('questionContent') as string;
+			const questionType = '3d-hotspot';
+			const options = null;
+
+			const quizId = new mongoose.Types.ObjectId(params.quiz);
+			return await createQuestion(questionNumber, questionContent, questionType, options, quizId);
+		} catch (error) {
+			console.error('Error creating question:', error);
+			return fail(500, { error: 'Failed to create question' });
+		}
+	},
+
+
 	submitQuiz: async ({ request, locals, params }) => {
 		if (!locals.user) {
 			throw error(401, 'Unauthorized');

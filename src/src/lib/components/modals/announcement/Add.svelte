@@ -1,38 +1,32 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import Banner from '$lib/components/common/Banner.svelte';
 	import { Button, Modal, Label, Input } from 'flowbite-svelte';
+	import toast, { Toaster } from 'svelte-french-toast';
 
 	export let id: string;
 	export let open: boolean;
 
 	let error: string;
-	let color: string;
-	let message: string;
-	let display: boolean = false;
 
 	function close() {
+		const toastId = toast.loading('Adding announcement...');
 		return async ({ result, update }: any) => {
 			if (result.type === 'success') {
 				await update();
-				message = 'Addition was successful';
-				color = 'green';
+				toast.dismiss(toastId);
+				toast.success('Announcement added successfully');
 				open = false;
-				display = true;
 			} else {
 				error = result.data?.error;
-				message = 'Addition failed';
-				color = 'red';
+				toast.dismiss(toastId);
+				toast.error('Addition failed: ' + error);
 				open = false;
-				display = true;
 			}
 		};
 	}
 </script>
 
-{#if display}
-	<Banner type="Add" {color} {message} />
-{/if}
+<Toaster />
 
 <Modal bind:open size="xs" class="w-full">
 	<form method="POST" action="?/post" class="flex flex-col" use:enhance={close}>
