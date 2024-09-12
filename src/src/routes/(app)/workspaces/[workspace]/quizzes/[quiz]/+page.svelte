@@ -178,6 +178,8 @@
 				{questions}
 				{selectedAnswers}
 				{handleSelection}/>
+			{:else if selectedQuestionType === '3d-hotpsot'}
+				<ThreeDScene {data}/>
 			{/if}
 
 
@@ -216,8 +218,9 @@
 		{#if selectedQuestionType==='multiple-choice'}
 			<Form bind:open={isFormOpen} on:formSubmitted={handleFormSubmit} />
 		{:else if selectedQuestionType==='3d-hotspot'}
-			<ThreeDForm bind:open={isFormOpen} on:formSubmitted={handleFormSubmit}/>
-			<ThreeDScene {data}/>
+			<ThreeDForm bind:open={isFormOpen} on:formSubmitted={handleFormSubmit}>
+				<ThreeDScene {data} slot="scene" />
+			</ThreeDForm>
 		{/if}
 	{:else}
 		<P class="text-lg text-gray-700 dark:text-gray-300"

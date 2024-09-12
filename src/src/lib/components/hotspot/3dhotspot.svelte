@@ -149,8 +149,11 @@
 <canvas bind:this={canvas}></canvas>
 
 <style>
-    canvas {
-        width: 40%;
-        height: 40%;
+     canvas {
+        width: 100%;              
+        height: calc(100vh / 4);   
+        max-width: 100%;           
+        object-fit: contain;       
     }
+
 </style>
