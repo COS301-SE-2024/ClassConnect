@@ -11,11 +11,13 @@
 	import { writingQuiz } from '$lib/store/sidebar';
 	import { goto } from '$app/navigation';
 	import MCQ from '$lib/components/questions/MCQ.svelte';
+	import ThreeDScene from '$lib/components/hotspot/3dhotspot.svelte';
 	
 	import { selectedQuestionTypeStore } from '$lib/store/questions';
 
 	export let data: any;
 	console.log(data);
+	
 	const workspaceID = data.workspaceID;
 	let elapsed = 0;
 	let isFormOpen = false;
@@ -31,7 +33,7 @@
 		console.log('Selected Question Type:', selectedQuestionType);
 	});
 
-	$: ({ questions, role, duration } = data);
+	$: ({ questions, role, duration, materials } = data);
 	$: activeTimer = role === 'student' && !isPreview;
 	$: isPreview = $page.url.searchParams.get('preview') === 'true';
 
@@ -215,6 +217,7 @@
 			<Form bind:open={isFormOpen} on:formSubmitted={handleFormSubmit} />
 		{:else if selectedQuestionType==='3d-hotspot'}
 			<ThreeDForm bind:open={isFormOpen} on:formSubmitted={handleFormSubmit}/>
+			<ThreeDScene {data}/>
 		{/if}
 	{:else}
 		<P class="text-lg text-gray-700 dark:text-gray-300"

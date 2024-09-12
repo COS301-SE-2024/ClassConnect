@@ -4,12 +4,13 @@
     import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
     import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
     import { DragControls } from 'three/examples/jsm/controls/DragControls.js'; // Import DragControls
-
+    
     export let data: any;
-
+    
     let { models } = data;
     console.log('Role: ', data.role);
-
+    
+    console.log('file path', data.materials[0]);
     let canvas: HTMLCanvasElement;
     let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
     let controls: OrbitControls;
@@ -106,7 +107,7 @@
 
     function loadModel() {
         const loader = new GLTFLoader();
-        loader.load(models[0].file_path, (gltf) => {
+        loader.load(data.materials[0].file_path, (gltf) => {
             loadedModel = gltf.scene;
             scene.add(loadedModel);
         });
@@ -149,7 +150,7 @@
 
 <style>
     canvas {
-        width: 50%;
-        height: 50%;
+        width: 40%;
+        height: 40%;
     }
 </style>
