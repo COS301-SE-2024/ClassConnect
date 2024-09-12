@@ -5,6 +5,7 @@ export interface User {
 	image: string;
 	surname: string;
 	username: string;
+	workspaces: string;
 }
 
 export interface Lesson {

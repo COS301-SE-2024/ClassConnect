@@ -10,6 +10,9 @@
 	let error: string;
 	let value: string;
 
+	export let _name = '';
+	export let _description = '';
+
 	function close({ formData, cancel }: any) {
 		const image = formData.get('image') as File;
 
@@ -78,17 +81,12 @@
 
 		<Label for="name" class="space-y-2">
 			<span>Name</span>
-			<Input type="text" id="name" name="name" placeholder="Physics" />
+			<Input type="text" id="name" name="name" value={_name} />
 		</Label>
 
 		<Label for="description" class="space-y-2">
 			<span>Description</span>
-			<Input
-				type="text"
-				id="description"
-				name="description"
-				placeholder="Introduction Newtons laws of motion"
-			/>
+			<Input type="text" id="description" name="description" value={_description} />
 		</Label>
 
 		<Label for="owner" class="space-y-2">
