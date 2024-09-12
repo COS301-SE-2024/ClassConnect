@@ -53,7 +53,7 @@ async function createQuestion(
 	questionNumber: number,
 	questionContent: string,
 	questionType: string,
-	options: { content: string; points: number }[],
+	options: { content: string; points: number }[] | null,
 	quizId: ObjectId | undefined
 ) {
 	const newQuestion = new Questions({
@@ -63,10 +63,13 @@ async function createQuestion(
 		options,
 		quiz: quizId
 	});
-	//console.log(newQuestion);
+	
 	await newQuestion.save();
 	return { success: true };
 }
+
+
+
 
 async function saveGrade(
 	studentID: ObjectId,
@@ -115,25 +118,14 @@ export const actions: Actions = {
 		}
 	},
 
-	post3d: async ({ request, locals, params }) => {
+	post3D: async ({ request, locals, params }) => {
 		validateLecturer(locals);
 		try {
 			const data = await request.formData();
 			const questionNumber = parseInt(data.get('questionNumber') as string, 10);
 			const questionContent = data.get('questionContent') as string;
 			const questionType = '3d-hotspot';
-
-			const options = [];
-			for (let i = 0; i < 3; i++) {
-				const optionContent = data.get(`options[${i}].content`);
-				const optionPoints = data.get(`options[${i}].points`);
-				if (optionContent && optionPoints) {
-					options.push({
-						content: optionContent as string,
-						points: parseInt(optionPoints as string, 10)
-					});
-				}
-			}
+			const options = null;
 
 			const quizId = new mongoose.Types.ObjectId(params.quiz);
 			return await createQuestion(questionNumber, questionContent, questionType, options, quizId);

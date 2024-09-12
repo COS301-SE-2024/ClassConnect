@@ -22,7 +22,10 @@ const questionSchema = new mongoose.Schema({
 		required: true
 	},
 
-	options: [optionSchema],
+	options: {
+		type: [optionSchema],
+		required: false
+	},
 
 	quiz: {
 		type: mongoose.Types.ObjectId,

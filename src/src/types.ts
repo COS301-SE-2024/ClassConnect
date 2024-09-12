@@ -89,5 +89,5 @@ export interface Question {
 	questionNumber: number;
 	questionContent: string;
 	questionType: string;
-	options: Option[];
+	options: Option[] | null;
 }
