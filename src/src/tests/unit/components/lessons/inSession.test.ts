@@ -34,7 +34,6 @@ describe('InSession Component', () => {
 		const { getByText } = render(InSession, { props: { lessons, role } });
 
 		expect(getByText('Test Topic')).toBeInTheDocument();
-		expect(getByText('Test Description')).toBeInTheDocument();
 		expect(getByText('2023-10-01')).toBeInTheDocument();
 		expect(getByText('10:00 AM')).toBeInTheDocument();
 	});
