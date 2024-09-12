@@ -2,6 +2,7 @@
 	//[quiz].page.svelte
 	import { Progressbar, Button, Radio, Card, Heading, P } from 'flowbite-svelte';
 	import Form from '$lib/components/questions/Form.svelte';
+	import ThreeDForm from '$lib/components/questions/3Dform.svelte';
 	import { enhance } from '$app/forms';
 	import Submission from '$lib/components/modals/quizzes/Submission.svelte';
 	import { browser } from '$app/environment';
@@ -10,8 +11,7 @@
 	import { writingQuiz } from '$lib/store/sidebar';
 	import { goto } from '$app/navigation';
 	import MCQ from '$lib/components/questions/MCQ.svelte';
-	import ThreeD from "$lib/components/hotspot/3dhotspot.svelte";
-	import TwoD from "$lib/components/hotspot/3dhotspot.svelte";
+	
 	import { selectedQuestionTypeStore } from '$lib/store/questions';
 
 	export let data: any;
@@ -214,7 +214,7 @@
 		{#if selectedQuestionType==='multiple-choice'}
 			<Form bind:open={isFormOpen} on:formSubmitted={handleFormSubmit} />
 		{:else if selectedQuestionType==='3d-hotspot'}
-			<ThreeD/>
+			<ThreeDForm bind:open={isFormOpen} on:formSubmitted={handleFormSubmit}/>
 		{/if}
 	{:else}
 		<P class="text-lg text-gray-700 dark:text-gray-300"

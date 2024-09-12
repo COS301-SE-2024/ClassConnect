@@ -88,7 +88,7 @@ async function saveGrade(
 	return { success: true };
 }
 
-//actions
+
 export const actions: Actions = {
 	postMCQ: async ({ request, locals, params }) => {
 		validateLecturer(locals);

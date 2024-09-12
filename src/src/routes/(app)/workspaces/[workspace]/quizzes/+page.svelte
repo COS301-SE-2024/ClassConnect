@@ -75,6 +75,7 @@
 
 	function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {
 		// isQuizFormOpen = true;
+		console.log('Type selected in event:', event.detail.type);
 		selectedQuestionTypeStore.set(event.detail.type);
 		openQuiz(id);
 	}
