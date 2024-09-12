@@ -34,7 +34,6 @@
     const currentLinks = navLinks[role];
   </script>
   
-  <div class="relative px-4 sm:px-6 lg:px-8">
     <Navbar class="px-2 sm:px-4 py-2.5 fixed w-full z-20 top-0 start-0 border-b">
       <NavBrand href="/">
         <img src="images/class-connect-logo.png" class="h-8 sm:h-10 mr-3" alt="ClassConnect Logo" />
@@ -54,4 +53,3 @@
         {/each}
       </NavUl>
     </Navbar>
-  </div>
