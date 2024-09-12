@@ -1,3 +1,4 @@
+<!--
 <script>
 	import { Avatar, Navbar, DarkMode } from 'flowbite-svelte';
 	import BreadCrumbs from '$lib/components/common/Breadcrumbs.svelte';
@@ -8,6 +9,8 @@
 	export let data;
 
 	$: ({ name, image, maps } = data);
+
+	let isMobile;
 
 	async function updateUserData() {
 		try {
@@ -21,6 +24,16 @@
 
 	onMount(async () => {
 		updateUserData();
+		const checkMobile = () => {
+			isMobile = window.innerWidth < 768;
+		};
+
+		checkMobile();
+		window.addEventListener('resize', checkMobile);
+
+		return () => {
+			window.removeEventListener('resize', checkMobile);
+		};
 	});
 
 	$: {
@@ -30,13 +43,14 @@
 	}
 </script>
 
-<!-- Wrapping the Navbar in a div with a right margin -->
-<div class="mr-4">
+<div class="m-4 {isMobile ? 'ml-4' : 'ml-72'}">
 	<Navbar
 		data-testid="navbar"
-		class="mb-4 mt-4 rounded-xl bg-white px-4 py-2 shadow-md dark:bg-gray-900"
+		class="glassmorphic rounded-xl bg-white/60 px-4 py-2 shadow-md dark:bg-gray-900/60 transition-all duration-300 ease-in-out"
 	>
-		<BreadCrumbs {maps} />
+		{#if !isMobile}
+			<BreadCrumbs {maps} />
+		{/if}
 
 		<div class="flex items-center md:order-2">
 			<DarkMode
@@ -46,9 +60,33 @@
 
 			<Avatar id="avatar-menu" src={image} class="mx-2" data-testid="avatar" />
 
-			<div class="mx-2">
-				<div class="text-lg font-semibold">{name}</div>
-			</div>
+			{#if !isMobile}
+				<div class="mx-2">
+					<div class="text-lg font-semibold">{name}</div>
+				</div>
+			{/if}
 		</div>
 	</Navbar>
 </div>
+
+<style>
+	.glassmorphic {
+		backdrop-filter: blur(10px);
+		-webkit-backdrop-filter: blur(10px);
+		position: relative;
+		overflow: hidden;
+	}
+
+	.glassmorphic::before {
+		content: "";
+		position: absolute;
+		top: -50%;
+		left: -50%;
+		width: 200%;
+		height: 200%;
+		background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+		transform: rotate(30deg);
+		pointer-events: none;
+	}
+</style>
+-->

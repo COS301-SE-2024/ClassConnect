@@ -2,7 +2,8 @@
 	import { page } from '$app/stores';
 	import { afterNavigate } from '$app/navigation';
 
-	import Header from '$lib/components/common/Header.svelte';
+	import Navbar from '$lib/components/common/Navbar.svelte';
+	//import Header from '$lib/components/common/Header.svelte';
 	import SideBar from '$lib/components/common/SideBar.svelte';
 	import WorkspaceSidebar from '$src/lib/components/workspaces/workspace/Sidebar.svelte';
 
@@ -27,13 +28,12 @@
 		</div>
 	{:else}
 		<div class="sticky top-0 h-screen">
-			<SideBar {role} />
 		</div>
 	{/if}
 
 	<div class="main-content flex-1">
 		<div class="sticky top-0">
-			<Header {data} />
+			<Navbar {role}/>
 		</div>
 
 		<slot />
