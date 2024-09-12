@@ -1,6 +1,6 @@
 
 let speechSynthesis: SpeechSynthesis;
-let speechRate = 1;
+let speechRate = 0.5;
 
 if (typeof window !== 'undefined') {
     speechSynthesis = window.speechSynthesis;
