@@ -7,7 +7,6 @@
 	import UploadPicture from '$lib/components/modals/settings/UploadPicture.svelte';
 	import UpdateGeneralDetails from '$lib/components/forms/UpdateGeneralDetails.svelte';
 	import UpdatePassword from '$lib/components/forms/UpdatePassword.svelte';
-	import UpdateTheme from '$lib/components/common/UpdateTheme.svelte';
 	import { getUserData } from '$lib/utils';
 
 	export let user: any;
@@ -52,7 +51,6 @@
 					alt="profile"
 				/>
 				<div>
-					
 					<div class="mb-4 text-sm text-gray-500 dark:text-gray-400">
 						JPG, WEBP or PNG. Max size of 1 MB
 					</div>

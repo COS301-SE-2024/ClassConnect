@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, ImagePlaceholder, Skeleton, TextPlaceholder } from 'flowbite-svelte';
-  
-    export let role: 'lecturer' | 'admin' | 'student';
-    export let activeUrl = '';
+	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
 
-    const navLinks = {
+	export let role: 'lecturer' | 'admin' | 'student';
+	export let activeUrl = '';
+
+	const navLinks = {
 		admin: [
 			{ name: 'Dashboard', href: '/dashboard' },
 			{ name: 'Announcements', href: '/announcements' },
@@ -26,7 +26,7 @@
 		]
 	};
 
-    const commonLinks = [
+	const commonLinks = [
 		{ name: 'Settings', href: '/settings' },
 		{ name: 'FAQ', href: '/faq' }
 	];

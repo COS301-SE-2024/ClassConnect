@@ -3,8 +3,6 @@
 	import { afterNavigate } from '$app/navigation';
 
 	import Navbar from '$lib/components/common/Navbar.svelte';
-	//import Header from '$lib/components/common/Header.svelte';
-	import SideBar from '$lib/components/common/SideBar.svelte';
 	import WorkspaceSidebar from '$src/lib/components/workspaces/workspace/Sidebar.svelte';
 
 	export let data: any;
@@ -27,13 +25,12 @@
 			<WorkspaceSidebar {role} {workspace} />
 		</div>
 	{:else}
-		<div class="sticky top-0 h-screen">
-		</div>
+		<div class="sticky top-0 h-screen"></div>
 	{/if}
 
 	<div class="main-content flex-1">
 		<div class="sticky top-0">
-			<Navbar {role}/>
+			<Navbar {role} />
 		</div>
 
 		<slot />

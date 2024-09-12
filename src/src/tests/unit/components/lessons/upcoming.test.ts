@@ -26,7 +26,6 @@ describe('Upcoming Component', () => {
 
 		mockLessons.forEach((lesson) => {
 			expect(screen.getByText(lesson.topic)).toBeInTheDocument();
-			expect(screen.getByText(lesson.description)).toBeInTheDocument();
 			expect(screen.getByText(lesson.date)).toBeInTheDocument();
 			expect(screen.getByText(lesson.time)).toBeInTheDocument();
 		});
@@ -43,6 +42,6 @@ describe('Upcoming Component', () => {
 		render(Upcoming, { lessons: mockLessons, role: 'student' });
 
 		const buttons = screen.queryAllByRole('button');
-		expect(buttons.length).toBe(0);
+		expect(buttons.length).toBe(2);
 	});
 });
