@@ -94,7 +94,7 @@
 	let totalPoints = 0;
 	let totalPossiblePoints = 0;
 	let percentageScore = 0;
-	let hotspotResults: { [key: string]: boolean } = {};
+	
 
 	function handleSelection(questionId: string, optionContent: string) {
 		selectedAnswers[questionId] = optionContent;
@@ -106,8 +106,8 @@
 				const selectedOption = question.options.find(
 					(option: any) => option.content === selectedAnswers[question.questionNumber]
 				);
-				const questionPoints = selectedOption ? selectedOption.points : 0;
-				totalPoints += questionPoints;
+				const questionPoint = selectedOption ? selectedOption.points : 0;
+				totalPoints += questionPoint;
 
 				const maxPoints = Math.max(...question.options.map((option: any) => option.points));
 				totalPossiblePoints += maxPoints;
@@ -119,7 +119,7 @@
 					alert('Correct!');
 				}
 				totalPoints += pointsForHotspot;
-				totalPossiblePoints += question.points;
+				totalPossiblePoints += question.questionPoints;
 			}
 		});
 

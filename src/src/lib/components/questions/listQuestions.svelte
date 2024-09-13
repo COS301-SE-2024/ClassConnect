@@ -17,6 +17,13 @@
 			<Heading tag="h2" class="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
 				Question {question.questionNumber}
 			</Heading>
+
+			{#if question.questionType==='3d-hotspot'}
+				<P class="mb-6 font-semibold text-blue-800">
+					Tip: Drag the sphere to the desired position. Check all perspectives to ensure proper intersection with the model.
+				</P>
+			{/if}
+
 			<P class="mb-6 text-lg text-gray-700 dark:text-gray-300">
 				{question.questionContent}
 			</P>
