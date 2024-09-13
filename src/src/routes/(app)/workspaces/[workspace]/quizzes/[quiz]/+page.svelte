@@ -102,12 +102,6 @@
 	function handleSelection(questionId: string, optionContent: string) {
 		selectedAnswers[questionId] = optionContent;
 	}
-
-	function handleProximityCheck(event: CustomEvent, questionId: string) {
-		const { isCorrect } = event.detail;
-		hotspotResults[questionId] = isCorrect;
-	}
-
 	function calculateTotalPoints() {
 		questions.forEach((question: any) => {
 		if (question.type === 'multiple-choice') {
@@ -188,7 +182,7 @@
 			{/if}
 
 			<ListQuestions {questions} {selectedAnswers} {handleSelection}>
-				<ThreeDScene {data} slot="scene" on:proximityCheck={(event) => handleProximityCheck(event, questions.id)}/>
+				<ThreeDScene {data} slot="scene" />
 			</ListQuestions>
 
 
