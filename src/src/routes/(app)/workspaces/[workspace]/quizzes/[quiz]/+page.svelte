@@ -11,9 +11,11 @@
 	import { writingQuiz } from '$lib/store/sidebar';
 	import { goto } from '$app/navigation';
 	import MCQ from '$lib/components/questions/MCQ.svelte';
+	import ThreeDCard from '$lib/components/questions/3DCard.svelte';
 	import ThreeDScene from '$lib/components/hotspot/3dhotspot.svelte';
 	
 	import { selectedQuestionTypeStore } from '$lib/store/questions';
+	
 
 	export let data: any;
 	console.log(data);
@@ -33,9 +35,10 @@
 		console.log('Selected Question Type:', selectedQuestionType);
 	});
 
-	$: ({ questions, role, duration, materials } = data);
+	$: ({ questions, role, duration } = data);
 	$: activeTimer = role === 'student' && !isPreview;
 	$: isPreview = $page.url.searchParams.get('preview') === 'true';
+	$: console.log('Questions:', questions); 
 
 	let last_time: number;
 	let frame: number;
@@ -172,15 +175,14 @@
 				</div>
 			{/if}
 
-			
-			{#if selectedQuestionType === 'multiple-choice'}
 				<MCQ
 				{questions}
 				{selectedAnswers}
 				{handleSelection}/>
-			{:else if selectedQuestionType === '3d-hotpsot'}
-				<ThreeDScene {data}/>
-			{/if}
+			
+				<ThreeDCard {questions}>
+					<ThreeDScene {data} slot="scene" />
+				</ThreeDCard>
 
 
 			{#if role === 'student' && !isPreview}

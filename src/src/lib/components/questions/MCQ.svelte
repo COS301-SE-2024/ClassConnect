@@ -2,6 +2,7 @@
     import { Radio, Card, Heading, P } from 'flowbite-svelte';
     
     export let questions: any[] = [];
+    console.log('Q', questions);
     export let selectedAnswers: { [key: string]: string } = {};
     export let handleSelection: (questionId: string, optionContent: string) => void;
   </script>

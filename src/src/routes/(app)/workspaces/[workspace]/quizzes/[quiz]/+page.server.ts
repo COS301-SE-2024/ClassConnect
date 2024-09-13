@@ -33,10 +33,10 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 				questionNumber: q.questionNumber,
 				questionContent: q.questionContent,
 				questionType: q.questionType,
-				options: q.options.map((option: { content: any; points: any }) => ({
+				options: q.options ? q.options.map((option: { content: any; points: any }) => ({
 					content: option.content,
 					points: option.points
-				}))
+				})) : null // if null
 			})),
 			workspaceID,
 			materials
