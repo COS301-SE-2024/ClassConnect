@@ -57,6 +57,7 @@ function validateLecturer(locals: any) {
 async function createQuestion(
 	questionNumber: number,
 	questionContent: string,
+	questionPoints: number | null,
 	questionType: string,
 	options: { content: string; points: number }[] | null,
 	quizId: ObjectId | undefined
@@ -64,6 +65,7 @@ async function createQuestion(
 	const newQuestion = new Questions({
 		questionNumber,
 		questionContent,
+		questionPoints,
 		questionType,
 		options,
 		quiz: quizId
@@ -128,7 +130,7 @@ export const actions: Actions = {
 			}
 
 			const quizId = new mongoose.Types.ObjectId(params.quiz);
-			return await createQuestion(questionNumber, questionContent, questionType, options, quizId);
+			return await createQuestion(questionNumber, questionContent,null, questionType, options, quizId);
 		} catch (error) {
 			console.error('Error creating question:', error);
 			return fail(500, { error: 'Failed to create question' });
@@ -142,10 +144,11 @@ export const actions: Actions = {
 			const questionNumber = parseInt(data.get('questionNumber') as string, 10);
 			const questionContent = data.get('questionContent') as string;
 			const questionType = '3d-hotspot';
+			const questionPoints = parseInt(data.get('points') as string, 10);
 			const options = null;
 
 			const quizId = new mongoose.Types.ObjectId(params.quiz);
-			return await createQuestion(questionNumber, questionContent, questionType, options, quizId);
+			return await createQuestion(questionNumber, questionContent,questionPoints, questionType, options, quizId);
 		} catch (error) {
 			console.error('Error creating question:', error);
 			return fail(500, { error: 'Failed to create question' });

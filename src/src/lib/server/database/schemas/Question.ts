@@ -21,11 +21,17 @@ const questionSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-
+	
+	questionPoints:{
+		type: Number,
+		required: false
+	},
+	
 	options: {
 		type: [optionSchema],
 		required: false
 	},
+
 
 	quiz: {
 		type: mongoose.Types.ObjectId,
