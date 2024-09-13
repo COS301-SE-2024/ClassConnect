@@ -1,6 +1,6 @@
 <script lang="ts">
 	//[quiz].page.svelte
-	import { Progressbar, Button, Radio, Card, Heading, P } from 'flowbite-svelte';
+	import { Progressbar, Button,  Heading, P } from 'flowbite-svelte';
 	import Form from '$lib/components/questions/Form.svelte';
 	import ThreeDForm from '$lib/components/questions/3Dform.svelte';
 	import { enhance } from '$app/forms';
@@ -96,23 +96,36 @@
 	let totalPoints = 0;
 	let totalPossiblePoints = 0;
 	let percentageScore = 0;
+	let hotspotResults: { [key: string]: boolean } = {};
+	
 
 	function handleSelection(questionId: string, optionContent: string) {
 		selectedAnswers[questionId] = optionContent;
 	}
 
-	function calculateTotalPoints() {
-		totalPoints = questions.reduce((total: number, question: any) => {
-			const selectedOption = question.options.find(
-				(option: any) => option.content === selectedAnswers[question.questionNumber]
-			);
-			return total + (selectedOption ? selectedOption.points : 0);
-		}, 0);
+	function handleProximityCheck(event: CustomEvent, questionId: string) {
+		const { isCorrect } = event.detail;
+		hotspotResults[questionId] = isCorrect;
+	}
 
-		totalPossiblePoints = questions.reduce((total: number, question: any) => {
+	function calculateTotalPoints() {
+		questions.forEach((question: any) => {
+		if (question.type === 'multiple-choice') {
+			const selectedOption = question.options.find(
+			(option: any) => option.content === selectedAnswers[question.questionNumber]
+			);
+			const questionPoints = selectedOption ? selectedOption.points : 0;
+			totalPoints += questionPoints;
+
 			const maxPoints = Math.max(...question.options.map((option: any) => option.points));
-			return total + maxPoints;
-		}, 0);
+			totalPossiblePoints += maxPoints;
+		} else if (question.type === '3d-hotspot') {
+			const isCorrect = hotspotResults[question.id] || false;
+			const pointsForHotspot = isCorrect ? question.points : 0;
+			totalPoints += pointsForHotspot;
+			totalPossiblePoints += question.points;
+		}
+		});
 
 		percentageScore = (totalPoints / totalPossiblePoints) * 100;
 	}
@@ -175,7 +188,7 @@
 			{/if}
 
 			<ListQuestions {questions} {selectedAnswers} {handleSelection}>
-				<ThreeDScene {data} slot="scene" />
+				<ThreeDScene {data} slot="scene" on:proximityCheck={(event) => handleProximityCheck(event, questions.id)}/>
 			</ListQuestions>
 
 

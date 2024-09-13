@@ -3,7 +3,8 @@
     import * as THREE from 'three';
     import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
     import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-    import { DragControls } from 'three/examples/jsm/controls/DragControls.js'; // Import DragControls
+    import { DragControls } from 'three/examples/jsm/controls/DragControls.js'; 
+    import { createEventDispatcher } from 'svelte';
     
     export let data: any;
     
@@ -22,6 +23,7 @@
     let raycaster: THREE.Raycaster;
     let loadedModel: THREE.Object3D | undefined;
     let currentPin: THREE.Mesh | null = null;
+    const dispatch = createEventDispatcher();
 
     onMount(() => {
         initScene();
@@ -129,15 +131,14 @@
 }
 
 
-    function checkProximity(pin: THREE.Mesh) {
-        const savedSpherePosition = getSavedSpherePosition();
-        const distance = pin.position.distanceTo(savedSpherePosition);
-        if (distance <= 0.2) {
-            alert('Pin is in the correct vicinity.');
-        } else {
-            console.log('Pin is not in the correct vicinity.');
-        }
-    }
+function checkProximity(pin: THREE.Mesh) {
+    const savedSpherePosition = getSavedSpherePosition();
+    const distance = pin.position.distanceTo(savedSpherePosition);
+    const isCorrect = distance <= 0.2;
+    dispatch('proximityCheck', { isCorrect });
+    
+    return isCorrect;
+  }
 
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
