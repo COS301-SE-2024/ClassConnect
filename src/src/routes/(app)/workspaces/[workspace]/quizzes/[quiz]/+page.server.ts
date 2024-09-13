@@ -31,6 +31,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 				id: q._id.toString(),
 				questionNumber: q.questionNumber,
 				questionContent: q.questionContent,
+				questionPoints: q.questionPoints,
 				questionType: q.questionType,
 				options: q.options
 					? q.options.map((option: { content: any; points: any }) => ({

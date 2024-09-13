@@ -99,9 +99,10 @@
 	function handleSelection(questionId: string, optionContent: string) {
 		selectedAnswers[questionId] = optionContent;
 	}
+	
 	function calculateTotalPoints() {
 		questions.forEach((question: any) => {
-			if (question.type === 'multiple-choice') {
+			if (question.questionType === 'multiple-choice') {
 				const selectedOption = question.options.find(
 					(option: any) => option.content === selectedAnswers[question.questionNumber]
 				);
@@ -110,9 +111,13 @@
 
 				const maxPoints = Math.max(...question.options.map((option: any) => option.points));
 				totalPossiblePoints += maxPoints;
-			} else if (question.type === '3d-hotspot') {
-				const isCorrect = hotspotResults[question.id] || false;
-				const pointsForHotspot = isCorrect ? question.points : 0;
+			} else if (question.questionType === '3d-hotspot') {
+				const isCorrect = localStorage.getItem('ProximityChecker');
+				let pointsForHotspot=0;
+				if(isCorrect === 'true'){
+					pointsForHotspot= question.questionPoints;
+					alert('Correct!');
+				}
 				totalPoints += pointsForHotspot;
 				totalPossiblePoints += question.points;
 			}

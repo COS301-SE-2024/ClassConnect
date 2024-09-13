@@ -22,8 +22,7 @@
 	let mouse: THREE.Vector2;
 	let raycaster: THREE.Raycaster;
 	let loadedModel: THREE.Object3D | undefined;
-	let currentPin: THREE.Mesh | null = null;
-	const dispatch = createEventDispatcher();
+	
 
 	onMount(() => {
 		initScene();
@@ -133,7 +132,7 @@
 		const savedSpherePosition = getSavedSpherePosition();
 		const distance = pin.position.distanceTo(savedSpherePosition);
 		const isCorrect = distance <= 0.2;
-		dispatch('proximityCheck', { isCorrect });
+		localStorage.setItem('ProximityChecker', JSON.stringify(isCorrect));
 
 		return isCorrect;
 	}
