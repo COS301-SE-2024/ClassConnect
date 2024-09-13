@@ -80,7 +80,7 @@ export interface Grades {
 }
 
 export interface Option {
-	content: string;
+	content: string| null;
 	points: number;
 }
 
@@ -89,5 +89,5 @@ export interface Question {
 	questionNumber: number;
 	questionContent: string;
 	questionType: string;
-	options: Option[] | null;
+	options: Option[] ;
 }

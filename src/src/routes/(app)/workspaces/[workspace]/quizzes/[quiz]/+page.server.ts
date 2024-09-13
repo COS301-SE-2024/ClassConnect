@@ -57,7 +57,7 @@ async function createQuestion(
 	questionNumber: number,
 	questionContent: string,
 	questionType: string,
-	options: { content: string; points: number }[] | null,
+	options: { content: string; points: number }[] |  { points: number }[] ,
 	quizId: ObjectId | undefined
 ) {
 	const newQuestion = new Questions({
@@ -145,7 +145,13 @@ export const actions: Actions = {
 			const questionNumber = parseInt(data.get('questionNumber') as string, 10);
 			const questionContent = data.get('questionContent') as string;
 			const questionType = '3d-hotspot';
-			const options = null;
+			const options = [];
+			const optionPoints = data.get(`options[0].points`);
+				if (optionPoints) {
+					options.push({
+						points: parseInt(optionPoints as string, 10)
+					});
+				}
 
 			const quizId = new mongoose.Types.ObjectId(params.quiz);
 			return await createQuestion(questionNumber, questionContent, questionType, options, quizId);

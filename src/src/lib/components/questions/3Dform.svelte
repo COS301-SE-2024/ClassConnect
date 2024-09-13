@@ -39,6 +39,15 @@
 			/>
 		</div>
 
+		
+		<div class="mb-4">
+			<Label class="mb-4 space-y-2">
+				<span>Points</span>
+				<NumberInput name="options[0].points" />
+			</Label>
+		</div>
+		
+
 		<div class="mb-4">
 			<Label for="questionContent">Question Content</Label>
 			<Textarea
