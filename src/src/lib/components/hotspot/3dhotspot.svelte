@@ -132,7 +132,7 @@
 		const savedSpherePosition = getSavedSpherePosition();
 		const distance = pin.position.distanceTo(savedSpherePosition);
 		const isCorrect = distance <= 0.2;
-		localStorage.setItem('ProximityChecker', JSON.stringify(isCorrect));
+		localStorage.setItem('Distance', JSON.stringify(distance));
 
 		return isCorrect;
 	}

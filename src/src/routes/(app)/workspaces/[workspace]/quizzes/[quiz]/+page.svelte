@@ -112,13 +112,14 @@
 				const maxPoints = Math.max(...question.options.map((option: any) => option.points));
 				totalPossiblePoints += maxPoints;
 			} else if (question.questionType === '3d-hotspot') {
-				const isCorrect = localStorage.getItem('ProximityChecker');
+				const distance = localStorage.getItem('Distance');
+				const proximity = parseInt(distance as string, 10);
+				const isCorrect = proximity <= 0.2? true: false;
 				let pointsForHotspot=0;
-				if(isCorrect === 'true'){
+				if(isCorrect === true){
 					pointsForHotspot= question.questionPoints;
-					alert('Correct!');
+					totalPoints += pointsForHotspot;
 				}
-				totalPoints += pointsForHotspot;
 				totalPossiblePoints += question.questionPoints;
 			}
 		});
