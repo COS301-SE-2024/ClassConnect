@@ -10,8 +10,7 @@
 	import { page } from '$app/stores';
 	import { writingQuiz } from '$lib/store/sidebar';
 	import { goto } from '$app/navigation';
-	import MCQ from '$lib/components/questions/MCQ.svelte';
-	import ThreeDCard from '$lib/components/questions/3DCard.svelte';
+	import ListQuestions from '$src/lib/components/questions/listQuestions.svelte';
 	import ThreeDScene from '$lib/components/hotspot/3dhotspot.svelte';
 	
 	import { selectedQuestionTypeStore } from '$lib/store/questions';
@@ -175,14 +174,9 @@
 				</div>
 			{/if}
 
-				<MCQ
-				{questions}
-				{selectedAnswers}
-				{handleSelection}/>
-			
-				<ThreeDCard {questions}>
-					<ThreeDScene {data} slot="scene" />
-				</ThreeDCard>
+			<ListQuestions {questions} {selectedAnswers} {handleSelection}>
+				<ThreeDScene {data} slot="scene" />
+			</ListQuestions>
 
 
 			{#if role === 'student' && !isPreview}

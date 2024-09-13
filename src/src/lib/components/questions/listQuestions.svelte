@@ -17,17 +17,21 @@
           {question.questionContent}
         </P>
         <div class="space-y-4">
-          {#each question.options as option}
-            <Radio
-              class="text-lg"
-              name={question.questionNumber}
-              value={option.content}
-              checked={selectedAnswers[question.questionNumber] === option.content}
-              on:change={() => handleSelection(question.questionNumber, option.content)}
-            >
-              {option.content}
-            </Radio>
-          {/each}
+          {#if question.options && question.options.length > 0}
+            {#each question.options as option}
+              <Radio
+                class="text-lg"
+                name={question.questionNumber}
+                value={option.content}
+                checked={selectedAnswers[question.questionNumber] === option.content}
+                on:change={() => handleSelection(question.questionNumber, option.content)}
+              >
+                {option.content}
+              </Radio>
+            {/each}
+          {:else}
+            <slot name="scene" />
+          {/if}
         </div>
       </Card>
     {/each}
