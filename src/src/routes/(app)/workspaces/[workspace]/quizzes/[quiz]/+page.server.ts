@@ -23,7 +23,6 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 			throw error(404, 'Quiz not found');
 		}
 		const duration = quiz.duration;
-		
 
 		return {
 			role,
@@ -33,10 +32,12 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 				questionNumber: q.questionNumber,
 				questionContent: q.questionContent,
 				questionType: q.questionType,
-				options: q.options ? q.options.map((option: { content: any; points: any }) => ({
-					content: option.content,
-					points: option.points
-				})) : null // if null
+				options: q.options
+					? q.options.map((option: { content: any; points: any }) => ({
+							content: option.content,
+							points: option.points
+						}))
+					: null // if null
 			})),
 			workspaceID,
 			materials
@@ -57,7 +58,7 @@ async function createQuestion(
 	questionNumber: number,
 	questionContent: string,
 	questionType: string,
-	options: { content: string; points: number }[] |  null ,
+	options: { content: string; points: number }[] | null,
 	quizId: ObjectId | undefined
 ) {
 	const newQuestion = new Questions({
@@ -67,11 +68,10 @@ async function createQuestion(
 		options,
 		quiz: quizId
 	});
-	
+
 	await newQuestion.save();
 	return { success: true };
 }
-
 
 async function getMaterials(workspace_id: string): Promise<Partial<Material>[]> {
 	const materials = await Materials.find({ workspace_id });
@@ -89,8 +89,6 @@ function formatMaterial(material: any): Partial<Material> {
 	};
 }
 
-
-
 async function saveGrade(
 	studentID: ObjectId,
 	quizID: ObjectId,
@@ -107,7 +105,6 @@ async function saveGrade(
 	await newGrade.save();
 	return { success: true };
 }
-
 
 export const actions: Actions = {
 	postMCQ: async ({ request, locals, params }) => {
@@ -154,7 +151,6 @@ export const actions: Actions = {
 			return fail(500, { error: 'Failed to create question' });
 		}
 	},
-
 
 	submitQuiz: async ({ request, locals, params }) => {
 		if (!locals.user) {

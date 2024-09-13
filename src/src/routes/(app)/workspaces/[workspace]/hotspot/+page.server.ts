@@ -18,14 +18,13 @@ async function getModels(workspace_id: string, type: boolean): Promise<Partial<M
 }
 
 export async function load({ locals, params }) {
-    if (!locals.user ) {
-        throw error(401, 'Unauthorised');
-    }
-    else{
-        const models = await getModels(params.workspace, true);
-        const role=locals.user.role;
-        return {role};
-    }
+	if (!locals.user) {
+		throw error(401, 'Unauthorised');
+	} else {
+		const models = await getModels(params.workspace, true);
+		const role = locals.user.role;
+		return { role };
+	}
 }
 
 // async function uploadToS3(image: File, locals: any) {

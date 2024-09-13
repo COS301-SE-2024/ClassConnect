@@ -1,6 +1,6 @@
 <script lang="ts">
 	//[quiz].page.svelte
-	import { Progressbar, Button,  Heading, P } from 'flowbite-svelte';
+	import { Progressbar, Button, Heading, P } from 'flowbite-svelte';
 	import Form from '$lib/components/questions/Form.svelte';
 	import ThreeDForm from '$lib/components/questions/3Dform.svelte';
 	import { enhance } from '$app/forms';
@@ -12,20 +12,18 @@
 	import { goto } from '$app/navigation';
 	import ListQuestions from '$src/lib/components/questions/listQuestions.svelte';
 	import ThreeDScene from '$lib/components/hotspot/3dhotspot.svelte';
-	
+
 	import { selectedQuestionTypeStore } from '$lib/store/questions';
-	
 
 	export let data: any;
 	console.log(data);
-	
+
 	const workspaceID = data.workspaceID;
 	let elapsed = 0;
 	let isFormOpen = false;
 	let activeTimer = false;
 	let isPreview = false;
 	let submissionResult: any = null;
-
 
 	//selected question types
 	let selectedQuestionType = '';
@@ -37,7 +35,7 @@
 	$: ({ questions, role, duration } = data);
 	$: activeTimer = role === 'student' && !isPreview;
 	$: isPreview = $page.url.searchParams.get('preview') === 'true';
-	$: console.log('Questions:', questions); 
+	$: console.log('Questions:', questions);
 
 	let last_time: number;
 	let frame: number;
@@ -97,28 +95,27 @@
 	let totalPossiblePoints = 0;
 	let percentageScore = 0;
 	let hotspotResults: { [key: string]: boolean } = {};
-	
 
 	function handleSelection(questionId: string, optionContent: string) {
 		selectedAnswers[questionId] = optionContent;
 	}
 	function calculateTotalPoints() {
 		questions.forEach((question: any) => {
-		if (question.type === 'multiple-choice') {
-			const selectedOption = question.options.find(
-			(option: any) => option.content === selectedAnswers[question.questionNumber]
-			);
-			const questionPoints = selectedOption ? selectedOption.points : 0;
-			totalPoints += questionPoints;
+			if (question.type === 'multiple-choice') {
+				const selectedOption = question.options.find(
+					(option: any) => option.content === selectedAnswers[question.questionNumber]
+				);
+				const questionPoints = selectedOption ? selectedOption.points : 0;
+				totalPoints += questionPoints;
 
-			const maxPoints = Math.max(...question.options.map((option: any) => option.points));
-			totalPossiblePoints += maxPoints;
-		} else if (question.type === '3d-hotspot') {
-			const isCorrect = hotspotResults[question.id] || false;
-			const pointsForHotspot = isCorrect ? question.points : 0;
-			totalPoints += pointsForHotspot;
-			totalPossiblePoints += question.points;
-		}
+				const maxPoints = Math.max(...question.options.map((option: any) => option.points));
+				totalPossiblePoints += maxPoints;
+			} else if (question.type === '3d-hotspot') {
+				const isCorrect = hotspotResults[question.id] || false;
+				const pointsForHotspot = isCorrect ? question.points : 0;
+				totalPoints += pointsForHotspot;
+				totalPossiblePoints += question.points;
+			}
 		});
 
 		percentageScore = (totalPoints / totalPossiblePoints) * 100;
@@ -157,7 +154,6 @@
 	<Heading tag="h1" class="mb-6 text-3xl font-bold text-gray-900 dark:text-white"
 		>Quiz Questions</Heading
 	>
-	
 
 	{#if role === 'student' || (role === 'lecturer' && isPreview)}
 		{#if questions.length === 0}
@@ -184,7 +180,6 @@
 			<ListQuestions {questions} {selectedAnswers} {handleSelection}>
 				<ThreeDScene {data} slot="scene" />
 			</ListQuestions>
-
 
 			{#if role === 'student' && !isPreview}
 				<form
@@ -218,9 +213,9 @@
 			{/if}
 		{/if}
 	{:else if role === 'lecturer' && !isPreview}
-		{#if selectedQuestionType==='multiple-choice'}
+		{#if selectedQuestionType === 'multiple-choice'}
 			<Form bind:open={isFormOpen} on:formSubmitted={handleFormSubmit} />
-		{:else if selectedQuestionType==='3d-hotspot'}
+		{:else if selectedQuestionType === '3d-hotspot'}
 			<ThreeDForm bind:open={isFormOpen} on:formSubmitted={handleFormSubmit}>
 				<ThreeDScene {data} slot="scene" />
 			</ThreeDForm>

@@ -13,7 +13,7 @@
 		AdjustmentsHorizontalSolid
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
-	import {speak, cancel} from '../webspeech/speechSynthesis';
+	import { speak, cancel } from '../webspeech/speechSynthesis';
 
 	export let role: 'lecturer' | 'admin' | 'student';
 

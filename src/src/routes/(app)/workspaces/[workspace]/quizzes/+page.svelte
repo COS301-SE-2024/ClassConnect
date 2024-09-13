@@ -16,14 +16,13 @@
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
 	import { selectedQuestionTypeStore } from '$lib/store/questions';
 	import Question from '$lib/components/questions/Form.svelte';
-	
 
 	export let data: any;
 	console.log(data);
 
 	let id: string;
 	let isQuizFormOpen = false;
-	let is3DOpen=false;
+	let is3DOpen = false;
 	let isEditModalOpen = false;
 	let isAddQuiz = false;
 
@@ -46,7 +45,7 @@
 
 	function handleEditModalOpen(quizID: string) {
 		id = quizID;
-		isEditModalOpen=true;
+		isEditModalOpen = true;
 	}
 
 	function handleAddModalOpen(quizID: string) {
@@ -54,8 +53,8 @@
 		//isAddModalOpen = true;
 	}
 
-	function handle3dHotspot(){
-		is3DOpen=true;
+	function handle3dHotspot() {
+		is3DOpen = true;
 	}
 
 	function handleRemoveModalOpen(quizId: string) {

@@ -49,7 +49,7 @@
 				required
 			/>
 		</div>
-        
+
 		<Button type="submit" class="mt-4 w-full">Submit Question</Button>
 	</form>
 </main>
