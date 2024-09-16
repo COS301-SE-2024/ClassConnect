@@ -33,7 +33,7 @@
 	};
 </script>
 
-<Navbar class="fixed start-0 top-0 z-20 w-full border-b px-2 py-2 sm:px-4 desktop-navbar">
+<Navbar class="fixed start-0 top-0 z-20 w-full border-b px-2 py-50 sm:px-4 desktop-navbar">
 	<NavBrand href="/">
 		<img src="images/class-connect-logo.png" class="mr-3 h-8 sm:h-10" alt="ClassConnect Logo" />
 		<span
