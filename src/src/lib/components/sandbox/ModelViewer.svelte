@@ -66,7 +66,7 @@
 
 <GLTF url={currentModel} on:create={handleModelCreate} />
 
-<Pane position="fixed" theme={ThemeUtils.presets.light} title="Object Settings">
+<Pane position="fixed" theme={ThemeUtils.presets.translucent} title="Object Settings">
 	<Checkbox bind:value={autoRotate} label="autoRotate" />
 	<Checkbox bind:value={enableZoom} label="enableZoom" />
 	<Checkbox bind:value={zoomToCursor} label="zoomToCursor" />

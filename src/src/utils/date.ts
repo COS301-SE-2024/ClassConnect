@@ -19,5 +19,5 @@ export function formatDate(date: Date): string {
 	const dayNumber = date.getDate();
 	const monthName = months[date.getMonth()];
 
-	return `${dayName} - ${dayNumber} ${monthName}`;
+	return `${dayName}, ${dayNumber} ${monthName}`;
 }

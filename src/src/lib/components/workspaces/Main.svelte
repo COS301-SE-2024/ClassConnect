@@ -4,7 +4,9 @@
 	export let data;
 </script>
 
-<main class="p-4">
+<main
+	class="z-20 mb-4 ml-4 mr-4 mt-24 min-h-screen rounded-xl bg-white p-4 px-4 py-6 shadow-xl dark:bg-gray-900"
+>
 	<h1 class="text-2xl font-bold dark:text-white">Workspaces</h1>
 
 	<div class="mt-2">

@@ -7,8 +7,32 @@ vi.mock('$app/forms', () => ({
 	enhance: vi.fn()
 }));
 
+const mockMatchMedia = vi.fn().mockImplementation((query) => ({
+	matches: false,
+	media: query,
+	onchange: null,
+	addListener: vi.fn(),
+	dispatchEvent: vi.fn(),
+	removeListener: vi.fn(),
+	addEventListener: vi.fn(),
+	removeEventListener: vi.fn()
+}));
+
+vi.mock('svelte', async () => {
+	const actual = await vi.importActual('svelte');
+	return {
+		...actual,
+		onMount: vi.fn((cb) => cb())
+	};
+});
+
 describe('SignIn Component', () => {
 	beforeEach(() => {
+		vi.stubGlobal('window', {
+			...window,
+			matchMedia: mockMatchMedia
+		});
+
 		render(SignIn);
 	});
 

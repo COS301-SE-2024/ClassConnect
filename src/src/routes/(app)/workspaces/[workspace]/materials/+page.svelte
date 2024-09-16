@@ -16,9 +16,9 @@
 	});
 </script>
 
-<div class="mt-2">
-	<Tabs contentClass="p-4 px-8">
-		<MaterialsTab tabName="All" tabBoolean={true} renderedMaterials={materials} {role} />
+<div class="m-4">
+	<Tabs tabStyle="underline">
+		<MaterialsTab tabName="All" tabBoolean={true} renderedMaterials={materials} />
 
 		<MaterialsTab
 			tabName="Documents"
