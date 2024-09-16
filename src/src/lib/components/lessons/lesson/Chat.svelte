@@ -1,109 +1,75 @@
 <script lang="ts">
-	import { onMount, afterUpdate } from 'svelte';
-	import { Button, Input, Avatar } from 'flowbite-svelte';
-	import type { Channel, FormatMessageResponse } from 'stream-chat';
-
-	import AttendanceList from './AttendanceList.svelte';
-
-	export let channel: Channel;
-
-	let state: any;
-	let newMessage = '';
-	let activeTab = 'Chat';
-	let chatContainer: HTMLElement;
-	let messages: FormatMessageResponse[];
-
-	onMount(async () => {
-		state = await channel.watch();
-
-		channel.on('message.new', (event: any) => {
-			messages = [...messages, event.message];
-		});
-
-		messages = state.messages;
-	});
-
-	afterUpdate(() => {
-		if (chatContainer) {
-			chatContainer.scrollTop = chatContainer.scrollHeight;
-		}
-	});
-
-	async function sendMessage() {
-		if (newMessage.trim()) {
-			await channel.sendMessage({ text: newMessage });
-			newMessage = '';
-		}
-	}
-</script>
-
-{#if !state}
-	<div class="flex h-full items-center justify-center">
-		<p class="text-lg font-semibold text-gray-800 dark:text-gray-200">Connecting...</p>
-	</div>
-{:else}
-	<div class="flex h-full flex-col">
-		<div class="mb-4 flex space-x-4">
-			<Button
-				color={activeTab === 'Chat' ? 'primary' : 'light'}
-				on:click={() => (activeTab = 'Chat')}
-				class="flex-1"
-			>
-				Chat
-			</Button>
-
-			<Button
-				color={activeTab === 'Participants' ? 'primary' : 'light'}
-				on:click={() => (activeTab = 'Participants')}
-				class="flex-1"
-			>
-				Participants
-			</Button>
-		</div>
-
-		{#if activeTab === 'Chat'}
-			<div class="flex-1 overflow-hidden rounded-lg border border-gray-300 dark:border-gray-600">
-				<div
-					bind:this={chatContainer}
-					class="h-full overflow-y-auto p-4"
-					style="width: 100%; transition: height 0.3s;"
-				>
-					{#each messages as message (message.id)}
-						<div class="mb-6 last:mb-0">
-							<div class="flex items-start">
-								<Avatar src={message.user?.image} alt={message.user?.name} class="mr-2" />
-
-								<div
-									class="flex-grow rounded-bl-lg rounded-br-lg rounded-tr-lg bg-gray-200 p-3 dark:bg-gray-700"
-								>
-									<div class="mb-2 flex items-center">
-										<p class="text-sm font-semibold text-gray-900 dark:text-white">
-											{message.user?.name}
-										</p>
-
-										<span class="ml-2 text-xs text-gray-500 dark:text-gray-400">
-											{new Date(message.created_at).toLocaleTimeString([], {
-												hour: '2-digit',
-												minute: '2-digit'
-											})}
-										</span>
-									</div>
-									<p class="text-sm text-gray-800 dark:text-gray-200">{message.text}</p>
-								</div>
-							</div>
-						</div>
-					{/each}
-				</div>
-			</div>
-
-			<div class="mt-4">
-				<form on:submit|preventDefault={sendMessage} class="flex space-x-2">
-					<Input bind:value={newMessage} placeholder="Type a message..." class="flex-1" />
-					<Button type="submit">Send</Button>
-				</form>
-			</div>
-		{:else}
-			<AttendanceList />
-		{/if}
-	</div>
-{/if}
+	import { Section, Comment, CommentItem } from 'flowbite-svelte-blocks';
+	import { Button, Textarea, Label, Dropdown, DropdownItem } from 'flowbite-svelte';
+	import { DotsHorizontalOutline } from 'flowbite-svelte-icons';
+	const comments = [
+	  {
+		id: "comment1",
+		commenter: {
+		  name: "Michael Gough",
+		  profilePicture: "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
+		},
+		date: "Feb. 8, 2022",
+		content: "Very straight-to-point article. Really worth time reading. Thank you! But tools are just the instruments for the UX designers. The knowledge of the design tools are as important as the creation of the design strategy.",
+		replies: [
+		  {
+			id: "reply1",
+			commenter: {
+			  name: "Jese Leos",
+			  profilePicture: "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
+			},
+			date: "Feb. 12, 2022",
+			content: "Much appreciated! Glad you liked it ☺️",
+		  },
+		],
+	  },
+	  {
+		id: "comment2",
+		commenter: {
+		  name: "Bonnie Green",
+		  profilePicture: "https://flowbite.com/docs/images/people/profile-picture-3.jpg",
+		},
+		date: "Mar. 12, 2022",
+		content: "The article covers the essentials, challenges, myths and stages the UX designer should consider while creating the design strategy.",
+		replies: [],
+	  },
+	  {
+		id: "comment3",
+		commenter: {
+		  name: "Helene Engels",
+		  profilePicture: "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
+		},
+		date: "Jun. 23, 2022",
+		content: "Thanks for sharing this. I do came from the Backend development and explored some of the tools to design my Side Projects.",
+		replies: [],
+	  },
+	  // Add more comments and replies here
+	];
+  
+  </script>
+  
+  <Section name='comment' classSection='bg-white dark:bg-gray-900'>
+	<Comment title="Discussion (20)">
+	  <form class="mb-6">
+		<Label for="comment" class="sr-only">Your comment</Label>
+		<Textarea id="comment" rows="6" class="mb-4"
+			placeholder="Write a comment..." required>
+		</Textarea>
+		<Button type="submit" class="px-4 text-xs font-medium">
+		  Post comment
+		</Button>
+	  </form>
+	  {#each comments as comment, i}
+		<CommentItem {comment} articleClass ={ i !== 0 ? 'border-t border-gray-200 dark:border-gray-700 rounded-none':''}>
+		  <svelte:fragment slot="dropdownMenu">
+		<DotsHorizontalOutline class="dots-menu dark:text-white" />
+		<Dropdown triggeredBy=".dots-menu">
+		  <DropdownItem>Edit</DropdownItem>
+		  <DropdownItem>Remove</DropdownItem>
+		  <DropdownItem>Report</DropdownItem>
+		</Dropdown>
+	  </svelte:fragment>
+		</CommentItem>
+	  {/each}
+	</Comment>
+  </Section>

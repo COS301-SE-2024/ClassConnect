@@ -1,3 +1,4 @@
+<!--
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
 	import { hasScreenShare } from '@stream-io/video-client';
@@ -17,6 +18,7 @@
 	let participants: StreamVideoParticipant[] = [];
 	let screenSharingParticipant: StreamVideoParticipant | null = null;
 
+	let showMenu = false; // Controls the hamburger menu visibility
 	const callStore = getContext<Writable<Call | null>>('call');
 
 	$: {
@@ -40,12 +42,29 @@
 		else gridClass = 'grid-cols-4';
 	}
 
+	function toggleMenu() {
+		showMenu = !showMenu;
+	}
+
 	onMount(() => {
 		updateGridClass(participants.length);
 	});
 </script>
 
-<div class="h-full w-full bg-gray-100 p-4 dark:bg-gray-900">
+<div class="h-full w-full bg-gray-100 p-4 dark:bg-gray-700">
+	<div class="lg:hidden">
+		<button 
+			class="p-2 text-white bg-blue-600 rounded-lg focus:outline-none"
+			on:click={toggleMenu}>
+			{#if showMenu} Close Menu {/if} {#if !showMenu} Open Menu {/if}
+		</button>
+		{#if showMenu}
+			<div class="p-4 mt-2 space-y-4 bg-gray-800 text-white rounded-lg">
+				<p>Participants: {participants.length}</p>
+			</div>
+		{/if}
+	</div>
+
 	{#if isEnvironmentOn}
 		<Environment {materials} {role} />
 	{:else if screenSharingParticipant}
@@ -58,3 +77,22 @@
 		</div>
 	{/if}
 </div>
+
+<style>
+	/* Adjust grid and layout based on screen size */
+	@media (max-width: 640px) {
+		.grid-cols-1 {
+			grid-template-columns: 1fr;
+		}
+		.grid-cols-2 {
+			grid-template-columns: 1fr 1fr;
+		}
+		.grid-cols-3 {
+			grid-template-columns: 1fr 1fr 1fr;
+		}
+		.grid-cols-4 {
+			grid-template-columns: 1fr 1fr 1fr 1fr;
+		}
+	}
+</style>
+-->
