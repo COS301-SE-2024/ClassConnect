@@ -164,7 +164,7 @@
 
 <Toaster />
 
-<TabItem open={tabBoolean}>
+<TabItem open={tabBoolean} defaultClass="mt-24">
 	<span slot="title">{tabName}</span>
 	<div
 		class="m-4 flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0"
@@ -248,14 +248,7 @@
 										<ShareNodesOutline class="h-4 w-4" />
 										<span>Share</span>
 									</DropdownItem>
-									<DropdownItem
-										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-										on:click={() =>
-											handlePreview(material.file_path, material.title, material.type)}
-									>
-										<EyeOutline class="h-4 w-4" />
-										<span>Preview</span>
-									</DropdownItem>
+									
 									<DropdownItem
 										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
 										on:click={() => handleDownload(material.file_path, material.title)}
