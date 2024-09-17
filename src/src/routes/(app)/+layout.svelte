@@ -29,7 +29,7 @@
 	{/if}
 
 	<div class="main-content flex-1">
-		<div class="sticky top-0">
+		<div>
 			<Navbar {role} />
 		</div>
 
