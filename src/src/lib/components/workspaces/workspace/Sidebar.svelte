@@ -7,7 +7,6 @@
       NavHamburger,
       Dropdown,
       DropdownItem,
-      DropdownDivider
     } from 'flowbite-svelte';
     import { ChevronDownOutline } from 'flowbite-svelte-icons';
     import { page } from '$app/stores';
@@ -24,12 +23,30 @@
       unsubscribeWritingQuiz();
     });
   
-    export let workspace;
+    export let workspace: { name: string; image: string };
     export let role: 'lecturer' | 'student';
   
     let workspaceURL = `/workspaces/${$page.params.workspace}`;
   
-    const navLinks = {
+    type NavLink = { name: string; href: string };
+  
+    interface LecturerLinks {
+      dashboard: NavLink[];
+      management: NavLink[];
+      resources: NavLink[];
+    }
+  
+    interface StudentLinks {
+      courseWork: NavLink[];
+      additional: NavLink[];
+    }
+  
+    type NavLinks = {
+      lecturer: LecturerLinks;
+      student: StudentLinks;
+    };
+  
+    const navLinks: NavLinks = {
       lecturer: {
         dashboard: [
           { name: 'Dashboard', href: workspaceURL + '/dashboard' }
@@ -60,25 +77,31 @@
       }
     };
   
-    $: role;
-    $: workspace;
     $: currentLinks = navLinks[role];
+    
+    function isLecturerLinks(links: LecturerLinks | StudentLinks): links is LecturerLinks {
+      return 'dashboard' in links;
+    }
+  
+    function isStudentLinks(links: LecturerLinks | StudentLinks): links is StudentLinks {
+      return 'courseWork' in links;
+    }
     
     let activeUrl = '';
     const signout = () => {
       window.location.href = '/signout';
     };
-
+  
     const backToMain = () => {
-        window.location.href = '/';
+      window.location.href = '/';
     };
-
+  
     let isHovered = false;
   </script>
   
   <Navbar class="fixed start-0 top-0 z-20 m-4 w-[calc(100%-2rem)] rounded-xl border-white border-opacity-20 bg-white bg-opacity-20 p-2 shadow-xl backdrop-blur-lg transition-colors duration-300 dark:border-gray-700 dark:border-opacity-50 dark:bg-gray-800 dark:bg-opacity-30 sm:px-6">
     <NavBrand>
-      <img src={workspace.image} class="mr-3 h-8 sm:h-10" alt="ClassConnect owl logo" />
+      <img src={workspace.image} class="mr-3 h-8 sm:h-10" alt={`${workspace.name} logo`} />
       <span
         class="self-center whitespace-nowrap text-xl font-semibold text-gray-800 transition-colors duration-300 dark:text-white"
         >{workspace.name}</span
@@ -86,14 +109,14 @@
     </NavBrand>
     <NavHamburger />
     <NavUl>
-      {#if role === 'lecturer'}
+      {#if isLecturerLinks(currentLinks)}
         {#if currentLinks.dashboard.length > 1}
           <NavLi class="cursor-pointer nav-link">
             Dashboard<ChevronDownOutline class="w-6 h-6 ms-2 text-primary-800 dark:text-white inline" />
           </NavLi>
           <Dropdown class="w-44 z-20">
             {#each currentLinks.dashboard as { name, href }}
-              <DropdownItem href={href}>{name}</DropdownItem>
+              <DropdownItem {href}>{name}</DropdownItem>
             {/each}
           </Dropdown>
         {:else}
@@ -108,7 +131,7 @@
           </NavLi>
           <Dropdown class="w-44 z-20">
             {#each currentLinks.management as { name, href }}
-              <DropdownItem href={href}>{name}</DropdownItem>
+              <DropdownItem {href}>{name}</DropdownItem>
             {/each}
           </Dropdown>
         {:else}
@@ -123,7 +146,7 @@
           </NavLi>
           <Dropdown class="w-44 z-20">
             {#each currentLinks.resources as { name, href }}
-              <DropdownItem href={href}>{name}</DropdownItem>
+              <DropdownItem {href}>{name}</DropdownItem>
             {/each}
           </Dropdown>
         {:else}
@@ -131,16 +154,14 @@
             {currentLinks.resources[0].name}
           </NavLi>
         {/if}
-      {/if}
-  
-      {#if role === 'student'}
+      {:else if isStudentLinks(currentLinks)}
         {#if currentLinks.courseWork.length > 1}
           <NavLi class="cursor-pointer nav-link">
             Course Work<ChevronDownOutline class="w-6 h-6 ms-2 text-primary-800 dark:text-white inline" />
           </NavLi>
           <Dropdown class="w-44 z-20">
             {#each currentLinks.courseWork as { name, href }}
-              <DropdownItem href={href}>{name}</DropdownItem>
+              <DropdownItem {href}>{name}</DropdownItem>
             {/each}
           </Dropdown>
         {:else}
@@ -155,7 +176,7 @@
           </NavLi>
           <Dropdown class="w-44 z-20">
             {#each currentLinks.additional as { name, href }}
-              <DropdownItem href={href}>{name}</DropdownItem>
+              <DropdownItem {href}>{name}</DropdownItem>
             {/each}
           </Dropdown>
         {:else}
@@ -166,24 +187,17 @@
       {/if}
       <NavLi on:click={backToMain}>
         <button
-          class="w-full transform rounded-lg bg-blue-600 px-4 py-2 text-left font-semibold text-white transition duration-300 ease-in-out hover:bg-blue-700 hover:shadow-xl dark:bg-blue-700 dark:hover:bg-blue-800"
-        >
-          Leave {workspace.name}
-        </button>
-      </NavLi>
-      <NavLi on:click={signout}>
-        <button
           class="w-full transform rounded-lg bg-red-600 px-4 py-2 text-left font-semibold text-white transition duration-300 ease-in-out hover:bg-red-700 hover:shadow-xl dark:bg-red-700 dark:hover:bg-red-800"
         >
-          Signout
+        Leave {workspace.name}
         </button>
       </NavLi>
     </NavUl>
   </Navbar>
-
+  
   <style>
     :global(.nav-link) {
-      padding-top: 0.5rem; /* Adjust this value as needed */
+      padding-top: 0.5rem;
     }
     
     @media (max-width: 768px) {
