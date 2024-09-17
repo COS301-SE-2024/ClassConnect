@@ -89,7 +89,9 @@
 	}
 </script>
 
-<main class="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 p-4 transition-colors duration-300 dark:from-green-800 dark:via-green-900 dark:to-emerald-950 sm:p-6 md:p-8">
+<main
+	class="relative flex min-h-screen items-center justify-center overflow-hidden bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 p-4 transition-colors duration-300 dark:from-green-800 dark:via-green-900 dark:to-emerald-950 sm:p-6 md:p-8"
+>
 	<!-- Animated background elements -->
 	<div class="absolute inset-0 overflow-hidden">
 		{#each floatingElements as element}
@@ -100,8 +102,12 @@
 		{/each}
 	</div>
 
-	<Card class="w-full max-w-md rounded-xl border border-white border-opacity-20 bg-white bg-opacity-10 shadow-2xl backdrop-blur-lg transition-colors duration-300 dark:border-gray-700 dark:border-opacity-50 dark:bg-gray-800 dark:bg-opacity-30 sm:max-w-lg md:max-w-xl lg:max-w-2xl">
-		<h5 class="mb-4 text-center text-2xl font-bold tracking-tight text-white dark:text-gray-100 sm:text-3xl">
+	<Card
+		class="w-full max-w-md rounded-xl border border-white border-opacity-20 bg-white bg-opacity-10 shadow-2xl backdrop-blur-lg transition-colors duration-300 dark:border-gray-700 dark:border-opacity-50 dark:bg-gray-800 dark:bg-opacity-30 sm:max-w-lg md:max-w-xl lg:max-w-2xl"
+	>
+		<h5
+			class="mb-4 text-center text-2xl font-bold tracking-tight text-white dark:text-gray-100 sm:text-3xl"
+		>
 			Check your audio and video
 		</h5>
 
@@ -116,8 +122,15 @@
 				/>
 			</div>
 
-			<div class="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
-				<Toggle checked={isMicOn} on:change={toggleMicrophone} color="green" class="text-white dark:text-gray-300">Microphone</Toggle>
+			<div
+				class="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0"
+			>
+				<Toggle
+					checked={isMicOn}
+					on:change={toggleMicrophone}
+					color="green"
+					class="text-white dark:text-gray-300">Microphone</Toggle
+				>
 
 				<div class="h-2 w-full overflow-hidden rounded-full bg-gray-200 sm:w-32">
 					<div
@@ -127,11 +140,24 @@
 				</div>
 			</div>
 
-			<Toggle checked={isCameraOn} on:change={toggleCamera} color="green" class="text-white dark:text-gray-300">Camera</Toggle>
+			<Toggle
+				checked={isCameraOn}
+				on:change={toggleCamera}
+				color="green"
+				class="text-white dark:text-gray-300">Camera</Toggle
+			>
 
 			<div class="flex flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0">
-				<Button on:click={() => onJoin(isMicOn, isCameraOn)} class="w-full transform rounded-lg bg-green-600 px-6 py-3 font-semibold text-white transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-green-700 hover:shadow-xl dark:bg-green-700 dark:hover:bg-green-800">Join</Button>
-				<Button on:click={() => goto('/')} class="w-full transform rounded-lg bg-red-600 px-6 py-3 font-semibold text-white transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-red-700 hover:shadow-xl dark:bg-red-700 dark:hover:bg-red-800">Exit</Button>
+				<Button
+					on:click={() => onJoin(isMicOn, isCameraOn)}
+					class="w-full transform rounded-lg bg-green-600 px-6 py-3 font-semibold text-white transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-green-700 hover:shadow-xl dark:bg-green-700 dark:hover:bg-green-800"
+					>Join</Button
+				>
+				<Button
+					on:click={() => goto('/')}
+					class="w-full transform rounded-lg bg-red-600 px-6 py-3 font-semibold text-white transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-red-700 hover:shadow-xl dark:bg-red-700 dark:hover:bg-red-800"
+					>Exit</Button
+				>
 			</div>
 		</div>
 	</Card>
