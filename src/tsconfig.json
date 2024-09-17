@@ -1,6 +1,8 @@
 {
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true,
 		"strict": true,
 		"sourceMap": false,
 		"skipLibCheck": true,
@@ -9,6 +11,6 @@
 		"resolveJsonModule": true,
 		"moduleResolution": "Bundler",
 		"forceConsistentCasingInFileNames": true,
-		"types": ["vitest/globals", "@testing-library/jest-dom"]
+		"types": ["vitest/globals", "@testing-library/jest-dom", "three"]
 	}
 }

@@ -5,6 +5,26 @@ export interface User {
 	image: string;
 	surname: string;
 	username: string;
+	workspaces: string;
+}
+
+export interface Lesson {
+	id: string;
+	topic: string;
+	time: string;
+	date: string;
+	description: string;
+	workspace: string;
+}
+
+export interface Recording {
+	id: string;
+	topic: string;
+	time: string;
+	date: string;
+	description: string;
+	workspace: string;
+	url: string;
 }
 
 export interface User_Details {
@@ -43,11 +63,22 @@ export interface Material {
 	workspace: string;
 }
 
+export interface FileUploadReturn {
+	name: string;
+	url: string;
+}
+
 export interface UploadData {
 	title: string;
 	description: string;
 	workspace: string;
 	file: File;
+}
+export interface UploadInfo {
+	title: string;
+	description: string;
+	workspace: string;
+	link: string;
 }
 
 export type FAQItem = {

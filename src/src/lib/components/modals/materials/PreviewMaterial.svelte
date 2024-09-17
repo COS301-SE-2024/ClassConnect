@@ -6,6 +6,7 @@
 	import { Button, Modal } from 'flowbite-svelte';
 	import { Canvas } from '@threlte/core';
 	import { page } from '$app/stores';
+	import { multipartUploadFile } from '$lib/utils';
 
 	export let open: boolean;
 	export let file: File;
@@ -30,29 +31,64 @@
 
 		console.log('Upload is being handled');
 
-		const formData = new FormData();
+		if (file.size > 4 * 1024 * 1024) {
+			await UploadFile();
+		} else {
+			const formData = new FormData();
 
-		formData.append('file', file);
-		formData.append('title', title);
-		formData.append('description', description);
+			formData.append('file', file);
+			formData.append('title', title);
+			formData.append('description', description);
 
-		await toast.promise(
-			fetch('?/uploadMat', {
-				method: 'POST',
-				body: formData
-			}),
-			{
-				loading: 'Uploading material...',
-				success: 'Material uploaded successfully!',
-				error: 'Failed to upload material!'
-			}
-		);
-		const log: string = 'change at timestamp: ' + new Date().toISOString();
-		mat_change.set(log);
-		document.getElementById('reload_btn_delete')?.click();
+			await toast.promise(
+				fetch('?/uploadMat', {
+					method: 'POST',
+					body: formData
+				}),
+				{
+					loading: 'Uploading material...',
+					success: 'Material uploaded successfully!',
+					error: 'Failed to upload material!'
+				}
+			);
+			const log: string = 'change at timestamp: ' + new Date().toISOString();
+			mat_change.set(log);
+			document.getElementById('reload_btn_delete')?.click();
+		}
 	}
 
-	console.log('This is the url: ', url);
+	async function UploadFile() {
+		const toastId = toast.loading('Large File detected, uploading file...');
+		try {
+			const data = await multipartUploadFile(file);
+			toast.dismiss(toastId);
+
+			const formData = new FormData();
+			formData.append('link', data.url);
+			formData.append('title', title);
+			formData.append('description', description);
+			formData.append('name', data.name);
+
+			await toast.promise(
+				fetch('?/multiPartUploadFinal', {
+					method: 'POST',
+					body: formData
+				}),
+				{
+					loading: 'Completing upload, please be patient...',
+					success: 'Material uploaded successfully!',
+					error: 'Failed to upload material!'
+				}
+			);
+
+			const log = 'change at timestamp: ' + new Date().toISOString();
+			mat_change.set(log);
+			document.getElementById('reload_btn_delete')?.click();
+		} catch (e) {
+			toast.dismiss(toastId);
+			toast.error('Failed to upload file: ' + e);
+		}
+	}
 </script>
 
 <Toaster />
