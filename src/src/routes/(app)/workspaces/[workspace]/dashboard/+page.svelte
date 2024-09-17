@@ -189,7 +189,7 @@
 	}
 </script>
 
-<div class="w-full p-4">
+<div class="w-full p-4 mt-24">
 	<div class="mb-4 flex gap-4">
 		<Card size="none" class="flex-grow">
 			<div class="mb-6 flex items-center justify-between">
