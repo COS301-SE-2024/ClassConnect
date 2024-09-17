@@ -4,16 +4,16 @@
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 	import { DragControls } from 'three/examples/jsm/controls/DragControls.js';
-	import { navigateToParentRoute } from '$utils/navigation';
-	import { HTML } from '@threlte/extras';
 	import Menu from './3dMenu.svelte';
+	
 
-	export let data: any;
+	export let data: {
+		role: string;
+		models: { title: string; file_path: string; description: string }[];
+	};
 
 	let { models } = data;
-	console.log('Role: ', data.role);
-
-	console.log('file path', data.materials[0]);
+	let selectedModel: string | null = null;
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
 	let controls: OrbitControls;
@@ -24,7 +24,6 @@
 	let mouse: THREE.Vector2;
 	let raycaster: THREE.Raycaster;
 	let loadedModel: THREE.Object3D | undefined;
-	let isFullscreen = false;
 	
 
 	onMount(() => {
@@ -103,18 +102,22 @@
 		controls.autoRotate = false;
 		controls.autoRotateSpeed = 2.0;
 
-		
+		// Load the model based on role
+		if (data.role === 'student') {
+			const storedModel = localStorage.getItem('selectedModel');
+			if (storedModel) {
+				loadModel(storedModel);
+			}
+		}
+
+
 		window.addEventListener('resize', onWindowResize, false);
 	}
 
-	function loadModel(filePath: string) {
+	function loadModel(file_path: string) {
 		const loader = new GLTFLoader();
-		loader.load(filePath, (gltf) => {
-			if (loadedModel) {
-				scene.remove(loadedModel);
-			}
-			loadedModel = gltf.scene;
-			scene.add(loadedModel);
+		loader.load(file_path, (gltf) => {
+			scene.add(gltf.scene);
 		});
 	}
 
@@ -148,38 +151,42 @@
 		renderer.setSize(window.innerWidth, window.innerHeight);
 	}
 
-	function toggleFullscreen() {
-		if (!document.fullscreenElement) {
-			if (canvas.requestFullscreen) canvas.requestFullscreen();
-			isFullscreen = true;
-		} else {
-			if (document.exitFullscreen) document.exitFullscreen();
-			isFullscreen = false;
-		}
+	function handleModelSelection(file_path: string) {
+		selectedModel = file_path;
+		localStorage.setItem('selectedModel', file_path);
+		loadModel(file_path);
 	}
 
-	function exit() {
-		navigateToParentRoute(window.location.pathname);
-	}
+	
 </script>
-
-<canvas bind:this={canvas}></canvas>
-
-<HTML>
-    <Menu
-        {models}
-        {isFullscreen}
-        on:loadModel={(event) => loadModel(event.detail)}
-        on:toggleFullscreen={toggleFullscreen}
-        on:exit={exit}
-    />
-</HTML>
-
-<style>
-	canvas {
-		width: 100%;
-		height: calc(100vh / 4);
-		max-width: 100%;
-		object-fit: contain;
+<div class="scene-wrapper">
+	<canvas bind:this={canvas}></canvas>
+	{#if data.role === 'lecturer'}
+		<div class="menu-container">
+			<Menu {models} onModelSelect={handleModelSelection} />
+		</div>
+	{/if}
+</div>
+  
+  <style>
+	.scene-wrapper {
+	  position: relative;
+	  width: 100%;
+	  height: 100vh; 
 	}
-</style>
+  
+	canvas {
+	  width: 100%;
+	  height: calc(100vh / 4);
+	  max-width: 100%;
+	  object-fit: contain;
+	}
+  
+	.menu-container {
+		position: absolute;
+		top: 0; /* Adjust as needed to align with the top of the canvas */
+		left: 0; /* Adjust as needed to align with the left of the canvas */
+		z-index: 10; /* Ensure it's on top of the canvas */
+		padding: 20px; /* Add padding if you want spacing from the edges */
+	}
+  </style>

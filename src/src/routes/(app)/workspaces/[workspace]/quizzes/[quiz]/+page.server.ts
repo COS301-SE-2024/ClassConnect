@@ -16,7 +16,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		const workspaceID = params.workspace;
 		const quizId = params.quiz;
 		const questions = await Questions.find({ quiz: quizId });
-		const materials = await getMaterials(workspaceID);
+		const models = await getModels(params.workspace, true);
 
 		const quiz = await Quizzes.findById(quizId);
 		if (!quiz) {
@@ -41,7 +41,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 					: null // if null
 			})),
 			workspaceID,
-			materials
+			models
 		};
 	} catch (e) {
 		console.error('Failed to load Questions: ', e);
@@ -76,21 +76,19 @@ async function createQuestion(
 	return { success: true };
 }
 
-async function getMaterials(workspace_id: string): Promise<Partial<Material>[]> {
-	const materials = await Materials.find({ workspace_id });
-	return materials.map(formatMaterial);
-}
-
-function formatMaterial(material: any): Partial<Material> {
+function formatModel(model: any): Partial<Material> {
 	return {
-		title: material.title,
-		description: material.description,
-		file_path: material.file_path,
-		thumbnail: material.thumbnail,
-		type: material.type,
-		id: material._id.toString()
+		title: model.title,
+		file_path: model.file_path,
+		description: model.description
 	};
 }
+
+async function getModels(workspace_id: string, type: boolean): Promise<Partial<Material>[]> {
+	const models = await Materials.find({ workspace_id, type });
+	return models.map(formatModel);
+}
+
 
 async function saveGrade(
 	studentID: ObjectId,
