@@ -18,9 +18,10 @@
 				Question {question.questionNumber}
 			</Heading>
 
-			{#if question.questionType==='3d-hotspot'}
+			{#if question.questionType === '3d-hotspot'}
 				<P class="mb-6 font-semibold text-violet-700">
-					Tip: Drag the sphere to the desired position. Check all perspectives to ensure proper intersection with the model.
+					Tip: Drag the sphere to the desired position. Check all perspectives to ensure proper
+					intersection with the model.
 				</P>
 			{/if}
 

@@ -89,7 +89,6 @@ async function getModels(workspace_id: string, type: boolean): Promise<Partial<M
 	return models.map(formatModel);
 }
 
-
 async function saveGrade(
 	studentID: ObjectId,
 	quizID: ObjectId,
@@ -129,7 +128,14 @@ export const actions: Actions = {
 			}
 
 			const quizId = new mongoose.Types.ObjectId(params.quiz);
-			return await createQuestion(questionNumber, questionContent,null, questionType, options, quizId);
+			return await createQuestion(
+				questionNumber,
+				questionContent,
+				null,
+				questionType,
+				options,
+				quizId
+			);
 		} catch (error) {
 			console.error('Error creating question:', error);
 			return fail(500, { error: 'Failed to create question' });
@@ -147,7 +153,14 @@ export const actions: Actions = {
 			const options = null;
 
 			const quizId = new mongoose.Types.ObjectId(params.quiz);
-			return await createQuestion(questionNumber, questionContent,questionPoints, questionType, options, quizId);
+			return await createQuestion(
+				questionNumber,
+				questionContent,
+				questionPoints,
+				questionType,
+				options,
+				quizId
+			);
 		} catch (error) {
 			console.error('Error creating question:', error);
 			return fail(500, { error: 'Failed to create question' });

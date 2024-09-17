@@ -14,12 +14,7 @@
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
 	import { onMount, onDestroy } from 'svelte';
-	import {
-        moveFocus,
-        handleSelection,
-        handleMouseEnter,
-        handleMouseLeave
-    } from '$utils/keyboard';
+	import { moveFocus, handleSelection, handleMouseEnter, handleMouseLeave } from '$utils/keyboard';
 
 	export let role: 'lecturer' | 'admin' | 'student';
 
@@ -52,15 +47,10 @@
 	];
 
 	const currentLinks = navLinks[role];
-
-	
-
-	
 </script>
 
 <aside
 	class="flex h-screen w-64 flex-col overflow-y-auto border-r bg-primary-100 px-4 py-6 dark:border-gray-700 dark:bg-gray-900 rtl:border-l rtl:border-r-0"
-	
 >
 	<a href="/" class="mx-auto mb-6">
 		<div class="flex items-center">
@@ -77,10 +67,8 @@
 					? 'active-sidebar dark:text-gray-800'
 					: ''}"
 				{href}
-				
-                on:mouseleave={handleMouseLeave}
+				on:mouseleave={handleMouseLeave}
 				on:focus={() => handleMouseEnter(name)}
-                
 			>
 				<svelte:component this={icon} class="h-5 w-5" />
 				<span class="ml-4 text-base font-medium">{name}</span>
@@ -96,7 +84,6 @@
 					? 'active-sidebar dark:text-gray-800'
 					: ''}"
 				{href}
-				
 				on:mouseleave={handleMouseLeave}
 				on:focus={() => handleMouseEnter(name)}
 			>
@@ -109,8 +96,6 @@
 	<a
 		class="mt-6 flex items-center rounded-lg px-4 py-2 text-gray-600 transition duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800"
 		href="/signout"
-		
-       
 		on:focus={() => handleMouseEnter('Sign Out')}
 	>
 		<svelte:component this={ArrowLeftToBracketOutline} class="h-5 w-5" />

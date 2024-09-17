@@ -17,7 +17,6 @@
 
 			if (index > 0 && path[index - 1].toLowerCase() === 'workspaces') {
 				segment = $workspaces[segment] || 'Workspace';
-			
 			}
 
 			if (index > 0 && path[index - 1].toLowerCase() === 'quizzes') {
@@ -43,7 +42,7 @@
 
 	{#if breadcrumbItems}
 		{#each breadcrumbItems as item}
-			<BreadcrumbItem href={item.href} >{item.name}</BreadcrumbItem>
+			<BreadcrumbItem href={item.href}>{item.name}</BreadcrumbItem>
 		{/each}
 	{/if}
 </Breadcrumb>

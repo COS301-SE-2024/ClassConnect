@@ -1,12 +1,16 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { Button, Drawer, Hr, Listgroup, ListgroupItem, CloseButton } from 'flowbite-svelte';
-	import { BarsOutline, ExpandOutline, MinimizeOutline, ArrowLeftToBracketOutline } from 'flowbite-svelte-icons';
+	import {
+		BarsOutline,
+		ExpandOutline,
+		MinimizeOutline,
+		ArrowLeftToBracketOutline
+	} from 'flowbite-svelte-icons';
 	import { sineIn } from 'svelte/easing';
 
-    export let models: { title: string; file_path: string; description: string }[];
-    export let onModelSelect: (file_path: string) => void;
-	
+	export let models: { title: string; file_path: string; description: string }[];
+	export let onModelSelect: (file_path: string) => void;
 
 	let isClosed = true;
 	let canvas: HTMLElement;
@@ -17,10 +21,9 @@
 		canvas = document.querySelector('.webgl') as HTMLCanvasElement;
 	});
 
-    function handleModelSelect(file_path: string) {
+	function handleModelSelect(file_path: string) {
 		onModelSelect(file_path);
 	}
-
 </script>
 
 <!-- Menu Button to Open Drawer -->
@@ -39,7 +42,7 @@
 	bind:hidden={isClosed}
 	class="flex h-full flex-col bg-transparent bg-opacity-30 backdrop-blur-md"
 >
-	<div class="flex justify-between items-center">
+	<div class="flex items-center justify-between">
 		<h1 class="text-xl font-bold text-white">Menu</h1>
 		<CloseButton on:click={() => (isClosed = true)} class="mb-4 text-white" />
 	</div>
@@ -54,7 +57,11 @@
 				class="flex w-full items-center p-2 text-lg text-white transition-colors hover:bg-gray-700"
 			>
 				<span>{model.title}</span>
-				<Button on:click={() => handleModelSelect(model.file_path)} color="light" class="ml-auto p-2">
+				<Button
+					on:click={() => handleModelSelect(model.file_path)}
+					color="light"
+					class="ml-auto p-2"
+				>
 					Load
 				</Button>
 			</ListgroupItem>
@@ -62,7 +69,4 @@
 	</Listgroup>
 
 	<Hr />
-
-	
 </Drawer>
-

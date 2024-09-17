@@ -5,7 +5,6 @@
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 	import { DragControls } from 'three/examples/jsm/controls/DragControls.js';
 	import Menu from './3dMenu.svelte';
-	
 
 	export let data: {
 		role: string;
@@ -24,7 +23,6 @@
 	let mouse: THREE.Vector2;
 	let raycaster: THREE.Raycaster;
 	let loadedModel: THREE.Object3D | undefined;
-	
 
 	onMount(() => {
 		initScene();
@@ -110,7 +108,6 @@
 			}
 		}
 
-
 		window.addEventListener('resize', onWindowResize, false);
 	}
 
@@ -156,9 +153,8 @@
 		localStorage.setItem('selectedModel', file_path);
 		loadModel(file_path);
 	}
-
-	
 </script>
+
 <div class="scene-wrapper">
 	<canvas bind:this={canvas}></canvas>
 	{#if data.role === 'lecturer'}
@@ -167,21 +163,21 @@
 		</div>
 	{/if}
 </div>
-  
-  <style>
+
+<style>
 	.scene-wrapper {
-	  position: relative;
-	  width: 100%;
-	  height: 100vh; 
+		position: relative;
+		width: 100%;
+		height: 100vh;
 	}
-  
+
 	canvas {
-	  width: 100%;
-	  height: calc(100vh / 4);
-	  max-width: 100%;
-	  object-fit: contain;
+		width: 100%;
+		height: calc(100vh / 4);
+		max-width: 100%;
+		object-fit: contain;
 	}
-  
+
 	.menu-container {
 		position: absolute;
 		top: 0; /* Adjust as needed to align with the top of the canvas */
@@ -189,4 +185,4 @@
 		z-index: 10; /* Ensure it's on top of the canvas */
 		padding: 20px; /* Add padding if you want spacing from the edges */
 	}
-  </style>
+</style>

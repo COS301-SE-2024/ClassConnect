@@ -96,12 +96,11 @@
 	let totalPoints = 0;
 	let totalPossiblePoints = 0;
 	let percentageScore = 0;
-	
 
 	function handleSelection(questionId: string, optionContent: string) {
 		selectedAnswers[questionId] = optionContent;
 	}
-	
+
 	function calculateTotalPoints() {
 		questions.forEach((question: any) => {
 			if (question.questionType === 'multiple-choice') {
@@ -116,10 +115,10 @@
 			} else if (question.questionType === '3d-hotspot') {
 				const distance = localStorage.getItem('Distance');
 				const proximity = parseInt(distance as string, 10);
-				const isCorrect = proximity <= 0.2? true: false;
-				let pointsForHotspot=0;
-				if(isCorrect === true){
-					pointsForHotspot= question.questionPoints;
+				const isCorrect = proximity <= 0.2 ? true : false;
+				let pointsForHotspot = 0;
+				if (isCorrect === true) {
+					pointsForHotspot = question.questionPoints;
 					totalPoints += pointsForHotspot;
 				}
 				totalPossiblePoints += question.questionPoints;
