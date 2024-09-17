@@ -13,6 +13,7 @@
 	import { page } from '$app/stores';
 	import { writingQuiz } from '$lib/store/sidebar';
 	import { onDestroy } from 'svelte';
+	import { handleMouseEnter } from '$src/utils/keyboard';
 
 	let isOpen = true;
 
@@ -63,6 +64,7 @@
 		href="/workspaces"
 		class="mb-6 flex items-center text-gray-600 transition-colors duration-300 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
 		data-sveltekit-reload
+		on:focus={() => handleMouseEnter('Back to workspaces')}
 	>
 		<ArrowLeftOutline class="h-5 w-5" />
 		<span class="ml-2 text-base font-medium">Back to Workspaces</span>
@@ -88,6 +90,7 @@
 						? 'active-sidebar dark:text-gray-800'
 						: ''}"
 					{href}
+					on:focus={() => handleMouseEnter(name)}
 				>
 					<svelte:component this={icon} class="h-5 w-5" />
 					<span class="ml-4 text-base font-medium">{name}</span>

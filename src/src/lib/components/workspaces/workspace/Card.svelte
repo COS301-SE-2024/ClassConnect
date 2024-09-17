@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { handleMouseEnter } from '$src/utils/keyboard';
 	import { Card, Button } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
+	
+	
 
 	export let workspace;
 	export let role: string;
@@ -16,7 +19,7 @@
 	}
 </script>
 
-<Card img={image} imgClass="h-40 w-full object-fit">
+<Card img={image} imgClass="h-40 w-full object-fit" >
 	<h4 class="mb-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
 		{name}
 	</h4>
@@ -25,7 +28,7 @@
 		{description}
 	</h5>
 
-	<Button on:click={openWorkspace}>
+	<Button on:click={openWorkspace} on:mouseenter={() => handleMouseEnter('Open')} >
 		Open <ArrowRightOutline class="ms-2 h-6 w-6 text-white" />
 	</Button>
 </Card>

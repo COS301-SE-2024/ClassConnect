@@ -1,6 +1,10 @@
 <script lang="ts">
 	import Card from './workspace/Card.svelte';
-
+	import {
+        
+        handleMouseEnter,
+        handleMouseLeave
+    } from '$utils/keyboard';
 	export let data;
 </script>
 
@@ -11,7 +15,7 @@
 		{#if data.workspaces && data.workspaces.length > 0}
 			<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 				{#each data.workspaces as workspace}
-					<Card {workspace} role={data.role} />
+					<Card {workspace} role={data.role} on:focus={() => handleMouseEnter(workspace.name)} />
 				{/each}
 			</div>
 		{:else}
