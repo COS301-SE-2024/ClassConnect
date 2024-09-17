@@ -1,201 +1,221 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import * as THREE from 'three';
-	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-	import Menu from '$lib/components/hotspot/3dMenu.svelte';
-	import { Button } from 'flowbite-svelte';
-	import { Textarea } from 'flowbite-svelte';
+    import { onMount } from 'svelte';
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+    import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+    import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
+    import Menu from '$lib/components/hotspot/3dMenu.svelte';
+    import { Button } from 'flowbite-svelte';
+  
+    let canvas: HTMLCanvasElement;
+    let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
+    let controls: OrbitControls;
+    let labelRenderer: CSS2DRenderer;
+    let raycaster: THREE.Raycaster;
+    let mouse: THREE.Vector2;
+    let annotationMode = false;  // Toggle for annotation mode
+    let annotationText = '';
+    let activePoint: THREE.Vector3 | null = null;
+    let tooltipX: number = 0;
+    let tooltipY: number = 0;
+  
+    export let data: {
+        role: string;
+        models: { title: string; file_path: string; description: string }[];
+    };
+  
+    let { models } = data;
+    let selectedModel: string | null = null;
+    const annotations: { [key: string]: { position: THREE.Vector3, text: string, labelDiv: HTMLDivElement } } = {};
+  
+    function toggleAnnotationMode() {
+        annotationMode = !annotationMode;
+        if (!annotationMode) {
+            activePoint = null;  // Clear active point when exiting annotation mode
+        }
+    }
+  
+    function addAnnotation() {
+        if (annotationText.trim() && activePoint) {
+            createAnnotation(activePoint, annotationText);
+            annotationText = '';  // Clear text after adding
+            activePoint = null;   // Clear active point
+        }
+    }
+  
+    function createAnnotation(position: THREE.Vector3, text: string) {
+        // Create a circle as a THREE.Sprite
+        const circleTexture = new THREE.TextureLoader().load('/images/circle.png'); 
+        const spriteMaterial = new THREE.SpriteMaterial({
+            map: circleTexture,
+            transparent: true
+        });
+        const sprite = new THREE.Sprite(spriteMaterial);
+        sprite.position.copy(position);
+        sprite.scale.set(0.066, 0.066, 0.066);  
+        scene.add(sprite);
+  
+        // Create the text box using CSS2DObject
+        const labelDiv = document.createElement('div');
+        labelDiv.className = 'annotation-label';
+        labelDiv.textContent = text;
+        const label = new CSS2DObject(labelDiv);
+        label.position.copy(position); 
+        labelRenderer.domElement.appendChild(labelDiv);
+        scene.add(label);
+  
+        annotations[text] = { position, text, labelDiv };
+    }
+  
+    function onMouseClick(event: MouseEvent) {
+        if (!annotationMode) return;
+  
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+        mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+  
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(scene.children, true);
+  
+        if (intersects.length > 0) {
+            const point = intersects[0].point;
+            activePoint = point;  
 
-	let canvas: HTMLCanvasElement;
-	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
-	let controls: OrbitControls;
-	let raycaster: THREE.Raycaster;
-	let mouse: THREE.Vector2;
-	let annotationMode = false;
-	let annotationText = '';
-	let activePoint: THREE.Vector3 | null = null;
-	let showTextField = false;
-	let textFieldX = 0;
-	let textFieldY = 0;
+            const vector = new THREE.Vector3();
+          vector.copy(activePoint).project(camera);
 
-	export let data: {
-		role: string;
-		models: { title: string; file_path: string; description: string }[];
-	};
+          const canvas = renderer.domElement;
+          const widthHalf = 0.5 * canvas.width;
+          const heightHalf = 0.5 * canvas.height;
 
-	let { models } = data;
-	let selectedModel: string | null = null;
+          tooltipX = (vector.x * widthHalf) + widthHalf;
+          tooltipY = -(vector.y * heightHalf) + heightHalf;
+        }
 
-	function toggleAnnotationMode() {
-		annotationMode = !annotationMode;
-		if (!annotationMode) {
-			activePoint = null; // Clear active point when exiting annotation mode
-		}
-	}
-
-	function addAnnotation() {
-		if (annotationText.trim() && activePoint) {
-			createAnnotation(activePoint, annotationText);
-			annotationText = ''; // Clear text after adding
-			activePoint = null; // Clear active point
-			showTextField = false; // Hide text field after adding annotation
-		}
-	}
-
-	function createAnnotation(position: THREE.Vector3, text: string) {
-		const geometry = new THREE.CircleGeometry(0.05, 32); // Circle radius 0.05 units
-		const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-		const circle = new THREE.Mesh(geometry, material);
-		circle.position.copy(position);
-		scene.add(circle);
-
-		// Create a Sprite with text for the annotation
-		const spriteMaterial = new THREE.SpriteMaterial({
-			map: createTextureWithText(text),
-			transparent: true
-		});
-		const sprite = new THREE.Sprite(spriteMaterial);
-		sprite.position.copy(position).add(new THREE.Vector3(0.5, 0.1, 0));
-		sprite.scale.set(0.5, 0.5, 0.5);
-		scene.add(sprite);
-	}
-
-	function createTextureWithText(text: string): THREE.Texture {
-		const canvas = document.createElement('canvas');
-		const ctx = canvas.getContext('2d');
-		canvas.width = 256;
-		canvas.height = 128;
-		if (ctx) {
-			ctx.fillStyle = 'white';
-			ctx.fillRect(0, 0, canvas.width, canvas.height);
-			ctx.fillStyle = 'black';
-			ctx.font = '20px Arial';
-			ctx.textAlign = 'center';
-			ctx.textBaseline = 'middle';
-			ctx.fillText(text, canvas.width / 2, canvas.height / 2);
-		}
-		return new THREE.CanvasTexture(canvas);
-	}
-
-	function onMouseClick(event: MouseEvent) {
-		if (!annotationMode) return;
-
-		const rect = canvas.getBoundingClientRect();
-		mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-		mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-		raycaster.setFromCamera(mouse, camera);
-		const intersects = raycaster.intersectObjects(scene.children, true);
-
-		if (intersects.length > 0) {
-			const point = intersects[0].point;
-			textFieldX = event.clientX;
-			textFieldY = event.clientY;
-			activePoint = point;
-			showTextField = true; // Show text field for annotation input
-		}
-	}
-
-	onMount(() => {
-		initScene();
-		animate();
-
-		window.addEventListener('click', onMouseClick);
-	});
-
-	function initScene() {
-		scene = new THREE.Scene();
-		camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-		camera.position.z = 5;
-
-		renderer = new THREE.WebGLRenderer({ canvas });
-		renderer.setSize(window.innerWidth, window.innerHeight);
-		renderer.setClearColor(0xffffff);
-
-		raycaster = new THREE.Raycaster();
-		mouse = new THREE.Vector2();
-
-		const ambientLight = new THREE.AmbientLight(0x404040);
-		scene.add(ambientLight);
-		const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-		directionalLight.position.set(1, 1, 1).normalize();
-		scene.add(directionalLight);
-
-		controls = new OrbitControls(camera, renderer.domElement);
-		controls.enableDamping = true;
-		controls.dampingFactor = 0.25;
-		controls.enableRotate = true;
-
-		window.addEventListener('resize', onWindowResize, false);
-	}
-
-	function loadModel(file_path: string) {
-		const loader = new GLTFLoader();
-		loader.load(file_path, (gltf) => {
-			scene.add(gltf.scene);
-		});
-	}
-
-	function handleModelSelection(file_path: string) {
-		selectedModel = file_path;
-		localStorage.setItem('selectedModel', selectedModel);
-		loadModel(file_path);
-	}
-
-	function animate() {
-		requestAnimationFrame(animate);
-		controls.update();
-		renderer.render(scene, camera);
-	}
-
-	function onWindowResize() {
-		camera.aspect = window.innerWidth / window.innerHeight;
-		camera.updateProjectionMatrix();
-		renderer.setSize(window.innerWidth, window.innerHeight);
-	}
-</script>
-
-<div class="scene-wrapper">
-	<Menu {models} onModelSelect={handleModelSelection} />
-	<Button on:click={toggleAnnotationMode}>
-		{annotationMode ? 'Exit Annotation Mode' : 'Enter Annotation Mode'}
-	</Button>
-	<canvas bind:this={canvas}></canvas>
-
-	<!-- Annotation input -->
-	{#if annotationMode && showTextField}
-		<div class="annotation-input" style="left: {textFieldX}px; top: {textFieldY}px;">
-			<Textarea bind:value={annotationText} placeholder="Enter annotation" rows={2} />
-			<button on:click={addAnnotation}>Add Annotation</button>
-		</div>
-	{/if}
-</div>
-
-<style>
-	.scene-wrapper {
-		position: relative;
-		width: 100%;
-		height: 100vh;
-	}
-
-	canvas {
-		width: 100%;
-		height: calc(100vh / 4);
-		max-width: 100%;
-		object-fit: contain;
-	}
-
-	.annotation-input {
-		position: absolute;
-		background: white;
-		border: 1px solid black;
-		padding: 10px;
-		box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-		z-index: 1000;
-	}
-
-	.annotation-input button {
-		width: 100%;
-	}
-</style>
+        
+    }
+  
+    onMount(() => {
+        initScene();
+        animate();
+  
+        window.addEventListener('click', onMouseClick);
+    });
+  
+    function initScene() {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+  
+        renderer = new THREE.WebGLRenderer({ canvas });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0xffffff);
+  
+        labelRenderer = new CSS2DRenderer();
+        labelRenderer.setSize(window.innerWidth, window.innerHeight);
+        labelRenderer.domElement.style.position = 'absolute';
+        labelRenderer.domElement.style.top = '0';
+        labelRenderer.domElement.style.pointerEvents = 'none';
+        document.body.appendChild(labelRenderer.domElement);
+  
+        raycaster = new THREE.Raycaster();
+        mouse = new THREE.Vector2();
+  
+        const ambientLight = new THREE.AmbientLight(0x404040);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+        directionalLight.position.set(1, 1, 1).normalize();
+        scene.add(directionalLight);
+  
+        controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.25;
+        controls.enableRotate = true;
+  
+        window.addEventListener('resize', onWindowResize, false);
+    }
+  
+    function loadModel(file_path: string) {
+        const loader = new GLTFLoader();
+        loader.load(file_path, (gltf) => {
+            scene.add(gltf.scene);
+        });
+    }
+  
+    function handleModelSelection(file_path: string) {
+        selectedModel = file_path;
+        localStorage.setItem('selectedModel', file_path);
+        loadModel(file_path);
+    }
+  
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+        labelRenderer.render(scene, camera);
+    }
+  
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        labelRenderer.setSize(window.innerWidth, window.innerHeight);
+    }
+  </script>
+  
+  <div class="scene-wrapper">
+    <Menu {models} onModelSelect={handleModelSelection} />
+    <Button on:click={toggleAnnotationMode}>
+        {annotationMode ? "Exit Annotation Mode" : "Enter Annotation Mode"}
+    </Button>
+    <canvas bind:this={canvas}></canvas>
+  
+    <!-- Annotation input -->
+    {#if annotationMode && activePoint}
+        <div class="annotation-input" style="left: {tooltipX}px; top: {tooltipY}px;">
+            <input type="text" bind:value={annotationText} placeholder="Enter annotation" />
+            <button on:click={addAnnotation}>Add Annotation</button>
+        </div>
+    {/if}
+  </div>
+  
+  <style>
+    .scene-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+    }
+  
+    canvas {
+        width: 100%;
+        height: calc(100vh / 4);
+        max-width: 100%;
+        object-fit: contain;
+    }
+  
+    .annotation-input {
+        position: absolute;
+        background: white;
+        border: 1px solid black;
+        padding: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+  
+    .annotation-input input {
+        width: 100px; /* Adjust width */
+    }
+  
+    .annotation-input button {
+        margin-top: 5px;
+    }
+  
+    .annotation-label {
+        font-size: 12px; /* Adjust font size */
+        background: white;
+        border: 1px solid black;
+        padding: 2px 4px;
+        border-radius: 4px;
+    }
+  </style>
+  
