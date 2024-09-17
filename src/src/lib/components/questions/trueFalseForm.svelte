@@ -58,7 +58,7 @@
 		</div>
 
 		<div class="mb-4">
-			<slot name="image" />
+			<slot name="scene" />
 		</div>
 
 		<Button type="submit" class="mt-4 w-full">Submit Question</Button>
