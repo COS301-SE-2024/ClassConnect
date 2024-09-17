@@ -4,7 +4,9 @@
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 	import { DragControls } from 'three/examples/jsm/controls/DragControls.js';
-	import { createEventDispatcher } from 'svelte';
+	import { navigateToParentRoute } from '$utils/navigation';
+	import { HTML } from '@threlte/extras';
+	import Menu from './3dMenu.svelte';
 
 	export let data: any;
 
@@ -22,6 +24,7 @@
 	let mouse: THREE.Vector2;
 	let raycaster: THREE.Raycaster;
 	let loadedModel: THREE.Object3D | undefined;
+	let isFullscreen = false;
 	
 
 	onMount(() => {
@@ -100,14 +103,16 @@
 		controls.autoRotate = false;
 		controls.autoRotateSpeed = 2.0;
 
-		loadModel();
-
+		
 		window.addEventListener('resize', onWindowResize, false);
 	}
 
-	function loadModel() {
+	function loadModel(filePath: string) {
 		const loader = new GLTFLoader();
-		loader.load(data.materials[0].file_path, (gltf) => {
+		loader.load(filePath, (gltf) => {
+			if (loadedModel) {
+				scene.remove(loadedModel);
+			}
 			loadedModel = gltf.scene;
 			scene.add(loadedModel);
 		});
@@ -142,9 +147,33 @@
 		camera.updateProjectionMatrix();
 		renderer.setSize(window.innerWidth, window.innerHeight);
 	}
+
+	function toggleFullscreen() {
+		if (!document.fullscreenElement) {
+			if (canvas.requestFullscreen) canvas.requestFullscreen();
+			isFullscreen = true;
+		} else {
+			if (document.exitFullscreen) document.exitFullscreen();
+			isFullscreen = false;
+		}
+	}
+
+	function exit() {
+		navigateToParentRoute(window.location.pathname);
+	}
 </script>
 
 <canvas bind:this={canvas}></canvas>
+
+<HTML>
+    <Menu
+        {models}
+        {isFullscreen}
+        on:loadModel={(event) => loadModel(event.detail)}
+        on:toggleFullscreen={toggleFullscreen}
+        on:exit={exit}
+    />
+</HTML>
 
 <style>
 	canvas {
