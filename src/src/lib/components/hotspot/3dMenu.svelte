@@ -1,25 +1,14 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { Button, Drawer, Hr, Listgroup, ListgroupItem, CloseButton } from 'flowbite-svelte';
-	import {
-		BarsOutline,
-		ExpandOutline,
-		MinimizeOutline,
-		ArrowLeftToBracketOutline
-	} from 'flowbite-svelte-icons';
+	import { BarsOutline } from 'flowbite-svelte-icons';
 	import { sineIn } from 'svelte/easing';
 
 	export let models: { title: string; file_path: string; description: string }[];
 	export let onModelSelect: (file_path: string) => void;
 
 	let isClosed = true;
-	let canvas: HTMLElement;
 
 	const transitionParams = { x: -320, duration: 200, easing: sineIn };
-
-	onMount(() => {
-		canvas = document.querySelector('.webgl') as HTMLCanvasElement;
-	});
 
 	function handleModelSelect(file_path: string) {
 		onModelSelect(file_path);

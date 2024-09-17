@@ -139,7 +139,7 @@
 
 	function handleModelSelection(file_path: string) {
 		selectedModel = file_path;
-		localStorage.setItem('selectedModel', file_path);
+		localStorage.setItem('selectedModel', selectedModel);
 		loadModel(file_path);
 	}
 
@@ -193,11 +193,6 @@
 		padding: 10px;
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 		z-index: 1000;
-	}
-
-	.annotation-input textarea {
-		width: 200px;
-		margin-bottom: 10px;
 	}
 
 	.annotation-input button {

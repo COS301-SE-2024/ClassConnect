@@ -20,9 +20,6 @@
 	let draggableSphere: THREE.Mesh;
 	let spherePosition: THREE.Vector3 = new THREE.Vector3();
 	let pinPos: THREE.Vector3 = new THREE.Vector3();
-	let mouse: THREE.Vector2;
-	let raycaster: THREE.Raycaster;
-	let loadedModel: THREE.Object3D | undefined;
 
 	onMount(() => {
 		initScene();
@@ -37,9 +34,6 @@
 		renderer = new THREE.WebGLRenderer({ canvas });
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		renderer.setClearColor(0xffffff);
-
-		raycaster = new THREE.Raycaster();
-		mouse = new THREE.Vector2();
 
 		// Add lighting
 		const ambientLight = new THREE.AmbientLight(0x404040);
@@ -150,7 +144,7 @@
 
 	function handleModelSelection(file_path: string) {
 		selectedModel = file_path;
-		localStorage.setItem('selectedModel', file_path);
+		localStorage.setItem('selectedModel', selectedModel);
 		loadModel(file_path);
 	}
 </script>

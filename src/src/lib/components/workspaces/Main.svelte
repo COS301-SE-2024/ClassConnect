@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Card from './workspace/Card.svelte';
-	import { handleMouseEnter, handleMouseLeave } from '$utils/keyboard';
+	import { handleMouseEnter } from '$utils/keyboard';
 	export let data;
 </script>
 

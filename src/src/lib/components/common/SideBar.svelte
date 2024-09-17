@@ -13,8 +13,8 @@
 		AdjustmentsHorizontalSolid
 	} from 'flowbite-svelte-icons';
 	import { page } from '$app/stores';
-	import { onMount, onDestroy } from 'svelte';
-	import { moveFocus, handleSelection, handleMouseEnter, handleMouseLeave } from '$utils/keyboard';
+
+	import { handleMouseEnter, handleMouseLeave } from '$utils/keyboard';
 
 	export let role: 'lecturer' | 'admin' | 'student';
 

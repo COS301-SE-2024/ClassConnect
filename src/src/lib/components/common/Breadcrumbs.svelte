@@ -2,7 +2,6 @@
 	import { page } from '$app/stores';
 	import { afterNavigate } from '$app/navigation';
 	import { Breadcrumb, BreadcrumbItem } from 'flowbite-svelte';
-	import { handleMouseEnter } from '$src/utils/keyboard';
 
 	import { workspaces, quizzes } from '$lib/store/user';
 
