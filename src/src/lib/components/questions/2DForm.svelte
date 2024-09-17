@@ -40,6 +40,13 @@
 		</div>
 
 		<div class="mb-4">
+			<Label class="mb-4 space-y-2">
+				<span>Points</span>
+				<NumberInput name="points" />
+			</Label>
+		</div>
+
+		<div class="mb-4">
 			<Label for="questionContent">Question Content</Label>
 			<Textarea
 				id="questionContent"
@@ -48,6 +55,10 @@
 				placeholder="Write the question content"
 				required
 			/>
+		</div>
+
+		<div class="mb-4">
+			<slot name="image" />
 		</div>
 
 		<Button type="submit" class="mt-4 w-full">Submit Question</Button>
