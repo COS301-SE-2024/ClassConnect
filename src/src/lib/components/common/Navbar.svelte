@@ -49,7 +49,9 @@
 >
 	<NavBrand href="/">
 		<img src="images/class-connect-logo.png" class="mr-3 h-8 sm:h-10" alt="ClassConnect Logo" />
-		<span class="self-center whitespace-nowrap text-xl font-semibold text-white transition-colors duration-300 dark:text-gray-100">
+		<span
+			class="self-center whitespace-nowrap text-xl font-semibold text-white transition-colors duration-300 dark:text-gray-100"
+		>
 			ClassConnect
 		</span>
 	</NavBrand>
@@ -65,12 +67,18 @@
 				class="nav-link1 group relative mt-2 flex items-center px-4 font-semibold text-white transition-colors duration-300 hover:text-white dark:text-gray-100 dark:hover:text-gray-100"
 			>
 				<span>{name}</span>
-				<span class="absolute -bottom-1 left-1/2 h-0.5 w-0 bg-white transition-all group-hover:w-3/6 dark:bg-gray-100"></span>
-				<span class="absolute -bottom-1 right-1/2 h-0.5 w-0 bg-white transition-all group-hover:w-3/6 dark:bg-gray-100"></span>
+				<span
+					class="absolute -bottom-1 left-1/2 h-0.5 w-0 bg-white transition-all group-hover:w-3/6 dark:bg-gray-100"
+				></span>
+				<span
+					class="absolute -bottom-1 right-1/2 h-0.5 w-0 bg-white transition-all group-hover:w-3/6 dark:bg-gray-100"
+				></span>
 			</NavLi>
 		{/each}
 		<NavLi on:click={signout}>
-			<button class="w-full transform rounded-lg bg-red-600 px-4 py-2 text-left font-semibold text-white transition duration-300 ease-in-out hover:bg-red-700 hover:shadow-xl dark:bg-red-700 dark:hover:bg-red-800">
+			<button
+				class="w-full transform rounded-lg bg-red-600 px-4 py-2 text-left font-semibold text-white transition duration-300 ease-in-out hover:bg-red-700 hover:shadow-xl dark:bg-red-700 dark:hover:bg-red-800"
+			>
 				Sign Out
 			</button>
 		</NavLi>
@@ -78,9 +86,9 @@
 </Navbar>
 
 <style>
-    :global(.nav-link) {
-      padding-top: 0.5rem; /* Adjust this value as needed */
-    }
+	:global(.nav-link) {
+		padding-top: 0.5rem; /* Adjust this value as needed */
+	}
 
 	@media (max-width: 768px) {
 		:global(.nav-link) {

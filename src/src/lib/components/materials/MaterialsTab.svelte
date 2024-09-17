@@ -7,7 +7,6 @@
 		ArrowUpFromBracketOutline,
 		ArrowRightOutline,
 		DotsVerticalOutline,
-		EyeOutline,
 		ShareNodesOutline,
 		TrashBinOutline,
 		ArrowDownToBracketOutline
@@ -59,14 +58,6 @@
 		id = mat_id;
 		title = mat_title;
 		openDeleteModal = true;
-	};
-
-	const handlePreview = (mat_url: string, mat_title: string, mat_type: boolean) => {
-		url = mat_url;
-		displayedSandboxObjectURL.set(url);
-		title = mat_title;
-		type = mat_type;
-		openPreviewModal = true;
 	};
 
 	async function handleDownload(mat_url: string, mat_title: string) {
@@ -248,7 +239,7 @@
 										<ShareNodesOutline class="h-4 w-4" />
 										<span>Share</span>
 									</DropdownItem>
-									
+
 									<DropdownItem
 										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
 										on:click={() => handleDownload(material.file_path, material.title)}

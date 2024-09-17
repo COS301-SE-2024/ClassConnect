@@ -54,12 +54,7 @@
 	<Comment title="Discussion (20)">
 		<form class="mb-6">
 			<Label for="comment" class="sr-only">Your comment</Label>
-			<Textarea
-				id="comment"
-				rows="6"
-				class="mb-4"
-				placeholder="Write a comment..."
-				required
+			<Textarea id="comment" rows="6" class="mb-4" placeholder="Write a comment..." required
 			></Textarea>
 			<Button type="submit" class="px-4 text-xs font-medium">Post comment</Button>
 		</form>
