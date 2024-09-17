@@ -41,10 +41,10 @@
 </script>
 
 <main
-	class="relative min-h-screen overflow-hidden bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 p-4 transition-colors duration-300 dark:from-green-800 dark:via-green-900 dark:to-emerald-950 sm:p-6 md:p-8"
+	class="relative min-h-screen overflow-hidden bg-gradient-to-br from-green-400 via-green-500 to-emerald-600 p-4 transition-colors duration-300 dark:from-green-800 dark:via-green-900 dark:to-emerald-950 sm:p-6 md:p-4"
 >
 	<!-- Animated background elements -->
-	<div class="absolute inset-0 overflow-hidden z-10">
+	<div class="absolute inset-0 overflow-hidden">
 		{#each floatingElements as element}
 			<div
 				class="animate-float absolute rounded-full bg-white bg-opacity-10 dark:bg-gray-300 dark:bg-opacity-10"
