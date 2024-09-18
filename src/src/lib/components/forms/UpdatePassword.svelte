@@ -68,13 +68,11 @@
 				>
 				<div class="relative">
 					<Input
-						data-popover-target="popover-password"
-						autocomplete="off"
-						data-popover-placement="bottom"
 						type={newShowPassword ? 'text' : 'password'}
-						id="newPassword"
+						autocomplete="off"
 						name="newPassword"
-						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+						id="newPassword"
+						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
 						placeholder="••••••••"
 						required
 					/>
@@ -101,6 +99,7 @@
 				<div class="relative">
 					<Input
 						type={confirmShowPassword ? 'text' : 'password'}
+						autocomplete="off"
 						name="conPassword"
 						id="conPassword"
 						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500 sm:text-sm"
@@ -121,10 +120,11 @@
 					</button>
 				</div>
 			</div>
-			<div class="sm:col-full col-span-6">
+			<div class="col-span-6">
 				<Button
+					type="submit"
 					class="rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-					type="submit">Update Password</Button
+					>Update Password</Button
 				>
 			</div>
 		</div>

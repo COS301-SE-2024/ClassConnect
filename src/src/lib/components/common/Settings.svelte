@@ -7,44 +7,28 @@
 	import UploadPicture from '$lib/components/modals/settings/UploadPicture.svelte';
 	import UpdateGeneralDetails from '$lib/components/forms/UpdateGeneralDetails.svelte';
 	import UpdatePassword from '$lib/components/forms/UpdatePassword.svelte';
-	import axios from 'axios';
+	import { getUserData } from '$lib/utils';
 
 	export let user: any;
 
 	let openDeleteModal = false;
 	let openFileHandlingModal = false;
-	const apiUrl = '/api/user';
 
-	async function getUserData() {
+	async function updateUserData() {
 		try {
-			axios
-				.get(apiUrl)
-				.then((response) => {
-					console.log('User data:', response.data);
-					user = response.data;
-				})
-				.catch((error) => {
-					if (error.response) {
-						console.error('Error response data:', error.response.data);
-						console.error('Error response status:', error.response.status);
-					} else if (error.request) {
-						console.error('Error request:', error.request);
-					} else {
-						console.error('Error message:', error.message);
-					}
-				});
+			user = await getUserData();
 		} catch (error) {
-			console.error('There was a problem with the get operation:', error);
+			console.error('There was a problem with the get operation');
 		}
 	}
 
-	onMount(() => {
-		getUserData();
+	onMount(async () => {
+		await updateUserData();
 	});
 
 	$: {
 		change.subscribe(() => {
-			getUserData();
+			updateUserData();
 		});
 	}
 </script>
@@ -60,13 +44,13 @@
 			class="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2"
 		>
 			<div class="items-center sm:flex sm:space-x-4 xl:block xl:space-x-0 2xl:flex 2xl:space-x-4">
+				<h3 class="mb-4 text-xl font-semibold dark:text-white">Profile Picture</h3>
 				<img
 					class="mb-4 h-28 w-28 rounded-[100px] sm:mb-0 xl:mb-4 2xl:mb-0"
 					src={user.image}
 					alt="profile"
 				/>
 				<div>
-					<h3 class="mb-1 text-xl font-bold text-gray-900 dark:text-white">Profile Picture</h3>
 					<div class="mb-4 text-sm text-gray-500 dark:text-gray-400">
 						JPG, WEBP or PNG. Max size of 1 MB
 					</div>

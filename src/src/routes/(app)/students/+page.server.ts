@@ -73,11 +73,31 @@ export const actions: Actions = {
 				{ $addToSet: { workspaces: { $each: selectedWorkspaces } } },
 				{ new: true, runValidators: true }
 			);
-
 			return { success: true };
 		} catch (err) {
 			console.error('Error enrolling student:', err);
 			return fail(500, { error: 'Failed to enrol student' });
+		}
+	},
+
+	unenrol: async ({ request, locals }) => {
+		validateUser(locals, 'admin');
+
+		const data = await request.formData();
+		const id = data.get('id') as string;
+		const selectedWorkspaces = data.getAll('workspaces') as string[];
+
+		try {
+			await User.findByIdAndUpdate(
+				id,
+				{ $pull: { workspaces: { $in: selectedWorkspaces } } },
+				{ new: true, runValidators: true }
+			);
+
+			return { success: true };
+		} catch (err) {
+			console.error('Error unenrolling student:', err);
+			return fail(500, { error: 'Failed to unenrol student' });
 		}
 	},
 

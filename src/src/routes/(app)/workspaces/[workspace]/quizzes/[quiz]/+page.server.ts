@@ -7,6 +7,8 @@ import type { ObjectId } from 'mongoose';
 import Quizzes from '$db/schemas/Quiz';
 import Questions from '$db/schemas/Question';
 import Grade from '$db/schemas/Grades';
+import Materials from '$db/schemas/Material';
+import type { Material } from '$src/types';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	try {
@@ -14,14 +16,13 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		const workspaceID = params.workspace;
 		const quizId = params.quiz;
 		const questions = await Questions.find({ quiz: quizId });
+		const models = await getModels(params.workspace, true);
 
 		const quiz = await Quizzes.findById(quizId);
 		if (!quiz) {
 			throw error(404, 'Quiz not found');
 		}
 		const duration = quiz.duration;
-		//const workspaceID = quiz.owner.toString();
-		//const quizID = quiz.id;
 
 		return {
 			role,
@@ -30,13 +31,17 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 				id: q._id.toString(),
 				questionNumber: q.questionNumber,
 				questionContent: q.questionContent,
+				questionPoints: q.questionPoints,
 				questionType: q.questionType,
-				options: q.options.map((option: { content: any; points: any }) => ({
-					content: option.content,
-					points: option.points
-				}))
+				options: q.options
+					? q.options.map((option: { content: any; points: any }) => ({
+							content: option.content,
+							points: option.points
+						}))
+					: null
 			})),
-			workspaceID
+			workspaceID,
+			models
 		};
 	} catch (e) {
 		console.error('Failed to load Questions: ', e);
@@ -53,20 +58,35 @@ function validateLecturer(locals: any) {
 async function createQuestion(
 	questionNumber: number,
 	questionContent: string,
+	questionPoints: number | null,
 	questionType: string,
-	options: { content: string; points: number }[],
+	options: { content: string; points: number }[] | null,
 	quizId: ObjectId | undefined
 ) {
 	const newQuestion = new Questions({
 		questionNumber,
 		questionContent,
+		questionPoints,
 		questionType,
 		options,
 		quiz: quizId
 	});
-	//console.log(newQuestion);
+
 	await newQuestion.save();
 	return { success: true };
+}
+
+function formatModel(model: any): Partial<Material> {
+	return {
+		title: model.title,
+		file_path: model.file_path,
+		description: model.description
+	};
+}
+
+async function getModels(workspace_id: string, type: boolean): Promise<Partial<Material>[]> {
+	const models = await Materials.find({ workspace_id, type });
+	return models.map(formatModel);
 }
 
 async function saveGrade(
@@ -86,9 +106,8 @@ async function saveGrade(
 	return { success: true };
 }
 
-//actions
 export const actions: Actions = {
-	post: async ({ request, locals, params }) => {
+	postMCQ: async ({ request, locals, params }) => {
 		validateLecturer(locals);
 		try {
 			const data = await request.formData();
@@ -109,12 +128,45 @@ export const actions: Actions = {
 			}
 
 			const quizId = new mongoose.Types.ObjectId(params.quiz);
-			return await createQuestion(questionNumber, questionContent, questionType, options, quizId);
+			return await createQuestion(
+				questionNumber,
+				questionContent,
+				null,
+				questionType,
+				options,
+				quizId
+			);
 		} catch (error) {
 			console.error('Error creating question:', error);
 			return fail(500, { error: 'Failed to create question' });
 		}
 	},
+
+	post3D: async ({ request, locals, params }) => {
+		validateLecturer(locals);
+		try {
+			const data = await request.formData();
+			const questionNumber = parseInt(data.get('questionNumber') as string, 10);
+			const questionContent = data.get('questionContent') as string;
+			const questionType = '3d-hotspot';
+			const questionPoints = parseInt(data.get('points') as string, 10);
+			const options = null;
+
+			const quizId = new mongoose.Types.ObjectId(params.quiz);
+			return await createQuestion(
+				questionNumber,
+				questionContent,
+				questionPoints,
+				questionType,
+				options,
+				quizId
+			);
+		} catch (error) {
+			console.error('Error creating question:', error);
+			return fail(500, { error: 'Failed to create question' });
+		}
+	},
+
 	submitQuiz: async ({ request, locals, params }) => {
 		if (!locals.user) {
 			throw error(401, 'Unauthorized');
