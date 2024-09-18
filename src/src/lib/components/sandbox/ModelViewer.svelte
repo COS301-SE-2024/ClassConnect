@@ -1,11 +1,10 @@
 <script lang="ts">
 	import { T } from '@threlte/core';
 	import { Box3, Vector3 } from 'three';
+	import type { Object3D } from 'three';
 	import { writable } from 'svelte/store';
 	import { Checkbox, Pane, ThemeUtils, Slider, List } from 'svelte-tweakpane-ui';
 	import { GLTF, OrbitControls, Sky, TransformControls, useGltfAnimations } from '@threlte/extras';
-
-	import type { Object3D } from 'three';
 
 	import VR from '$lib/components/sandbox/VR.svelte';
 	import Menu from '$lib/components/sandbox/Menu.svelte';
