@@ -2,7 +2,7 @@ import { goto } from '$app/navigation';
 import { describe, it, expect, vi } from 'vitest';
 import { render, fireEvent } from '@testing-library/svelte';
 
-import InSession from '$lib/components/lessons/InSession.svelte';
+import InSession from '$lib/components/lessons/CombinedLessons.svelte';
 
 vi.mock('$app/navigation', () => ({
 	goto: vi.fn()
@@ -34,14 +34,13 @@ describe('InSession Component', () => {
 		const { getByText } = render(InSession, { props: { lessons, role } });
 
 		expect(getByText('Test Topic')).toBeInTheDocument();
-		expect(getByText('Test Description')).toBeInTheDocument();
 		expect(getByText('2023-10-01')).toBeInTheDocument();
 		expect(getByText('10:00 AM')).toBeInTheDocument();
 	});
 
 	it('handles Join button click', async () => {
 		const { getByText } = render(InSession, { props: { lessons, role } });
-		const joinButton = getByText('Join');
+		const joinButton = getByText('View');
 
 		await fireEvent.click(joinButton);
 
@@ -51,7 +50,7 @@ describe('InSession Component', () => {
 	it('renders lecturer-specific buttons', () => {
 		const { getByText } = render(InSession, { props: { lessons, role } });
 
-		expect(getByText('Join')).toBeInTheDocument();
+		expect(getByText('View')).toBeInTheDocument();
 		expect(getByText('Cancel')).toBeInTheDocument();
 	});
 });

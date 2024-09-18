@@ -16,6 +16,8 @@
 	import Preview from '$src/lib/components/modals/materials/Preview.svelte';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import * as THREE from 'three';
+	import { type GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 	let openPreviewModal = false;
 	let openDeleteModal = false;
@@ -23,7 +25,7 @@
 	export let tabName: any;
 	export let tabBoolean: boolean;
 	export let renderedMaterials: any[] = [];
-	export let role: string;
+	export const role: string = '';
 
 	let id: string;
 	let title: string;
@@ -80,7 +82,6 @@
 			document.body.appendChild(link);
 			link.click();
 
-			// Clean up
 			document.body.removeChild(link);
 			URL.revokeObjectURL(url);
 			toast.dismiss(toastId);
@@ -93,139 +94,207 @@
 	const copyToClipboard = (url: string) => {
 		try {
 			navigator.clipboard.writeText(url);
-			toast.success('Url copied to clipboard!');
+			toast.success('URL copied to clipboard!');
 		} catch (err) {
-			toast.error('Failed to copy url to clipboard!');
+			toast.error('Failed to copy URL to clipboard!');
 		}
 	};
+
+	let hoveredMaterial: any = null;
+
+	function handleMouseEnter(material: any) {
+		hoveredMaterial = material;
+	}
+
+	function handleMouseLeave() {
+		hoveredMaterial = null;
+	}
+
+	function create3DPreview(element: HTMLElement, material: any) {
+		if (!material || !material.type) return;
+
+		const scene = new THREE.Scene();
+		const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
+		const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+		renderer.setSize(element.clientWidth, element.clientHeight);
+		renderer.setPixelRatio(window.devicePixelRatio);
+		element.appendChild(renderer.domElement);
+
+		const ambientLight = new THREE.AmbientLight(0x404040);
+		scene.add(ambientLight);
+
+		const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+		directionalLight.position.set(5, 5, 5);
+		scene.add(directionalLight);
+
+		const loader = new GLTFLoader();
+		loader.load(
+			material.file_path,
+			(gltf: GLTF) => {
+				scene.add(gltf.scene);
+				const box = new THREE.Box3().setFromObject(gltf.scene);
+				const size = box.getSize(new THREE.Vector3());
+				const maxDim = Math.max(size.x, size.y, size.z);
+				const fov = camera.fov * (Math.PI / 180);
+				let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+
+				camera.position.z = cameraZ * 2;
+
+				const animate = () => {
+					requestAnimationFrame(animate);
+					gltf.scene.rotation.y += 0.01;
+					renderer.render(scene, camera);
+				};
+				animate();
+			},
+			undefined,
+			(error: ErrorEvent | unknown) => {
+				console.error('An error happened while loading the 3D model:', error);
+			}
+		);
+
+		return {
+			destroy() {
+				element.removeChild(renderer.domElement);
+			}
+		};
+	}
 </script>
 
 <Toaster />
 
 <TabItem open={tabBoolean}>
 	<span slot="title">{tabName}</span>
-	<div class="mt-4 flex items-center justify-between space-x-2">
-		<div class="max-w-lg">
-			<!-- SearchBox -->
+	<div
+		class="m-4 flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0"
+	>
+		<div class="w-full max-w-lg">
 			<div class="relative">
-				<div class="relative">
-					<div class="pointer-events-none absolute inset-y-0 start-0 z-20 flex items-center ps-3.5">
-						<svg
-							class="size-4 flex-shrink-0 text-gray-400 dark:text-white"
-							xmlns="http://www.w3.org/2000/svg"
-							width="24"
-							height="24"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<circle cx="11" cy="11" r="8"></circle>
-							<path d="m21 21-4.3-4.3"></path>
-						</svg>
-					</div>
-					<input
-						bind:value={materialSearchTerm}
-						class="block w-full rounded-lg border-gray-200 py-3 pe-4 ps-10 text-lg focus:border-green-500 focus:ring-green-500 disabled:pointer-events-none disabled:opacity-50 dark:border-neutral-700 dark:bg-gray-800 dark:text-white dark:placeholder-white dark:focus:ring-neutral-600"
-						type="text"
-						placeholder="Search"
-						data-hs-combo-box-input=""
-					/>
+				<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+					<svg
+						class="h-5 w-5 text-gray-400 dark:text-gray-300"
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="2"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<circle cx="11" cy="11" r="6.5" />
+						<path d="m21 21-4.3-4.3" />
+					</svg>
 				</div>
+				<input
+					bind:value={materialSearchTerm}
+					class="block w-full rounded-lg border border-gray-300 bg-white px-4 py-2 pl-10 text-sm focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-green-500 dark:focus:ring-green-600"
+					type="text"
+					placeholder="Search materials..."
+				/>
 			</div>
-			<!-- End SearchBox -->
 		</div>
-		{#if role === 'lecturer'}
-			<Button on:click={() => (uploadModal = true)} class="flex items-center space-x-1">
-				<ArrowUpFromBracketOutline class="h-5 w-5" />
-				<span>Upload File</span>
-			</Button>
-		{/if}
+		<Button
+			on:click={() => (uploadModal = true)}
+			class="flex items-center space-x-2 bg-green-600 hover:bg-green-700"
+		>
+			<ArrowUpFromBracketOutline class="h-5 w-5" />
+			<span>Upload File</span>
+		</Button>
 	</div>
 
 	{#if filteredItems && filteredItems.length > 0}
-		<div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+		<div class="mx-4 my-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 			{#each filteredItems as material (material.id)}
-				<div class="space-y-4">
-					<div
-						class="text-surface shadow-secondary-1 block max-w-[18rem] rounded-lg bg-white dark:border-2 dark:border-gray-500 dark:bg-gray-800 dark:text-white"
-					>
-						<div class="relative overflow-hidden bg-cover bg-no-repeat">
-							<img class="mx-auto rounded-t-lg" src={material.thumbnail} alt={material.title} />
-						</div>
-						<div class="flex items-center justify-between px-6">
-							<h5 class="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+				<div
+					class="flex flex-col overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800 dark:shadow-gray-700"
+					on:mouseenter={() => handleMouseEnter(material)}
+					on:mouseleave={handleMouseLeave}
+					role="button"
+					tabindex="0"
+					on:keydown={(e) => {
+						if (e.key === 'Enter' || e.key === ' ') {
+							handleMouseEnter(material);
+						}
+					}}
+				>
+					<div class="relative aspect-[5/6.455] overflow-hidden bg-gray-100 dark:bg-gray-700">
+						{#if hoveredMaterial === material && material.type}
+							<div use:create3DPreview={material} class="h-full w-full" />
+						{:else}
+							<img
+								class="absolute inset-0 h-full w-full object-contain"
+								src={material.previewImagePath || material.thumbnail}
+								alt={material.title}
+							/>
+						{/if}
+					</div>
+					<div class="flex flex-1 flex-col p-4">
+						<div class="mb-2 flex items-center justify-between">
+							<h3 class="line-clamp-1 text-base font-bold text-gray-900 dark:text-white">
 								{material.title}
-							</h5>
+							</h3>
 							<div>
 								<DotsVerticalOutline
 									id="card-dot-menu-{material.id}"
-									size="xl"
-									class="dark:text-gray-400"
+									size="sm"
+									class="cursor-pointer text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
 								/>
 								<Dropdown placement="bottom" triggeredBy={`#card-dot-menu-${material.id}`}>
-									{#if !material.type}
-										<DropdownItem
-											class="flex dark:text-gray-200"
-											on:click={() => copyToClipboard(material.file_path)}
-										>
-											<ShareNodesOutline class="me-2 dark:text-gray-400" />
-											Share
-										</DropdownItem>
-									{/if}
 									<DropdownItem
-										class="flex dark:text-gray-200"
+										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+										on:click={() => copyToClipboard(material.file_path)}
+									>
+										<ShareNodesOutline class="h-4 w-4" />
+										<span>Share</span>
+									</DropdownItem>
+									<DropdownItem
+										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
 										on:click={() =>
 											handlePreview(material.file_path, material.title, material.type)}
 									>
-										<EyeOutline class="me-2 dark:text-gray-400" />
-										Preview
+										<EyeOutline class="h-4 w-4" />
+										<span>Preview</span>
 									</DropdownItem>
 									<DropdownItem
-										class="flex dark:text-gray-200"
+										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
 										on:click={() => handleDownload(material.file_path, material.title)}
 									>
-										<ArrowDownToBracketOutline class="me-2 dark:text-gray-400" />
-										Download
+										<ArrowDownToBracketOutline class="h-4 w-4" />
+										<span>Download</span>
 									</DropdownItem>
-									<DropdownDivider class="dark:border-gray-600" />
-									{#if role === 'lecturer'}
-										<DropdownItem
-											class="flex dark:text-gray-200"
-											on:click={() => handleDelete(material.id, material.title)}
-										>
-											<TrashBinOutline color="red" class="me-2 dark:text-red-400" />
-											Delete
-										</DropdownItem>
-									{/if}
+									<DropdownDivider />
+									<DropdownItem
+										class="flex items-center space-x-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+										on:click={() => handleDelete(material.id, material.title)}
+									>
+										<TrashBinOutline class="h-4 w-4" />
+										<span>Delete</span>
+									</DropdownItem>
 								</Dropdown>
 							</div>
 						</div>
-						<div class="px-6 py-2">
-							<p class="font-normal leading-tight text-gray-700 dark:text-gray-400">
-								{material.description}
-							</p>
-						</div>
-						<div class="px-6 py-2">
-							<Button on:click={() => handleFileOpening(material.file_path, material.type)}>
-								Open File <ArrowRightOutline class="ms-2 h-6 w-6 text-white dark:text-white" />
-							</Button>
-						</div>
+						<p class="mb-4 line-clamp-2 flex-1 text-sm text-gray-600 dark:text-gray-300">
+							{material.description}
+						</p>
+						<Button
+							on:click={() => handleFileOpening(material.file_path, material.type)}
+							class="w-full justify-center bg-green-600 text-sm hover:bg-green-700"
+						>
+							Open File
+							<ArrowRightOutline class="ml-2 h-4 w-4" />
+						</Button>
 					</div>
 				</div>
 			{/each}
 		</div>
 	{:else}
-		<p class="mt-4 text-center text-gray-600 dark:text-white">There are no materials available</p>
+		<p class="mt-8 text-center text-lg text-gray-600 dark:text-gray-300">No materials available</p>
 	{/if}
 </TabItem>
 
-<!-- Upload modal -->
 <UploadMaterial open={uploadModal} on:close={() => (uploadModal = false)} />
 
-<!-- Preview modal -->
 <Preview
 	bind:open={openPreviewModal}
 	{url}
@@ -234,7 +303,6 @@
 	on:close={() => (openPreviewModal = false)}
 />
 
-<!-- Delete modal -->
 <DeleteMaterial
 	{id}
 	bind:open={openDeleteModal}

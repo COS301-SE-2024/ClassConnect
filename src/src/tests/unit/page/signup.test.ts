@@ -3,18 +3,42 @@ import { render, fireEvent, screen } from '@testing-library/svelte';
 
 import SignUp from '$src/routes/(auth)/signup/+page.svelte';
 
+const mockMatchMedia = vi.fn().mockImplementation((query) => ({
+	media: query,
+	matches: false,
+	onchange: null,
+	addListener: vi.fn(),
+	dispatchEvent: vi.fn(),
+	removeListener: vi.fn(),
+	addEventListener: vi.fn(),
+	removeEventListener: vi.fn()
+}));
+
 vi.mock('$app/forms', () => ({
 	enhance: vi.fn()
 }));
 
+vi.mock('svelte', async () => {
+	const actual = await vi.importActual('svelte');
+	return {
+		...actual,
+		onMount: vi.fn((cb) => cb())
+	};
+});
+
 describe('SignUp Component', () => {
 	beforeEach(() => {
+		vi.stubGlobal('window', {
+			...window,
+			matchMedia: mockMatchMedia
+		});
+
 		render(SignUp);
 	});
 
 	it('renders the component', () => {
 		expect(screen.getByText('ClassConnect')).toBeTruthy();
-		expect(screen.getByText('Get Started Now')).toBeTruthy();
+		expect(screen.getByText('Get Started Now 🏁')).toBeTruthy();
 	});
 
 	it('renders all form fields', () => {
