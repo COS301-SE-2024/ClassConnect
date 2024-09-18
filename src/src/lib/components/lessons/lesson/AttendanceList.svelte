@@ -18,6 +18,7 @@
 	onMount(() => {
 		const subscription = $callStore?.state.participants$.subscribe((newParticipants) => {
 			participants = newParticipants;
+			console.log(participants);
 		});
 
 		return () => {

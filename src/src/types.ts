@@ -5,6 +5,26 @@ export interface User {
 	image: string;
 	surname: string;
 	username: string;
+	workspaces: string;
+}
+
+export interface Lesson {
+	id: string;
+	topic: string;
+	time: string;
+	date: string;
+	description: string;
+	workspace: string;
+}
+
+export interface Recording {
+	id: string;
+	topic: string;
+	time: string;
+	date: string;
+	description: string;
+	workspace: string;
+	url: string;
 }
 
 export interface User_Details {
@@ -33,25 +53,6 @@ export interface Workspace {
 	description: string;
 }
 
-export interface Lesson {
-	id: string;
-	topic: string;
-	time: string;
-	date: string;
-	description: string;
-	workspace: string;
-}
-
-export interface Recording {
-	id: string;
-	topic: string;
-	time: string;
-	date: string;
-	description: string;
-	workspace: string;
-	url: string;
-}
-
 export interface Material {
 	id: string;
 	title: string;
@@ -62,11 +63,22 @@ export interface Material {
 	workspace: string;
 }
 
+export interface FileUploadReturn {
+	name: string;
+	url: string;
+}
+
 export interface UploadData {
 	title: string;
 	description: string;
 	workspace: string;
 	file: File;
+}
+export interface UploadInfo {
+	title: string;
+	description: string;
+	workspace: string;
+	link: string;
 }
 
 export type FAQItem = {
@@ -108,31 +120,6 @@ export interface Question {
 	questionNumber: number;
 	questionContent: string;
 	questionType: string;
-	options: Option[];
-}
-
-export interface GradeData {
-	_id: string;
-	studentID: string;
-	quizID: string;
-	workspaceID: string;
-	mark: number;
-}
-
-export interface QuizData {
-	_id: string;
-	title: string;
-	totalPossibleScore: number;
-}
-
-export interface AssessmentStat {
-	name: string;
-	submitted: number;
-	average: number;
-	passRate: number;
-}
-
-export interface StudentGrade {
-	name: string;
-	grades: number[];
+	questionPoints: number | null;
+	options: Option[] | null;
 }

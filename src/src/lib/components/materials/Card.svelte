@@ -25,8 +25,6 @@
 	let openPreviewModal = false;
 	let openDeleteModal = false;
 
-	console.log('This is the id and title: ', title, id);
-
 	const handleFileOpening = () => {
 		if (!type) {
 			objURL.set(url);
@@ -57,7 +55,6 @@
 	});
 
 	const copyToClipboard = () => {
-		console.log(url);
 		try {
 			navigator.clipboard.writeText(url);
 			toast.success('Url copied to clipboard!');

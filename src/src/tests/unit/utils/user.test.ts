@@ -71,6 +71,30 @@ describe('userUtils', () => {
 				email: 'john@example.com',
 				image: 'image.jpg',
 				surname: 'Doe',
+				username: 'a12345678',
+				workspaces: ['workspace1', 'workspace2']
+			};
+
+			const formattedUser = formatUser(mockUser);
+
+			expect(formattedUser).toEqual({
+				id: '123',
+				name: 'John',
+				email: 'john@example.com',
+				image: 'image.jpg',
+				surname: 'Doe',
+				username: 'a12345678',
+				workspaces: ['workspace1', 'workspace2']
+			});
+		});
+
+		it('should handle user without workspaces', () => {
+			const mockUser = {
+				_id: '123',
+				name: 'John',
+				email: 'john@example.com',
+				image: 'image.jpg',
+				surname: 'Doe',
 				username: 'a12345678'
 			};
 
@@ -82,7 +106,8 @@ describe('userUtils', () => {
 				email: 'john@example.com',
 				image: 'image.jpg',
 				surname: 'Doe',
-				username: 'a12345678'
+				username: 'a12345678',
+				workspaces: []
 			});
 		});
 	});
@@ -90,8 +115,8 @@ describe('userUtils', () => {
 	describe('getUsers', () => {
 		it('should return formatted users', async () => {
 			const mockUsers = [
-				{ _id: '1', name: 'User1' },
-				{ _id: '2', name: 'User2' }
+				{ _id: '1', name: 'User1', workspaces: ['ws1', 'ws2'] },
+				{ _id: '2', name: 'User2', workspaces: ['ws3'] }
 			];
 			const orgId = new Schema.Types.ObjectId('org123');
 
@@ -102,7 +127,9 @@ describe('userUtils', () => {
 			expect(Users.find).toHaveBeenCalledWith({ role: 'admin', organisation: orgId });
 			expect(result).toHaveLength(2);
 			expect(result[0]).toHaveProperty('id', '1');
+			expect(result[0]).toHaveProperty('workspaces', ['ws1', 'ws2']);
 			expect(result[1]).toHaveProperty('id', '2');
+			expect(result[1]).toHaveProperty('workspaces', ['ws3']);
 		});
 	});
 

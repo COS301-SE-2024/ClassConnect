@@ -1,15 +1,17 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, afterUpdate } from 'svelte';
 	import { Button, Input, Avatar } from 'flowbite-svelte';
 	import type { Channel, FormatMessageResponse } from 'stream-chat';
+
 	import AttendanceList from './AttendanceList.svelte';
 
 	export let channel: Channel;
 
 	let state: any;
 	let newMessage = '';
-	let messages: FormatMessageResponse[];
 	let activeTab = 'Chat';
+	let chatContainer: HTMLElement;
+	let messages: FormatMessageResponse[];
 
 	onMount(async () => {
 		state = await channel.watch();
@@ -19,6 +21,12 @@
 		});
 
 		messages = state.messages;
+	});
+
+	afterUpdate(() => {
+		if (chatContainer) {
+			chatContainer.scrollTop = chatContainer.scrollHeight;
+		}
 	});
 
 	async function sendMessage() {
@@ -43,6 +51,7 @@
 			>
 				Chat
 			</Button>
+
 			<Button
 				color={activeTab === 'Participants' ? 'primary' : 'light'}
 				on:click={() => (activeTab = 'Participants')}
@@ -54,11 +63,16 @@
 
 		{#if activeTab === 'Chat'}
 			<div class="flex-1 overflow-hidden rounded-lg border border-gray-300 dark:border-gray-600">
-				<div class="h-full overflow-y-auto p-4" style="width: 100%; transition: height 0.3s;">
+				<div
+					bind:this={chatContainer}
+					class="h-full overflow-y-auto p-4"
+					style="width: 100%; transition: height 0.3s;"
+				>
 					{#each messages as message (message.id)}
 						<div class="mb-6 last:mb-0">
 							<div class="flex items-start">
 								<Avatar src={message.user?.image} alt={message.user?.name} class="mr-2" />
+
 								<div
 									class="flex-grow rounded-bl-lg rounded-br-lg rounded-tr-lg bg-gray-200 p-3 dark:bg-gray-700"
 								>
@@ -66,6 +80,7 @@
 										<p class="text-sm font-semibold text-gray-900 dark:text-white">
 											{message.user?.name}
 										</p>
+
 										<span class="ml-2 text-xs text-gray-500 dark:text-gray-400">
 											{new Date(message.created_at).toLocaleTimeString([], {
 												hour: '2-digit',
@@ -80,6 +95,7 @@
 					{/each}
 				</div>
 			</div>
+
 			<div class="mt-4">
 				<form on:submit|preventDefault={sendMessage} class="flex space-x-2">
 					<Input bind:value={newMessage} placeholder="Type a message..." class="flex-1" />

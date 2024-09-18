@@ -12,21 +12,19 @@
 	import { goto } from '$app/navigation';
 
 	import AddModal from '$lib/components/modals/quizzes/Add.svelte';
-	//import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
+	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
-	//import Question from '$lib/components/questions/Form.svelte';
+	import { selectedQuestionTypeStore } from '$lib/store/questions';
 
 	export let data: any;
 	console.log(data);
 
 	let id: string;
-	//let isQuizFormOpen = false;
-	//let isEditModalOpen = false;
+
+	let isEditModalOpen = false;
 	let isAddQuiz = false;
 
 	let isRemoveModalOpen = false;
-
-	//let selectedQuestionType = '';
 
 	function openQuiz(quizID: string) {
 		const workspaceId = data.workspaceID;
@@ -43,14 +41,8 @@
 
 	function handleEditModalOpen(quizID: string) {
 		id = quizID;
-		openQuiz(quizID);
-		//isQuizFormOpen = true;
+		isEditModalOpen = true;
 	}
-
-	// function handleAddModalOpen(quizID: string) {
-	// 	id = quizID;
-	// 	isAddModalOpen = true;
-	// }
 
 	function handleRemoveModalOpen(quizId: string) {
 		id = quizId;
@@ -67,17 +59,17 @@
 		}
 	}
 
-	// function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {
-	// 	selectedQuestionType = event.detail.type;
-	// 	const quizID = id;
-	// 	openQuiz(quizID);
-	// 	isQuizFormOpen = true;
-	// }
+	function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {
+		// isQuizFormOpen = true;
+		console.log('Type selected in event:', event.detail.type);
+		selectedQuestionTypeStore.set(event.detail.type);
+		openQuiz(id);
+	}
 </script>
 
 <main class="container mx-auto my-2 px-4">
 	{#if quizzes.length === 0}
-		<div class="text-center">
+		<div class="mt-24 text-center">
 			<h1 class="mb-4 text-2xl font-semibold text-gray-700 dark:text-white">
 				No quizzes available in this workspace.
 			</h1>
@@ -86,7 +78,7 @@
 			{/if}
 		</div>
 	{:else}
-		<div class="sm:flex sm:items-center sm:justify-between">
+		<div class="mt-24 sm:flex sm:items-center sm:justify-between">
 			<div>
 				<div class="flex items-center gap-x-3">
 					<h2 class="text-xl font-bold text-gray-800 dark:text-white">Quizzes</h2>
@@ -105,7 +97,6 @@
 				{/if}
 			</div>
 		</div>
-
 		<Table class="my-2">
 			<TableHead>
 				{#each headers as header}
@@ -126,7 +117,7 @@
 								<div class="flex items-center gap-x-6">
 									{#if data.role === 'lecturer'}
 										{#if quiz.graded === 'No'}
-											<Button on:click={() => handleEditModalOpen(quiz.id)}>Edit</Button>
+											<Button o on:click={() => handleEditModalOpen(quiz.id)}>Edit</Button>
 										{/if}
 										<Button color="yellow" on:click={() => handlePreview(quiz.id)}>Preview</Button>
 										<Button color="red" on:click={() => handleRemoveModalOpen(quiz.id)}>
@@ -146,8 +137,6 @@
 </main>
 
 <AddModal bind:open={isAddQuiz} />
-<!-- <EditModal bind:open={isEditModalOpen} on:select={handleQuestionTypeSelect} />
-{#if selectedQuestionType === 'multiple-choice'}
-	<Question bind:open={isQuizFormOpen} />
-{/if} -->
+<EditModal bind:open={isEditModalOpen} on:select={handleQuestionTypeSelect} />
+
 <RemoveModal bind:open={isRemoveModalOpen} {id} item="quiz" />

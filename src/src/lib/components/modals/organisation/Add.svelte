@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import { Button, Modal, Label, Input, Fileupload, Helper } from 'flowbite-svelte';
-	import toast, { Toaster } from 'svelte-french-toast';
+	import toast from 'svelte-french-toast';
 
 	export let open: boolean;
 
@@ -40,7 +40,7 @@
 					} catch (error) {
 						reject(error);
 					}
-				}, 500);
+				}, 1000);
 			});
 
 			toast.promise(promise, {
@@ -54,7 +54,7 @@
 	}
 </script>
 
-<Toaster />
+<!-- <Toaster /> -->
 <Modal bind:open size="xs" class="w-full">
 	<form
 		method="POST"

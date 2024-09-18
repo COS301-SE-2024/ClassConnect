@@ -5,5 +5,10 @@ export async function load({ locals }) {
 		throw error(401, 'Unauthorised');
 	}
 
-	return { role: locals.user.role };
+	let organisation;
+	if (locals.user?.organisation) {
+		organisation = JSON.parse(JSON.stringify(locals.user?.organisation));
+	}
+
+	return { role: locals.user.role, organisation };
 }

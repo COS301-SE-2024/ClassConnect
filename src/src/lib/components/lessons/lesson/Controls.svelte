@@ -17,6 +17,7 @@
 
 	import type { Writable } from 'svelte/store';
 	import type { Call } from '@stream-io/video-client';
+	import { multipartUploadFile } from '$lib/utils';
 	import toast, { Toaster } from 'svelte-french-toast';
 
 	export let role: string;
@@ -37,8 +38,6 @@
 	// Extract the lesson ID from the URL parameters
 	$: lessonId = $page.params.lesson;
 
-	console.log('Lesson ID:', lessonId);
-
 	function toggleMicrophone() {
 		isMicOn = !isMicOn;
 		$callStore?.microphone.toggle();
@@ -50,11 +49,17 @@
 	}
 
 	function toggleScreenShare() {
+		isEnvironmentOn = false;
+		$callStore?.update({ custom: { environment: isEnvironmentOn } });
+
 		isScreenShareOn = !isScreenShareOn;
 		$callStore?.screenShare.toggle();
 	}
 
 	function toggleEnvironment() {
+		isScreenShareOn = false;
+		$callStore?.screenShare.disable();
+
 		isEnvironmentOn = !isEnvironmentOn;
 		$callStore?.update({ custom: { environment: isEnvironmentOn } });
 	}
@@ -160,69 +165,35 @@
 		const mimeType = mediaRecorder?.mimeType || 'video/webm';
 		const blob: Blob = new Blob(recordedChunks, { type: mimeType });
 		const fileName = `screen-recording.${mimeType.split('/')[1].split(';')[0]}`;
-
-		console.log('File size:', blob.size, 'bytes');
+		const file = new File([blob], fileName, { type: mimeType });
+		let response: Response;
+		const formData = new FormData();
 
 		if (blob.size <= 4 * 1024 * 1024) {
-			// 4MB in bytes
-			// Convert Blob to File object
-			const file = new File([blob], fileName, { type: mimeType });
-
-			console.log('File object created:', file);
-
-			// For demonstration, let's log some file properties
-			console.log('File name:', file.name);
-			console.log('File type:', file.type);
-			console.log('File size:', file.size, 'bytes');
-
-			const formData = new FormData();
-
 			formData.append('LessonID', lessonId);
 			formData.append('video', file);
 
-			const response = await fetch('?/SaveRecording', {
+			response = await fetch('?/SaveRecording', {
 				method: 'POST',
 				body: formData
 			});
-
-			if (response.ok) {
-				toast.dismiss(toastId);
-				toast.success('Recording saved successfully');
-			} else {
-				toast.dismiss(toastId);
-				toast.error('Failed to save recording');
-
-				// if the file failes to go to s3 send it to the user
-				const url: string = URL.createObjectURL(blob);
-				const a: HTMLAnchorElement = document.createElement('a');
-				document.body.appendChild(a);
-				a.style.display = 'none';
-				a.href = url;
-				a.download = fileName;
-				a.click();
-				window.URL.revokeObjectURL(url);
-
-				// Remove the temporary anchor element
-				document.body.removeChild(a);
-
-				toast.success('Recording file downloaded successfully');
-			}
 		} else {
-			// If larger than 4MB, download the file
-			const url: string = URL.createObjectURL(blob);
-			const a: HTMLAnchorElement = document.createElement('a');
-			document.body.appendChild(a);
-			a.style.display = 'none';
-			a.href = url;
-			a.download = fileName;
-			a.click();
-			window.URL.revokeObjectURL(url);
+			const data = await multipartUploadFile(file);
+			formData.append('LessonID', lessonId);
+			formData.append('videolink', data.url);
 
-			// Remove the temporary anchor element
-			document.body.removeChild(a);
+			response = await fetch('?/SaveRecordingLink', {
+				method: 'POST',
+				body: formData
+			});
+		}
 
+		if (response.ok) {
 			toast.dismiss(toastId);
-			toast.success('Large recording file downloaded successfully');
+			toast.success('Recording saved successfully');
+		} else {
+			toast.dismiss(toastId);
+			toast.error('Failed to save recording');
 		}
 
 		// Clear the recorded chunks
@@ -274,7 +245,7 @@
 					<VisaSolid class="h-6 w-6" />
 				</Button>
 			{:else}
-				<Button color="primary" class="rounded-full p-2" on:click={startRecording}>
+				<Button color="light" class="rounded-full p-2" on:click={startRecording}>
 					<CameraPhotoOutline class="h-6 w-6" />
 				</Button>
 			{/if}

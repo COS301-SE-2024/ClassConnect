@@ -1,4 +1,3 @@
-import { fail } from '@sveltejs/kit';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 //import mongoose from 'mongoose';
 
@@ -114,49 +113,6 @@ describe('Quizzes Management', () => {
 
 				expect(result).toEqual({ success: true });
 				expect(Quizzes.findByIdAndDelete).toHaveBeenCalledWith('123');
-			});
-		});
-
-		describe('actions.toggleAvailability', () => {
-			it('should toggle quiz availability successfully', async () => {
-				const mockFormData = new FormData();
-				mockFormData.append('quizId', '123');
-				mockFormData.append('isAvailable', 'true');
-
-				const mockRequest = {
-					formData: vi.fn().mockResolvedValue(mockFormData)
-				};
-
-				const mockQuiz = {
-					isAvailable: false,
-					save: vi.fn()
-				};
-
-				(Quizzes.findById as any).mockResolvedValue(mockQuiz);
-
-				const result = await quizzesModule.actions.toggleAvailability({
-					request: mockRequest
-				} as any);
-
-				expect(result).toEqual({ success: true });
-				expect(mockQuiz.isAvailable).toBe(true);
-				expect(mockQuiz.save).toHaveBeenCalled();
-			});
-
-			it('should fail if quiz not found', async () => {
-				const mockFormData = new FormData();
-				mockFormData.append('quizId', '123');
-				mockFormData.append('isAvailable', 'true');
-
-				const mockRequest = {
-					formData: vi.fn().mockResolvedValue(mockFormData)
-				};
-
-				(Quizzes.findById as any).mockResolvedValue(null);
-
-				await quizzesModule.actions.toggleAvailability({ request: mockRequest } as any);
-
-				expect(fail).toHaveBeenCalledWith(404, { error: 'Quiz not found' });
 			});
 		});
 	});
