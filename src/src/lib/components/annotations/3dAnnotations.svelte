@@ -6,7 +6,6 @@
 	import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 	import Menu from '$lib/components/hotspot/3dMenu.svelte';
 	import { Button } from 'flowbite-svelte';
-	
 
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;

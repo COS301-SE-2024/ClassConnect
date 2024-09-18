@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, fireEvent } from '@testing-library/svelte';
-import ModalComponent from '$lib/components/modals/quizzes/Submission.svelte'; // Adjust the import path as needed
+import { render } from '@testing-library/svelte';
+import ModalComponent from '$lib/components/modals/quizzes/Submission.svelte';
 
 // Mock the navigation function
 vi.mock('$utils/navigation', () => ({
@@ -30,8 +30,6 @@ describe('ModalComponent - Quiz Submission Modal', () => {
 		expect(queryByText('Quiz Submission')).not.toBeInTheDocument();
 	});
 
-	
-
 	it('should display submission message and percentage score correctly', () => {
 		const { getByText } = render(ModalComponent, {
 			props: defaultProps
@@ -40,6 +38,4 @@ describe('ModalComponent - Quiz Submission Modal', () => {
 		expect(getByText('Your quiz has been submitted successfully!')).toBeInTheDocument();
 		expect(getByText('Percentage Score: 85.50%')).toBeInTheDocument();
 	});
-
-	
 });

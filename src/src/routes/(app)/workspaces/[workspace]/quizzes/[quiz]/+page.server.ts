@@ -38,7 +38,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 							content: option.content,
 							points: option.points
 						}))
-					: null 
+					: null
 			})),
 			workspaceID,
 			models

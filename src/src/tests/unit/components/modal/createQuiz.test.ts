@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, fireEvent } from '@testing-library/svelte';
-import ModalComponent from '$lib/components/modals/quizzes/Add.svelte'; 
+import ModalComponent from '$lib/components/modals/quizzes/Add.svelte';
 
 describe('ModalComponent - Add Quiz Modal', () => {
 	const defaultProps = {
@@ -23,10 +23,8 @@ describe('ModalComponent - Add Quiz Modal', () => {
 		expect(queryByText('Add Quiz')).not.toBeInTheDocument();
 	});
 
-	
-
 	it('should submit form with valid inputs', async () => {
-		const { getByLabelText, getByRole, getByText } = render(ModalComponent, {
+		const { getByLabelText, getByRole } = render(ModalComponent, {
 			props: { ...defaultProps }
 		});
 
@@ -35,7 +33,6 @@ describe('ModalComponent - Add Quiz Modal', () => {
 		const instructionsTextarea = getByLabelText('Add Instructions') as HTMLTextAreaElement;
 		const submitButton = getByRole('button', { name: 'Create Quiz' });
 
-		
 		await fireEvent.input(titleInput, { target: { value: 'New Quiz' } });
 		await fireEvent.input(durationInput, { target: { value: '45' } });
 		await fireEvent.input(instructionsTextarea, { target: { value: 'These are instructions.' } });

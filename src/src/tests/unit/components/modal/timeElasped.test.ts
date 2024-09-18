@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, fireEvent } from '@testing-library/svelte';
+import { render } from '@testing-library/svelte';
 import ModalComponent from '$lib/components/modals/quizzes/TimeElapsed.svelte'; // Adjust the import path as needed
 
 // Mock the navigation function
@@ -30,8 +30,6 @@ describe('ModalComponent - Time Elapsed Modal', () => {
 		expect(queryByText('Time Elapsed')).not.toBeInTheDocument();
 	});
 
-	
-
 	it('should display submission message and total points correctly', () => {
 		const { getByText } = render(ModalComponent, {
 			props: defaultProps
@@ -40,6 +38,4 @@ describe('ModalComponent - Time Elapsed Modal', () => {
 		expect(getByText('Time is up! You have completed the quiz.')).toBeInTheDocument();
 		expect(getByText('Total Points: 85')).toBeInTheDocument();
 	});
-
-	
 });
