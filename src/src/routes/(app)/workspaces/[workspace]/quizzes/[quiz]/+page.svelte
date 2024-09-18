@@ -114,7 +114,7 @@
 				totalPossiblePoints += maxPoints;
 			} else if (question.questionType === '3d-hotspot') {
 				const distance = localStorage.getItem('Distance');
-				const proximity = distance ? parseFloat(distance) : Infinity; 
+				const proximity = distance ? parseFloat(distance) : Infinity;
 
 				const proximityThreshold = 0.02;
 

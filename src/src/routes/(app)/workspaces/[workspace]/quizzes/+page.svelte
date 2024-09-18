@@ -69,7 +69,7 @@
 
 <main class="container mx-auto my-2 px-4">
 	{#if quizzes.length === 0}
-		<div class="text-center mt-24">
+		<div class="mt-24 text-center">
 			<h1 class="mb-4 text-2xl font-semibold text-gray-700 dark:text-white">
 				No quizzes available in this workspace.
 			</h1>
@@ -78,26 +78,25 @@
 			{/if}
 		</div>
 	{:else}
-	
-	<div class="sm:flex sm:items-center sm:justify-between mt-24">
-		<div>
-			<div class="flex items-center gap-x-3">
-				<h2 class="text-xl font-bold text-gray-800 dark:text-white">Quizzes</h2>
-				<span
-					class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
-				>
-					{quizzes.length}
-					{quizzes.length === 1 ? 'quiz' : 'quizzes'}
-				</span>
+		<div class="mt-24 sm:flex sm:items-center sm:justify-between">
+			<div>
+				<div class="flex items-center gap-x-3">
+					<h2 class="text-xl font-bold text-gray-800 dark:text-white">Quizzes</h2>
+					<span
+						class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
+					>
+						{quizzes.length}
+						{quizzes.length === 1 ? 'quiz' : 'quizzes'}
+					</span>
+				</div>
+			</div>
+
+			<div class="mb-4 flex items-center gap-x-3">
+				{#if data.role === 'lecturer'}
+					<Button on:click={() => (isAddQuiz = true)}>Add Quiz</Button>
+				{/if}
 			</div>
 		</div>
-
-		<div class="mb-4 flex items-center gap-x-3">
-			{#if data.role === 'lecturer'}
-				<Button on:click={() => (isAddQuiz = true)}>Add Quiz</Button>
-			{/if}
-		</div>
-	</div>
 		<Table class="my-2">
 			<TableHead>
 				{#each headers as header}
