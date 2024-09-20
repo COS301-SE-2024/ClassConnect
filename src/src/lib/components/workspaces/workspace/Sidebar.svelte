@@ -1,15 +1,8 @@
 <script lang="ts">
-	import {
-		Navbar,
-		NavBrand,
-		NavLi,
-		NavUl,
-		NavHamburger,
-		Dropdown,
-		DropdownItem
-	} from 'flowbite-svelte';
-	import { ChevronDownOutline } from 'flowbite-svelte-icons';
+	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, Dropdown,
+		DropdownItem } from 'flowbite-svelte';
 	import { page } from '$app/stores';
+	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 
 	export let workspace: { name: string; image: string };
 	export let role: 'lecturer' | 'student';
@@ -78,142 +71,127 @@
 	};
 </script>
 
-<Navbar
-	class="fixed start-0 top-0 z-20 m-4 w-[calc(100%-2rem)] rounded-xl border-white border-opacity-20 bg-white bg-opacity-20 p-2 shadow-xl backdrop-blur-lg transition-colors duration-300 dark:border-gray-700 dark:border-opacity-50 dark:bg-gray-800 dark:bg-opacity-30 sm:px-6"
->
-	<NavBrand>
-		<img src={workspace.image} class="mr-3 h-8 sm:h-10" alt={`${workspace.name} logo`} />
-		<span
-			class="self-center whitespace-nowrap text-xl font-semibold text-gray-800 transition-colors duration-300 dark:text-white"
-			>{workspace.name}</span
-		>
-	</NavBrand>
-	<NavHamburger />
-	<NavUl>
-		{#if isLecturerLinks(currentLinks)}
-			{#if currentLinks.dashboard.length > 1}
-				<NavLi class="nav-link cursor-pointer">
-					Dashboard<ChevronDownOutline
-						class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
-					/>
-				</NavLi>
-				<Dropdown class="z-20 w-44">
-					{#each currentLinks.dashboard as { name, href }}
-						<DropdownItem {href}>{name}</DropdownItem>
-					{/each}
-				</Dropdown>
-			{:else}
-				<NavLi
-					class="nav-link"
-					href={currentLinks.dashboard[0].href}
-					active={activeUrl === currentLinks.dashboard[0].href}
-				>
-					{currentLinks.dashboard[0].name}
-				</NavLi>
+<div class="relative px-8">
+	<Navbar class="px-2 sm:px-4 lg:py-0.5 md:py-0.5 fixed w-full z-20 top-0 start-0 border-b">
+		<NavBrand href="/">
+			<img src="../../../../../../images/class-connect-logo.png" class="mr-3 h-8 sm:h-10" alt="ClassConnect Logo" />
+			<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">ClassConnect</span>
+		  </NavBrand>
+		  <NavHamburger />
+		  <NavUl>
+			{#if isLecturerLinks(currentLinks)}
+				{#if currentLinks.dashboard.length > 1}
+					<NavLi class="nav-link cursor-pointer">
+						Dashboard<ChevronDownOutline
+							class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
+						/>
+					</NavLi>
+					<Dropdown class="z-20 w-44">
+						{#each currentLinks.dashboard as { name, href }}
+							<DropdownItem {href}>{name}</DropdownItem>
+						{/each}
+					</Dropdown>
+				{:else}
+					<NavLi
+						class="nav-link"
+						href={currentLinks.dashboard[0].href}
+						active={activeUrl === currentLinks.dashboard[0].href}
+					>
+						{currentLinks.dashboard[0].name}
+					</NavLi>
+				{/if}
+	
+				{#if currentLinks.management.length > 1}
+					<NavLi class="nav-link cursor-pointer">
+						Management<ChevronDownOutline
+							class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
+						/>
+					</NavLi>
+					<Dropdown class="z-20 w-44">
+						{#each currentLinks.management as { name, href }}
+							<DropdownItem {href}>{name}</DropdownItem>
+						{/each}
+					</Dropdown>
+				{:else}
+					<NavLi
+						class="nav-link"
+						href={currentLinks.management[0].href}
+						active={activeUrl === currentLinks.management[0].href}
+					>
+						{currentLinks.management[0].name}
+					</NavLi>
+				{/if}
+	
+				{#if currentLinks.resources.length > 1}
+					<NavLi class="nav-link cursor-pointer">
+						Resources<ChevronDownOutline
+							class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
+						/>
+					</NavLi>
+					<Dropdown class="z-20 w-44">
+						{#each currentLinks.resources as { name, href }}
+							<DropdownItem {href}>{name}</DropdownItem>
+						{/each}
+					</Dropdown>
+				{:else}
+					<NavLi
+						class="nav-link"
+						href={currentLinks.resources[0].href}
+						active={activeUrl === currentLinks.resources[0].href}
+					>
+						{currentLinks.resources[0].name}
+					</NavLi>
+				{/if}
+			{:else if isStudentLinks(currentLinks)}
+				{#if currentLinks.courseWork.length > 1}
+					<NavLi class="nav-link cursor-pointer">
+						Course Work<ChevronDownOutline
+							class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
+						/>
+					</NavLi>
+					<Dropdown class="z-20 w-44">
+						{#each currentLinks.courseWork as { name, href }}
+							<DropdownItem {href}>{name}</DropdownItem>
+						{/each}
+					</Dropdown>
+				{:else}
+					<NavLi
+						class="nav-link"
+						href={currentLinks.courseWork[0].href}
+						active={activeUrl === currentLinks.courseWork[0].href}
+					>
+						{currentLinks.courseWork[0].name}
+					</NavLi>
+				{/if}
+	
+				{#if currentLinks.additional.length > 1}
+					<NavLi class="nav-link cursor-pointer">
+						Additional<ChevronDownOutline
+							class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
+						/>
+					</NavLi>
+					<Dropdown class="z-20 w-44">
+						{#each currentLinks.additional as { name, href }}
+							<DropdownItem {href}>{name}</DropdownItem>
+						{/each}
+					</Dropdown>
+				{:else}
+					<NavLi
+						class="nav-link"
+						href={currentLinks.additional[0].href}
+						active={activeUrl === currentLinks.additional[0].href}
+					>
+						{currentLinks.additional[0].name}
+					</NavLi>
+				{/if}
 			{/if}
-
-			{#if currentLinks.management.length > 1}
-				<NavLi class="nav-link cursor-pointer">
-					Management<ChevronDownOutline
-						class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
-					/>
-				</NavLi>
-				<Dropdown class="z-20 w-44">
-					{#each currentLinks.management as { name, href }}
-						<DropdownItem {href}>{name}</DropdownItem>
-					{/each}
-				</Dropdown>
-			{:else}
-				<NavLi
-					class="nav-link"
-					href={currentLinks.management[0].href}
-					active={activeUrl === currentLinks.management[0].href}
+			<NavLi on:click={backToMain}>
+				<button
+					class="w-full transform rounded-lg bg-red-600 px-4 py-2 text-left font-semibold text-white transition duration-300 ease-in-out hover:bg-red-700 hover:shadow-xl dark:bg-red-700 dark:hover:bg-red-800"
 				>
-					{currentLinks.management[0].name}
-				</NavLi>
-			{/if}
-
-			{#if currentLinks.resources.length > 1}
-				<NavLi class="nav-link cursor-pointer">
-					Resources<ChevronDownOutline
-						class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
-					/>
-				</NavLi>
-				<Dropdown class="z-20 w-44">
-					{#each currentLinks.resources as { name, href }}
-						<DropdownItem {href}>{name}</DropdownItem>
-					{/each}
-				</Dropdown>
-			{:else}
-				<NavLi
-					class="nav-link"
-					href={currentLinks.resources[0].href}
-					active={activeUrl === currentLinks.resources[0].href}
-				>
-					{currentLinks.resources[0].name}
-				</NavLi>
-			{/if}
-		{:else if isStudentLinks(currentLinks)}
-			{#if currentLinks.courseWork.length > 1}
-				<NavLi class="nav-link cursor-pointer">
-					Course Work<ChevronDownOutline
-						class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
-					/>
-				</NavLi>
-				<Dropdown class="z-20 w-44">
-					{#each currentLinks.courseWork as { name, href }}
-						<DropdownItem {href}>{name}</DropdownItem>
-					{/each}
-				</Dropdown>
-			{:else}
-				<NavLi
-					class="nav-link"
-					href={currentLinks.courseWork[0].href}
-					active={activeUrl === currentLinks.courseWork[0].href}
-				>
-					{currentLinks.courseWork[0].name}
-				</NavLi>
-			{/if}
-
-			{#if currentLinks.additional.length > 1}
-				<NavLi class="nav-link cursor-pointer">
-					Additional<ChevronDownOutline
-						class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
-					/>
-				</NavLi>
-				<Dropdown class="z-20 w-44">
-					{#each currentLinks.additional as { name, href }}
-						<DropdownItem {href}>{name}</DropdownItem>
-					{/each}
-				</Dropdown>
-			{:else}
-				<NavLi
-					class="nav-link"
-					href={currentLinks.additional[0].href}
-					active={activeUrl === currentLinks.additional[0].href}
-				>
-					{currentLinks.additional[0].name}
-				</NavLi>
-			{/if}
-		{/if}
-		<NavLi on:click={backToMain}>
-			<button
-				class="w-full transform rounded-lg bg-red-600 px-4 py-2 text-left font-semibold text-white transition duration-300 ease-in-out hover:bg-red-700 hover:shadow-xl dark:bg-red-700 dark:hover:bg-red-800"
-			>
-				Leave {workspace.name}
-			</button>
-		</NavLi>
-	</NavUl>
-</Navbar>
-
-<style>
-	:global(.nav-link) {
-		padding-top: 0.5rem;
-	}
-
-	@media (max-width: 768px) {
-		:global(.nav-link) {
-			padding-left: 1.5rem !important;
-		}
-	}
-</style>
+					Leave {workspace.name}
+				</button>
+			</NavLi>
+		  </NavUl>
+	</Navbar>
+</div>

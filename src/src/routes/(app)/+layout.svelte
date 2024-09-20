@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { afterNavigate } from '$app/navigation';
-
 	import Navbar from '$lib/components/common/Navbar.svelte';
 	import WorkspaceSidebar from '$src/lib/components/workspaces/workspace/Sidebar.svelte';
 
@@ -19,21 +18,25 @@
 	});
 </script>
 
-<div class="flex">
+<div class="flex min-h-screen flex-col bg-gray-100 dark:bg-gray-900">
 	{#if isWorkspacePage}
-		<!-- Show WorkspaceSidebar and hide Navbar -->
-		<div class="sticky top-0 h-screen">
-			<WorkspaceSidebar {role} {workspace} />
+		<div class="flex">
+			<aside class="sticky top-0 h-screen w-64 shrink-0 border-r border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
+				<WorkspaceSidebar {role} {workspace} />
+			<main class="flex-1 p-6">
+				<slot />
+			</main>
 		</div>
 	{:else}
-		<!-- Show Navbar and hide WorkspaceSidebar -->
-		<div class="main-content">
-			<Navbar {role} />
-		</div>
+		<Navbar {role} />
+		<main class="flex-1 p-6 pt-20">
+			<slot />
+		</main>
 	{/if}
-
-	<!-- Main content remains regardless of which is shown -->
-	<div class="main-content flex-1">
-		<slot />
-	</div>
 </div>
+
+<style>
+	:global(body) {
+		@apply bg-gray-100 dark:bg-gray-900;
+	}
+</style>

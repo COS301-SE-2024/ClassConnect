@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, Skeleton, TextPlaceholder } from 'flowbite-svelte';
+	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from 'flowbite-svelte';
 
 	export let role: 'lecturer' | 'admin' | 'student';
     export let activeUrl = '';
@@ -39,10 +39,10 @@
   </script>
   
   <div class="relative px-8">
-	<Navbar class="px-2 sm:px-4 md:py-0.5 fixed w-full z-20 top-0 start-0 border-b">
+	<Navbar class="px-2 sm:px-4 lg:py-0.5 md:py-0.5 fixed w-full z-20 top-0 start-0 border-b">
 	  <NavBrand href="/">
 		<img src="images/class-connect-logo.png" class="mr-3 h-8 sm:h-10" alt="ClassConnect Logo" />
-		<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Flowbite</span>
+		<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">ClassConnect</span>
 	  </NavBrand>
 	  <NavHamburger />
 	  <NavUl>
@@ -50,7 +50,7 @@
             <NavLi
                 {href}
                 active={activeUrl === href}
-                class="nav-link"
+                class="nav-link font-semibold"
             >
                 {name}
             </NavLi>
