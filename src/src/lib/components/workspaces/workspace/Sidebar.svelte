@@ -71,7 +71,7 @@
 	};
 </script>
 
-<div class="relative px-8">
+<div>
 	<Navbar class="px-2 sm:px-4 lg:py-0.5 md:py-0.5 fixed w-full z-20 top-0 start-0 border-b">
 		<NavBrand href="/">
 			<img src="../../../../../../images/class-connect-logo.png" class="mr-3 h-8 sm:h-10" alt="ClassConnect Logo" />
