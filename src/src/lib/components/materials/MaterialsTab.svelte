@@ -155,7 +155,7 @@
 
 <Toaster />
 
-<TabItem open={tabBoolean} defaultClass="mt-24">
+<TabItem open={tabBoolean}>
 	<span slot="title">{tabName}</span>
 	<div
 		class="m-4 flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0"
