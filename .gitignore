@@ -1,7 +1,9 @@
 # Files
 .env
+.pem
 
 # Directories
+certs
 build
 .vscode
 .vercel
