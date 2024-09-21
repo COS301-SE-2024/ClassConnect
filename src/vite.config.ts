@@ -5,6 +5,8 @@ import image from '@rollup/plugin-image';
 import json from '@rollup/plugin-json';
 import { terser } from 'rollup-plugin-terser';
 import viteImageMin from 'vite-plugin-imagemin'; // For optimizing images
+import fs from 'fs';
+import path from 'path';
 
 export default defineConfig({
 	plugins: [
@@ -60,5 +62,14 @@ export default defineConfig({
 		rollupOptions: {
 			external: ['bun.lockb'] // Exclude bun.lockb or any other binary files
 		}
+	},
+	server: {
+		https: {
+			key: fs.readFileSync(path.resolve(__dirname, 'certs/key.pem')),
+			cert: fs.readFileSync(path.resolve(__dirname, 'certs/cert.pem'))
+		},
+		host: 'localhost',
+		port: 5173, // Or any other port
+		proxy: {}
 	}
 });

@@ -103,7 +103,7 @@
 				<Input
 					type="text"
 					id="surname"
-					name="surnmae"
+					name="surname"
 					placeholder="Doe"
 					disabled={loading}
 					required
