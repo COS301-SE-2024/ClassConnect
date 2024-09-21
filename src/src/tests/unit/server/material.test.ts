@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { formatMaterial } from '$lib/server/utils/material'; // Adjust the import path as necessary
 
 vi.mock('@sveltejs/kit', () => ({
-    fail: vi.fn()
+	fail: vi.fn()
 }));
 
 vi.mock('$lib/server/storage', () => ({
@@ -18,25 +18,25 @@ vi.mock('$db/schemas/Material', () => {
 });
 
 describe('formatMaterial', () => {
-    it('should format material correctly', () => {
-        const material = {
-            title: 'Test Title',
-            description: 'Test Description',
-            file_path: '/path/to/file',
-            thumbnail: '/path/to/thumbnail',
-            type: 'pdf',
-            _id: '12345'
-        };
+	it('should format material correctly', () => {
+		const material = {
+			title: 'Test Title',
+			description: 'Test Description',
+			file_path: '/path/to/file',
+			thumbnail: '/path/to/thumbnail',
+			type: 'pdf',
+			_id: '12345'
+		};
 
-        const formatted = formatMaterial(material);
+		const formatted = formatMaterial(material);
 
-        expect(formatted).toEqual({
-            title: 'Test Title',
-            description: 'Test Description',
-            file_path: '/path/to/file',
-            thumbnail: '/path/to/thumbnail',
-            type: 'pdf',
-            id: '12345'
-        });
-    });
+		expect(formatted).toEqual({
+			title: 'Test Title',
+			description: 'Test Description',
+			file_path: '/path/to/file',
+			thumbnail: '/path/to/thumbnail',
+			type: 'pdf',
+			id: '12345'
+		});
+	});
 });
