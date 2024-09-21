@@ -37,7 +37,8 @@
 			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
 			{ icon: VideoCameraSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
 			{ icon: BookOpenSolid, name: 'Quizzes', href: workspaceURL + '/quizzes' },
-			{ icon: UsersGroupSolid, name: 'Environments', href: workspaceURL + '/environments' }
+			{ icon: UsersGroupSolid, name: 'Environments', href: workspaceURL + '/environments' },
+			{ icon: BookOpenSolid, name: 'Interactive', href: workspaceURL + '/interactive' }
 		],
 		student: [
 			{ icon: GlobeSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
