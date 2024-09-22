@@ -9,49 +9,54 @@ import fs from 'fs';
 import path from 'path';
 
 export default defineConfig(({ mode }) => {
-  const isProduction = mode === 'production';
+	const isProduction = mode === 'production';
 
-  return {
-    plugins: [
-      sveltekit(),
-      svelteTesting(),
-      image(),
-      json(),
-      terser(),
-      viteImageMin({
-        gifsicle: { optimizationLevel: 7 },
-        optipng: { optimizationLevel: 7 },
-        mozjpeg: { quality: 20 },
-        pngquant: { quality: [0.65, 0.8], speed: 4 },
-        svgo: {
-          plugins: [
-            { name: 'removeViewBox', active: false },
-            { name: 'addAttributesToSVGElement', params: { attributes: [{ xmlns: 'http://www.w3.org/2000/svg' }] } }
-          ]
-        }
-      })
-    ],
-    test: {
-      globals: true,
-      environment: 'jsdom',
-      setupFiles: ['./vitest-setup.ts'],
-      coverage: { reporter: ['text', 'json', 'html'] }
-    },
-    ssr: { noExternal: ['three'] },
-    build: {
-      sourcemap: false,
-      rollupOptions: { external: ['bun.lockb'] }
-    },
-    ...(isProduction ? {} : {
-      server: {
-        https: {
-          key: fs.readFileSync(path.resolve(__dirname, 'certs/key.pem')),
-          cert: fs.readFileSync(path.resolve(__dirname, 'certs/cert.pem'))
-        },
-        host: 'localhost',
-        port: 5173,
-        proxy: {}
-      }
-    })
-  };
+	return {
+		plugins: [
+			sveltekit(),
+			svelteTesting(),
+			image(),
+			json(),
+			terser(),
+			viteImageMin({
+				gifsicle: { optimizationLevel: 7 },
+				optipng: { optimizationLevel: 7 },
+				mozjpeg: { quality: 20 },
+				pngquant: { quality: [0.65, 0.8], speed: 4 },
+				svgo: {
+					plugins: [
+						{ name: 'removeViewBox', active: false },
+						{
+							name: 'addAttributesToSVGElement',
+							params: { attributes: [{ xmlns: 'http://www.w3.org/2000/svg' }] }
+						}
+					]
+				}
+			})
+		],
+		test: {
+			globals: true,
+			environment: 'jsdom',
+			setupFiles: ['./vitest-setup.ts'],
+			coverage: { reporter: ['text', 'json', 'html'] }
+		},
+		ssr: { noExternal: ['three'] },
+		build: {
+			sourcemap: false,
+			rollupOptions: { external: ['bun.lockb'] }
+		},
+		...(isProduction
+			? {}
+			: {
+					server: {
+						https: {
+							key: fs.readFileSync(path.resolve(__dirname, 'certs/key.pem')),
+							cert: fs.readFileSync(path.resolve(__dirname, 'certs/cert.pem'))
+						},
+						host: 'localhost',
+						port: 5173,
+						proxy: {}
+					}
+				})
+	};
 });
