@@ -21,8 +21,8 @@
 <div class="flex min-h-screen flex-col bg-gray-100 dark:bg-gray-900">
 	{#if isWorkspacePage}
 		<div class="flex">
-				<WorkspaceSidebar {role} {workspace} />
-			<main class="flex-1 p-6 pt-20" >
+			<WorkspaceSidebar {role} {workspace} />
+			<main class="flex-1 p-6 pt-20">
 				<slot />
 			</main>
 		</div>

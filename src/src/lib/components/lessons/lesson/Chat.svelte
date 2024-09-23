@@ -1,64 +1,111 @@
 <script lang="ts">
-	import { Button, Avatar, Input } from 'flowbite-svelte';
-	import { format } from 'date-fns';
-  
-	export let messages: string | any[] = [];
+	import { onMount, afterUpdate } from 'svelte';
+	import { Button, Input, Avatar } from 'flowbite-svelte';
+	import type { Channel, FormatMessageResponse } from 'stream-chat';
+
+	import AttendanceList from './AttendanceList.svelte';
+
+	export let channel: Channel;
+
+	let state: any;
 	let newMessage = '';
-  
-	function sendMessage() {
-	  if (newMessage.trim()) {
-		messages = [...messages, {
-		  id: messages.length + 1,
-		  sender: 'You',
-		  avatar: '/path/to/your-avatar.jpg',
-		  text: newMessage,
-		  timestamp: new Date()
-		}];
-		newMessage = '';
-	  }
+	let activeTab = 'Chat';
+	let chatContainer: HTMLElement;
+	let messages: FormatMessageResponse[];
+
+	onMount(async () => {
+		state = await channel.watch();
+
+		channel.on('message.new', (event: any) => {
+			messages = [...messages, event.message];
+		});
+
+		messages = state.messages;
+	});
+
+	afterUpdate(() => {
+		if (chatContainer) {
+			chatContainer.scrollTop = chatContainer.scrollHeight;
+		}
+	});
+
+	async function sendMessage() {
+		if (newMessage.trim()) {
+			await channel.sendMessage({ text: newMessage });
+			newMessage = '';
+		}
 	}
-  
-	function handleKeydown(event: { key: string; shiftKey: any; preventDefault: () => void; }) {
-	  if (event.key === 'Enter' && !event.shiftKey) {
-		event.preventDefault();
-		sendMessage();
-	  }
-	}
-  </script>
-  
-  <div class="flex flex-col h-full">
-	<div class="flex-grow overflow-y-auto p-4 space-y-4">
-	  {#each messages as message (message.id)}
-		<div class="flex items-start {message.sender === 'You' ? 'justify-end' : 'justify-start'}">
-		  <div class="flex flex-col {message.sender === 'You' ? 'items-end' : 'items-start'} max-w-[70%]">
-			<div class="flex items-center mb-1">
-			  {#if message.sender !== 'You'}
-				<Avatar src={message.avatar} alt={message.sender} class="mr-2" size="xs"/>
-			  {/if}
-			  <span class="text-sm font-semibold">{message.sender}</span>
-			  {#if message.sender === 'You'}
-				<Avatar src={message.avatar} alt={message.sender} class="ml-2" size="xs"/>
-			  {/if}
-			</div>
-			<div class="bg-gray-100 rounded-lg p-3">
-			  <p class="text-sm">{message.text}</p>
-			</div>
-			<span class="text-xs text-gray-500 mt-1">
-			  {format(message.timestamp, 'HH:mm')}
-			</span>
-		  </div>
+</script>
+
+{#if !state}
+	<div class="flex h-full items-center justify-center">
+		<p class="text-lg font-semibold text-gray-800 dark:text-gray-200">Connecting...</p>
+	</div>
+{:else}
+	<div class="w=5 flex h-full flex-col">
+		<div class="mb-4 flex space-x-2">
+			<Button
+				color={activeTab === 'Chat' ? 'primary' : 'light'}
+				on:click={() => (activeTab = 'Chat')}
+				class="flex-1"
+			>
+				Chat
+			</Button>
+
+			<Button
+				color={activeTab === 'Participants' ? 'primary' : 'light'}
+				on:click={() => (activeTab = 'Participants')}
+				class="flex-1"
+			>
+				Participants
+			</Button>
 		</div>
-	  {/each}
+
+		{#if activeTab === 'Chat'}
+			<div class="flex-1 overflow-hidden rounded-lg bg-white shadow-md dark:bg-gray-800">
+				<div
+					bind:this={chatContainer}
+					class="h-full overflow-y-auto p-4"
+					style="width: 100%; transition: height 0.3s;"
+				>
+					{#each messages as message (message.id)}
+						<div class="mb-4 last:mb-0">
+							<div class="flex items-start">
+								<Avatar src={message.user?.image} alt={message.user?.name} class="mr-2" />
+
+								<div class="flex-grow rounded-lg bg-gray-100 p-3 dark:bg-gray-700">
+									<div class="mb-1 flex items-center">
+										<p class="text-sm font-semibold text-gray-900 dark:text-white">
+											{message.user?.name}
+										</p>
+
+										<span class="ml-2 text-xs text-gray-500 dark:text-gray-400">
+											{new Date(message.created_at).toLocaleTimeString([], {
+												hour: '2-digit',
+												minute: '2-digit'
+											})}
+										</span>
+									</div>
+									<p class="text-sm text-gray-800 dark:text-gray-200">{message.text}</p>
+								</div>
+							</div>
+						</div>
+					{/each}
+				</div>
+			</div>
+
+			<div class="mt-4">
+				<form on:submit|preventDefault={sendMessage} class="flex space-x-2">
+					<Input
+						bind:value={newMessage}
+						placeholder="Type a message..."
+						class="flex-1 rounded-full"
+					/>
+					<Button type="submit" class="rounded-full">Send</Button>
+				</form>
+			</div>
+		{:else}
+			<AttendanceList />
+		{/if}
 	</div>
-	<div class="p-4 border-t">
-	  <form on:submit|preventDefault={sendMessage} class="flex">
-		<Input
-		  class="flex-grow mr-2"
-		  placeholder="Type a message..."
-		  bind:value={newMessage}
-		  on:keydown={handleKeydown}
-		/>
-		<Button type="submit">Send</Button>
-	  </form>
-	</div>
-  </div>
+{/if}

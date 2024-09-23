@@ -1,6 +1,13 @@
 <script lang="ts">
-	import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, Dropdown,
-		DropdownItem } from 'flowbite-svelte';
+	import {
+		Navbar,
+		NavBrand,
+		NavLi,
+		NavUl,
+		NavHamburger,
+		Dropdown,
+		DropdownItem
+	} from 'flowbite-svelte';
 	import { page } from '$app/stores';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 
@@ -72,13 +79,19 @@
 </script>
 
 <div>
-	<Navbar class="px-2 sm:px-4 lg:py-0.5 md:py-0.5 fixed w-full z-20 top-0 start-0 border-b">
+	<Navbar class="fixed start-0 top-0 z-20 w-full border-b px-2 sm:px-4 md:py-0.5 lg:py-0.5">
 		<NavBrand href="/">
-			<img src="../../../../../../images/class-connect-logo.png" class="mr-3 h-8 sm:h-10" alt="ClassConnect Logo" />
-			<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white">ClassConnect</span>
-		  </NavBrand>
-		  <NavHamburger />
-		  <NavUl>
+			<img
+				src="../../../../../../images/class-connect-logo.png"
+				class="mr-3 h-8 sm:h-10"
+				alt="ClassConnect Logo"
+			/>
+			<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white"
+				>ClassConnect</span
+			>
+		</NavBrand>
+		<NavHamburger />
+		<NavUl>
 			{#if isLecturerLinks(currentLinks)}
 				{#if currentLinks.dashboard.length > 1}
 					<NavLi class="nav-link cursor-pointer">
@@ -100,7 +113,7 @@
 						{currentLinks.dashboard[0].name}
 					</NavLi>
 				{/if}
-	
+
 				{#if currentLinks.management.length > 1}
 					<NavLi class="nav-link cursor-pointer">
 						Management<ChevronDownOutline
@@ -121,7 +134,7 @@
 						{currentLinks.management[0].name}
 					</NavLi>
 				{/if}
-	
+
 				{#if currentLinks.resources.length > 1}
 					<NavLi class="nav-link cursor-pointer">
 						Resources<ChevronDownOutline
@@ -163,7 +176,7 @@
 						{currentLinks.courseWork[0].name}
 					</NavLi>
 				{/if}
-	
+
 				{#if currentLinks.additional.length > 1}
 					<NavLi class="nav-link cursor-pointer">
 						Additional<ChevronDownOutline
@@ -192,6 +205,6 @@
 					Leave {workspace.name}
 				</button>
 			</NavLi>
-		  </NavUl>
+		</NavUl>
 	</Navbar>
 </div>

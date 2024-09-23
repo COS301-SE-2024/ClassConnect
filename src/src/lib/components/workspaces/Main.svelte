@@ -17,9 +17,7 @@
 			</div>
 		{:else}
 			<div class="mt-8 rounded-lg bg-white p-6 text-center shadow-md dark:bg-gray-800">
-				<p class="text-xl text-gray-700 dark:text-gray-300">
-					No learning spaces assigned yet.
-				</p>
+				<p class="text-xl text-gray-700 dark:text-gray-300">No learning spaces assigned yet.</p>
 				<p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
 					If you think this is an error, please contact your instructor or administrator.
 				</p>
