@@ -11,7 +11,7 @@
 	let controls: OrbitControls;
 	let raycaster: THREE.Raycaster;
 	let mouse: THREE.Vector2;
-	let annotationMode = false; // Toggle for annotation mode
+	let annotationMode = false;
 	let annotationText = '';
 	let activePoint: THREE.Vector3 | null = null;
 	let tooltipX: number = 0;
@@ -25,61 +25,118 @@
 	let { models } = data;
 	let selectedModel: string | null = null;
 	const annotations: {
-	  [key: string]: { position: THREE.Vector3; text: string; labelDiv: HTMLDivElement };
+	  [key: string]: { circleSprite: THREE.Sprite; textSprite: THREE.Sprite };
 	} = {};
   
 	function toggleAnnotationMode() {
 	  annotationMode = !annotationMode;
 	  if (!annotationMode) {
-		activePoint = null; // Clear active point when exiting annotation mode
+		activePoint = null;
 	  }
 	}
   
 	function addAnnotation() {
 	  if (annotationText.trim() && activePoint) {
-		createAnnotation(activePoint, annotationText);
-		annotationText = ''; // Clear text after adding
-		activePoint = null; // Clear active point
+		const annotation = createAnnotation(scene, activePoint, annotationText);
+		annotations[annotationText] = annotation;
+		annotationText = '';
+		activePoint = null;
 	  }
 	}
   
-	function createAnnotation(position: THREE.Vector3, text: string) {
-	  // Create a circle as a THREE.Sprite
-	  const circleTexture = new THREE.TextureLoader().load('/images/circle.png');
-	  const spriteMaterial = new THREE.SpriteMaterial({
-		map: circleTexture,
-		depthTest: false,
-		depthWrite: false,
-		sizeAttenuation: false
-	  });
-	  const sprite = new THREE.Sprite(spriteMaterial);
-	  sprite.position.copy(position);
-	  sprite.scale.set(0.05, 0.05, 0.05);
-	  scene.add(sprite);
-  
-	  const labelDiv = document.createElement('div');
-	    labelDiv.style.backgroundColor = 'rgba(30, 30, 30, 0.9)';
-		labelDiv.style.padding = '2px 5px';
-		labelDiv.style.borderRadius = '3px';
-		labelDiv.style.fontSize = '12px';
-		labelDiv.style.color = 'white'; 
-    	labelDiv.style.fontWeight = 'bold'; 
-		labelDiv.style.pointerEvents = 'none';
-		labelDiv.style.userSelect = 'none';
-		labelDiv.style.zIndex = '1000';
-	  	labelDiv.textContent = text;
-	  	document.body.appendChild(labelDiv);
-  
-	  annotations[text] = { position, text, labelDiv };
-	}
+	function createAnnotation(scene: THREE.Scene, position: THREE.Vector3, text: string) {
+    // Create a circle sprite
+    const circleTexture = new THREE.TextureLoader().load('/images/circle.png');
+    const circleMaterial = new THREE.SpriteMaterial({
+        map: circleTexture,
+        depthTest: false,
+        depthWrite: false,
+        sizeAttenuation: false
+    });
+    const circleSprite = new THREE.Sprite(circleMaterial);
+    circleSprite.position.copy(position);
+    circleSprite.scale.set(0.03, 0.03, 0.03);
+    scene.add(circleSprite);
+
+    // Create a text sprite
+    const textTexture = createTextTexture(text);
+    const textMaterial = new THREE.SpriteMaterial({
+        map: textTexture,
+        depthTest: false,
+        depthWrite: false,
+        sizeAttenuation: false
+    });
+    const textSprite = new THREE.Sprite(textMaterial);
+    
+    // Add slight offset to text sprite position
+    textSprite.position.copy(position);
+    textSprite.position.x += 0.2;
+    textSprite.position.y += 0.05;
+    textSprite.position.z += 0.05;
+    
+    textSprite.scale.set(0.07, 0.07, 0.07); // Adjusted scale for smaller text
+    scene.add(textSprite);
+
+    return { circleSprite, textSprite };
+}
+
+function createTextTexture(text: string, fontSize: number = 16): THREE.Texture {
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    if (!context) throw new Error('Unable to get 2D context');
+
+    context.font = `${fontSize}px Arial`;
+    const textMetrics = context.measureText(text);
+    const textWidth = Math.ceil(textMetrics.width);
+    const textHeight = fontSize;
+
+    canvas.width = textWidth + 20;  // Add more padding
+    canvas.height = textHeight + 16;  // Add more padding
+
+    // Create rounded rectangle
+    const radius = 8;  // Corner radius
+    context.beginPath();
+    context.moveTo(radius, 0);
+    context.lineTo(canvas.width - radius, 0);
+    context.quadraticCurveTo(canvas.width, 0, canvas.width, radius);
+    context.lineTo(canvas.width, canvas.height - radius);
+    context.quadraticCurveTo(canvas.width, canvas.height, canvas.width - radius, canvas.height);
+    context.lineTo(radius, canvas.height);
+    context.quadraticCurveTo(0, canvas.height, 0, canvas.height - radius);
+    context.lineTo(0, radius);
+    context.quadraticCurveTo(0, 0, radius, 0);
+    context.closePath();
+
+    // Fill with darker background
+    context.fillStyle = 'rgba(20, 20, 20, 0.95)';
+    context.fill();
+
+    // Add text
+    context.font = `${fontSize}px Arial`;
+    context.fillStyle = 'white';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(text, canvas.width / 2, canvas.height / 2);
+
+    const texture = new THREE.Texture(canvas);
+    texture.needsUpdate = true;
+    return texture;
+}
 
 	function removeAnnotation(text: string) {
 		const annotation = annotations[text];
 		if (annotation) {
-			document.body.removeChild(annotation.labelDiv);
+			scene.remove(annotation.circleSprite);
+			scene.remove(annotation.textSprite);
 			delete annotations[text];
 		}
-}
+	}
+
+	function removeAllAnnotations() {
+		Object.keys(annotations).forEach((text) => {
+			removeAnnotation(text);
+		});
+	}
   
 	function onMouseClick(event: MouseEvent) {
 	  if (!annotationMode) return;
@@ -146,12 +203,6 @@
 		scene.add(gltf.scene);
 	  });
 	}
-
-	function removeAllAnnotations() {
-    Object.keys(annotations).forEach((text) => {
-        removeAnnotation(text);
-    });
-}
   
 	function handleModelSelection(file_path: string) {
 	  removeAllAnnotations();
@@ -163,41 +214,8 @@
 	function animate() {
 	  requestAnimationFrame(animate);
   
-	  // Get the canvas's bounding rect
-	  if (!canvas) return;
-	  const rect = canvas.getBoundingClientRect();
-	  const canvasWidth = rect.width;
-	  const canvasHeight = rect.height;
+	  controls.update();
   
-	  Object.values(annotations).forEach(({ position, labelDiv }) => {
-		const spriteScreenPosition = position.clone().project(camera);
-  
-		//  normalized coordinates to pixel coordinates
-		const widthHalf = canvasWidth / 2;
-		const heightHalf = canvasHeight / 2;
-		const spriteX = spriteScreenPosition.x * widthHalf + widthHalf;
-		const spriteY = -(spriteScreenPosition.y * heightHalf) + heightHalf;
-  
-		// Update the label's position
-		labelDiv.style.position = 'absolute';
-		labelDiv.style.left = `${spriteX + rect.left}px`;
-		labelDiv.style.top = `${spriteY + rect.top}px`;
-  
-		
-		if (
-		  spriteScreenPosition.z < 0 ||
-		  spriteX < 0 ||
-		  spriteX > canvasWidth ||
-		  spriteY < 0 ||
-		  spriteY > canvasHeight
-		) {
-		  labelDiv.style.display = 'none';
-		} else {
-		  labelDiv.style.display = 'block';
-		}
-	  });
-  
-	  // Render the scene
 	  renderer.render(scene, camera);
 	}
   
@@ -206,25 +224,24 @@
 	  camera.updateProjectionMatrix();
 	  renderer.setSize(window.innerWidth, window.innerHeight);
 	}
-  </script>
-  
-  <div class="scene-wrapper">
+</script>
+
+<div class="scene-wrapper">
 	<Menu {models} onModelSelect={handleModelSelection} />
 	<Button on:click={toggleAnnotationMode}>
 	  {annotationMode ? 'Exit Annotation Mode' : 'Enter Annotation Mode'}
 	</Button>
 	<canvas bind:this={canvas}></canvas>
   
-	<!-- Annotation input -->
 	{#if annotationMode && activePoint}
 	  <div class="annotation-input" style="left: {tooltipX}px; top: {tooltipY}px;">
 		<input type="text" bind:value={annotationText} placeholder="Enter annotation" />
 		<button on:click={addAnnotation}>Add Annotation</button>
 	  </div>
 	{/if}
-  </div>
-  
-  <style>
+</div>
+
+<style>
 	.scene-wrapper {
 	  position: relative;
 	  width: 100%;
@@ -233,7 +250,7 @@
   
 	canvas {
 	  width: 100%;
-	  height: calc(100vh / 4);
+	  height: 100vh;
 	  max-width: 100%;
 	  object-fit: contain;
 	}
@@ -254,6 +271,4 @@
 	.annotation-input button {
 	  margin-top: 5px;
 	}
-
-  </style>
-  
+</style>
