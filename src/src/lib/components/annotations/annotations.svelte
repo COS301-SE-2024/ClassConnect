@@ -14,6 +14,8 @@
 	let annotationMode = false;
 	let annotationText = '';
 	let activePoint: THREE.Vector3 | null = null;
+	let tooltipX: number = 0;
+	let tooltipY: number = 0;
 
 	export let data: {
 		role: string;
@@ -22,8 +24,8 @@
 
 	let { models } = data;
 	let selectedModel: string | null = null;
-	let annotations: {
-		[key: string]: { position: THREE.Vector3; text: string; element: HTMLDivElement; sprite: THREE.Sprite };
+	const annotations: {
+		[key: string]: { position: THREE.Vector3; text: string };
 	} = {};
 
 	function toggleAnnotationMode() {
@@ -42,56 +44,59 @@
 	}
 
 	function createAnnotation(position: THREE.Vector3, text: string) {
-		const annotationElement = document.createElement('div');
-		annotationElement.className = 'annotation';
-		annotationElement.innerHTML = `
-			<p><strong>${text}</strong></p>
-			<p>${text}</p>
-		`;
-		document.body.appendChild(annotationElement);
+		// Circle sprite with a number
+		const circleCanvas = document.createElement('canvas');
+		circleCanvas.width = 64;
+		circleCanvas.height = 64;
+		const ctx = circleCanvas.getContext('2d')!;
+		const x = 32, y = 32, radius = 30;
 
-		const sprite = createAnnotationSprite();
-		sprite.position.copy(position);
-		scene.add(sprite);
+		// Draw the black circle
+		ctx.fillStyle = "rgb(0, 0, 0)";
+		ctx.beginPath();
+		ctx.arc(x, y, radius, 0, Math.PI * 2);
+		ctx.fill();
 
-		annotations[text] = { position, text, element: annotationElement, sprite };
-	}
+		// Draw the white border circle
+		ctx.strokeStyle = "rgb(255, 255, 255)";
+		ctx.lineWidth = 3;
+		ctx.beginPath();
+		ctx.arc(x, y, radius, 0, Math.PI * 2);
+		ctx.stroke();
 
-	function createAnnotationSprite(): THREE.Sprite {
-		const canvas = document.createElement('canvas');
-		canvas.width = 64;
-		canvas.height = 64;
-		const context = canvas.getContext('2d');
-		
-		if (context) {
-			context.fillStyle = "rgb(0, 0, 0)";
-			context.beginPath();
-			context.arc(32, 32, 30, 0, Math.PI * 2);
-			context.fill();
+		// Draw the number text in the center
+		ctx.fillStyle = "rgb(255, 255, 255)";
+		ctx.font = "32px sans-serif";
+		ctx.textAlign = "center";
+		ctx.textBaseline = "middle";
+		ctx.fillText("1", x, y);
 
-			context.strokeStyle = "rgb(255, 255, 255)";
-			context.lineWidth = 3;
-			context.beginPath();
-			context.arc(32, 32, 30, 0, Math.PI * 2);
-			context.stroke();
-
-			context.fillStyle = "rgb(255, 255, 255)";
-			context.font = "32px sans-serif";
-			context.textAlign = "center";
-			context.textBaseline = "middle";
-			context.fillText(Object.keys(annotations).length.toString(), 32, 32);
-		}
-
-		const texture = new THREE.CanvasTexture(canvas);
+		const circleTexture = new THREE.CanvasTexture(circleCanvas);
 		const spriteMaterial = new THREE.SpriteMaterial({
-			map: texture,
+			map: circleTexture,
 			alphaTest: 0.5,
 			transparent: true,
 			depthTest: false,
 			depthWrite: false
 		});
+		const sprite = new THREE.Sprite(spriteMaterial);
+		sprite.position.copy(position);
+		sprite.scale.set(0.1, 0.1, 0.1);
+		scene.add(sprite);
 
-		return new THREE.Sprite(spriteMaterial);
+		// Store annotation data
+		annotations[text] = { position, text };
+
+		// Now trigger a DOM element for the tooltip (similar to the example)
+		const vector = new THREE.Vector3();
+		vector.copy(position).project(camera);
+
+		const canvas = renderer.domElement;
+		const widthHalf = 0.5 * canvas.width;
+		const heightHalf = 0.5 * canvas.height;
+
+		tooltipX = vector.x * widthHalf + widthHalf;
+		tooltipY = -(vector.y * heightHalf) + heightHalf;
 	}
 
 	function onMouseClick(event: MouseEvent) {
@@ -105,7 +110,18 @@
 		const intersects = raycaster.intersectObjects(scene.children, true);
 
 		if (intersects.length > 0) {
-			activePoint = intersects[0].point;
+			const point = intersects[0].point;
+			activePoint = point;
+
+			const vector = new THREE.Vector3();
+			vector.copy(activePoint).project(camera);
+
+			const canvas = renderer.domElement;
+			const widthHalf = 0.5 * canvas.width;
+			const heightHalf = 0.5 * canvas.height;
+
+			tooltipX = vector.x * widthHalf + widthHalf;
+			tooltipY = -(vector.y * heightHalf) + heightHalf;
 		}
 	}
 
@@ -117,49 +133,54 @@
 	});
 
 	function initScene() {
-		// ... (keep your existing initScene code)
+		scene = new THREE.Scene();
+		camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+		camera.position.z = 5;
+
+		renderer = new THREE.WebGLRenderer({ canvas });
+		renderer.setSize(window.innerWidth, window.innerHeight);
+		renderer.setClearColor(0xffffff);
+
+		raycaster = new THREE.Raycaster();
+		mouse = new THREE.Vector2();
+
+		const ambientLight = new THREE.AmbientLight(0x404040);
+		scene.add(ambientLight);
+		const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+		directionalLight.position.set(1, 1, 1).normalize();
+		scene.add(directionalLight);
+
+		controls = new OrbitControls(camera, renderer.domElement);
+		controls.enableDamping = true;
+		controls.dampingFactor = 0.25;
+		controls.enableRotate = true;
+
+		window.addEventListener('resize', onWindowResize, false);
 	}
 
 	function loadModel(file_path: string) {
-		// ... (keep your existing loadModel code)
+		const loader = new GLTFLoader();
+		loader.load(file_path, (gltf) => {
+			scene.add(gltf.scene);
+		});
 	}
 
 	function handleModelSelection(file_path: string) {
-		// ... (keep your existing handleModelSelection code)
+		selectedModel = file_path;
+		localStorage.setItem('selectedModel', selectedModel);
+		loadModel(file_path);
 	}
 
 	function animate() {
 		requestAnimationFrame(animate);
-
-		updateAnnotations();
-
 		renderer.render(scene, camera);
-	}
-
-	function updateAnnotations() {
-		Object.values(annotations).forEach(({ position, element, sprite }) => {
-			const screenPosition = position.clone().project(camera);
-
-			const widthHalf = window.innerWidth / 2;
-			const heightHalf = window.innerHeight / 2;
-			const x = (screenPosition.x * widthHalf) + widthHalf;
-			const y = -(screenPosition.y * heightHalf) + heightHalf;
-
-			element.style.left = `${x}px`;
-			element.style.top = `${y}px`;
-
-			// Update visibility
-			const meshDistance = camera.position.distanceTo(scene.position);
-			const spriteDistance = camera.position.distanceTo(sprite.position);
-			const isBehindObject = spriteDistance > meshDistance;
-
-			element.style.opacity = isBehindObject ? '0.25' : '1';
-			sprite.material.opacity = isBehindObject ? 0.25 : 1;
-		});
+		controls.update();
 	}
 
 	function onWindowResize() {
-		// ... (keep your existing onWindowResize code)
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		renderer.setSize(window.innerWidth, window.innerHeight);
 	}
 </script>
 
@@ -171,7 +192,7 @@
 	<canvas bind:this={canvas}></canvas>
 
 	{#if annotationMode && activePoint}
-		<div class="annotation-input">
+		<div class="annotation-input" style="left: {tooltipX}px; top: {tooltipY}px;">
 			<input type="text" bind:value={annotationText} placeholder="Enter annotation" />
 			<button on:click={addAnnotation}>Add Annotation</button>
 		</div>
@@ -187,14 +208,13 @@
 
 	canvas {
 		width: 100%;
-		height: 100vh;
-		display: block;
+		height: calc(100vh / 4);
+		max-width: 100%;
+		object-fit: contain;
 	}
 
 	.annotation-input {
 		position: absolute;
-		top: 10px;
-		left: 10px;
 		background: white;
 		border: 1px solid black;
 		padding: 5px;
@@ -202,34 +222,11 @@
 		z-index: 1000;
 	}
 
-	:global(.annotation) {
-		position: absolute;
-		z-index: 1;
-		margin-left: 15px;
-		margin-top: 15px;
-		padding: 1em;
-		width: 200px;
-		color: #fff;
-		background: rgba(0, 0, 0, 0.8);
-		border-radius: .5em;
-		font-size: 12px;
-		line-height: 1.2;
-		transition: opacity .5s;
-		pointer-events: none;
+	.annotation-input input {
+		width: 100px;
 	}
 
-	:global(.annotation::before) {
-		content: attr(data-number);
-		position: absolute;
-		top: -30px;
-		left: -30px;
-		width: 30px;
-		height: 30px;
-		border: 2px solid #fff;
-		border-radius: 50%;
-		font-size: 16px;
-		line-height: 30px;
-		text-align: center;
-		background: rgba(0, 0, 0, 0.8);
+	.annotation-input button {
+		margin-top: 5px;
 	}
 </style>
