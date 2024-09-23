@@ -14,8 +14,6 @@
 	let annotationMode = false;
 	let annotationText = '';
 	let activePoint: THREE.Vector3 | null = null;
-	let tooltipX: number = 0;
-	let tooltipY: number = 0;
 
 	export let data: {
 		role: string;
@@ -24,10 +22,13 @@
 
 	let { models } = data;
 	let selectedModel: string | null = null;
+
+	// This will store annotations
 	const annotations: {
 		[key: string]: { position: THREE.Vector3; text: string };
 	} = {};
 
+	// Toggle annotation mode
 	function toggleAnnotationMode() {
 		annotationMode = !annotationMode;
 		if (!annotationMode) {
@@ -35,6 +36,7 @@
 		}
 	}
 
+	// Add an annotation based on the clicked point and entered text
 	function addAnnotation() {
 		if (annotationText.trim() && activePoint) {
 			createAnnotation(activePoint, annotationText);
@@ -43,62 +45,44 @@
 		}
 	}
 
+	// Create the annotation in the scene (use method from your friend)
 	function createAnnotation(position: THREE.Vector3, text: string) {
-		// Circle sprite with a number
-		const circleCanvas = document.createElement('canvas');
-		circleCanvas.width = 64;
-		circleCanvas.height = 64;
-		const ctx = circleCanvas.getContext('2d')!;
-		const x = 32, y = 32, radius = 30;
+		// Create a small red sphere at the annotation point
+		const sphereGeometry = new THREE.SphereGeometry(0.05, 32, 32);
+		const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+		const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+		sphere.position.copy(position);
+		scene.add(sphere);
 
-		// Draw the black circle
-		ctx.fillStyle = "rgb(0, 0, 0)";
-		ctx.beginPath();
-		ctx.arc(x, y, radius, 0, Math.PI * 2);
-		ctx.fill();
-
-		// Draw the white border circle
-		ctx.strokeStyle = "rgb(255, 255, 255)";
-		ctx.lineWidth = 3;
-		ctx.beginPath();
-		ctx.arc(x, y, radius, 0, Math.PI * 2);
-		ctx.stroke();
-
-		// Draw the number text in the center
-		ctx.fillStyle = "rgb(255, 255, 255)";
-		ctx.font = "32px sans-serif";
-		ctx.textAlign = "center";
-		ctx.textBaseline = "middle";
-		ctx.fillText("1", x, y);
-
-		const circleTexture = new THREE.CanvasTexture(circleCanvas);
-		const spriteMaterial = new THREE.SpriteMaterial({
-			map: circleTexture,
-			alphaTest: 0.5,
-			transparent: true,
-			depthTest: false,
-			depthWrite: false
-		});
-		const sprite = new THREE.Sprite(spriteMaterial);
-		sprite.position.copy(position);
-		sprite.scale.set(0.1, 0.1, 0.1);
-		scene.add(sprite);
-
-		// Store annotation data
+		// Store annotation text and its position
 		annotations[text] = { position, text };
 
-		// Now trigger a DOM element for the tooltip (similar to the example)
-		const vector = new THREE.Vector3();
-		vector.copy(position).project(camera);
+        const annotationDiv = document.createElement('div');
+        annotationDiv.style.position = 'absolute';
+        annotationDiv.style.color = 'black';
+        annotationDiv.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+        annotationDiv.style.padding = '4px';
+        annotationDiv.style.border = '1px solid black';
+        annotationDiv.style.fontSize = '12px';
+        annotationDiv.innerHTML = text;
 
-		const canvas = renderer.domElement;
-		const widthHalf = 0.5 * canvas.width;
-		const heightHalf = 0.5 * canvas.height;
-
-		tooltipX = vector.x * widthHalf + widthHalf;
-		tooltipY = -(vector.y * heightHalf) + heightHalf;
+		document.body.appendChild(annotationDiv);
+		updateAnnotationPosition(annotationDiv, position);
 	}
 
+	// This function positions the 2D annotation correctly relative to the 3D point
+	function updateAnnotationPosition(element: HTMLElement, position: THREE.Vector3) {
+		const vector = position.clone().project(camera);
+		const canvasBounds = canvas.getBoundingClientRect();
+
+		const x = (vector.x * 0.5 + 0.5) * canvasBounds.width + canvasBounds.left;
+		const y = -(vector.y * 0.5 - 0.5) * canvasBounds.height + canvasBounds.top;
+
+		element.style.left = `${x}px`;
+		element.style.top = `${y}px`;
+	}
+
+	// Handles mouse clicks to create an annotation
 	function onMouseClick(event: MouseEvent) {
 		if (!annotationMode) return;
 
@@ -110,21 +94,11 @@
 		const intersects = raycaster.intersectObjects(scene.children, true);
 
 		if (intersects.length > 0) {
-			const point = intersects[0].point;
-			activePoint = point;
-
-			const vector = new THREE.Vector3();
-			vector.copy(activePoint).project(camera);
-
-			const canvas = renderer.domElement;
-			const widthHalf = 0.5 * canvas.width;
-			const heightHalf = 0.5 * canvas.height;
-
-			tooltipX = vector.x * widthHalf + widthHalf;
-			tooltipY = -(vector.y * heightHalf) + heightHalf;
+			activePoint = intersects[0].point;
 		}
 	}
 
+	// Initialize the scene
 	onMount(() => {
 		initScene();
 		animate();
@@ -171,12 +145,13 @@
 		loadModel(file_path);
 	}
 
+	// Update the animation loop
 	function animate() {
 		requestAnimationFrame(animate);
 		renderer.render(scene, camera);
 		controls.update();
 	}
-
+	
 	function onWindowResize() {
 		camera.aspect = window.innerWidth / window.innerHeight;
 		camera.updateProjectionMatrix();
@@ -192,7 +167,7 @@
 	<canvas bind:this={canvas}></canvas>
 
 	{#if annotationMode && activePoint}
-		<div class="annotation-input" style="left: {tooltipX}px; top: {tooltipY}px;">
+		<div class="annotation-input" style="left: {activePoint.x}px; top: {activePoint.y}px;">
 			<input type="text" bind:value={annotationText} placeholder="Enter annotation" />
 			<button on:click={addAnnotation}>Add Annotation</button>
 		</div>
@@ -221,7 +196,6 @@
 		box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 		z-index: 1000;
 	}
-
 	.annotation-input input {
 		width: 100px;
 	}
