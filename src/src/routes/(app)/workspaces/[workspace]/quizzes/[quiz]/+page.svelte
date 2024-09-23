@@ -13,7 +13,7 @@
 	import { goto } from '$app/navigation';
 	import ListQuestions from '$src/lib/components/questions/listQuestions.svelte';
 	import ThreeDScene from '$lib/components/hotspot/3dhotspot.svelte';
-	import ThreeAnnotations from '$lib/components/annotations/annotations.svelte';
+	import ThreeAnnotations from '$lib/components/annotations/3dAnnotations.svelte';
 
 	import { selectedQuestionTypeStore } from '$lib/store/questions';
 

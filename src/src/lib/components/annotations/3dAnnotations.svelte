@@ -162,8 +162,6 @@
   
 	function animate() {
 	  requestAnimationFrame(animate);
-  
-	  // Get the canvas's bounding rect
 	  if (!canvas) return;
 	  const rect = canvas.getBoundingClientRect();
 	  const canvasWidth = rect.width;

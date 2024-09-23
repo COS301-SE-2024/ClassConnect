@@ -40,10 +40,6 @@
 		</div>
 
 		<div class="mb-4">
-			<slot name="scene" />
-		</div>
-
-		<div class="mb-4">
 			<Label class="mb-4 space-y-2">
 				<span>Points</span>
 				<NumberInput name="points" />
@@ -62,6 +58,9 @@
 		</div>
 
 		
+		<div class="mb-4">
+			<slot name="scene" />
+		</div>
 
 		<Button type="submit" class="mt-4 w-full">Submit Question</Button>
 	</form>
