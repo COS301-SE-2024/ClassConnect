@@ -29,6 +29,10 @@
 		{/if}
 
 		<div class="mb-4">
+			<slot name="scene" />
+		</div>
+
+		<div class="mb-4">
 			<Label for="questionNumber">Question Number</Label>
 			<Input
 				id="questionNumber"
@@ -58,10 +62,7 @@
 		</div>
 
 		
-		<div class="mb-4">
-			<slot name="scene" />
-		</div>
-
+		
 		<Button type="submit" class="mt-4 w-full">Submit Question</Button>
 	</form>
 </main>

@@ -11,12 +11,12 @@
 	let controls: OrbitControls;
 	let raycaster: THREE.Raycaster;
 	let mouse: THREE.Vector2;
-	let annotationMode = false; // Toggle for annotation mode
+	let annotationMode = false;
 	let annotationText = '';
 	let activePoint: THREE.Vector3 | null = null;
 	let tooltipX: number = 0;
 	let tooltipY: number = 0;
-  
+
 	export let data: {
 	  role: string;
 	  models: { title: string; file_path: string; description: string }[];
@@ -31,15 +31,15 @@
 	function toggleAnnotationMode() {
 	  annotationMode = !annotationMode;
 	  if (!annotationMode) {
-		activePoint = null; // Clear active point when exiting annotation mode
+		activePoint = null;
 	  }
 	}
   
 	function addAnnotation() {
 	  if (annotationText.trim() && activePoint) {
 		createAnnotation(activePoint, annotationText);
-		annotationText = ''; // Clear text after adding
-		activePoint = null; // Clear active point
+		annotationText = '';
+		activePoint = null;
 	  }
 	}
   
@@ -56,19 +56,20 @@
 	  sprite.position.copy(position);
 	  sprite.scale.set(0.05, 0.05, 0.05);
 	  scene.add(sprite);
-  
+
+	  // Create the label element
 	  const labelDiv = document.createElement('div');
-	    labelDiv.style.backgroundColor = 'rgba(30, 30, 30, 0.9)';
-		labelDiv.style.padding = '2px 5px';
-		labelDiv.style.borderRadius = '3px';
-		labelDiv.style.fontSize = '12px';
-		labelDiv.style.color = 'white'; 
-    	labelDiv.style.fontWeight = 'bold'; 
-		labelDiv.style.pointerEvents = 'none';
-		labelDiv.style.userSelect = 'none';
-		labelDiv.style.zIndex = '1000';
-	  	labelDiv.textContent = text;
-	  	document.body.appendChild(labelDiv);
+	  labelDiv.style.backgroundColor = 'rgba(30, 30, 30, 0.9)';
+	  labelDiv.style.padding = '2px 5px';
+	  labelDiv.style.borderRadius = '3px';
+	  labelDiv.style.fontSize = '12px';
+	  labelDiv.style.color = 'white'; 
+	  labelDiv.style.fontWeight = 'bold'; 
+	  labelDiv.style.pointerEvents = 'none';
+	  labelDiv.style.userSelect = 'none';
+	  labelDiv.style.zIndex = '1000';
+	  labelDiv.textContent = text;
+	  document.body.appendChild(labelDiv);
   
 	  annotations[text] = { position, text, labelDiv };
 	}
@@ -79,7 +80,7 @@
 			document.body.removeChild(annotation.labelDiv);
 			delete annotations[text];
 		}
-}
+	}
   
 	function onMouseClick(event: MouseEvent) {
 	  if (!annotationMode) return;
@@ -148,10 +149,10 @@
 	}
 
 	function removeAllAnnotations() {
-    Object.keys(annotations).forEach((text) => {
-        removeAnnotation(text);
-    });
-}
+	  Object.keys(annotations).forEach((text) => {
+		  removeAnnotation(text);
+	  });
+	}
   
 	function handleModelSelection(file_path: string) {
 	  removeAllAnnotations();
@@ -170,18 +171,15 @@
 	  Object.values(annotations).forEach(({ position, labelDiv }) => {
 		const spriteScreenPosition = position.clone().project(camera);
   
-		//  normalized coordinates to pixel coordinates
 		const widthHalf = canvasWidth / 2;
 		const heightHalf = canvasHeight / 2;
 		const spriteX = spriteScreenPosition.x * widthHalf + widthHalf;
 		const spriteY = -(spriteScreenPosition.y * heightHalf) + heightHalf;
   
-		// Update the label's position
-		labelDiv.style.position = 'absolute';
+		labelDiv.style.position = 'fixed';
 		labelDiv.style.left = `${spriteX + rect.left}px`;
 		labelDiv.style.top = `${spriteY + rect.top}px`;
   
-		
 		if (
 		  spriteScreenPosition.z < 0 ||
 		  spriteX < 0 ||
@@ -195,7 +193,6 @@
 		}
 	  });
   
-	  // Render the scene
 	  renderer.render(scene, camera);
 	}
   
@@ -204,9 +201,9 @@
 	  camera.updateProjectionMatrix();
 	  renderer.setSize(window.innerWidth, window.innerHeight);
 	}
-  </script>
-  
-  <div class="scene-wrapper">
+</script>
+
+<div class="scene-wrapper">
 	<Menu {models} onModelSelect={handleModelSelection} />
 	<Button on:click={toggleAnnotationMode}>
 	  {annotationMode ? 'Exit Annotation Mode' : 'Enter Annotation Mode'}
@@ -220,22 +217,22 @@
 		<button on:click={addAnnotation}>Add Annotation</button>
 	  </div>
 	{/if}
-  </div>
-  
-  <style>
+</div>
+
+<style>
 	.scene-wrapper {
 	  position: relative;
 	  width: 100%;
 	  height: 100vh;
 	}
-  
+
 	canvas {
 	  width: 100%;
 	  height: calc(100vh / 4);
 	  max-width: 100%;
 	  object-fit: contain;
 	}
-  
+
 	.annotation-input {
 	  position: absolute;
 	  background: white;
@@ -244,14 +241,12 @@
 	  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 	  z-index: 1000;
 	}
-  
+
 	.annotation-input input {
 	  width: 100px;
 	}
-  
+
 	.annotation-input button {
 	  margin-top: 5px;
 	}
-
-  </style>
-  
+</style>
