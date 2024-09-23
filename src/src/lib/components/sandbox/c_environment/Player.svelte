@@ -12,7 +12,7 @@
     export let position: [x: number, y: number, z: number] = [0, 0, 0]
   
     let radius = 0.3
-    let height = 1.7
+    let height = 1.8
     let speed : number = 6;
     
     let forward = 0
@@ -25,6 +25,7 @@
     const { renderer, scene } = useThrelte(); // Access renderer and scene
   
     function onKeyDown(e: KeyboardEvent) {
+      if(controls.isLocked === false) return
       switch (e.key) {
         case 's':
           backward = 2
@@ -70,7 +71,6 @@
       renderer.domElement.addEventListener('click', () => {
         controls.lock();
       });
-  
       window.addEventListener('keydown', onKeyDown);
       window.addEventListener('keyup', onKeyUp);
   
