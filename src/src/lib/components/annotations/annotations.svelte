@@ -5,10 +5,7 @@
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 	import Menu from '$lib/components/hotspot/3dMenu.svelte';
 	import { Button } from 'flowbite-svelte';
-	import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
-	import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-
-
+  
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
 	let controls: OrbitControls;
@@ -28,11 +25,7 @@
 	let { models } = data;
 	let selectedModel: string | null = null;
 	const annotations: {
-	  [key: string]: {
-		position: THREE.Vector3;
-		text: string;
-		sprite: THREE.Sprite;
-		textMesh: THREE.Mesh; };
+	  [key: string]: { position: THREE.Vector3; text: string; labelDiv: HTMLDivElement };
 	} = {};
   
 	function toggleAnnotationMode() {
@@ -63,26 +56,30 @@
 	  sprite.position.copy(position);
 	  sprite.scale.set(0.05, 0.05, 0.05);
 	  scene.add(sprite);
+  
+	  const labelDiv = document.createElement('div');
+	    labelDiv.style.backgroundColor = 'rgba(30, 30, 30, 0.9)';
+		labelDiv.style.padding = '2px 5px';
+		labelDiv.style.borderRadius = '3px';
+		labelDiv.style.fontSize = '12px';
+		labelDiv.style.color = 'white'; 
+    	labelDiv.style.fontWeight = 'bold'; 
+		labelDiv.style.pointerEvents = 'none';
+		labelDiv.style.userSelect = 'none';
+		labelDiv.style.zIndex = '1000';
+	  	labelDiv.textContent = text;
+	  	document.body.appendChild(labelDiv);
+  
+	  annotations[text] = { position, text, labelDiv };
+	}
 
-	  const fontLoader = new FontLoader();
-	  fontLoader.load('/fonts/roboto.json', (font) => {
-      const textGeometry = new TextGeometry(text, {
-      font: font,
-      size: 0.1,
-      height: 0.01,
-    });
-	const textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-	const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-	textMesh.position.copy(position);
-	textMesh.position.y += 0.1; 
-	scene.add(textMesh);
-
-	annotations[text] = { position, text, sprite, textMesh };
-});
-
+	function removeAnnotation(text: string) {
+		const annotation = annotations[text];
+		if (annotation) {
+			document.body.removeChild(annotation.labelDiv);
+			delete annotations[text];
+		}
 }
-
-	
   
 	function onMouseClick(event: MouseEvent) {
 	  if (!annotationMode) return;
@@ -150,10 +147,14 @@
 	  });
 	}
 
-	
+	function removeAllAnnotations() {
+    Object.keys(annotations).forEach((text) => {
+        removeAnnotation(text);
+    });
+}
   
 	function handleModelSelection(file_path: string) {
-	  
+	  removeAllAnnotations();
 	  selectedModel = file_path;
 	  localStorage.setItem('selectedModel', selectedModel);
 	  loadModel(file_path);
@@ -168,7 +169,7 @@
 	  const canvasWidth = rect.width;
 	  const canvasHeight = rect.height;
   
-	  Object.values(annotations).forEach(({ position, sprite, textMesh }) => {
+	  Object.values(annotations).forEach(({ position, labelDiv }) => {
 		const spriteScreenPosition = position.clone().project(camera);
   
 		//  normalized coordinates to pixel coordinates
@@ -176,6 +177,11 @@
 		const heightHalf = canvasHeight / 2;
 		const spriteX = spriteScreenPosition.x * widthHalf + widthHalf;
 		const spriteY = -(spriteScreenPosition.y * heightHalf) + heightHalf;
+  
+		// Update the label's position
+		labelDiv.style.position = 'absolute';
+		labelDiv.style.left = `${spriteX + rect.left}px`;
+		labelDiv.style.top = `${spriteY + rect.top}px`;
   
 		
 		if (
@@ -185,11 +191,9 @@
 		  spriteY < 0 ||
 		  spriteY > canvasHeight
 		) {
-			sprite.visible = false;
-			textMesh.visible = false;
+		  labelDiv.style.display = 'none';
 		} else {
-			sprite.visible = true;
-			textMesh.visible = true;
+		  labelDiv.style.display = 'block';
 		}
 	  });
   
