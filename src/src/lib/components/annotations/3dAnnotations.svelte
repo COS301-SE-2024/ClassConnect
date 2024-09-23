@@ -4,7 +4,7 @@
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 	import Menu from '$lib/components/hotspot/3dMenu.svelte';
-	import { Button } from 'flowbite-svelte';
+	import { P } from 'flowbite-svelte';
   
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -29,11 +29,16 @@
 	} = {};
   
 	function toggleAnnotationMode() {
-	  annotationMode = !annotationMode;
-	  if (!annotationMode) {
-		activePoint = null;
-	  }
+	if (data.role === 'lecturer') {
+		annotationMode = true; 
+	} else if (data.role === 'student') {
+		annotationMode = false; 
 	}
+	
+	if (!annotationMode) {
+		activePoint = null; 
+	}
+}
   
 	function addAnnotation() {
 	  if (annotationText.trim() && activePoint) {
@@ -111,7 +116,7 @@
 	onMount(() => {
 	  initScene();
 	  animate();
-  
+	  toggleAnnotationMode(); 
 	  window.addEventListener('click', onMouseClick);
 	});
   
@@ -204,13 +209,14 @@
 </script>
 
 <div class="scene-wrapper">
-	<Menu {models} onModelSelect={handleModelSelection} />
-	<Button on:click={toggleAnnotationMode}>
-	  {annotationMode ? 'Exit Annotation Mode' : 'Enter Annotation Mode'}
-	</Button>
+	<div class="flex items-center space-x-4">
+		<Menu {models} onModelSelect={handleModelSelection} />
+		<P class=" font-semibold text-violet-700">
+			Tip: Open on the Menu to choose your model, then click on the desired location to add annotations.
+		</P>
+	</div>
 	<canvas bind:this={canvas}></canvas>
-  
-	<!-- Annotation input -->
+	
 	{#if annotationMode && activePoint}
 	  <div class="annotation-input" style="left: {tooltipX}px; top: {tooltipY}px;">
 		<input type="text" bind:value={annotationText} placeholder="Enter annotation" />

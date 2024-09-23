@@ -167,6 +167,31 @@ export const actions: Actions = {
 		}
 	},
 
+	postTF: async ({ request, locals, params }) => {
+		validateLecturer(locals);
+		try {
+			const data = await request.formData();
+			const questionNumber = 111;
+			const questionContent = data.get('questionContent') as string;
+			const questionType = 'true-false';
+			const questionPoints = 2;
+			const options = null;
+
+			const quizId = new mongoose.Types.ObjectId(params.quiz);
+			return await createQuestion(
+				questionNumber,
+				questionContent,
+				questionPoints,
+				questionType,
+				options,
+				quizId
+			);
+		} catch (error) {
+			console.error('Error creating question:', error);
+			return fail(500, { error: 'Failed to create question' });
+		}
+	},
+
 	submitQuiz: async ({ request, locals, params }) => {
 		if (!locals.user) {
 			throw error(401, 'Unauthorized');

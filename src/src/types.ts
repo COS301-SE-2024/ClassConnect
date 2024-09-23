@@ -121,5 +121,6 @@ export interface Question {
 	questionContent: string;
 	questionType: string;
 	questionPoints: number | null;
+	correctAnswer: string | null;
 	options: Option[] | null;
 }
