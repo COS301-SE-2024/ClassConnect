@@ -11,7 +11,7 @@
 
 	export let currentModel: string;
 
-	let model: any;
+	let model: Object3D;
 	let loaded = false;
 	let zoomSpeed: number = 1;
 	let selectedAnimation = '';
@@ -67,7 +67,7 @@
 	}
 </script>
 
-<VR />
+<VR {model} />
 
 <T.PerspectiveCamera
 	fov={25}
