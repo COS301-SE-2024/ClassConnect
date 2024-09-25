@@ -1,6 +1,5 @@
 <script lang="ts">
     import { T, useLoader} from '@threlte/core'
-    import { useTexture } from '@threlte/extras'
     import { AutoColliders } from '@threlte/rapier'
     import { TextureLoader } from 'three';
     

@@ -8,12 +8,11 @@
 	import * as THREE from 'three';
 
   const {scene} = useThrelte();
-    // Create an exponential fog instance and assign it to the scene
-  // scene.fog = new THREE.Fog(0x808080, 10,50); // color, density
 
 </script>
 
-<Debug />
+
+<!-- <Debug /> -->
 
 <Pane
 position="fixed"
@@ -45,7 +44,7 @@ y={80}
 </RigidBody>
 </T.Group>
 
-<T.GridHelper args={[100]} position.y={-0.1} />
+<!-- <T.GridHelper args={[100]} position.y={-0.1} /> -->
 
 <!-- <Sky /> -->
 
@@ -60,7 +59,7 @@ y={80}
 </RigidBody>
 </T.Group>
 
-<T.GridHelper args={[100]} position.y={-0.1} />
+<!-- <T.GridHelper args={[100]} position.y={-0.1} /> -->
 <Floor />
 
 <T.Group position={[10, 10, 10]}>
@@ -70,5 +69,5 @@ y={80}
 </T.Mesh>
 </T.Group>
 
-<T.GridHelper args={[100]} position.y={-0.1} />
+<!-- <T.GridHelper args={[100]} position.y={-0.1} /> -->
 <Floor />
