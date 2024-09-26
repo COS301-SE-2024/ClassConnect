@@ -1,98 +1,210 @@
 <script lang="ts">
 	import {
-		BullhornSolid,
-		BriefcaseSolid,
-		UsersGroupSolid,
-		ChartPieSolid,
-		ArrowLeftOutline,
-		ClipboardListSolid,
-		GlobeSolid,
-		BookOpenSolid,
-		VideoCameraSolid
-	} from 'flowbite-svelte-icons';
+		Navbar,
+		NavBrand,
+		NavLi,
+		NavUl,
+		NavHamburger,
+		Dropdown,
+		DropdownItem
+	} from 'flowbite-svelte';
 	import { page } from '$app/stores';
-	import { writingQuiz } from '$lib/store/sidebar';
-	import { onDestroy } from 'svelte';
+	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 
-	let isOpen = true;
-
-	const unsubscribeWritingQuiz = writingQuiz.subscribe((value) => {
-		isOpen = !value;
-	});
-
-	onDestroy(() => {
-		unsubscribeWritingQuiz();
-	});
-
-	export let workspace;
+	export let workspace: { name: string; image: string };
 	export let role: 'lecturer' | 'student';
 
 	let workspaceURL = `/workspaces/${$page.params.workspace}`;
 
-	const navLinks = {
-		lecturer: [
-			{ icon: BullhornSolid, name: 'Dashboard', href: workspaceURL + '/dashboard' },
-			{ icon: ClipboardListSolid, name: 'Grade Center', href: workspaceURL + '/gradecenter' },
-			{ icon: BullhornSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
-			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
-			{ icon: VideoCameraSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
-			{ icon: BookOpenSolid, name: 'Assessments', href: workspaceURL + '/quizzes' },
-			{ icon: UsersGroupSolid, name: 'Environments', href: workspaceURL + '/environments' }
-		],
-		student: [
-			{ icon: GlobeSolid, name: 'Announcements', href: workspaceURL + '/announcements' },
-			{ icon: BullhornSolid, name: 'Activities', href: workspaceURL + '/activities' },
-			{ icon: BriefcaseSolid, name: 'Materials', href: workspaceURL + '/materials' },
-			{ icon: VideoCameraSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
-			{ icon: BookOpenSolid, name: 'Assessments', href: workspaceURL + '/quizzes' },
-			{ icon: UsersGroupSolid, name: 'Environments', href: workspaceURL + '/environments' },
-			{ icon: ChartPieSolid, name: 'Grades', href: workspaceURL + '/grades' }
-		]
+	type NavLink = { name: string; href: string };
+
+	interface LecturerLinks {
+		dashboard: NavLink[];
+		management: NavLink[];
+		resources: NavLink[];
+	}
+
+	interface StudentLinks {
+		courseWork: NavLink[];
+		additional: NavLink[];
+	}
+
+	type NavLinks = {
+		lecturer: LecturerLinks;
+		student: StudentLinks;
 	};
 
-	$: role;
-	$: workspace;
+	const navLinks: NavLinks = {
+		lecturer: {
+			dashboard: [{ name: 'Dashboard', href: workspaceURL + '/dashboard' }],
+			management: [
+				{ name: 'Grade Center', href: workspaceURL + '/gradecenter' },
+				{ name: 'Announcements', href: workspaceURL + '/announcements' },
+				{ name: 'Materials', href: workspaceURL + '/materials' },
+				{ name: 'Lessons', href: workspaceURL + '/lessons' },
+				{ name: 'Quizzes', href: workspaceURL + '/quizzes' }
+			],
+			resources: [{ name: 'Environments', href: workspaceURL + '/environments' }]
+		},
+		student: {
+			courseWork: [
+				{ name: 'Announcements', href: workspaceURL + '/announcements' },
+				{ name: 'Activities', href: workspaceURL + '/activities' },
+				{ name: 'Materials', href: workspaceURL + '/materials' },
+				{ name: 'Lessons', href: workspaceURL + '/lessons' },
+				{ name: 'Quizzes', href: workspaceURL + '/quizzes' }
+			],
+			additional: [
+				{ name: 'Environments', href: workspaceURL + '/environments' },
+				{ name: 'Grades', href: workspaceURL + '/grades' }
+			]
+		}
+	};
+
 	$: currentLinks = navLinks[role];
+
+	function isLecturerLinks(links: LecturerLinks | StudentLinks): links is LecturerLinks {
+		return 'dashboard' in links;
+	}
+
+	function isStudentLinks(links: LecturerLinks | StudentLinks): links is StudentLinks {
+		return 'courseWork' in links;
+	}
+
+	let activeUrl = '';
+
+	const backToMain = () => {
+		window.location.href = '/';
+	};
 </script>
 
-<aside
-	class="flex h-screen w-64 flex-col overflow-y-auto border-r bg-primary-100 px-4 py-6 dark:border-gray-700 dark:bg-gray-900 rtl:border-l rtl:border-r-0"
-	class:hidden={!isOpen}
->
-	<a
-		href="/workspaces"
-		class="mb-6 flex items-center text-gray-600 transition-colors duration-300 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200"
-		data-sveltekit-reload
-	>
-		<ArrowLeftOutline class="h-5 w-5" />
-		<span class="ml-2 text-base font-medium">Back to Workspaces</span>
-	</a>
+<div>
+	<Navbar class="fixed start-0 top-0 z-20 w-full border-b px-2 sm:px-4 md:py-0.5 lg:py-0.5">
+		<NavBrand href="/">
+			<img
+				src="../../../../../../images/class-connect-logo.png"
+				class="mr-3 h-8 sm:h-10"
+				alt="ClassConnect Logo"
+			/>
+			<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white"
+				>ClassConnect</span
+			>
+		</NavBrand>
+		<NavHamburger />
+		<NavUl>
+			{#if isLecturerLinks(currentLinks)}
+				{#if currentLinks.dashboard.length > 1}
+					<NavLi class="nav-link cursor-pointer">
+						Dashboard<ChevronDownOutline
+							class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
+						/>
+					</NavLi>
+					<Dropdown class="z-20 w-44">
+						{#each currentLinks.dashboard as { name, href }}
+							<DropdownItem {href}>{name}</DropdownItem>
+						{/each}
+					</Dropdown>
+				{:else}
+					<NavLi
+						class="nav-link"
+						href={currentLinks.dashboard[0].href}
+						active={activeUrl === currentLinks.dashboard[0].href}
+					>
+						{currentLinks.dashboard[0].name}
+					</NavLi>
+				{/if}
 
-	<a href="/" class="mx-auto mb-6">
-		<div class="items-center">
-			<div class="flex justify-center">
-				<img class="h-20 w-20 rounded-full" src={workspace.image} alt="ClassConnect owl logo" />
-			</div>
-			<div class="mt-2 text-center text-2xl font-semibold text-gray-800 dark:text-gray-300">
-				{workspace.name}
-			</div>
-		</div>
-	</a>
+				{#if currentLinks.management.length > 1}
+					<NavLi class="nav-link cursor-pointer">
+						Management<ChevronDownOutline
+							class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
+						/>
+					</NavLi>
+					<Dropdown class="z-20 w-44">
+						{#each currentLinks.management as { name, href }}
+							<DropdownItem {href}>{name}</DropdownItem>
+						{/each}
+					</Dropdown>
+				{:else}
+					<NavLi
+						class="nav-link"
+						href={currentLinks.management[0].href}
+						active={activeUrl === currentLinks.management[0].href}
+					>
+						{currentLinks.management[0].name}
+					</NavLi>
+				{/if}
 
-	<div class="flex flex-1 flex-col justify-between">
-		<nav class="space-y-2">
-			{#each currentLinks as { icon, name, href }}
-				<a
-					class="flex items-center rounded-lg px-4 py-2 text-gray-600 transition duration-300 hover:bg-primary-300 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-green-400 dark:hover:text-gray-800 {href ===
-					$page.url.pathname
-						? 'active-sidebar dark:text-gray-800'
-						: ''}"
-					{href}
+				{#if currentLinks.resources.length > 1}
+					<NavLi class="nav-link cursor-pointer">
+						Resources<ChevronDownOutline
+							class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
+						/>
+					</NavLi>
+					<Dropdown class="z-20 w-44">
+						{#each currentLinks.resources as { name, href }}
+							<DropdownItem {href}>{name}</DropdownItem>
+						{/each}
+					</Dropdown>
+				{:else}
+					<NavLi
+						class="nav-link"
+						href={currentLinks.resources[0].href}
+						active={activeUrl === currentLinks.resources[0].href}
+					>
+						{currentLinks.resources[0].name}
+					</NavLi>
+				{/if}
+			{:else if isStudentLinks(currentLinks)}
+				{#if currentLinks.courseWork.length > 1}
+					<NavLi class="nav-link cursor-pointer">
+						Course Work<ChevronDownOutline
+							class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
+						/>
+					</NavLi>
+					<Dropdown class="z-20 w-44">
+						{#each currentLinks.courseWork as { name, href }}
+							<DropdownItem {href}>{name}</DropdownItem>
+						{/each}
+					</Dropdown>
+				{:else}
+					<NavLi
+						class="nav-link"
+						href={currentLinks.courseWork[0].href}
+						active={activeUrl === currentLinks.courseWork[0].href}
+					>
+						{currentLinks.courseWork[0].name}
+					</NavLi>
+				{/if}
+
+				{#if currentLinks.additional.length > 1}
+					<NavLi class="nav-link cursor-pointer">
+						Additional<ChevronDownOutline
+							class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
+						/>
+					</NavLi>
+					<Dropdown class="z-20 w-44">
+						{#each currentLinks.additional as { name, href }}
+							<DropdownItem {href}>{name}</DropdownItem>
+						{/each}
+					</Dropdown>
+				{:else}
+					<NavLi
+						class="nav-link"
+						href={currentLinks.additional[0].href}
+						active={activeUrl === currentLinks.additional[0].href}
+					>
+						{currentLinks.additional[0].name}
+					</NavLi>
+				{/if}
+			{/if}
+			<NavLi on:click={backToMain}>
+				<button
+					class="w-full transform rounded-lg bg-red-600 px-4 py-2 text-left font-semibold text-white transition duration-300 ease-in-out hover:bg-red-700 hover:shadow-xl dark:bg-red-700 dark:hover:bg-red-800"
 				>
-					<svelte:component this={icon} class="h-5 w-5" />
-					<span class="ml-4 text-base font-medium">{name}</span>
-				</a>
-			{/each}
-		</nav>
-	</div>
-</aside>
+					Leave {workspace.name}
+				</button>
+			</NavLi>
+		</NavUl>
+	</Navbar>
+</div>

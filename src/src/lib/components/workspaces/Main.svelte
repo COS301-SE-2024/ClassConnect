@@ -4,26 +4,22 @@
 	export let data;
 </script>
 
-<main
-	class="z-20 mb-4 ml-4 mr-4 mt-24 min-h-screen rounded-xl bg-white p-4 px-4 py-6 shadow-xl dark:bg-gray-900"
->
-	<h1 class="text-2xl font-bold dark:text-white">Workspaces</h1>
-
+<main class="z-20 mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+	<h1 class="mb-8 text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
+		Your Workspaces
+	</h1>
 	<div class="mt-2">
 		{#if data.workspaces && data.workspaces.length > 0}
-			<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
 				{#each data.workspaces as workspace}
 					<Card {workspace} role={data.role} on:focus={() => handleMouseEnter(workspace.name)} />
 				{/each}
 			</div>
 		{:else}
-			<div class="mt-4 text-center">
-				<p class="text-lg text-gray-600 dark:text-gray-400">
-					You haven't been assigned to any workspaces yet.
-				</p>
-
-				<p class="mt-2 text-sm text-gray-500 dark:text-gray-500">
-					Please contact your administrator if you believe this is an error.
+			<div class="mt-8 rounded-lg bg-white p-6 text-center shadow-md dark:bg-gray-800">
+				<p class="text-xl text-gray-700 dark:text-gray-300">No learning spaces assigned yet.</p>
+				<p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+					If you think this is an error, please contact your instructor or administrator.
 				</p>
 			</div>
 		{/if}

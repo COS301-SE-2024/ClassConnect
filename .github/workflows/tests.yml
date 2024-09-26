@@ -1,13 +1,14 @@
 name: Run Tests
 on:
-    push:
-      branches:
-        - main
-        - develop
-    pull_request:
-      branches:
-        - main
-        - develop
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
 jobs:
   build:
     name: Unit
@@ -19,14 +20,18 @@ jobs:
           node-version: 18.17.0
       - uses: oven-sh/setup-bun@v1
         with:
-            bun-version: latest
+          bun-version: latest
       - name: Create .env file
         run: |
-            echo AUTH_SECRET=${{ secrets.AUTH_SECRET }} >> src/.env
-            echo TEST_PASSWORD=${{ secrets.TEST_PASSWORD }} >> src/.env
-            echo SENDGRID_RECOVERY=${{ secrets.SENDGRID_RECOVERY }} >> src/.env
-            echo SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} >> src/.env
-            echo FROM_EMAIL=${{ secrets.FROM_EMAIL }} >> src/.env
+          echo AUTH_SECRET=${{ secrets.AUTH_SECRET }} >> src/.env
+          echo TEST_PASSWORD=${{ secrets.TEST_PASSWORD }} >> src/.env
+          echo SENDGRID_RECOVERY=${{ secrets.SENDGRID_RECOVERY }} >> src/.env
+          echo SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }} >> src/.env
+          echo FROM_EMAIL=${{ secrets.FROM_EMAIL }} >> src/.env
+      - name: Create certificate and key with certs folder
+        run: |
+          mkdir src/certs
+          openssl req -x509 -newkey rsa:4096 -keyout src/certs/key.pem -out src/certs/cert.pem -days 365 -nodes -subj "/C=US/ST=CA/L=San Francisco/O=Localhost/OU=Localhost/CN=localhost"
       - name: Install dependencies for the frontend
         run: bun install
         working-directory: src
