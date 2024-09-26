@@ -1,80 +1,82 @@
 <script lang="ts">
-	import * as THREE from 'three';
-	import type { Object3D } from 'three';
-	import { useThrelte, useFrame } from '@threlte/core';
-	import { XR, Controller, useController } from '@threlte/xr';
+	import { Vector3 } from 'three';
+	import { onDestroy } from 'svelte';
+	import { spring } from 'svelte/motion';
+	import { useTask } from '@threlte/core';
+	import { GLTF } from '@threlte/extras';
+	import { pointerControls, Controller, Hand } from '@threlte/xr';
 
-	export let model: Object3D;
+	export let currentModel: string;
 
-	const { scene } = useThrelte();
+	const scale = spring(1);
 
-	const leftController = useController('left');
-	const rightController = useController('right');
+	let ref: any;
+	let point = new Vector3();
+	let lookAt = new Vector3();
 
-	const controllers = {
-		left: null,
-		right: null
-	};
-
-	const raycaster = new THREE.Raycaster();
-	const tempMatrix = new THREE.Matrix4();
-
-	let grabbedObject: Object3D | null = null;
-
-	function getIntersections(controller) {
-		tempMatrix.identity().extractRotation(controller.matrixWorld);
-
-		raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
-		raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
-
-		return raycaster.intersectObject(model, true);
-	}
-
-	function onSelectStart(event, hand) {
-		controllers[hand] = event.target;
-		controllers[hand].userData.isSelecting = true;
-	}
-
-	function onSelectEnd(event, hand) {
-		controllers[hand].userData.isSelecting = false;
-		if (grabbedObject && grabbedObject.parent === controllers[hand]) {
-			scene.add(grabbedObject);
-			grabbedObject = null;
-		}
-	}
-
-	useFrame(() => {
-		['left', 'right'].forEach((hand) => {
-			const controller = controllers[hand];
-			if (controller && controller.userData.isSelecting) {
-				if (!grabbedObject) {
-					const intersections = getIntersections(controller);
-					if (intersections.length > 0) {
-						const intersection = intersections[0];
-						const object = intersection.object;
-						if (object === model) {
-							grabbedObject = object;
-							controller.add(grabbedObject);
-						}
-					}
+	const handleEvent =
+		(type: string) =>
+		(event: any): any => {
+			switch (type) {
+				case 'click': {
+					scale.set(1.5);
+					return;
+				}
+				case 'pointermove': {
+					point.copy(event.point);
+					return;
+				}
+				case 'pointerenter': {
+					scale.set(1.1);
+					return;
+				}
+				case 'pointerleave': {
+					scale.set(1);
+					return;
+				}
+				case 'pointermissed': {
+					scale.set(0.5);
+					return;
 				}
 			}
-		});
+		};
+
+	const lookForCursor = () => {
+		point.set(Math.random() - 0.5, 1.5 + Math.random() - 0.5, 1);
+	};
+
+	useTask(() => {
+		lookAt.lerp(point, 0.1);
+		if (ref) ref.lookAt(lookAt.x, lookAt.y, 1);
+	});
+
+	pointerControls('left');
+	pointerControls('right');
+
+	$: lookIntervalId = window.setInterval(lookForCursor, 1000);
+
+	onDestroy(() => {
+		clearInterval(lookIntervalId);
 	});
 </script>
 
-<XR>
-	<Controller
-		left
-		on:selectstart={(e) => onSelectStart(e, 'left')}
-		on:selectend={(e) => onSelectEnd(e, 'left')}
-	/>
-	<Controller
-		right
-		on:selectstart={(e) => onSelectStart(e, 'right')}
-		on:selectend={(e) => onSelectEnd(e, 'right')}
-	/>
+<Controller left />
+<Controller right />
 
-	<!-- Render scene content within XR -->
-	<slot />
-</XR>
+<Hand left />
+<Hand right />
+
+<GLTF
+	bind:ref
+	scale={$scale}
+	url={currentModel}
+	on:click={handleEvent('click')}
+	on:pointerdown={handleEvent('pointerdown')}
+	on:pointerup={handleEvent('pointerup')}
+	on:pointerover={handleEvent('pointerover')}
+	on:pointerout={handleEvent('pointerout')}
+	on:pointerenter={handleEvent('pointerenter')}
+	on:pointerleave={handleEvent('pointerleave')}
+	on:pointermove={handleEvent('pointermove')}
+	on:pointermissed={handleEvent('pointermissed')}
+/>
