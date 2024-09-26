@@ -12,7 +12,7 @@
 	$: ({ id, role, announcements } = data);
 </script>
 
-<main class="container mx-auto my-2 px-4">
+<main class="container mx-auto my-2 mt-24 px-4">
 	{#if announcements.length === 0}
 		<div
 			class="flex h-full w-full flex-col items-center justify-center space-x-8 space-y-16 lg:flex-row lg:space-y-0 2xl:space-x-0"

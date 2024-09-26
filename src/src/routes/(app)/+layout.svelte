@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 	import { afterNavigate } from '$app/navigation';
-
 	import Navbar from '$lib/components/common/Navbar.svelte';
 	import WorkspaceSidebar from '$src/lib/components/workspaces/workspace/Sidebar.svelte';
 
@@ -19,20 +18,18 @@
 	});
 </script>
 
-<div class="flex">
+<div class="flex min-h-screen flex-col bg-gray-100 dark:bg-gray-900">
 	{#if isWorkspacePage}
-		<div class="sticky top-0 h-screen">
+		<div class="flex">
 			<WorkspaceSidebar {role} {workspace} />
+			<main class="flex-1 p-6 pt-20">
+				<slot />
+			</main>
 		</div>
 	{:else}
-		<div class="sticky top-0 h-screen"></div>
+		<Navbar {role} />
+		<main class="flex-1 p-6 pt-20">
+			<slot />
+		</main>
 	{/if}
-
-	<div class="main-content flex-1">
-		<div class="sticky top-0">
-			<Navbar {role} />
-		</div>
-
-		<slot />
-	</div>
 </div>

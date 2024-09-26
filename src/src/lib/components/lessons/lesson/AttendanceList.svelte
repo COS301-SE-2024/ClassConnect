@@ -6,7 +6,7 @@
 		MicrophoneSolid,
 		VideoCameraSolid,
 		VideoCameraOutline,
-		MicrophoneSlashOutline
+		MicrophoneSlashSolid
 	} from 'flowbite-svelte-icons';
 
 	import type { Writable } from 'svelte/store';
@@ -27,28 +27,30 @@
 	});
 </script>
 
-<Listgroup active class="h-dvh p-4">
+<Listgroup class="h-dvh rounded-lg bg-white p-4 shadow-lg dark:bg-gray-800">
 	<h2 class="mb-4 text-lg font-semibold text-gray-900 dark:text-white">
 		Participants ({participants.length})
 	</h2>
 
 	{#each participants as participant (participant.sessionId)}
-		<ListgroupItem class="gap-2 text-base font-semibold">
-			<Avatar src={participant.image} size="xs" />
+		<ListgroupItem class="flex items-center gap-4 text-base font-semibold">
+			<Avatar src={participant.image} size="sm" class="shadow-md" />
 
-			<p class="text-sm text-gray-500">{participant.name}</p>
+			<div class="flex flex-col">
+				<p class="text-gray-900 dark:text-gray-200">{participant.name}</p>
+			</div>
 
 			<div class="ml-auto flex space-x-2">
 				{#if hasAudio(participant)}
-					<MicrophoneSolid color="green" />
+					<MicrophoneSolid class="text-green-500" />
 				{:else}
-					<MicrophoneSlashOutline color="red" />
+					<MicrophoneSlashSolid class="text-red-500" />
 				{/if}
 
 				{#if hasVideo(participant)}
-					<VideoCameraSolid color="green" />
+					<VideoCameraSolid class="text-green-500" />
 				{:else}
-					<VideoCameraOutline color="red" />
+					<VideoCameraOutline class="text-red-500" />
 				{/if}
 			</div>
 		</ListgroupItem>
