@@ -4,7 +4,6 @@
 	import {
 		ExclamationCircleOutline,
 		TrashBinOutline,
-		CirclePlusOutline,
 		ArchiveArrowDownOutline
 	} from 'flowbite-svelte-icons';
 	import toast, { Toaster } from 'svelte-french-toast';
@@ -31,7 +30,6 @@
 
 	let error: string;
 	let open = false;
-	let id: string;
 
 	function save() {
 		const toastId = toast.loading('Saving notes...');

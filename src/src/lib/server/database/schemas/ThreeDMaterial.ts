@@ -10,22 +10,23 @@ const ThreeDMaterialSchema = new mongoose.Schema({
 		type: String,
 		required: true
 	},
-    material:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Materials',
-        required: true
-    },
+	material: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Material',
+		required: true
+	},
 	lesson: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'InteractiveLesson',
 		required: true
 	},
-    link:{
-        type: String,
-        required: true
-    }
+	link: {
+		type: String,
+		required: true
+	}
 });
 
-const ThreeDMaterial = mongoose.models.ThreeDMaterialSchema || mongoose.model('ThreeDMaterial', ThreeDMaterialSchema);
+const ThreeDMaterial =
+	mongoose.models.ThreeDMaterialSchema || mongoose.model('ThreeDMaterial', ThreeDMaterialSchema);
 
 export default ThreeDMaterial;

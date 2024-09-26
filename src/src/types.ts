@@ -33,18 +33,18 @@ export interface MCQ {
 
 export interface LessonThreeDMaterial {
 	id: string;
-	materialID: string;
+	material: string;
 	title: string;
 	description: string;
 	link: string;
-    annotations: Annotation[];
+	annotations: Annotation[];
 	type: 'ThreeDMaterial';
 }
 
-export interface Annotation{
+export interface Annotation {
 	id: number;
 	title: string;
-	description: string;
+	content: string;
 	x: number;
 	y: number;
 	z: number;

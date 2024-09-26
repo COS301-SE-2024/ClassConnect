@@ -47,7 +47,8 @@
 			{ icon: VideoCameraSolid, name: 'Lessons', href: workspaceURL + '/lessons' },
 			{ icon: BookOpenSolid, name: 'Quizzes', href: workspaceURL + '/quizzes' },
 			{ icon: UsersGroupSolid, name: 'Environments', href: workspaceURL + '/environments' },
-			{ icon: ChartPieSolid, name: 'Grades', href: workspaceURL + '/grades' }
+			{ icon: ChartPieSolid, name: 'Grades', href: workspaceURL + '/grades' },
+			{ icon: BookOpenSolid, name: 'Interactive', href: workspaceURL + '/interactive' }
 		]
 	};
 

@@ -5,32 +5,31 @@ const AnnotationsSchema = new mongoose.Schema({
 	material: {
 		type: mongoose.Types.ObjectId,
 		required: true,
-		ref: 'Materials',
+		ref: 'Material'
 	},
-	x:{
+	x: {
 		type: Number,
-		required: true,
+		required: true
 	},
-	y:{
+	y: {
 		type: Number,
-		required: true,
+		required: true
 	},
-	z:{
+	z: {
 		type: Number,
-		required: true,
+		required: true
 	},
 	title: {
 		type: String,
-		required: true,
+		required: true
 	},
-	content:{
+	content: {
 		type: String,
-		required: true,
+		required: true
 	}
 });
 
 const Annotations =
-	mongoose.models.AnnotationsSchema ||
-	mongoose.model('Annotations', AnnotationsSchema);
+	mongoose.models.AnnotationsSchema || mongoose.model('Annotations', AnnotationsSchema);
 
 export default Annotations;
