@@ -1,50 +1,51 @@
 <script lang="ts">
-	import { Canvas, T } from '@threlte/core';
-	import { OrbitControls } from '@threlte/extras';
-	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-	import { Select } from 'flowbite-svelte';
+	import { Canvas } from '@threlte/core';
+	import Scene from './Scene.svelte';
+	import { onMount } from 'svelte';
 
-	let selectedModel = '';
-	let models = [
-		{ name: 'Model 1', value: 'Model1', label: 'Model 1' },
-		{ name: 'Model 2', value: 'Model2', label: 'Model 2' },
-		{ name: 'Model 3', value: 'Model3', label: 'Model 3' }
-	];
-	let modelUrl = '';
+	let selectedObject = '';
 
-	$: {
-		if (selectedModel) {
-			modelUrl = `/models/${selectedModel}.glb`; // Adjust path as needed
-		}
+	export let role: string;
+	export let materials: { type: boolean; file_path: string; title: string }[] = [];
+
+	function handleObjectChange(event: Event) {
+		selectedObject = (event.target as HTMLSelectElement).value;
 	}
+
+	onMount(() => {
+		if (materials.length > 0) {
+			selectedObject = materials.find((material) => material.type === true)?.file_path || '';
+		}
+	});
 </script>
 
-<div class="h-screen w-full bg-gray-100">
-	<div class="p-4">
-		<Select
-			class="mb-4"
-			items={models}
-			bind:value={selectedModel}
-			placeholder="Select a 3D model"
-		/>
+<div
+	class="relative h-full w-full overflow-hidden rounded-lg border border-gray-300 dark:border-gray-600"
+>
+	<div class="object-selector">
+		<label for="object-select">Select 3D Object:</label>
+		<select id="object-select" bind:value={selectedObject} on:change={handleObjectChange}>
+			{#each materials as material}
+				{#if material.type === true}
+					<option value={material.file_path}>{material.title}</option>
+				{/if}
+			{/each}
+		</select>
 	</div>
 
 	<Canvas>
-		<T.PerspectiveCamera makeDefault position={[5, 5, 5]} />
-		<OrbitControls enableDamping />
-
-		<T.DirectionalLight intensity={1} position={[3, 10, 10]} />
-		<T.AmbientLight intensity={0.5} />
-
-		{#if modelUrl}
-			<T.Group>
-				<T is={GLTFLoader} url={modelUrl} />
-			</T.Group>
-		{/if}
-
-		<T.Mesh receiveShadow rotation.x={-Math.PI / 2}>
-			<T.PlaneGeometry args={[1000, 1000]} />
-			<T.MeshStandardMaterial color="#f0f0f0" />
-		</T.Mesh>
+		<Scene {selectedObject} {role} />
 	</Canvas>
 </div>
+
+<style>
+	.object-selector {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		z-index: 1000;
+		background-color: rgba(255, 255, 255, 0.8);
+		padding: 10px;
+		border-radius: 5px;
+	}
+</style>

@@ -1,12 +1,5 @@
 <script lang="ts">
-	import {
-		TabItem,
-		Button,
-		Dropdown,
-		DropdownItem,
-		DropdownDivider,
-		Spinner
-	} from 'flowbite-svelte';
+	import { TabItem, Button, Dropdown, DropdownItem, DropdownDivider } from 'flowbite-svelte';
 	import toast, { Toaster } from 'svelte-french-toast';
 	import { objURL, displayedSandboxObjectURL } from '$src/lib/store/objects';
 	import UploadMaterial from '$lib/components/modals/materials/UploadMaterial.svelte';

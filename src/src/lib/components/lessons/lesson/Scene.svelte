@@ -1,77 +1,97 @@
 <script lang="ts">
-	import { Canvas, T } from '@threlte/core';
-	import { OrbitControls, Sky } from '@threlte/extras';
 	import { onMount } from 'svelte';
-	import * as THREE from 'three';
-	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+	import { page } from '$app/stores';
+	import { T, useFrame } from '@threlte/core';
+	import { Vector3, PerspectiveCamera } from 'three';
+	import { OrbitControls, GLTF, Sky } from '@threlte/extras';
+	import { insertCoin, onPlayerJoin, setState, getState } from 'playroomkit';
 
-	export let selectedObjectUrl = '';
-	export let lecturerCameraPosition = { x: 0, y: 5, z: 10 };
+	let players: any[] = [];
+	let camera: PerspectiveCamera;
+	let cameraPosition = new Vector3();
 
-	let scene: THREE.Scene;
-	let camera;
-	let selectedObject;
+	export let role: string;
+	export let selectedObject: string = '';
+
+	async function init() {
+		await insertCoin({ skipLobby: true, roomCode: $page.params.lesson });
+
+		onPlayerJoin((state) => {
+			players = players.filter((p) => p.id !== state.id);
+			players = [...players, state];
+
+			state.onQuit(() => {
+				players = players.filter((p) => p.id !== state.id);
+			});
+		});
+	}
 
 	onMount(() => {
-		// Initialize scene and camera
-		scene = new THREE.Scene();
-		camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-		camera.position.set(
-			lecturerCameraPosition.x,
-			lecturerCameraPosition.y,
-			lecturerCameraPosition.z
-		);
-
-		// Load selected object
-		if (selectedObjectUrl) {
-			const loader = new GLTFLoader();
-			loader.load(selectedObjectUrl, (gltf) => {
-				selectedObject = gltf.scene;
-				scene.add(selectedObject);
-			});
-		}
-
-		// Add lighting
-		const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-		scene.add(ambientLight);
-
-		const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-		directionalLight.position.set(5, 5, 5);
-		scene.add(directionalLight);
+		init();
 	});
 
-	function updateLecturerCamera(event: { target: { position: { x: any; y: any; z: any } } }) {
-		lecturerCameraPosition = {
-			x: event.target.position.x,
-			y: event.target.position.y,
-			z: event.target.position.z
-		};
-		// Here you would typically sync this position with other participants
-	}
+	useFrame(() => {
+		if (camera) {
+			cameraPosition.copy(camera.position);
+			if (role === 'lecturer') {
+				setState('cameraPosition', {
+					x: cameraPosition.x,
+					y: cameraPosition.y,
+					z: cameraPosition.z
+				});
+
+				setState('selectedObject', selectedObject);
+			} else {
+				const hostCameraPos = getState('cameraPosition');
+				const hostSelectedObject = getState('selectedObject');
+
+				if (hostCameraPos) {
+					camera.position.set(hostCameraPos.x, hostCameraPos.y, hostCameraPos.z);
+				}
+
+				if (hostSelectedObject) {
+					selectedObject = hostSelectedObject;
+				}
+			}
+		}
+	});
+
+	const maxZoomOutDistance = 100;
+	let autoRotate: boolean = false;
+	let enableDamping: boolean = true;
+	let rotateSpeed: number = 1;
+	let zoomToCursor: boolean = false;
+	let zoomSpeed: number = 1;
+	let enableZoom: boolean = true;
 </script>
 
-<Canvas>
-	<T.PerspectiveCamera
-		makeDefault
-		position={[lecturerCameraPosition.x, lecturerCameraPosition.y, lecturerCameraPosition.z]}
-		on:update={updateLecturerCamera}
+<T.PerspectiveCamera makeDefault position={[0, 0, 45]} fov={75} bind:ref={camera}>
+	<OrbitControls
+		{enableDamping}
+		{autoRotate}
+		{rotateSpeed}
+		{zoomToCursor}
+		{zoomSpeed}
+		{enableZoom}
+		maxDistance={maxZoomOutDistance}
 	/>
+</T.PerspectiveCamera>
 
-	<OrbitControls enableDamping />
+<T.AmbientLight intensity={0.9} />
+<T.PointLight position={[0, 10, 10]} intensity={0.5} />
+<T.PointLight position={[0, -10, 10]} intensity={0.5} />
+<T.PointLight position={[10, 10, 0]} intensity={0.5} />
+<T.PointLight position={[-10, -10, 0]} intensity={0.5} />
+<T.PointLight position={[0, -10, -10]} intensity={0.5} />
+<T.PointLight position={[0, 0, -10]} intensity={0.5} />
+<T.DirectionalLight position={[5, 10, 7]} intensity={0.8} castShadow />
 
-	<T.Scene bind:ref={scene}>
-		<Sky />
+{#if selectedObject}
+	<GLTF
+		url={selectedObject}
+		scale={3.0}
+		onError={(error) => console.error('Error loading GLTF:', error)}
+	/>
+{/if}
 
-		<T.AmbientLight intensity={0.5} />
-		<T.DirectionalLight intensity={0.8} position={[5, 5, 5]} castShadow />
-
-		{#if selectedObjectUrl}
-			<T is={GLTFLoader} url={selectedObjectUrl} />
-		{/if}
-
-		<T.Mesh receiveShadow rotation.x={-Math.PI / 2}>
-			<T.PlaneGeometry args={[1000, 1000]} />
-			<T.MeshStandardMaterial color="#f0f0f0" />
-		</T.Mesh>
-	</T.Scene>
-</Canvas>
+<Sky />

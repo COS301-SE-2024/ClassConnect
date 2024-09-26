@@ -1,86 +1,51 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
-	import { Button, Card, Input } from 'flowbite-svelte';
-	import Layout from './Layout.svelte';
-	import Controls from './Controls.svelte';
-	import AttendanceList from './AttendanceList.svelte';
+	import { writable } from 'svelte/store';
+	import type { Channel } from 'stream-chat';
+	import { onMount, onDestroy, setContext } from 'svelte';
 
-	let isConnected = false;
-	let participants: {
-		id: number;
-		name: string;
-		role: string;
-		avatar: string;
-		isSpeaking: boolean;
-	}[] = [];
-	let chatMessages: any[] = [];
-	let newMessage = '';
+	import type { Writable } from 'svelte/store';
+	import type { Call } from '@stream-io/video-client';
+
+	import Chat from './Chat.svelte';
+	import Controls from './Controls.svelte';
+	import Participants from './Layout.svelte';
+
+	export let call: Call;
+	export let role: string;
+	export let channel: Channel;
+	export let materials: any;
+	const callStore: Writable<Call | null> = writable(null);
 
 	onMount(async () => {
-		// Simulating connection process
-		await new Promise((resolve) => setTimeout(resolve, 2000));
-		isConnected = true;
-		participants = [
-			{
-				id: 1,
-				name: 'John Doe',
-				role: 'Lecturer',
-				avatar: 'path/to/avatar1.jpg',
-				isSpeaking: true
-			},
-			{
-				id: 2,
-				name: 'Jane Smith',
-				role: 'Student',
-				avatar: 'path/to/avatar2.jpg',
-				isSpeaking: false
-			}
-			// Add more participants as needed
-		];
+		await call.join({ create: true, data: { custom: { environment: false } } });
+		callStore.set(call);
 	});
 
 	onDestroy(() => {
-		// Clean up logic here (e.g., leaving the call, stopping chat channel)
+		if (call) {
+			call.leave();
+			call.update({ custom: { environment: false } });
+		}
+
+		if (channel) channel.stopWatching();
 	});
 
-	function sendMessage() {
-		if (newMessage.trim()) {
-			chatMessages = [...chatMessages, { sender: 'You', text: newMessage }];
-			newMessage = '';
-		}
-	}
+	setContext('call', callStore);
 </script>
 
-{#if isConnected}
-	<div class="flex h-screen flex-col">
-		<div class="flex flex-grow">
-			<div class="w-3/4 bg-gray-100">
-				<Layout />
-			</div>
-			<div class="flex w-1/4 flex-col bg-white p-4">
-				<Card class="mb-4 flex-grow overflow-y-auto">
-					<h3 class="mb-2 text-lg font-semibold">Chat</h3>
-					{#each chatMessages as message}
-						<div class="mb-2">
-							<span class="font-bold">{message.sender}:</span>
-							{message.text}
-						</div>
-					{/each}
-				</Card>
-				<div class="flex">
-					<Input class="mr-2 flex-grow" placeholder="Type a message..." bind:value={newMessage} />
-					<Button on:click={sendMessage}>Send</Button>
-				</div>
-			</div>
+{#if $callStore}
+	<div class="flex h-screen">
+		<div class="flex w-3/4 flex-col items-center justify-center">
+			<Participants {materials} {role} />
+			<Controls {role} />
 		</div>
-		<Controls />
+
+		<div class="w-1/4 p-4">
+			<Chat {channel} />
+		</div>
 	</div>
-	<AttendanceList {participants} />
 {:else}
-	<div class="flex h-screen items-center justify-center">
-		<Card>
-			<h2 class="mb-4 text-2xl font-bold">Connecting to the room...</h2>
-			<p>Please wait while we establish the connection.</p>
-		</Card>
+	<div class="flex h-screen flex-grow items-center justify-center">
+		<p class="text-lg font-semibold text-gray-800 dark:text-gray-200">Connecting...</p>
 	</div>
 {/if}
