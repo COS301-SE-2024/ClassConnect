@@ -46,21 +46,21 @@
 		</Card>
 
 		<Card
-		img="/images/virtual-classroom.jpg"
-		imgClass="h-48 object-cover rounded-lg"
-		class="m-2 max-w-[45%] flex-grow p-4"
-	>
-		<h5 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">VR Playground</h5>
+			img="/images/virtual-classroom.jpg"
+			imgClass="h-48 object-cover rounded-lg"
+			class="m-2 max-w-[45%] flex-grow p-4"
+		>
+			<h5 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">VR Playground</h5>
 
-		<p class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400">
-			Join your classmates in a virtual space to learn, discuss, and explore together. Collaborate
-			in real-time and enhance your learning experience.
-		</p>
+			<p class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400">
+				Join your classmates in a virtual space to learn, discuss, and explore together. Collaborate
+				in real-time and enhance your learning experience.
+			</p>
 
-		<Button  on:click={() => goto($page.url + '/simulation')}>
-			Enter Simulation
-			<ArrowRightOutline />
-		</Button>
-	</Card>
+			<Button on:click={() => goto($page.url + '/simulation')}>
+				Enter Simulation
+				<ArrowRightOutline />
+			</Button>
+		</Card>
 	</div>
 </main>
