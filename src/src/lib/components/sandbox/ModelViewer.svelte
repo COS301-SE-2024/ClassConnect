@@ -3,7 +3,7 @@
 	import { Box3, Vector3 } from 'three';
 	import type { Object3D } from 'three';
 	import { writable } from 'svelte/store';
-	import { XR, useXR } from '@threlte/xr';
+	import { XR } from '@threlte/xr';
 	import { Checkbox, Pane, ThemeUtils, Slider, List } from 'svelte-tweakpane-ui';
 	import { GLTF, OrbitControls, Sky, TransformControls, useGltfAnimations } from '@threlte/extras';
 
@@ -23,7 +23,6 @@
 	let zoomToCursor: boolean = false;
 	let showTransformControls: boolean = true;
 
-	const { isPresenting } = useXR();
 	const animationNames = writable<string[]>([]);
 	const { gltf, actions } = useGltfAnimations();
 
