@@ -61,6 +61,6 @@
 			<slot name="scene" />
 		</div>
 
-		<Button type="submit" class="mt-4 w-full">Submit Question</Button>
+		<Button type="submit" class="mt-10 w-full">Submit Question</Button>
 	</form>
 </main>

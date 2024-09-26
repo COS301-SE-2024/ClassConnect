@@ -3,6 +3,7 @@
 	import { Box3, Vector3 } from 'three';
 	import type { Object3D } from 'three';
 	import { writable } from 'svelte/store';
+	import { XR } from '@threlte/xr';
 	import { Checkbox, Pane, ThemeUtils, Slider, List } from 'svelte-tweakpane-ui';
 	import { GLTF, OrbitControls, Sky, TransformControls, useGltfAnimations } from '@threlte/extras';
 
@@ -11,7 +12,7 @@
 
 	export let currentModel: string;
 
-	let model: any;
+	let model: Object3D;
 	let loaded = false;
 	let zoomSpeed: number = 1;
 	let selectedAnimation = '';
@@ -67,7 +68,16 @@
 	}
 </script>
 
-<VR />
+<VR {currentModel} />
+
+<XR>
+	<T.PerspectiveCamera
+		fov={25}
+		makeDefault
+		position={[0, 0, 5]}
+		on:create={({ ref }) => ref.lookAt(0, 0, 0)}
+	/>
+</XR>
 
 <T.PerspectiveCamera
 	fov={25}
