@@ -16,6 +16,7 @@
 	let activePoint: THREE.Vector3 | null = null;
 	let tooltipX: number = 0;
 	let tooltipY: number = 0;
+	let currentModel: THREE.Object3D | null = null;
 
 	export let data: {
 	  role: string;
@@ -25,7 +26,7 @@
 	let { models } = data;
 	let selectedModel: string | null = null;
 	const annotations: {
-	  [key: string]: { position: THREE.Vector3; text: string; labelDiv: HTMLDivElement };
+	  [key: string]: { position: THREE.Vector3; text: string; labelDiv: HTMLDivElement; sprite:THREE.Sprite };
 	} = {};
   
 	function toggleAnnotationMode() {
@@ -76,13 +77,14 @@
 	  labelDiv.textContent = text;
 	  document.body.appendChild(labelDiv);
   
-	  annotations[text] = { position, text, labelDiv };
+	  annotations[text] = { position, text, labelDiv, sprite };
 	}
 
-	function removeAnnotation(text: string) {
+	export function removeAnnotation(text: string) {
 		const annotation = annotations[text];
 		if (annotation) {
 			document.body.removeChild(annotation.labelDiv);
+			scene.remove(annotation.sprite);
 			delete annotations[text];
 		}
 	}
@@ -112,12 +114,23 @@
 		tooltipY = -(vector.y * heightHalf) + heightHalf;
 	  }
 	}
+	function handleBeforeUnload() {
+		removeAllAnnotations();
+	}
   
 	onMount(() => {
 	  initScene();
 	  animate();
 	  toggleAnnotationMode(); 
 	  window.addEventListener('click', onMouseClick);
+	  window.addEventListener('beforeunload', handleBeforeUnload);
+	  return () => {
+        
+        window.removeEventListener('beforeunload', handleBeforeUnload);
+        window.removeEventListener('click', onMouseClick);
+    };
+
+		
 	});
   
 	function initScene() {
@@ -147,13 +160,18 @@
 	}
   
 	function loadModel(file_path: string) {
-	  const loader = new GLTFLoader();
-	  loader.load(file_path, (gltf) => {
-		scene.add(gltf.scene);
+		
+		const loader = new GLTFLoader();
+		loader.load(file_path, (gltf) => {
+		  if(currentModel){
+			  scene.remove(currentModel);
+		  }
+		  currentModel=gltf.scene;
+		  scene.add(currentModel);
 	  });
 	}
 
-	function removeAllAnnotations() {
+	 function removeAllAnnotations() {
 	  Object.keys(annotations).forEach((text) => {
 		  removeAnnotation(text);
 	  });
@@ -206,6 +224,8 @@
 	  camera.updateProjectionMatrix();
 	  renderer.setSize(window.innerWidth, window.innerHeight);
 	}
+
+	
 </script>
 
 <div class="scene-wrapper">

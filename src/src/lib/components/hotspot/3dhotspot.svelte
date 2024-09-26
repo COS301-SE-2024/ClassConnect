@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import * as THREE from 'three';
+	import {P} from 'flowbite-svelte';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 	import { DragControls } from 'three/examples/jsm/controls/DragControls.js';
+	import { TransformControls } from 'three/addons/controls/TransformControls.js';
 	import Menu from './3dMenu.svelte';
 
 	export let data: {
@@ -18,8 +20,10 @@
 	let controls: OrbitControls;
 	let dragControls: DragControls;
 	let draggableSphere: THREE.Mesh;
+	let transformControls: TransformControls;
 	let spherePosition: THREE.Vector3 = new THREE.Vector3();
 	let pinPos: THREE.Vector3 = new THREE.Vector3();
+	let currentModel: THREE.Object3D | null = null;
 
 	onMount(() => {
 		initScene();
@@ -46,23 +50,27 @@
 			// Create a draggable sphere
 			const sphereGeometry = new THREE.SphereGeometry(0.1);
 			const sphereMaterial = new THREE.MeshBasicMaterial({
-				color: 0x0000ff,
-				transparent: true,
-				opacity: 0.7
+				color: 0xb604f6,
+				transparent: false,
+				opacity: 1
 			});
 			draggableSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 			draggableSphere.position.set(1, 1, 0);
 			scene.add(draggableSphere);
 
-			//sphere drag
-			dragControls = new DragControls([draggableSphere], camera, renderer.domElement);
-			dragControls.addEventListener('dragstart', () => {
-				controls.enabled = false;
+			// Initialize TransformControls for the sphere
+			transformControls = new TransformControls(camera, renderer.domElement);
+			transformControls.attach(draggableSphere);
+			transformControls.setMode('translate');
+			scene.add(transformControls);
+
+			//sphere transform
+			transformControls.addEventListener('mouseDown', () => {
+				controls.enabled = false; 
 			});
-			dragControls.addEventListener('dragend', () => {
-				controls.enabled = true;
+			transformControls.addEventListener('mouseUp', () => {
+				controls.enabled = true; 
 				spherePosition.copy(draggableSphere.position);
-				console.log('Sphere Position:', spherePosition);
 				localStorage.setItem('spherePosition', JSON.stringify(draggableSphere.position.toArray()));
 			});
 		} else if (data.role === 'student') {
@@ -106,10 +114,15 @@
 	}
 
 	function loadModel(file_path: string) {
+		
 		const loader = new GLTFLoader();
 		loader.load(file_path, (gltf) => {
-			scene.add(gltf.scene);
-		});
+		  if(currentModel){
+			  scene.remove(currentModel);
+		  }
+		  currentModel=gltf.scene;
+		  scene.add(currentModel);
+	  });
 	}
 
 	function animate() {
@@ -150,12 +163,15 @@
 </script>
 
 <div class="scene-wrapper">
-	<canvas bind:this={canvas}></canvas>
 	{#if data.role === 'lecturer'}
-		<div class="menu-container">
-			<Menu {models} onModelSelect={handleModelSelection} />
-		</div>
+	<div class="flex items-center space-x-4">
+		<Menu {models} onModelSelect={handleModelSelection} />
+		<P class=" font-semibold text-violet-700">
+			Note: Use the transform controls on the violet sphere to drag it to your desired point.
+		</P>
+	</div>
 	{/if}
+	<canvas bind:this={canvas}></canvas>
 </div>
 
 <style>
@@ -174,9 +190,9 @@
 
 	.menu-container {
 		position: absolute;
-		top: 0; /* Adjust as needed to align with the top of the canvas */
-		left: 0; /* Adjust as needed to align with the left of the canvas */
-		z-index: 10; /* Ensure it's on top of the canvas */
-		padding: 20px; /* Add padding if you want spacing from the edges */
+		top: 0; 
+		left: 0; 
+		z-index: 10;
+		padding: 20px; 
 	}
 </style>

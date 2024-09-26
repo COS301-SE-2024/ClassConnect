@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { Button, Input, Textarea, NumberInput, Label, Radio } from 'flowbite-svelte';
 	import { createEventDispatcher } from 'svelte';
-
+	
 	export let open: boolean;
 	const dispatch = createEventDispatcher();
 	let error: string;
@@ -58,24 +58,23 @@
 			/>
 		</div>
 
-		<div class="mb-4">
-			<Label >Choose Correct Answer</Label>
+		<div class=" mb-4">
+			<Label for="correctAnswer">Set Correct Answer</Label>
+			<div class="grid grid-cols-2 gap-6">
+				<div class="rounded border border-gray-200 dark:border-gray-700">
+					<Radio id="correctAnswer" name="correctAnswer" value="true" class="w-full p-4">True</Radio>
+				</div>
+				<div class="rounded border border-gray-200 dark:border-gray-700">
+					<Radio id="correctAnswer" name="correctAnswer" value="false"  class="w-full p-4">False</Radio>
+				</div>
+			</div>
 		</div>
-		<div class="grid grid-cols-2 gap-6">
-			<div class="rounded border border-gray-200 dark:border-gray-700">
-			  <Radio name="bordered" value="1" class="w-full p-4">True</Radio>
-			</div>
-			<div class="rounded border border-gray-200 dark:border-gray-700">
-			  <Radio name="bordered" value="2"  class="w-full p-4">False</Radio>
-			</div>
-		  </div>
-
+		
 		<div class="mb-4">
 			<slot name="scene" />
 		</div>
-
 		
 		
-		<Button type="submit" class="mt-4 w-full">Submit Question</Button>
+		<Button type="submit" class="mt-10 w-full">Submit Question</Button>
 	</form>
 </main>
