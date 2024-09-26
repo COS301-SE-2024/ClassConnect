@@ -7,7 +7,7 @@
 
 	import { TransformControls } from 'three/addons/controls/TransformControls.js';
 	import Menu from './3dMenu.svelte';
-	import { selectedModel } from '$lib/store/model';
+	
 
 	import { spherePosition } from '$lib/store/position';
 
@@ -17,8 +17,7 @@
 	};
 
 	let { models } = data;
-	let storedModel: string | null = null;
-	$: storedModel = $selectedModel;
+	
 
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -31,11 +30,15 @@
 	onMount(() => {
 		initScene();
 		animate();
+		const urlParams = new URLSearchParams(window.location.search);
+		const modelPath = urlParams.get('model');
+
+		if (modelPath) {
+			loadModel(modelPath); 
+		}
 	});
 
-	$: if (storedModel) {
-		loadModel(storedModel);
-	}
+	
 
 	function initScene() {
 		scene = new THREE.Scene();
@@ -80,6 +83,8 @@
 				$spherePosition.copy(draggableSphere.position);
 			});
 		} else if (data.role === 'student') {
+			
+
 			// Create and add the new pin
 			const pinGeometry = new THREE.SphereGeometry(0.05);
 			const pinMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
@@ -93,7 +98,7 @@
 			transformControls.setMode('translate');
 			scene.add(transformControls);
 
-			//sphere transform
+			//pin transform
 			transformControls.addEventListener('mouseDown', () => {
 				controls.enabled = false;
 			});
@@ -153,8 +158,11 @@
 	}
 
 	function handleModelSelection(file_path: string) {
-		selectedModel.set(file_path);
+		
 		loadModel(file_path);
+		const url = new URL(window.location.href);
+		url.searchParams.set('model', file_path); 
+		window.history.pushState({}, '', url);
 	}
 </script>
 

@@ -6,6 +6,7 @@
 	import Menu from '$lib/components/hotspot/3dMenu.svelte';
 	import { P } from 'flowbite-svelte';
 	import { selectedModel } from '$lib/store/model';
+	
 
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -25,6 +26,7 @@
 	};
 
 	let { models } = data;
+
 	const annotations: {
 		[key: string]: {
 			position: THREE.Vector3;
@@ -127,6 +129,12 @@
 		initScene();
 		animate();
 		toggleAnnotationMode();
+		const urlParams = new URLSearchParams(window.location.search);
+		const modelPath = urlParams.get('model');
+
+		if (modelPath) {
+			loadModel(modelPath); 
+		}
 		window.addEventListener('click', onMouseClick);
 		window.addEventListener('beforeunload', handleBeforeUnload);
 		return () => {
@@ -180,8 +188,10 @@
 
 	function handleModelSelection(file_path: string) {
 		removeAllAnnotations();
-		selectedModel.set(file_path);
 		loadModel(file_path);
+		const url = new URL(window.location.href);
+		url.searchParams.set('model', file_path); 
+		window.history.pushState({}, '', url);
 	}
 
 	function animate() {
