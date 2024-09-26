@@ -135,7 +135,7 @@ scene.background = new THREE.Color(0x000000);
   </T.Group>
 
 
-  <T.Group position={[0, 35, 0]}>
+  <T.Group position={[0, 35, 10]}>
     <RigidBody type="fixed">
       <AutoColliders shape={'cuboid'}>
         <T.Mesh receiveShadow > 
