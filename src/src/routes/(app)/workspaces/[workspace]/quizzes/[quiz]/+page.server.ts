@@ -1,5 +1,3 @@
-//[quiz].page.server.ts
-
 import type { Actions, PageServerLoad } from './$types';
 import { fail, error } from '@sveltejs/kit';
 import mongoose from 'mongoose';
@@ -60,6 +58,7 @@ async function createQuestion(
 	questionContent: string,
 	questionPoints: number | null,
 	questionType: string,
+	correctAnswer: string | null,
 	options: { content: string; points: number }[] | null,
 	quizId: ObjectId | undefined
 ) {
@@ -68,6 +67,7 @@ async function createQuestion(
 		questionContent,
 		questionPoints,
 		questionType,
+		correctAnswer,
 		options,
 		quiz: quizId
 	});
@@ -114,6 +114,7 @@ export const actions: Actions = {
 			const questionNumber = parseInt(data.get('questionNumber') as string, 10);
 			const questionContent = data.get('questionContent') as string;
 			const questionType = 'multiple-choice';
+			const correctAnswer = null;
 
 			const options = [];
 			for (let i = 0; i < 3; i++) {
@@ -133,6 +134,7 @@ export const actions: Actions = {
 				questionContent,
 				null,
 				questionType,
+				correctAnswer,
 				options,
 				quizId
 			);
@@ -151,6 +153,7 @@ export const actions: Actions = {
 			const questionType = '3d-hotspot';
 			const questionPoints = parseInt(data.get('points') as string, 10);
 			const options = null;
+			const correctAnswer = null;
 
 			const quizId = new mongoose.Types.ObjectId(params.quiz);
 			return await createQuestion(
@@ -158,6 +161,34 @@ export const actions: Actions = {
 				questionContent,
 				questionPoints,
 				questionType,
+				correctAnswer,
+				options,
+				quizId
+			);
+		} catch (error) {
+			console.error('Error creating question:', error);
+			return fail(500, { error: 'Failed to create question' });
+		}
+	},
+
+	postTF: async ({ request, locals, params }) => {
+		validateLecturer(locals);
+		try {
+			const data = await request.formData();
+			const questionNumber = parseInt(data.get('questionNumber') as string, 10);
+			const questionContent = data.get('questionContent') as string;
+			const questionType = 'true-false';
+			const questionPoints = parseInt(data.get('points') as string, 10);
+			const options = null;
+			const correctAnswer = data.get('correctAnswer') as string;
+
+			const quizId = new mongoose.Types.ObjectId(params.quiz);
+			return await createQuestion(
+				questionNumber,
+				questionContent,
+				questionPoints,
+				questionType,
+				correctAnswer,
 				options,
 				quizId
 			);

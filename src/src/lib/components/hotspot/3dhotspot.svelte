@@ -1,10 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import * as THREE from 'three';
+	import { P } from 'flowbite-svelte';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-	import { DragControls } from 'three/examples/jsm/controls/DragControls.js';
+
+	import { TransformControls } from 'three/addons/controls/TransformControls.js';
 	import Menu from './3dMenu.svelte';
+
+	import { spherePosition } from '$lib/store/position';
 
 	export let data: {
 		role: string;
@@ -12,18 +16,24 @@
 	};
 
 	let { models } = data;
-	let selectedModel: string | null = null;
+
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
 	let controls: OrbitControls;
-	let dragControls: DragControls;
+
 	let draggableSphere: THREE.Mesh;
-	let spherePosition: THREE.Vector3 = new THREE.Vector3();
-	let pinPos: THREE.Vector3 = new THREE.Vector3();
+	let transformControls: TransformControls;
+	let currentModel: THREE.Object3D | null = null;
 
 	onMount(() => {
 		initScene();
 		animate();
+		const urlParams = new URLSearchParams(window.location.search);
+		const modelPath = urlParams.get('model');
+
+		if (modelPath) {
+			loadModel(modelPath);
+		}
 	});
 
 	function initScene() {
@@ -46,24 +56,27 @@
 			// Create a draggable sphere
 			const sphereGeometry = new THREE.SphereGeometry(0.1);
 			const sphereMaterial = new THREE.MeshBasicMaterial({
-				color: 0x0000ff,
-				transparent: true,
-				opacity: 0.7
+				color: 0xb604f6,
+				transparent: false,
+				opacity: 1
 			});
 			draggableSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 			draggableSphere.position.set(1, 1, 0);
 			scene.add(draggableSphere);
 
-			//sphere drag
-			dragControls = new DragControls([draggableSphere], camera, renderer.domElement);
-			dragControls.addEventListener('dragstart', () => {
+			// Initialize TransformControls for the sphere
+			transformControls = new TransformControls(camera, renderer.domElement);
+			transformControls.attach(draggableSphere);
+			transformControls.setMode('translate');
+			scene.add(transformControls);
+
+			//sphere transform
+			transformControls.addEventListener('mouseDown', () => {
 				controls.enabled = false;
 			});
-			dragControls.addEventListener('dragend', () => {
+			transformControls.addEventListener('mouseUp', () => {
 				controls.enabled = true;
-				spherePosition.copy(draggableSphere.position);
-				console.log('Sphere Position:', spherePosition);
-				localStorage.setItem('spherePosition', JSON.stringify(draggableSphere.position.toArray()));
+				$spherePosition.copy(draggableSphere.position);
 			});
 		} else if (data.role === 'student') {
 			// Create and add the new pin
@@ -74,15 +87,18 @@
 			pin.position.set(0, 1, 0);
 			scene.add(pin);
 
-			const pinDragControls = new DragControls([pin], camera, renderer.domElement);
-			pinDragControls.addEventListener('dragstart', () => {
+			transformControls = new TransformControls(camera, renderer.domElement);
+			transformControls.attach(pin);
+			transformControls.setMode('translate');
+			scene.add(transformControls);
+
+			//pin transform
+			transformControls.addEventListener('mouseDown', () => {
 				controls.enabled = false;
 			});
-			pinDragControls.addEventListener('dragend', () => {
+			transformControls.addEventListener('mouseUp', () => {
 				controls.enabled = true;
-				pinPos.copy(pin.position);
-				console.log('Pin placed at', pin.position);
-				checkProximity(pin);
+				$spherePosition.copy(pin.position);
 			});
 		}
 
@@ -94,21 +110,17 @@
 		controls.autoRotate = false;
 		controls.autoRotateSpeed = 2.0;
 
-		// Load the model based on role
-		if (data.role === 'student') {
-			const storedModel = localStorage.getItem('selectedModel');
-			if (storedModel) {
-				loadModel(storedModel);
-			}
-		}
-
 		window.addEventListener('resize', onWindowResize, false);
 	}
 
 	function loadModel(file_path: string) {
 		const loader = new GLTFLoader();
 		loader.load(file_path, (gltf) => {
-			scene.add(gltf.scene);
+			if (currentModel) {
+				scene.remove(currentModel);
+			}
+			currentModel = gltf.scene;
+			scene.add(currentModel);
 		});
 	}
 
@@ -118,23 +130,20 @@
 		renderer.render(scene, camera);
 	}
 
-	function getSavedSpherePosition(): THREE.Vector3 {
-		const savedPosition = localStorage.getItem('spherePosition');
-		if (savedPosition) {
-			const [x, y, z] = JSON.parse(savedPosition);
-			return new THREE.Vector3(x, y, z);
-		}
-		return new THREE.Vector3();
-	}
+	// function getSavedSpherePosition(): THREE.Vector3 {
+	// 	const savedPosition = localStorage.getItem('spherePosition');
+	// 	if (savedPosition) {
+	// 		const [x, y, z] = JSON.parse(savedPosition);
+	// 		return new THREE.Vector3(x, y, z);
+	// 	}
+	// 	return new THREE.Vector3();
+	// }
 
-	function checkProximity(pin: THREE.Mesh) {
-		const savedSpherePosition = getSavedSpherePosition();
-		const distance = pin.position.distanceTo(savedSpherePosition);
-		const isCorrect = distance <= 0.2;
-		localStorage.setItem('Distance', JSON.stringify(distance));
-
-		return isCorrect;
-	}
+	// function checkProximity(pin: THREE.Mesh) {
+	// 	const distance = pin.position.distanceTo(savedSpherePosition);
+	// 	const isCorrect = distance <= 0.2;
+	// 	return isCorrect;
+	// }
 
 	function onWindowResize() {
 		camera.aspect = window.innerWidth / window.innerHeight;
@@ -143,19 +152,23 @@
 	}
 
 	function handleModelSelection(file_path: string) {
-		selectedModel = file_path;
-		localStorage.setItem('selectedModel', selectedModel);
 		loadModel(file_path);
+		const url = new URL(window.location.href);
+		url.searchParams.set('model', file_path);
+		window.history.pushState({}, '', url);
 	}
 </script>
 
 <div class="scene-wrapper">
-	<canvas bind:this={canvas}></canvas>
 	{#if data.role === 'lecturer'}
-		<div class="menu-container">
+		<div class="flex items-center space-x-4">
 			<Menu {models} onModelSelect={handleModelSelection} />
+			<P class=" font-semibold text-violet-700">
+				Note: Use the transform controls on the violet sphere to drag it to your desired point.
+			</P>
 		</div>
 	{/if}
+	<canvas bind:this={canvas}></canvas>
 </div>
 
 <style>
@@ -170,13 +183,5 @@
 		height: calc(100vh / 4);
 		max-width: 100%;
 		object-fit: contain;
-	}
-
-	.menu-container {
-		position: absolute;
-		top: 0; /* Adjust as needed to align with the top of the canvas */
-		left: 0; /* Adjust as needed to align with the left of the canvas */
-		z-index: 10; /* Ensure it's on top of the canvas */
-		padding: 20px; /* Add padding if you want spacing from the edges */
 	}
 </style>

@@ -8,6 +8,56 @@ export interface User {
 	workspaces: string;
 }
 
+export interface InteractiveLesson {
+	id: string;
+	title: string;
+	instructions: string;
+	description: string;
+	owner: string;
+	isAvailable: boolean;
+	content: AssignmentContent[];
+}
+
+export interface AssignmentContent {
+	type: 'MCQ' | 'Notes';
+	content: MCQ | Notes;
+}
+
+export interface MCQ {
+	id: string;
+	description: string;
+	question: string;
+	options: string[];
+	answer: string;
+	type: 'Note' | 'MCQ';
+}
+
+export interface LessonThreeDMaterial {
+	id: string;
+	material: string;
+	title: string;
+	description: string;
+	link: string;
+	annotations: Annotation[];
+	type: 'ThreeDMaterial';
+}
+
+export interface Annotation {
+	id: number;
+	title: string;
+	content: string;
+	x: number;
+	y: number;
+	z: number;
+}
+
+export interface Notes {
+	id: string;
+	title: string;
+	content: string;
+	type: 'Note' | 'MCQ';
+}
+
 export interface Lesson {
 	id: string;
 	topic: string;
@@ -121,5 +171,6 @@ export interface Question {
 	questionContent: string;
 	questionType: string;
 	questionPoints: number | null;
+	correctAnswer: string | null;
 	options: Option[] | null;
 }

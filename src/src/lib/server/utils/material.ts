@@ -53,3 +53,13 @@ export async function getMaterials(workspace_id: string): Promise<Partial<Materi
 	const materials = await Materials.find({ workspace_id });
 	return materials.map(formatMaterial);
 }
+
+export async function getLectureNotes(workspace_id: string): Promise<Partial<Material>[]> {
+	const materials = await Materials.find({ workspace_id, type: false });
+	return materials.map(formatMaterial);
+}
+
+export async function getThreeDMaterials(workspace_id: string): Promise<Partial<Material>[]> {
+	const materials = await Materials.find({ workspace_id, type: true });
+	return materials.map(formatMaterial);
+}
