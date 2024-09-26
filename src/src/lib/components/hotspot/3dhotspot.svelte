@@ -7,7 +7,6 @@
 
 	import { TransformControls } from 'three/addons/controls/TransformControls.js';
 	import Menu from './3dMenu.svelte';
-	
 
 	import { spherePosition } from '$lib/store/position';
 
@@ -17,7 +16,6 @@
 	};
 
 	let { models } = data;
-	
 
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -34,11 +32,9 @@
 		const modelPath = urlParams.get('model');
 
 		if (modelPath) {
-			loadModel(modelPath); 
+			loadModel(modelPath);
 		}
 	});
-
-	
 
 	function initScene() {
 		scene = new THREE.Scene();
@@ -83,8 +79,6 @@
 				$spherePosition.copy(draggableSphere.position);
 			});
 		} else if (data.role === 'student') {
-			
-
 			// Create and add the new pin
 			const pinGeometry = new THREE.SphereGeometry(0.05);
 			const pinMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
@@ -158,10 +152,9 @@
 	}
 
 	function handleModelSelection(file_path: string) {
-		
 		loadModel(file_path);
 		const url = new URL(window.location.href);
-		url.searchParams.set('model', file_path); 
+		url.searchParams.set('model', file_path);
 		window.history.pushState({}, '', url);
 	}
 </script>

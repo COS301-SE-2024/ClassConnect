@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	
+
 	import { Card, Button } from 'flowbite-svelte';
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
 
@@ -26,7 +26,7 @@
 		{description}
 	</h5>
 
-	<Button on:click={openWorkspace} >
+	<Button on:click={openWorkspace}>
 		Open <ArrowRightOutline class="ms-2 h-6 w-6 text-white" />
 	</Button>
 </Card>

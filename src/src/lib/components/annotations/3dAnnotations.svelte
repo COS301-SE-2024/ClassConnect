@@ -5,8 +5,6 @@
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 	import Menu from '$lib/components/hotspot/3dMenu.svelte';
 	import { P } from 'flowbite-svelte';
-	import { selectedModel } from '$lib/store/model';
-	
 
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -133,7 +131,7 @@
 		const modelPath = urlParams.get('model');
 
 		if (modelPath) {
-			loadModel(modelPath); 
+			loadModel(modelPath);
 		}
 		window.addEventListener('click', onMouseClick);
 		window.addEventListener('beforeunload', handleBeforeUnload);
@@ -190,7 +188,7 @@
 		removeAllAnnotations();
 		loadModel(file_path);
 		const url = new URL(window.location.href);
-		url.searchParams.set('model', file_path); 
+		url.searchParams.set('model', file_path);
 		window.history.pushState({}, '', url);
 	}
 
