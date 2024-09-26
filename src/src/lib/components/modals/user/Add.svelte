@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Button, Modal, Label, Input } from 'flowbite-svelte';
+	import { Button, Modal, Label, Input, Fileupload } from 'flowbite-svelte';
 	import toast, { Toaster } from 'svelte-french-toast';
 
 	export let role: string;
 	export let open: boolean;
+	let value: string;
 
 	function close({ formData, cancel }: any) {
 		const image = formData.get('image') as File;
@@ -64,7 +65,7 @@
 		use:enhance={close}
 		enctype="multipart/form-data"
 	>
-		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add new {role}</h3>
+		<h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Add {role}</h3>
 
 		<Label for="name" class="space-y-2">
 			<span>Name</span>
@@ -79,6 +80,11 @@
 		<Label for="email" class="space-y-2">
 			<span>Email</span>
 			<Input type="email" id="email" name="email" placeholder="johndoe@email.com" required />
+		</Label>
+
+		<Label for="image" class="space-y-2">
+			<span>Image</span>
+			<Fileupload bind:value id="image" name="image" />
 		</Label>
 
 		<Button type="submit" class="w-full1">Add {role}</Button>

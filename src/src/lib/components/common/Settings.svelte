@@ -44,13 +44,13 @@
 			class="mb-4 rounded-lg border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-700 dark:bg-gray-800 sm:p-6 2xl:col-span-2"
 		>
 			<div class="items-center sm:flex sm:space-x-4 xl:block xl:space-x-0 2xl:flex 2xl:space-x-4">
+				<h3 class="mb-4 text-xl font-semibold dark:text-white">Profile Picture</h3>
 				<img
 					class="mb-4 h-28 w-28 rounded-[100px] sm:mb-0 xl:mb-4 2xl:mb-0"
 					src={user.image}
 					alt="profile"
 				/>
 				<div>
-					<h3 class="mb-1 text-xl font-bold text-gray-900 dark:text-white">Profile Picture</h3>
 					<div class="mb-4 text-sm text-gray-500 dark:text-gray-400">
 						JPG, WEBP or PNG. Max size of 1 MB
 					</div>

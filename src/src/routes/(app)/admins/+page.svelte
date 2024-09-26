@@ -67,7 +67,7 @@
 						class="rounded-full bg-green-100 px-3 py-1 text-xs text-green-600 dark:bg-gray-800 dark:text-green-400"
 					>
 						{admins.length}
-						{admins.length === 1 ? 'admin' : 'admins'}
+						{admins.length === 1 ? 'Admin' : 'Admins'}
 					</span>
 				</div>
 			</div>
@@ -112,7 +112,6 @@
 							<TableBodyCell>
 								<div class="flex items-center justify-center space-x-2">
 									<Button
-										color="green"
 										on:click={() =>
 											handleEditModalOpen(admin.id, admin.name, admin.surname, admin.email)}
 										class="p-1.5 sm:p-2"

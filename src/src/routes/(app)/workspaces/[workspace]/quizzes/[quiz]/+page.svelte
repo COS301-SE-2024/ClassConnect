@@ -1,7 +1,9 @@
 <script lang="ts">
 	//[quiz].page.svelte
-	import { Progressbar, Button, Radio, Card, Heading, P } from 'flowbite-svelte';
+	import { Progressbar, Button, Heading, P } from 'flowbite-svelte';
 	import Form from '$lib/components/questions/Form.svelte';
+	import ThreeDForm from '$lib/components/questions/3Dform.svelte';
+	import TrueFalse from '$lib/components/questions/trueFalseForm.svelte';
 	import { enhance } from '$app/forms';
 	import Submission from '$lib/components/modals/quizzes/Submission.svelte';
 	import { browser } from '$app/environment';
@@ -9,8 +11,15 @@
 	import { page } from '$app/stores';
 	import { writingQuiz } from '$lib/store/sidebar';
 	import { goto } from '$app/navigation';
+	import ListQuestions from '$src/lib/components/questions/listQuestions.svelte';
+	import ThreeDScene from '$lib/components/hotspot/3dhotspot.svelte';
+	import ThreeAnnotations from '$lib/components/annotations/3dAnnotations.svelte';
+
+	import { selectedQuestionTypeStore } from '$lib/store/questions';
 
 	export let data: any;
+	console.log(data);
+
 	const workspaceID = data.workspaceID;
 	let elapsed = 0;
 	let isFormOpen = false;
@@ -18,9 +27,17 @@
 	let isPreview = false;
 	let submissionResult: any = null;
 
+	//selected question types
+	let selectedQuestionType = '';
+	selectedQuestionTypeStore.subscribe((value) => {
+		selectedQuestionType = value;
+		console.log('Selected Question Type:', selectedQuestionType);
+	});
+
 	$: ({ questions, role, duration } = data);
 	$: activeTimer = role === 'student' && !isPreview;
 	$: isPreview = $page.url.searchParams.get('preview') === 'true';
+	$: console.log('Questions:', questions);
 
 	let last_time: number;
 	let frame: number;
@@ -85,17 +102,32 @@
 	}
 
 	function calculateTotalPoints() {
-		totalPoints = questions.reduce((total: number, question: any) => {
-			const selectedOption = question.options.find(
-				(option: any) => option.content === selectedAnswers[question.questionNumber]
-			);
-			return total + (selectedOption ? selectedOption.points : 0);
-		}, 0);
+		questions.forEach((question: any) => {
+			if (question.questionType === 'multiple-choice') {
+				const selectedOption = question.options.find(
+					(option: any) => option.content === selectedAnswers[question.questionNumber]
+				);
+				const questionPoint = selectedOption ? selectedOption.points : 0;
+				totalPoints += questionPoint;
 
-		totalPossiblePoints = questions.reduce((total: number, question: any) => {
-			const maxPoints = Math.max(...question.options.map((option: any) => option.points));
-			return total + maxPoints;
-		}, 0);
+				const maxPoints = Math.max(...question.options.map((option: any) => option.points));
+				totalPossiblePoints += maxPoints;
+			} else if (question.questionType === '3d-hotspot') {
+				const distance = localStorage.getItem('Distance');
+				const proximity = distance ? parseFloat(distance) : Infinity;
+
+				const proximityThreshold = 0.02;
+
+				const isCorrect = proximity <= proximityThreshold;
+
+				let pointsForHotspot = 0;
+				if (isCorrect) {
+					pointsForHotspot = question.questionPoints;
+					totalPoints += pointsForHotspot;
+				}
+				totalPossiblePoints += question.questionPoints;
+			}
+		});
 
 		percentageScore = (totalPoints / totalPossiblePoints) * 100;
 	}
@@ -156,35 +188,9 @@
 				</div>
 			{/if}
 
-			<div class="space-y-8">
-				{#each questions as question (question.id)}
-					<Card
-						size="none"
-						padding="xl"
-						class="bg-white shadow-lg transition-shadow duration-300 hover:shadow-xl dark:bg-gray-800"
-					>
-						<Heading tag="h2" class="mb-4 text-2xl font-bold text-gray-900 dark:text-white">
-							Question {question.questionNumber}
-						</Heading>
-						<P class="mb-6 text-lg text-gray-700 dark:text-gray-300">
-							{question.questionContent}
-						</P>
-						<div class="space-y-4">
-							{#each question.options as option}
-								<Radio
-									class="text-lg"
-									name={question.questionNumber}
-									value={option.content}
-									checked={selectedAnswers[question.questionNumber] === option.content}
-									on:change={() => handleSelection(question.questionNumber, option.content)}
-								>
-									{option.content}
-								</Radio>
-							{/each}
-						</div>
-					</Card>
-				{/each}
-			</div>
+			<ListQuestions {questions} {selectedAnswers} {handleSelection}>
+				<ThreeDScene {data} slot="scene" />
+			</ListQuestions>
 
 			{#if role === 'student' && !isPreview}
 				<form
@@ -218,7 +224,17 @@
 			{/if}
 		{/if}
 	{:else if role === 'lecturer' && !isPreview}
-		<Form bind:open={isFormOpen} on:formSubmitted={handleFormSubmit} />
+		{#if selectedQuestionType === 'multiple-choice'}
+			<Form bind:open={isFormOpen} on:formSubmitted={handleFormSubmit} />
+		{:else if selectedQuestionType === '3d-hotspot'}
+			<ThreeDForm bind:open={isFormOpen} on:formSubmitted={handleFormSubmit}>
+				<ThreeDScene {data} slot="scene" />
+			</ThreeDForm>
+		{:else if selectedQuestionType === 'true-false'}
+			<TrueFalse bind:open={isFormOpen} on:formSubmitted={handleFormSubmit}>
+				<ThreeAnnotations {data} slot="scene" />
+			</TrueFalse>
+		{/if}
 	{:else}
 		<P class="text-lg text-gray-700 dark:text-gray-300"
 			>You do not have permission to view this content.</P

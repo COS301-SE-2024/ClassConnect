@@ -5,6 +5,7 @@ export interface User {
 	image: string;
 	surname: string;
 	username: string;
+	workspaces: string;
 }
 
 export interface InteractiveLesson {
@@ -169,5 +170,6 @@ export interface Question {
 	questionNumber: number;
 	questionContent: string;
 	questionType: string;
-	options: Option[];
+	questionPoints: number | null;
+	options: Option[] | null;
 }

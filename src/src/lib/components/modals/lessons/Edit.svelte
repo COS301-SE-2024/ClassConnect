@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Button, Modal, Label, Input, Textarea } from 'flowbite-svelte';
+	import { Button, Modal, Label, Input, Textarea, Select } from 'flowbite-svelte';
 
 	export let id: string;
 	export let open: boolean;
@@ -46,6 +46,13 @@
 
 		<Label for="time" class="mb-2 mt-2 space-y-2">Time</Label>
 		<Input type="time" id="time" name="time" size="md" />
+
+		<Label for="recurrence" class="mb-2 mt-2 space-y-2">Recurrence</Label>
+		<Select id="recurrence" name="recurrence" size="md" required>
+			<option value="none">None</option>
+			<option value="daily">Daily</option>
+			<option value="weekly">Weekly</option>
+		</Select>
 
 		<Button type="submit" class="mt-4 w-full">Save</Button>
 	</form>
