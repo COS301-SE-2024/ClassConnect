@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import * as THREE from 'three';
-	import {P} from 'flowbite-svelte';
+	import { P } from 'flowbite-svelte';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-	import { DragControls } from 'three/examples/jsm/controls/DragControls.js';
+
 	import { TransformControls } from 'three/addons/controls/TransformControls.js';
 	import Menu from './3dMenu.svelte';
 	import { selectedModel } from '$lib/store/model';
-	
+
 	import { spherePosition } from '$lib/store/position';
 
 	export let data: {
@@ -19,24 +19,18 @@
 	let { models } = data;
 	let storedModel: string | null = null;
 	$: storedModel = $selectedModel;
-	
 
-	let savedSpherePosition: THREE.Vector3;
-	$: savedSpherePosition = $spherePosition;
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
 	let controls: OrbitControls;
-	let dragControls: DragControls;
+
 	let draggableSphere: THREE.Mesh;
 	let transformControls: TransformControls;
-	
-	let pinPos: THREE.Vector3 = new THREE.Vector3();
 	let currentModel: THREE.Object3D | null = null;
 
 	onMount(() => {
 		initScene();
 		animate();
-		
 	});
 
 	$: if (storedModel) {
@@ -79,7 +73,7 @@
 
 			//sphere transform
 			transformControls.addEventListener('mouseDown', () => {
-				controls.enabled = false; 
+				controls.enabled = false;
 			});
 			transformControls.addEventListener('mouseUp', () => {
 				controls.enabled = true;
@@ -101,7 +95,7 @@
 
 			//sphere transform
 			transformControls.addEventListener('mouseDown', () => {
-				controls.enabled = false; 
+				controls.enabled = false;
 			});
 			transformControls.addEventListener('mouseUp', () => {
 				controls.enabled = true;
@@ -117,21 +111,18 @@
 		controls.autoRotate = false;
 		controls.autoRotateSpeed = 2.0;
 
-		
-
 		window.addEventListener('resize', onWindowResize, false);
 	}
 
 	function loadModel(file_path: string) {
-		
 		const loader = new GLTFLoader();
 		loader.load(file_path, (gltf) => {
-		  if(currentModel){
-			  scene.remove(currentModel);
-		  }
-		  currentModel=gltf.scene;
-		  scene.add(currentModel);
-	  });
+			if (currentModel) {
+				scene.remove(currentModel);
+			}
+			currentModel = gltf.scene;
+			scene.add(currentModel);
+		});
 	}
 
 	function animate() {
@@ -140,20 +131,20 @@
 		renderer.render(scene, camera);
 	}
 
-	function getSavedSpherePosition(): THREE.Vector3 {
-		const savedPosition = localStorage.getItem('spherePosition');
-		if (savedPosition) {
-			const [x, y, z] = JSON.parse(savedPosition);
-			return new THREE.Vector3(x, y, z);
-		}
-		return new THREE.Vector3();
-	}
+	// function getSavedSpherePosition(): THREE.Vector3 {
+	// 	const savedPosition = localStorage.getItem('spherePosition');
+	// 	if (savedPosition) {
+	// 		const [x, y, z] = JSON.parse(savedPosition);
+	// 		return new THREE.Vector3(x, y, z);
+	// 	}
+	// 	return new THREE.Vector3();
+	// }
 
-	function checkProximity(pin: THREE.Mesh) {
-		const distance = pin.position.distanceTo(savedSpherePosition);
-		const isCorrect = distance <= 0.2;
-		return isCorrect;
-	}
+	// function checkProximity(pin: THREE.Mesh) {
+	// 	const distance = pin.position.distanceTo(savedSpherePosition);
+	// 	const isCorrect = distance <= 0.2;
+	// 	return isCorrect;
+	// }
 
 	function onWindowResize() {
 		camera.aspect = window.innerWidth / window.innerHeight;
@@ -169,12 +160,12 @@
 
 <div class="scene-wrapper">
 	{#if data.role === 'lecturer'}
-	<div class="flex items-center space-x-4">
-		<Menu {models} onModelSelect={handleModelSelection} />
-		<P class=" font-semibold text-violet-700">
-			Note: Use the transform controls on the violet sphere to drag it to your desired point.
-		</P>
-	</div>
+		<div class="flex items-center space-x-4">
+			<Menu {models} onModelSelect={handleModelSelection} />
+			<P class=" font-semibold text-violet-700">
+				Note: Use the transform controls on the violet sphere to drag it to your desired point.
+			</P>
+		</div>
 	{/if}
 	<canvas bind:this={canvas}></canvas>
 </div>
@@ -192,6 +183,4 @@
 		max-width: 100%;
 		object-fit: contain;
 	}
-
-	
 </style>

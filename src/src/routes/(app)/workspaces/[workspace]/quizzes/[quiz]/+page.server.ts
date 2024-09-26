@@ -1,4 +1,3 @@
-
 import type { Actions, PageServerLoad } from './$types';
 import { fail, error } from '@sveltejs/kit';
 import mongoose from 'mongoose';
@@ -115,7 +114,7 @@ export const actions: Actions = {
 			const questionNumber = parseInt(data.get('questionNumber') as string, 10);
 			const questionContent = data.get('questionContent') as string;
 			const questionType = 'multiple-choice';
-			const correctAnswer= null;
+			const correctAnswer = null;
 
 			const options = [];
 			for (let i = 0; i < 3; i++) {
@@ -154,7 +153,7 @@ export const actions: Actions = {
 			const questionType = '3d-hotspot';
 			const questionPoints = parseInt(data.get('points') as string, 10);
 			const options = null;
-			const correctAnswer= null;
+			const correctAnswer = null;
 
 			const quizId = new mongoose.Types.ObjectId(params.quiz);
 			return await createQuestion(
@@ -181,7 +180,7 @@ export const actions: Actions = {
 			const questionType = 'true-false';
 			const questionPoints = parseInt(data.get('points') as string, 10);
 			const options = null;
-			const correctAnswer= data.get('correctAnswer') as string;
+			const correctAnswer = data.get('correctAnswer') as string;
 
 			const quizId = new mongoose.Types.ObjectId(params.quiz);
 			return await createQuestion(

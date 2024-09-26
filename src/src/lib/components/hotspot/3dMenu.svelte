@@ -15,7 +15,6 @@
 	}
 </script>
 
-
 <Button
 	on:click={() => (isClosed = false)}
 	color="dark"
