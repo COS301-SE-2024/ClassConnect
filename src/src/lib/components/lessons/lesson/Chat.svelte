@@ -2,16 +2,15 @@
 	import { onMount, afterUpdate } from 'svelte';
 	import { Button, Input, Avatar } from 'flowbite-svelte';
 	import type { Channel, FormatMessageResponse } from 'stream-chat';
-
 	import AttendanceList from './AttendanceList.svelte';
 
 	export let channel: Channel;
 
 	let state: any;
 	let newMessage = '';
-	let activeTab = 'Chat';
+	let activeTab = 'Chat'; // "Chat" by default
 	let chatContainer: HTMLElement;
-	let messages: FormatMessageResponse[];
+	let messages: FormatMessageResponse[] = []; // Initialize to avoid undefined
 
 	onMount(async () => {
 		state = await channel.watch();
@@ -43,6 +42,7 @@
 	</div>
 {:else}
 	<div class="flex h-full flex-col">
+		<!-- Tabs for Chat and Participants -->
 		<div class="mb-4 flex space-x-4">
 			<Button
 				color={activeTab === 'Chat' ? 'primary' : 'light'}
@@ -61,8 +61,9 @@
 			</Button>
 		</div>
 
+		<!-- Chat View -->
 		{#if activeTab === 'Chat'}
-			<div class="flex-1 overflow-hidden rounded-lg border border-gray-300 dark:border-gray-600">
+			<div class="flex-1 overflow-hidden rounded-lg bg-white shadow-lg dark:bg-gray-800">
 				<div
 					bind:this={chatContainer}
 					class="h-full overflow-y-auto p-4"

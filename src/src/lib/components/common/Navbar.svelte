@@ -32,27 +32,46 @@
 	];
 
 	const currentLinks = navLinks[role];
+
+	const signout = () => {
+		window.location.href = '/signout';
+	};
 </script>
 
-<Navbar class="fixed start-0 top-0 z-20 w-full border-b px-2 py-2.5 sm:px-4">
-	<NavBrand href="/">
-		<img src="images/class-connect-logo.png" class="mr-3 h-8 sm:h-10" alt="ClassConnect Logo" />
-		<span
-			class="self-center whitespace-nowrap text-xl font-semibold text-gray-800 transition-colors duration-300 dark:text-white"
-			>ClassConnect</span
-		>
-	</NavBrand>
-	<NavHamburger />
-	<NavUl>
-		{#each currentLinks as { name, href }}
-			<NavLi {href} active={activeUrl === href}>
-				{name}
+<div class="relative px-8">
+	<Navbar class="fixed start-0 top-0 z-20 w-full border-b px-2 sm:px-4 md:py-0.5 lg:py-0.5">
+		<NavBrand href="/">
+			<img src="images/class-connect-logo.png" class="mr-3 h-8 sm:h-10" alt="ClassConnect Logo" />
+			<span class="self-center whitespace-nowrap text-xl font-semibold dark:text-white"
+				>ClassConnect</span
+			>
+		</NavBrand>
+		<NavHamburger />
+		<NavUl>
+			{#each [...currentLinks, ...commonLinks] as { name, href }}
+				<NavLi {href} active={activeUrl === href} class="nav-link font-semibold">
+					{name}
+				</NavLi>
+			{/each}
+			<NavLi on:click={signout}>
+				<button
+					class="w-full transform rounded-lg bg-red-600 px-3.5 py-2 text-left font-semibold text-white transition duration-300 ease-in-out hover:bg-red-700 hover:shadow-xl dark:bg-red-700 dark:hover:bg-red-800"
+				>
+					Sign Out
+				</button>
 			</NavLi>
-		{/each}
-		{#each commonLinks as { name, href }}
-			<NavLi {href} active={activeUrl === href}>
-				{name}
-			</NavLi>
-		{/each}
-	</NavUl>
-</Navbar>
+		</NavUl>
+	</Navbar>
+</div>
+
+<style>
+	:global(.nav-link) {
+		padding-top: 0.5rem;
+	}
+	@media (max-width: 768px) {
+		:global(.nav-link) {
+			padding-left: 1.5rem !important;
+			font-weight: bold;
+		}
+	}
+</style>
