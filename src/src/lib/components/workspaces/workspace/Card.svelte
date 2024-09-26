@@ -17,16 +17,16 @@
 	}
 </script>
 
-<Card img={image} imgClass="h-40 w-full object-fit">
-	<h4 class="mb-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-		{name}
-	</h4>
-
-	<h5 class="text-l mb-2 tracking-tight text-gray-900 dark:text-white">
-		{description}
-	</h5>
-
-	<Button on:click={openWorkspace}>
-		Open <ArrowRightOutline class="ms-2 h-6 w-6 text-white" />
-	</Button>
+<Card class="h-full overflow-hidden" padding="none">
+	<div class="relative h-40">
+		<img src={image} alt={name} class="h-full w-full object-cover" />
+		<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+	</div>
+	<div class="p-4">
+		<h5 class="mb-1 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{name}</h5>
+		<p class="mb-2 line-clamp-2 text-sm text-gray-700 dark:text-gray-400">{description}</p>
+		<Button size="sm" on:click={openWorkspace} >
+			Open <ArrowRightOutline class="ms-2 h-4 w-4" />
+		</Button>
+	</div>
 </Card>

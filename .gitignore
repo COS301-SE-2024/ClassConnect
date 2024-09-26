@@ -1,10 +1,13 @@
 # Files
 .env
+.pem
 
 # Directories
+certs
 build
 .vscode
 .vercel
 coverage
 .svelte-kit
 node_modules
+.DS_Store
