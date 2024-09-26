@@ -82,7 +82,7 @@
 				<TableHead>
 					<TableHeadCell class="text-sm sm:text-base">Administrator</TableHeadCell>
 					<TableHeadCell class="text-sm sm:text-base">Username</TableHeadCell>
-					<TableHeadCell class="text-sm sm:text-base pl-60">Actions</TableHeadCell>
+					<TableHeadCell class="pl-60 text-sm sm:text-base">Actions</TableHeadCell>
 				</TableHead>
 
 				<TableBody tableBodyClass="divide-y">
