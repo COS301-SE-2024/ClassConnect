@@ -100,6 +100,7 @@
 					<TableHead>
 						<TableHeadCell class="text-sm sm:text-base">Lecturer</TableHeadCell>
 						<TableHeadCell class="text-sm sm:text-base">Username</TableHeadCell>
+						<TableHeadCell class="text-sm sm:text-base pl-60">Actions</TableHeadCell>
 					</TableHead>
 
 					<TableBody tableBodyClass="divide-y">
