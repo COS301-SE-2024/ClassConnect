@@ -7,7 +7,6 @@
 		ArrowUpFromBracketOutline,
 		ArrowRightOutline,
 		DotsVerticalOutline,
-		EyeOutline,
 		ShareNodesOutline,
 		TrashBinOutline,
 		ArrowDownToBracketOutline
@@ -18,6 +17,7 @@
 	import { page } from '$app/stores';
 	import * as THREE from 'three';
 	import { type GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+	import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 	let openPreviewModal = false;
 	let openDeleteModal = false;
@@ -61,14 +61,6 @@
 		openDeleteModal = true;
 	};
 
-	const handlePreview = (mat_url: string, mat_title: string, mat_type: boolean) => {
-		url = mat_url;
-		displayedSandboxObjectURL.set(url);
-		title = mat_title;
-		type = mat_type;
-		openPreviewModal = true;
-	};
-
 	async function handleDownload(mat_url: string, mat_title: string) {
 		const toastId = toast.loading('Downloading...');
 		try {
@@ -110,15 +102,54 @@
 		hoveredMaterial = null;
 	}
 
+	function getDevicePerformanceScore(): number {
+		const canvas = document.createElement('canvas');
+		const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+
+		if (!gl) {
+			console.warn('WebGL not supported. Defaulting to low performance score.');
+			return 0.5;
+		}
+
+		// Type guard to ensure we're working with a WebGLRenderingContext
+		if (!(gl instanceof WebGLRenderingContext)) {
+			console.warn('Unexpected rendering context. Defaulting to medium performance score.');
+			return 0.7;
+		}
+
+		let renderer = '';
+		try {
+			const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+			if (debugInfo) {
+				renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+			}
+		} catch (e) {
+			console.warn('Unable to get GPU info. Defaulting to medium performance score.');
+			return 0.7;
+		}
+
+		// Simple scoring based on GPU name (you might want to expand this)
+		if (renderer.includes('NVIDIA') || renderer.includes('AMD')) return 1;
+		if (renderer.includes('Intel')) return 0.7;
+		return 0.5;
+	}
+
 	function create3DPreview(element: HTMLElement, material: any) {
 		if (!material || !material.type) return;
 
+		const performanceScore = getDevicePerformanceScore();
 		const scene = new THREE.Scene();
 		const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
-		const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+		const renderer = new THREE.WebGLRenderer({
+			alpha: true,
+			antialias: performanceScore > 0.7,
+			powerPreference: performanceScore > 0.8 ? 'high-performance' : 'default'
+		});
+
+		const pixelRatio = Math.min(window.devicePixelRatio, performanceScore * 2);
+		renderer.setPixelRatio(pixelRatio);
 
 		renderer.setSize(element.clientWidth, element.clientHeight);
-		renderer.setPixelRatio(window.devicePixelRatio);
 		element.appendChild(renderer.domElement);
 
 		const ambientLight = new THREE.AmbientLight(0x404040);
@@ -129,11 +160,20 @@
 		scene.add(directionalLight);
 
 		const loader = new GLTFLoader();
+		const dracoLoader = new DRACOLoader();
+		dracoLoader.setDecoderPath('/draco/'); // Make sure to include Draco decoder files in your project
+		loader.setDRACOLoader(dracoLoader);
+
 		loader.load(
 			material.file_path,
 			(gltf: GLTF) => {
 				scene.add(gltf.scene);
+
+				// Center the model
 				const box = new THREE.Box3().setFromObject(gltf.scene);
+				const center = box.getCenter(new THREE.Vector3());
+				gltf.scene.position.sub(center); // center the model
+
 				const size = box.getSize(new THREE.Vector3());
 				const maxDim = Math.max(size.x, size.y, size.z);
 				const fov = camera.fov * (Math.PI / 180);
@@ -148,7 +188,9 @@
 				};
 				animate();
 			},
-			undefined,
+			(xhr) => {
+				console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
+			},
 			(error: ErrorEvent | unknown) => {
 				console.error('An error happened while loading the 3D model:', error);
 			}
@@ -167,7 +209,7 @@
 <TabItem open={tabBoolean}>
 	<span slot="title">{tabName}</span>
 	<div
-		class="m-4 flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0"
+		class="flex flex-col space-y-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 sm:px-6 lg:px-8"
 	>
 		<div class="w-full max-w-lg">
 			<div class="relative">
@@ -204,7 +246,9 @@
 	</div>
 
 	{#if filteredItems && filteredItems.length > 0}
-		<div class="mx-4 my-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+		<div
+			class="grid grid-cols-1 gap-6 px-4 py-6 sm:grid-cols-2 sm:px-6 lg:grid-cols-3 lg:px-8 xl:grid-cols-4"
+		>
 			{#each filteredItems as material (material.id)}
 				<div
 					class="flex flex-col overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800 dark:shadow-gray-700"
@@ -248,14 +292,7 @@
 										<ShareNodesOutline class="h-4 w-4" />
 										<span>Share</span>
 									</DropdownItem>
-									<DropdownItem
-										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
-										on:click={() =>
-											handlePreview(material.file_path, material.title, material.type)}
-									>
-										<EyeOutline class="h-4 w-4" />
-										<span>Preview</span>
-									</DropdownItem>
+
 									<DropdownItem
 										class="flex items-center space-x-2 px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700"
 										on:click={() => handleDownload(material.file_path, material.title)}
