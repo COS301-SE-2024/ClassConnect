@@ -7,6 +7,9 @@
 	import { DragControls } from 'three/examples/jsm/controls/DragControls.js';
 	import { TransformControls } from 'three/addons/controls/TransformControls.js';
 	import Menu from './3dMenu.svelte';
+	import { selectedModel } from '$lib/store/model';
+	
+	import { spherePosition } from '$lib/store/position';
 
 	export let data: {
 		role: string;
@@ -14,21 +17,31 @@
 	};
 
 	let { models } = data;
-	let selectedModel: string | null = null;
+	let storedModel: string | null = null;
+	$: storedModel = $selectedModel;
+	
+
+	let savedSpherePosition: THREE.Vector3;
+	$: savedSpherePosition = $spherePosition;
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
 	let controls: OrbitControls;
 	let dragControls: DragControls;
 	let draggableSphere: THREE.Mesh;
 	let transformControls: TransformControls;
-	let spherePosition: THREE.Vector3 = new THREE.Vector3();
+	
 	let pinPos: THREE.Vector3 = new THREE.Vector3();
 	let currentModel: THREE.Object3D | null = null;
 
 	onMount(() => {
 		initScene();
 		animate();
+		
 	});
+
+	$: if (storedModel) {
+		loadModel(storedModel);
+	}
 
 	function initScene() {
 		scene = new THREE.Scene();
@@ -69,9 +82,8 @@
 				controls.enabled = false; 
 			});
 			transformControls.addEventListener('mouseUp', () => {
-				controls.enabled = true; 
-				spherePosition.copy(draggableSphere.position);
-				localStorage.setItem('spherePosition', JSON.stringify(draggableSphere.position.toArray()));
+				controls.enabled = true;
+				$spherePosition.copy(draggableSphere.position);
 			});
 		} else if (data.role === 'student') {
 			// Create and add the new pin
@@ -82,15 +94,18 @@
 			pin.position.set(0, 1, 0);
 			scene.add(pin);
 
-			const pinDragControls = new DragControls([pin], camera, renderer.domElement);
-			pinDragControls.addEventListener('dragstart', () => {
-				controls.enabled = false;
+			transformControls = new TransformControls(camera, renderer.domElement);
+			transformControls.attach(pin);
+			transformControls.setMode('translate');
+			scene.add(transformControls);
+
+			//sphere transform
+			transformControls.addEventListener('mouseDown', () => {
+				controls.enabled = false; 
 			});
-			pinDragControls.addEventListener('dragend', () => {
+			transformControls.addEventListener('mouseUp', () => {
 				controls.enabled = true;
-				pinPos.copy(pin.position);
-				console.log('Pin placed at', pin.position);
-				checkProximity(pin);
+				$spherePosition.copy(pin.position);
 			});
 		}
 
@@ -102,13 +117,7 @@
 		controls.autoRotate = false;
 		controls.autoRotateSpeed = 2.0;
 
-		// Load the model based on role
-		if (data.role === 'student') {
-			const storedModel = localStorage.getItem('selectedModel');
-			if (storedModel) {
-				loadModel(storedModel);
-			}
-		}
+		
 
 		window.addEventListener('resize', onWindowResize, false);
 	}
@@ -141,11 +150,8 @@
 	}
 
 	function checkProximity(pin: THREE.Mesh) {
-		const savedSpherePosition = getSavedSpherePosition();
 		const distance = pin.position.distanceTo(savedSpherePosition);
 		const isCorrect = distance <= 0.2;
-		localStorage.setItem('Distance', JSON.stringify(distance));
-
 		return isCorrect;
 	}
 
@@ -156,8 +162,7 @@
 	}
 
 	function handleModelSelection(file_path: string) {
-		selectedModel = file_path;
-		localStorage.setItem('selectedModel', selectedModel);
+		selectedModel.set(file_path);
 		loadModel(file_path);
 	}
 </script>
@@ -188,11 +193,5 @@
 		object-fit: contain;
 	}
 
-	.menu-container {
-		position: absolute;
-		top: 0; 
-		left: 0; 
-		z-index: 10;
-		padding: 20px; 
-	}
+	
 </style>

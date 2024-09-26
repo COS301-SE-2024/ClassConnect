@@ -5,6 +5,8 @@
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 	import Menu from '$lib/components/hotspot/3dMenu.svelte';
 	import { P } from 'flowbite-svelte';
+	import { selectedModel } from '$lib/store/model';
+	import { spherePosition } from '$lib/store/position';
   
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -24,7 +26,11 @@
 	};
   
 	let { models } = data;
-	let selectedModel: string | null = null;
+	let storedModel: string | null;
+	$: storedModel = $selectedModel;
+
+	let savedSpherePosition: THREE.Vector3;
+	$: savedSpherePosition = $spherePosition;
 	const annotations: {
 	  [key: string]: { position: THREE.Vector3; text: string; labelDiv: HTMLDivElement; sprite:THREE.Sprite };
 	} = {};
@@ -178,10 +184,9 @@
 	}
   
 	function handleModelSelection(file_path: string) {
-	  removeAllAnnotations();
-	  selectedModel = file_path;
-	  localStorage.setItem('selectedModel', selectedModel);
-	  loadModel(file_path);
+		removeAllAnnotations();
+		selectedModel.set(file_path); 
+		loadModel(file_path);
 	}
   
 	function animate() {
