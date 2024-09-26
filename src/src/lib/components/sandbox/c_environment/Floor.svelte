@@ -5,7 +5,6 @@
     
 
     const floorTexture = useLoader(TextureLoader).load('/environment/textures/coral_fort_wall_02_diff_4k.jpg');
-    $: console.log(floorTexture)
   </script>
  
 
