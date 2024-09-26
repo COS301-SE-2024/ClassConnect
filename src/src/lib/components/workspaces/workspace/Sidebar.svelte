@@ -43,7 +43,7 @@
 				{ name: 'Materials', href: workspaceURL + '/materials' },
 				{ name: 'Lessons', href: workspaceURL + '/lessons' },
 				{ name: 'Quizzes', href: workspaceURL + '/quizzes' },
-				{ name: 'Interactive Lessons', href: workspaceURL + '/interactive' },
+				{ name: 'Interactive Lessons', href: workspaceURL + '/interactive' }
 			],
 			resources: [{ name: 'Environments', href: workspaceURL + '/environments' }]
 		},
@@ -54,7 +54,7 @@
 				{ name: 'Materials', href: workspaceURL + '/materials' },
 				{ name: 'Lessons', href: workspaceURL + '/lessons' },
 				{ name: 'Quizzes', href: workspaceURL + '/quizzes' },
-				{ name: 'Interactive Lessons', href: workspaceURL + '/interactive' },
+				{ name: 'Interactive Lessons', href: workspaceURL + '/interactive' }
 			],
 			additional: [
 				{ name: 'Environments', href: workspaceURL + '/environments' },
