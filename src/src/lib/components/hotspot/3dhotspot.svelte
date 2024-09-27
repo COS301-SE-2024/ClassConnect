@@ -7,6 +7,7 @@
 
 	import { TransformControls } from 'three/addons/controls/TransformControls.js';
 	import Menu from './3dMenu.svelte';
+	import { selectedModel } from '$lib/store/model';
 
 	import { spherePosition } from '$lib/store/position';
 
@@ -28,12 +29,7 @@
 	onMount(() => {
 		initScene();
 		animate();
-		const urlParams = new URLSearchParams(window.location.search);
-		const modelPath = urlParams.get('model');
-
-		if (modelPath) {
-			loadModel(modelPath);
-		}
+		
 	});
 
 	function initScene() {
@@ -153,10 +149,9 @@
 
 	function handleModelSelection(file_path: string) {
 		loadModel(file_path);
-		const url = new URL(window.location.href);
-		url.searchParams.set('model', file_path);
-		window.history.pushState({}, '', url);
+		selectedModel.set(file_path);
 	}
+
 </script>
 
 <div class="scene-wrapper">

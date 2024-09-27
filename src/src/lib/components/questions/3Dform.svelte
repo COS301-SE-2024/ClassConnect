@@ -2,10 +2,18 @@
 	import { enhance } from '$app/forms';
 	import { Button, Input, Textarea, NumberInput, Label } from 'flowbite-svelte';
 	import { createEventDispatcher } from 'svelte';
+	import {selectedModel} from '$lib/store/model';
 
 	export let open: boolean;
 	const dispatch = createEventDispatcher();
 	let error: string;
+	let modelPath: string | null = null;
+
+    $: modelPath, selectedModel.subscribe(value => {
+        modelPath = value;
+    });
+
+	console.log('ModelPath: ', modelPath);
 
 	function close() {
 		return async ({ result, update }: any) => {
@@ -60,6 +68,8 @@
 		<div class="mb-4">
 			<slot name="scene" />
 		</div>
+
+		<input type="hidden" name="modelPath" value={modelPath} />
 
 		<Button type="submit" class="mt-10 w-full">Submit Question</Button>
 	</form>
