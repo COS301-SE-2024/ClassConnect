@@ -3,4 +3,4 @@ ignore:
   - '**/*.config.js'
   - '**/*.config.ts'
   - '**/*.d.ts'
-  - '**/*.json'
+  - '**/database/schemas/*.ts'
