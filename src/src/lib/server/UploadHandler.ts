@@ -34,7 +34,7 @@ export async function uploadFile(fileData: UploadData) {
 
 		return newMaterial;
 	} else {
-		throw new Error('file not suported');
+		throw new Error('file not supported');
 	}
 }
 
@@ -67,7 +67,7 @@ export async function multipartUploadFile(fileData: UploadInfo, folder: string) 
 	}
 }
 
-async function materialUpload(fileData: UploadData, file_type: boolean) {
+export async function materialUpload(fileData: UploadData, file_type: boolean) {
 	const file_path = await upload(fileData.file);
 
 	let thumbnail_path =
@@ -113,7 +113,7 @@ async function materialUpload(fileData: UploadData, file_type: boolean) {
 	return newMaterial;
 }
 
-async function materialUploadFromLink(fileData: UploadInfo, file_type: boolean) {
+export async function materialUploadFromLink(fileData: UploadInfo, file_type: boolean) {
 	const file_path = fileData.link;
 
 	let thumbnail_path =
