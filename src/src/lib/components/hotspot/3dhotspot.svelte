@@ -10,13 +10,26 @@
 	import { selectedModel } from '$lib/store/model';
 
 	import { spherePosition } from '$lib/store/position';
+	
 
 	export let data: {
 		role: string;
 		models: { title: string; file_path: string; description: string }[];
+		questions: {
+			id: string;
+			questionNumber: number;
+			questionContent: string;
+			questionPoints: number;
+			questionType: string;
+			modelPath: string;
+			options: { content: string; points: number }[] | null;
+		}[];
 	};
 
-	let { models } = data;
+	let { role,models,questions } = data;
+	if(role==='student'){
+		console.log('Questions', questions)
+	}
 
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -42,13 +55,47 @@
 		renderer.setClearColor(0xffffff);
 
 		// Add lighting
-		const ambientLight = new THREE.AmbientLight(0x404040);
+		const ambientLight = new THREE.AmbientLight(0x404040, 0.9);
 		scene.add(ambientLight);
-		const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-		directionalLight.position.set(1, 1, 1).normalize();
+
+		const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
+		directionalLight.position.set(5, 5, 5); 
+		directionalLight.castShadow = true;
+		directionalLight.shadow.radius = 4; 
 		scene.add(directionalLight);
 
-		if (data.role === 'lecturer') {
+		// Add point lights at various positions
+		const pointLight1 = new THREE.PointLight(0xffffff, 0.9);
+		pointLight1.position.set(0, 5, 5);
+		pointLight1.castShadow = true;
+		scene.add(pointLight1);
+
+		const pointLight2 = new THREE.PointLight(0xffffff, 0.9);
+		pointLight2.position.set(0, -5, 5); 
+		pointLight2.castShadow = true;
+		scene.add(pointLight2);
+
+		const pointLight3 = new THREE.PointLight(0xffffff, 0.9);
+		pointLight3.position.set(5, 5, 0); 
+		pointLight3.castShadow = true;  
+		scene.add(pointLight3);
+
+		const pointLight4 = new THREE.PointLight(0xffffff, 0.9);
+		pointLight4.position.set(-5, -5, 0); 
+		pointLight3.castShadow = true;
+		scene.add(pointLight4);
+
+		const pointLight5 = new THREE.PointLight(0xffffff, 0.9);
+		pointLight5.position.set(0, 0, -5);  
+		pointLight5.castShadow = true;
+		scene.add(pointLight5);
+
+		
+
+		console.log('Lighting setup:', ambientLight, pointLight1, pointLight2, directionalLight);
+
+
+		if (role === 'lecturer') {
 			// Create a draggable sphere
 			const sphereGeometry = new THREE.SphereGeometry(0.1);
 			const sphereMaterial = new THREE.MeshBasicMaterial({
@@ -74,7 +121,15 @@
 				controls.enabled = true;
 				$spherePosition.copy(draggableSphere.position);
 			});
-		} else if (data.role === 'student') {
+		} else if (role === 'student') {
+			//loadModel
+			questions.forEach(question => {
+				if (question.modelPath) {
+					console.log('Question Model', question.modelPath);
+					loadModel(question.modelPath);
+				}
+			});
+
 			// Create and add the new pin
 			const pinGeometry = new THREE.SphereGeometry(0.05);
 			const pinMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
@@ -105,6 +160,8 @@
 		controls.enableRotate = true;
 		controls.autoRotate = false;
 		controls.autoRotateSpeed = 2.0;
+
+		
 
 		window.addEventListener('resize', onWindowResize, false);
 	}
@@ -155,7 +212,7 @@
 </script>
 
 <div class="scene-wrapper">
-	{#if data.role === 'lecturer'}
+	{#if role === 'lecturer'}
 		<div class="flex items-center space-x-4">
 			<Menu {models} onModelSelect={handleModelSelection} />
 			<P class=" font-semibold text-violet-700">

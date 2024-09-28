@@ -31,6 +31,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 				questionContent: q.questionContent,
 				questionPoints: q.questionPoints,
 				questionType: q.questionType,
+				modelPath: q.modelPath,
 				options: q.options
 					? q.options.map((option: { content: any; points: any }) => ({
 							content: option.content,
@@ -58,6 +59,7 @@ async function createQuestion(
 	questionContent: string,
 	questionPoints: number | null,
 	questionType: string,
+	modelPath: string | null,
 	correctAnswer: string | null,
 	options: { content: string; points: number }[] | null,
 	quizId: ObjectId | undefined
@@ -67,6 +69,7 @@ async function createQuestion(
 		questionContent,
 		questionPoints,
 		questionType,
+		modelPath,
 		correctAnswer,
 		options,
 		quiz: quizId
@@ -134,6 +137,7 @@ export const actions: Actions = {
 				questionContent,
 				null,
 				questionType,
+				null,
 				correctAnswer,
 				options,
 				quizId
@@ -151,9 +155,12 @@ export const actions: Actions = {
 			const questionNumber = parseInt(data.get('questionNumber') as string, 10);
 			const questionContent = data.get('questionContent') as string;
 			const questionType = '3d-hotspot';
+			const modelPath=data.get('modelPath') as string;
 			const questionPoints = parseInt(data.get('points') as string, 10);
 			const options = null;
 			const correctAnswer = null;
+
+			console.log('Saved Model', modelPath);
 
 			const quizId = new mongoose.Types.ObjectId(params.quiz);
 			return await createQuestion(
@@ -161,6 +168,7 @@ export const actions: Actions = {
 				questionContent,
 				questionPoints,
 				questionType,
+				modelPath,
 				correctAnswer,
 				options,
 				quizId
@@ -177,6 +185,7 @@ export const actions: Actions = {
 			const data = await request.formData();
 			const questionNumber = parseInt(data.get('questionNumber') as string, 10);
 			const questionContent = data.get('questionContent') as string;
+			const modelPath=data.get('modelPath') as string;
 			const questionType = 'true-false';
 			const questionPoints = parseInt(data.get('points') as string, 10);
 			const options = null;
@@ -188,6 +197,7 @@ export const actions: Actions = {
 				questionContent,
 				questionPoints,
 				questionType,
+				modelPath,
 				correctAnswer,
 				options,
 				quizId

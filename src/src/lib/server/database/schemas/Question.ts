@@ -32,6 +32,11 @@ const questionSchema = new mongoose.Schema({
 		required: false
 	},
 
+	modelPath:{
+		type: String,
+		required: false
+	},
+
 	options: {
 		type: [optionSchema],
 		required: false

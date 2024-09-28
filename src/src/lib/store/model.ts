@@ -1,3 +1,4 @@
 import { writable } from 'svelte/store';
 
-export const selectedModel = writable('');
+export const selectedModel = writable('start');
+

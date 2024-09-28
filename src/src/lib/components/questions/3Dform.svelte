@@ -7,15 +7,13 @@
 	export let open: boolean;
 	const dispatch = createEventDispatcher();
 	let error: string;
-	let modelPath: string | null = null;
-
-    $: modelPath, selectedModel.subscribe(value => {
-        modelPath = value;
-    });
-
-	console.log('ModelPath: ', modelPath);
-
+	let modelPath: string ;
+	
+	modelPath= $selectedModel;
+	
+	
 	function close() {
+		
 		return async ({ result, update }: any) => {
 			if (result.type === 'success') {
 				await update();
