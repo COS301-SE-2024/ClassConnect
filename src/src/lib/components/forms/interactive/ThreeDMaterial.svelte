@@ -87,9 +87,9 @@
 		controls.screenSpacePanning = false;
 		controls.maxPolarAngle = Math.PI / 2;
 
-		const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+		const ambientLight = new THREE.AmbientLight(0xffffff, 3.5);
 		scene.add(ambientLight);
-		const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+		const directionalLight = new THREE.DirectionalLight(0xffffff, 3.5);
 		directionalLight.position.set(0, 1, 0);
 		scene.add(directionalLight);
 
