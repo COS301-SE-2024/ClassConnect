@@ -54,10 +54,7 @@
 						{:else if item.type == 'Note'}
 							<Note {materials} note={item} />
 						{:else if item.type == 'ThreeDMaterial'}
-							<ThreeDMaterial
-								materials={threeDMaterials}
-								threeDMaterial={item}
-							/>
+							<ThreeDMaterial materials={threeDMaterials} threeDMaterial={item} />
 						{/if}
 					</div>
 				{/each}

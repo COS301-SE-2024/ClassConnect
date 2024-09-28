@@ -41,7 +41,7 @@
 
 <Toaster />
 
-<main class="container mx-auto p-4">
+<main class="container mx-auto p-4 sm:w-[100vw]">
 	<div class="p-2 md:px-5 md:py-2">
 		<form method="POST" action="?/answerMCQ" use:enhance={save}>
 			<div class="grid grid-cols-12 gap-6">
