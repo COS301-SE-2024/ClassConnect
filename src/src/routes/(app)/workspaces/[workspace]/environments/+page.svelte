@@ -46,15 +46,14 @@
 		</Card>
 
 		<Card
-			img="/images/virtual-classroom.jpg"
+			img="/images/pexels-steve-28574350.jpg"
 			imgClass="h-48 object-cover rounded-lg"
 			class="m-2 max-w-[45%] flex-grow p-4"
 		>
-			<h5 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">VR Playground</h5>
+			<h5 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">3D Simulation</h5>
 
 			<p class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400">
-				Join your classmates in a virtual space to learn, discuss, and explore together. Collaborate
-				in real-time and enhance your learning experience.
+				Be part of a curated scenario where you can immerse yourself in a realistic simulation and enhance your learning experience through interactive exploration.
 			</p>
 
 			<Button on:click={() => goto($page.url + '/simulation')}>

@@ -1,47 +1,53 @@
 <script lang="ts">
 	import { T, useThrelte, useLoader } from '@threlte/core';
-	import { useGltf } from '@threlte/extras';
+	import { useGltf, Environment } from '@threlte/extras';
 	import Player from './Player.svelte';
 	import Floor from './Floor.svelte';
 	import { AutoColliders, RigidBody } from '@threlte/rapier';
 	import { Text, Pane } from 'svelte-tweakpane-ui';
 	import * as THREE from 'three';
 	const { scene } = useThrelte();
+	import Menu from '$lib/components/sandbox/c_environment/Scene_Assets/Menu_2.svelte';
+	
 
 	const shovel = useGltf('/environment/models/shovel.glb');
 	const pick = useGltf('/environment/models/low_poly_pickaxe.glb');
 	const wall = useLoader(THREE.TextureLoader).load('/environment/textures/Rock032_4K_Color.jpg');
 
-	// scene.fog = new THREE.Fog(0x000000, 2, 5); // Change color and parameters as needed
 
-	scene.background = new THREE.Color(0x000000);
+	scene.background = new THREE.TextureLoader().load('/environment/textures/Rock032_4K_Color.jpg');
+	scene.backgroundIntensity = 0.02;
+
+
+
 </script>
 
-<!-- <Debug /> -->
+
+ 
 <Pane position="fixed" title="3D Environment Controls" x={1300} y={80}>
 	<Text value="Use the 'WASD' keys to move around" disabled />
 	<Text value="Press escape 'Esc' to exit the scene" disabled />
 	<Text value="Use the mouse to look around" disabled />
 	<Text value="Press 'E' to interact with objects" disabled />
 	<Text value="Press to toggle the Torch" disabled />
+
 </Pane>
 
-<!-- <Environment
-    path="/environment/textures/"
-    files="Rock032_4K_Color.jpg"
-    isBackground={true}
+<Pane position="fixed" title="3D Environment Controls" x={1300} y={240}>
+	<Text value="Press 'O' to exit stage" disabled />
 
-  /> -->
+</Pane>
+
+
 <Player />
 
-<T.AmbientLight intensity={0.02} />
+<T.AmbientLight intensity={0.06} />
 
 <T.Group scale={1}>
 	{#await shovel}
 		<slot name="fallback" />
 	{:then shovel}
 		<RigidBody type="dynamic">
-			<!-- AutoColliders with trimesh shape for GLTF -->
 			<AutoColliders shape={'trimesh'}>
 				<T is={shovel.scenes[0]} scale={0.012} position={[-5, 10, 40]} />
 			</AutoColliders>
@@ -56,9 +62,8 @@
 		<slot name="fallback" />
 	{:then pick}
 		<RigidBody type="dynamic">
-			<!-- AutoColliders with trimesh shape for GLTF -->
 			<AutoColliders shape={'trimesh'}>
-				<T is={pick.scenes[0]} scale={1} position={[2, 3, 15]} />
+				<T is={pick.scenes[0]} scale={1} position={[-20, 3, 27]} />
 			</AutoColliders>
 		</RigidBody>
 	{:catch error}
@@ -79,7 +84,8 @@
 	</RigidBody>
 </T.Group>
 
-<T.Group position={[-10, 45, 26]}>
+<T.Group position={[-10, 45, 24]}
+>
 	<RigidBody type="fixed">
 		<AutoColliders shape={'cuboid'}>
 			<T.Mesh receiveShadow>
@@ -92,7 +98,8 @@
 	</RigidBody>
 </T.Group>
 
-<T.Group position={[0, 25, 45]}>
+<T.Group position={[0, 25, 45]}
+>
 	<RigidBody type="fixed">
 		<AutoColliders shape={'cuboid'}>
 			<T.Mesh receiveShadow>
@@ -105,7 +112,8 @@
 	</RigidBody>
 </T.Group>
 
-<T.Group position={[0, 35, 10]}>
+<T.Group position={[0, 35, 10]}
+rotation.y={Math.PI / 3}>
 	<RigidBody type="fixed">
 		<AutoColliders shape={'cuboid'}>
 			<T.Mesh receiveShadow>
@@ -117,24 +125,117 @@
 		</AutoColliders>
 	</RigidBody>
 </T.Group>
-<!-- 
-  <T.Group position={[10, 10, 0]}>
-    <RigidBody type="dynamic">
-      <AutoColliders shape={'cuboid'}>
-        <T.Mesh receiveShadow>
-          <T.BoxGeometry args={[2, 2, 2]} />
-          <T.MeshStandardMaterial />
-        </T.Mesh>
-      </AutoColliders>
-    </RigidBody>
-  </T.Group>
-  <Floor /> -->
-<!-- 
-  <T.Group position={[10, 10, 10]}>
-    <T.Mesh receiveShadow>
-      <T.BoxGeometry args={[2, 2, 2]} />
-      <T.MeshStandardMaterial  />
-    </T.Mesh>
-  </T.Group> -->
+
+
+<T.Group position={[0, 35, -10]}>
+	<RigidBody type="fixed">
+		<AutoColliders shape={'cuboid'}>
+			<T.Mesh receiveShadow>
+				<T.BoxGeometry args={[50, 74, 1]} />
+				{#await wall then value}
+					<T.MeshStandardMaterial map={value}></T.MeshStandardMaterial>
+				{/await}
+			</T.Mesh>
+		</AutoColliders>
+	</RigidBody>
+</T.Group>
+
+<T.Group position={[30, 35, -10]}
+rotation.y={Math.PI / 3}>
+	<RigidBody type="fixed">
+		<AutoColliders shape={'cuboid'}>
+			<T.Mesh receiveShadow>
+				<T.BoxGeometry args={[50, 74, 1]} />
+				{#await wall then value}
+					<T.MeshStandardMaterial map={value}></T.MeshStandardMaterial>
+				{/await}
+			</T.Mesh>
+		</AutoColliders>
+	</RigidBody>
+</T.Group>
+
+<T.Group position={[-30, 35, -10]}
+rotation.y={-Math.PI / 4}>
+	<RigidBody type="fixed">
+		<AutoColliders shape={'cuboid'}>
+			<T.Mesh receiveShadow>
+				<T.BoxGeometry args={[50, 74, 1]} />
+				{#await wall then value}
+					<T.MeshStandardMaterial map={value}></T.MeshStandardMaterial>
+				{/await}
+			</T.Mesh>
+		</AutoColliders>
+	</RigidBody>
+</T.Group>
+
+
+
+<T.Group position={[0, 35, -50]}>
+	<RigidBody type="fixed">
+		<AutoColliders shape={'cuboid'}>
+			<T.Mesh receiveShadow>
+				<T.BoxGeometry args={[100, 74, 0.5]} />
+				{#await wall then value}
+					<T.MeshStandardMaterial map={value}></T.MeshStandardMaterial>
+				{/await}
+			</T.Mesh>
+		</AutoColliders>
+	</RigidBody>
+</T.Group>
+
+<T.Group position={[0, 35, -50]}>
+	<RigidBody type="fixed">
+		<AutoColliders shape={'cuboid'}>
+			<T.Mesh receiveShadow>
+				<T.BoxGeometry args={[100, 74, 0.5]} />
+				{#await wall then value}
+					<T.MeshStandardMaterial map={value}></T.MeshStandardMaterial>
+				{/await}
+			</T.Mesh>
+		</AutoColliders>
+	</RigidBody>
+</T.Group>
+
+<T.Group position={[0, 35, 50]}>
+	<RigidBody type="fixed">
+		<AutoColliders shape={'cuboid'}>
+			<T.Mesh receiveShadow>
+				<T.BoxGeometry args={[100, 74, 0.5]} />
+				{#await wall then value}
+					<T.MeshStandardMaterial map={value}></T.MeshStandardMaterial>
+				{/await}
+			</T.Mesh>
+		</AutoColliders>
+	</RigidBody>
+</T.Group>
+
+<T.Group position={[-50, 35, 0]}
+rotation.y={Math.PI / 2}>
+	<RigidBody type="fixed">
+		<AutoColliders shape={'cuboid'}>
+			<T.Mesh receiveShadow>
+				<T.BoxGeometry args={[100, 74, 0.5]} />
+				{#await wall then value}
+					<T.MeshStandardMaterial map={value}></T.MeshStandardMaterial>
+				{/await}
+			</T.Mesh>
+		</AutoColliders>
+	</RigidBody>
+</T.Group>
+
+<T.Group position={[50, 35, 0]}
+rotation.y={Math.PI / 2}>
+	<RigidBody type="fixed">
+		<AutoColliders shape={'cuboid'}>
+			<T.Mesh receiveShadow>
+				<T.BoxGeometry args={[100, 74, 0.5]} />
+				{#await wall then value}
+					<T.MeshStandardMaterial map={value}></T.MeshStandardMaterial>
+				{/await}
+			</T.Mesh>
+		</AutoColliders>
+	</RigidBody>
+</T.Group>
+
 
 <Floor />
