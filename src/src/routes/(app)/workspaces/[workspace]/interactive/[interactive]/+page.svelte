@@ -57,7 +57,6 @@
 							<ThreeDMaterial
 								materials={threeDMaterials}
 								threeDMaterial={item}
-								annotations={item.annotations}
 							/>
 						{/if}
 					</div>
