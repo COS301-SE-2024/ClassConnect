@@ -4,7 +4,7 @@
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 	import Menu from '$lib/components/hotspot/3dMenu.svelte';
-	import { P } from 'flowbite-svelte';
+	import { Button } from 'flowbite-svelte';
 
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -16,7 +16,6 @@
 	let activePoint: THREE.Vector3 | null = null;
 	let tooltipX: number = 0;
 	let tooltipY: number = 0;
-	let currentModel: THREE.Object3D | null = null;
 
 	export let data: {
 		role: string;
@@ -24,23 +23,13 @@
 	};
 
 	let { models } = data;
-
+	let selectedModel: string | null = null;
 	const annotations: {
-		[key: string]: {
-			position: THREE.Vector3;
-			text: string;
-			labelDiv: HTMLDivElement;
-			sprite: THREE.Sprite;
-		};
+		[key: string]: { circleSprite: THREE.Sprite; textSprite: THREE.Sprite };
 	} = {};
 
 	function toggleAnnotationMode() {
-		if (data.role === 'lecturer') {
-			annotationMode = true;
-		} else if (data.role === 'student') {
-			annotationMode = false;
-		}
-
+		annotationMode = !annotationMode;
 		if (!annotationMode) {
 			activePoint = null;
 		}
@@ -48,50 +37,105 @@
 
 	function addAnnotation() {
 		if (annotationText.trim() && activePoint) {
-			createAnnotation(activePoint, annotationText);
+			const annotation = createAnnotation(scene, activePoint, annotationText);
+			annotations[annotationText] = annotation;
 			annotationText = '';
 			activePoint = null;
 		}
 	}
 
-	function createAnnotation(position: THREE.Vector3, text: string) {
-		// Create a circle as a THREE.Sprite
+	function createAnnotation(scene: THREE.Scene, position: THREE.Vector3, text: string) {
+		// Create a circle sprite
 		const circleTexture = new THREE.TextureLoader().load('/images/circle.png');
-		const spriteMaterial = new THREE.SpriteMaterial({
+		const circleMaterial = new THREE.SpriteMaterial({
 			map: circleTexture,
 			depthTest: false,
 			depthWrite: false,
 			sizeAttenuation: false
 		});
-		const sprite = new THREE.Sprite(spriteMaterial);
-		sprite.position.copy(position);
-		sprite.scale.set(0.05, 0.05, 0.05);
-		scene.add(sprite);
+		const circleSprite = new THREE.Sprite(circleMaterial);
+		circleSprite.position.copy(position);
+		circleSprite.scale.set(0.03, 0.03, 0.03);
+		scene.add(circleSprite);
 
-		// Create the label element
-		const labelDiv = document.createElement('div');
-		labelDiv.style.backgroundColor = 'rgba(30, 30, 30, 0.9)';
-		labelDiv.style.padding = '2px 5px';
-		labelDiv.style.borderRadius = '3px';
-		labelDiv.style.fontSize = '12px';
-		labelDiv.style.color = 'white';
-		labelDiv.style.fontWeight = 'bold';
-		labelDiv.style.pointerEvents = 'none';
-		labelDiv.style.userSelect = 'none';
-		labelDiv.style.zIndex = '1000';
-		labelDiv.textContent = text;
-		document.body.appendChild(labelDiv);
+		// Create a text sprite
+		const textTexture = createTextTexture(text);
+		const textMaterial = new THREE.SpriteMaterial({
+			map: textTexture,
+			depthTest: false,
+			depthWrite: false,
+			sizeAttenuation: false
+		});
+		const textSprite = new THREE.Sprite(textMaterial);
 
-		annotations[text] = { position, text, labelDiv, sprite };
+		// Add slight offset to text sprite position
+		textSprite.position.copy(position);
+		textSprite.position.x += 0.2;
+		textSprite.position.y += 0.05;
+		textSprite.position.z += 0.05;
+
+		textSprite.scale.set(0.07, 0.07, 0.07); // Adjusted scale for smaller text
+		scene.add(textSprite);
+
+		return { circleSprite, textSprite };
 	}
 
-	export function removeAnnotation(text: string) {
+	function createTextTexture(text: string, fontSize: number = 16): THREE.Texture {
+		const canvas = document.createElement('canvas');
+		const context = canvas.getContext('2d');
+		if (!context) throw new Error('Unable to get 2D context');
+
+		context.font = `${fontSize}px Arial`;
+		const textMetrics = context.measureText(text);
+		const textWidth = Math.ceil(textMetrics.width);
+		const textHeight = fontSize;
+
+		canvas.width = textWidth + 20; // Add more padding
+		canvas.height = textHeight + 16; // Add more padding
+
+		// Create rounded rectangle
+		const radius = 8; // Corner radius
+		context.beginPath();
+		context.moveTo(radius, 0);
+		context.lineTo(canvas.width - radius, 0);
+		context.quadraticCurveTo(canvas.width, 0, canvas.width, radius);
+		context.lineTo(canvas.width, canvas.height - radius);
+		context.quadraticCurveTo(canvas.width, canvas.height, canvas.width - radius, canvas.height);
+		context.lineTo(radius, canvas.height);
+		context.quadraticCurveTo(0, canvas.height, 0, canvas.height - radius);
+		context.lineTo(0, radius);
+		context.quadraticCurveTo(0, 0, radius, 0);
+		context.closePath();
+
+		// Fill with darker background
+		context.fillStyle = 'rgba(20, 20, 20, 0.95)';
+		context.fill();
+
+		// Add text
+		context.font = `${fontSize}px Arial`;
+		context.fillStyle = 'white';
+		context.textAlign = 'center';
+		context.textBaseline = 'middle';
+		context.fillText(text, canvas.width / 2, canvas.height / 2);
+
+		const texture = new THREE.Texture(canvas);
+		texture.needsUpdate = true;
+		return texture;
+	}
+
+	function removeAnnotation(text: string) {
 		const annotation = annotations[text];
 		if (annotation) {
-			document.body.removeChild(annotation.labelDiv);
-			scene.remove(annotation.sprite);
+			scene.remove(annotation.circleSprite);
+			scene.remove(annotation.textSprite);
 			delete annotations[text];
 		}
+	}
+
+	function removeAllAnnotations() {
+		Object.keys(annotations).forEach((text) => {
+			removeAnnotation(text);
+		});
 	}
 
 	function onMouseClick(event: MouseEvent) {
@@ -119,26 +163,12 @@
 			tooltipY = -(vector.y * heightHalf) + heightHalf;
 		}
 	}
-	function handleBeforeUnload() {
-		removeAllAnnotations();
-	}
 
 	onMount(() => {
 		initScene();
 		animate();
-		toggleAnnotationMode();
-		const urlParams = new URLSearchParams(window.location.search);
-		const modelPath = urlParams.get('model');
 
-		if (modelPath) {
-			loadModel(modelPath);
-		}
 		window.addEventListener('click', onMouseClick);
-		window.addEventListener('beforeunload', handleBeforeUnload);
-		return () => {
-			window.removeEventListener('beforeunload', handleBeforeUnload);
-			window.removeEventListener('click', onMouseClick);
-		};
 	});
 
 	function initScene() {
@@ -170,59 +200,21 @@
 	function loadModel(file_path: string) {
 		const loader = new GLTFLoader();
 		loader.load(file_path, (gltf) => {
-			if (currentModel) {
-				scene.remove(currentModel);
-			}
-			currentModel = gltf.scene;
-			scene.add(currentModel);
-		});
-	}
-
-	function removeAllAnnotations() {
-		Object.keys(annotations).forEach((text) => {
-			removeAnnotation(text);
+			scene.add(gltf.scene);
 		});
 	}
 
 	function handleModelSelection(file_path: string) {
 		removeAllAnnotations();
+		selectedModel = file_path;
+		localStorage.setItem('selectedModel', selectedModel);
 		loadModel(file_path);
-		const url = new URL(window.location.href);
-		url.searchParams.set('model', file_path);
-		window.history.pushState({}, '', url);
 	}
 
 	function animate() {
 		requestAnimationFrame(animate);
-		if (!canvas) return;
-		const rect = canvas.getBoundingClientRect();
-		const canvasWidth = rect.width;
-		const canvasHeight = rect.height;
 
-		Object.values(annotations).forEach(({ position, labelDiv }) => {
-			const spriteScreenPosition = position.clone().project(camera);
-
-			const widthHalf = canvasWidth / 2;
-			const heightHalf = canvasHeight / 2;
-			const spriteX = spriteScreenPosition.x * widthHalf + widthHalf;
-			const spriteY = -(spriteScreenPosition.y * heightHalf) + heightHalf;
-
-			labelDiv.style.position = 'fixed';
-			labelDiv.style.left = `${spriteX + rect.left}px`;
-			labelDiv.style.top = `${spriteY + rect.top}px`;
-
-			if (
-				spriteScreenPosition.z < 0 ||
-				spriteX < 0 ||
-				spriteX > canvasWidth ||
-				spriteY < 0 ||
-				spriteY > canvasHeight
-			) {
-				labelDiv.style.display = 'none';
-			} else {
-				labelDiv.style.display = 'block';
-			}
-		});
+		controls.update();
 
 		renderer.render(scene, camera);
 	}
@@ -235,13 +227,10 @@
 </script>
 
 <div class="scene-wrapper">
-	<div class="flex items-center space-x-4">
-		<Menu {models} onModelSelect={handleModelSelection} />
-		<P class=" font-semibold text-violet-700">
-			Tip: Open on the Menu to choose your model, then click on the desired location to add
-			annotations.
-		</P>
-	</div>
+	<Menu {models} onModelSelect={handleModelSelection} />
+	<Button on:click={toggleAnnotationMode}>
+		{annotationMode ? 'Exit Annotation Mode' : 'Enter Annotation Mode'}
+	</Button>
 	<canvas bind:this={canvas}></canvas>
 
 	{#if annotationMode && activePoint}
@@ -261,7 +250,7 @@
 
 	canvas {
 		width: 100%;
-		height: calc(100vh / 4);
+		height: 100vh;
 		max-width: 100%;
 		object-fit: contain;
 	}
