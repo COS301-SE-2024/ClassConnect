@@ -10,11 +10,7 @@ function validateUserCustom(locals: any, requiredRole: string) {
 }
 
 export async function load({ locals, params }) {
-	if (
-		(validateUserCustom(locals, 'admin') ||
-			validateUserCustom(locals, 'lecturer') ||
-			validateUserCustom(locals, 'student')) === false
-	) {
+	if ((validateUserCustom(locals, 'lecturer') || validateUserCustom(locals, 'student')) === false) {
 		throw error(401, 'Unauthorised');
 	}
 
