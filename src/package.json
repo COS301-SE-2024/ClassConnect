@@ -65,6 +65,7 @@
 	"type": "module",
 	"dependencies": {
 		"@dimforge/rapier3d-compat": "^0.14.0",
+		"@google/model-viewer": "^3.5.0",
 		"@lucia-auth/adapter-mongodb": "^1.0.3",
 		"@node-rs/argon2": "^1.8.3",
 		"@sendgrid/mail": "^8.1.3",

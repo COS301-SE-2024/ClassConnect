@@ -14,7 +14,7 @@
 	let description: string;
 
 	const objectsExtensions = ['gltf', 'glb'];
-	const MaterialExtensions = ['pdf', 'pptx', 'epub'];
+	const MaterialExtensions = ['pdf', 'jpg', 'png', 'jpeg'];
 
 	function handleFileUpload(event: Event) {
 		event.preventDefault();
@@ -84,8 +84,13 @@
 		</Label>
 
 		<Label for="with_helper" class="pb-2">Upload material:</Label>
-		<Fileupload id="with_helper" name="file" class="mb-2" accept=".pdf, .glb, .gtlf, .epub" />
-		<Helper>PDF, GLB or GTLF (MAX. 100 MB).</Helper>
+		<Fileupload
+			id="with_helper"
+			name="file"
+			class="mb-2"
+			accept=".pdf, .glb, .gtlf, .png, .jpg, .jpeg"
+		/>
+		<Helper>PDF, PNG, JPG, GLB or GTLF (MAX. 100 MB).</Helper>
 
 		<Button type="submit" class="w-full1">Upload File</Button>
 	</form>
