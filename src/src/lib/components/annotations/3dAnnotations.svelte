@@ -3,21 +3,20 @@
 	import * as THREE from 'three';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-	import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 	import Menu from '$lib/components/hotspot/3dMenu.svelte';
-	import { Button } from 'flowbite-svelte';
+	import { P } from 'flowbite-svelte';
 
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
 	let controls: OrbitControls;
-	let labelRenderer: CSS2DRenderer;
 	let raycaster: THREE.Raycaster;
 	let mouse: THREE.Vector2;
-	let annotationMode = false; // Toggle for annotation mode
+	let annotationMode = false;
 	let annotationText = '';
 	let activePoint: THREE.Vector3 | null = null;
 	let tooltipX: number = 0;
 	let tooltipY: number = 0;
+	let currentModel: THREE.Object3D | null = null;
 
 	export let data: {
 		role: string;
@@ -25,23 +24,33 @@
 	};
 
 	let { models } = data;
-	let selectedModel: string | null = null;
+
 	const annotations: {
-		[key: string]: { position: THREE.Vector3; text: string; labelDiv: HTMLDivElement };
+		[key: string]: {
+			position: THREE.Vector3;
+			text: string;
+			labelDiv: HTMLDivElement;
+			sprite: THREE.Sprite;
+		};
 	} = {};
 
 	function toggleAnnotationMode() {
-		annotationMode = !annotationMode;
+		if (data.role === 'lecturer') {
+			annotationMode = true;
+		} else if (data.role === 'student') {
+			annotationMode = false;
+		}
+
 		if (!annotationMode) {
-			activePoint = null; // Clear active point when exiting annotation mode
+			activePoint = null;
 		}
 	}
 
 	function addAnnotation() {
 		if (annotationText.trim() && activePoint) {
 			createAnnotation(activePoint, annotationText);
-			annotationText = ''; // Clear text after adding
-			activePoint = null; // Clear active point
+			annotationText = '';
+			activePoint = null;
 		}
 	}
 
@@ -59,14 +68,30 @@
 		sprite.scale.set(0.05, 0.05, 0.05);
 		scene.add(sprite);
 
+		// Create the label element
 		const labelDiv = document.createElement('div');
-		labelDiv.className = 'annotation-label';
+		labelDiv.style.backgroundColor = 'rgba(30, 30, 30, 0.9)';
+		labelDiv.style.padding = '2px 5px';
+		labelDiv.style.borderRadius = '3px';
+		labelDiv.style.fontSize = '12px';
+		labelDiv.style.color = 'white';
+		labelDiv.style.fontWeight = 'bold';
+		labelDiv.style.pointerEvents = 'none';
+		labelDiv.style.userSelect = 'none';
+		labelDiv.style.zIndex = '1000';
 		labelDiv.textContent = text;
-		const label = new CSS2DObject(labelDiv);
-		label.position.copy(position);
-		scene.add(label);
+		document.body.appendChild(labelDiv);
 
-		annotations[text] = { position, text, labelDiv };
+		annotations[text] = { position, text, labelDiv, sprite };
+	}
+
+	export function removeAnnotation(text: string) {
+		const annotation = annotations[text];
+		if (annotation) {
+			document.body.removeChild(annotation.labelDiv);
+			scene.remove(annotation.sprite);
+			delete annotations[text];
+		}
 	}
 
 	function onMouseClick(event: MouseEvent) {
@@ -94,12 +119,26 @@
 			tooltipY = -(vector.y * heightHalf) + heightHalf;
 		}
 	}
+	function handleBeforeUnload() {
+		removeAllAnnotations();
+	}
 
 	onMount(() => {
 		initScene();
 		animate();
+		toggleAnnotationMode();
+		const urlParams = new URLSearchParams(window.location.search);
+		const modelPath = urlParams.get('model');
 
+		if (modelPath) {
+			loadModel(modelPath);
+		}
 		window.addEventListener('click', onMouseClick);
+		window.addEventListener('beforeunload', handleBeforeUnload);
+		return () => {
+			window.removeEventListener('beforeunload', handleBeforeUnload);
+			window.removeEventListener('click', onMouseClick);
+		};
 	});
 
 	function initScene() {
@@ -110,13 +149,6 @@
 		renderer = new THREE.WebGLRenderer({ canvas });
 		renderer.setSize(window.innerWidth, window.innerHeight);
 		renderer.setClearColor(0xffffff);
-
-		labelRenderer = new CSS2DRenderer();
-		labelRenderer.setSize(window.innerWidth, window.innerHeight);
-		labelRenderer.domElement.style.position = 'absolute';
-		labelRenderer.domElement.style.top = '0';
-		labelRenderer.domElement.style.pointerEvents = 'none';
-		document.body.appendChild(labelRenderer.domElement);
 
 		raycaster = new THREE.Raycaster();
 		mouse = new THREE.Vector2();
@@ -138,20 +170,30 @@
 	function loadModel(file_path: string) {
 		const loader = new GLTFLoader();
 		loader.load(file_path, (gltf) => {
-			scene.add(gltf.scene);
+			if (currentModel) {
+				scene.remove(currentModel);
+			}
+			currentModel = gltf.scene;
+			scene.add(currentModel);
+		});
+	}
+
+	function removeAllAnnotations() {
+		Object.keys(annotations).forEach((text) => {
+			removeAnnotation(text);
 		});
 	}
 
 	function handleModelSelection(file_path: string) {
-		selectedModel = file_path;
-		localStorage.setItem('selectedModel', selectedModel);
+		removeAllAnnotations();
 		loadModel(file_path);
+		const url = new URL(window.location.href);
+		url.searchParams.set('model', file_path);
+		window.history.pushState({}, '', url);
 	}
 
 	function animate() {
 		requestAnimationFrame(animate);
-
-		// Get the canvas's bounding rect
 		if (!canvas) return;
 		const rect = canvas.getBoundingClientRect();
 		const canvasWidth = rect.width;
@@ -160,21 +202,15 @@
 		Object.values(annotations).forEach(({ position, labelDiv }) => {
 			const spriteScreenPosition = position.clone().project(camera);
 
-			//  normalized coordinates to pixel coordinates
 			const widthHalf = canvasWidth / 2;
 			const heightHalf = canvasHeight / 2;
 			const spriteX = spriteScreenPosition.x * widthHalf + widthHalf;
 			const spriteY = -(spriteScreenPosition.y * heightHalf) + heightHalf;
 
-			// Update the label's position
-			labelDiv.style.position = 'absolute';
+			labelDiv.style.position = 'fixed';
 			labelDiv.style.left = `${spriteX + rect.left}px`;
 			labelDiv.style.top = `${spriteY + rect.top}px`;
 
-			console.log(`Sprite Position: ${spriteX}, ${spriteY}`);
-			console.log(`Canvas Bounds: ${rect.left}, ${rect.top}, ${rect.width}, ${rect.height}`);
-
-			// Show/hide labels based on visibility
 			if (
 				spriteScreenPosition.z < 0 ||
 				spriteX < 0 ||
@@ -188,27 +224,26 @@
 			}
 		});
 
-		// Render the scene and labels
 		renderer.render(scene, camera);
-		labelRenderer.render(scene, camera);
 	}
 
 	function onWindowResize() {
 		camera.aspect = window.innerWidth / window.innerHeight;
 		camera.updateProjectionMatrix();
 		renderer.setSize(window.innerWidth, window.innerHeight);
-		labelRenderer.setSize(window.innerWidth, window.innerHeight);
 	}
 </script>
 
 <div class="scene-wrapper">
-	<Menu {models} onModelSelect={handleModelSelection} />
-	<Button on:click={toggleAnnotationMode}>
-		{annotationMode ? 'Exit Annotation Mode' : 'Enter Annotation Mode'}
-	</Button>
+	<div class="flex items-center space-x-4">
+		<Menu {models} onModelSelect={handleModelSelection} />
+		<P class=" font-semibold text-violet-700">
+			Tip: Open on the Menu to choose your model, then click on the desired location to add
+			annotations.
+		</P>
+	</div>
 	<canvas bind:this={canvas}></canvas>
 
-	<!-- Annotation input -->
 	{#if annotationMode && activePoint}
 		<div class="annotation-input" style="left: {tooltipX}px; top: {tooltipY}px;">
 			<input type="text" bind:value={annotationText} placeholder="Enter annotation" />
@@ -241,19 +276,10 @@
 	}
 
 	.annotation-input input {
-		width: 100px; /* Adjust width */
+		width: 100px;
 	}
 
 	.annotation-input button {
 		margin-top: 5px;
-	}
-
-	:global(.annotation-label) {
-		background-color: rgba(41, 39, 39, 0.7);
-		padding: 2px 5px;
-		border-radius: 3px;
-		font-size: 12px;
-		pointer-events: none;
-		user-select: none;
 	}
 </style>

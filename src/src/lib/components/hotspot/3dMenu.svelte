@@ -15,11 +15,10 @@
 	}
 </script>
 
-<!-- Menu Button to Open Drawer -->
 <Button
 	on:click={() => (isClosed = false)}
 	color="dark"
-	class="m-4 rounded-md border border-gray-300 bg-blue-700 bg-opacity-70 p-1 backdrop-blur-md dark:border-gray-700"
+	class="m-4 rounded-md border border-gray-300 bg-violet-700 bg-opacity-90 p-1 backdrop-blur-md dark:border-gray-700"
 >
 	<BarsOutline size="xl" />
 </Button>
