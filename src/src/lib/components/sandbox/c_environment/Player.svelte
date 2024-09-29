@@ -6,16 +6,20 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { CollisionGroups, Collider, RigidBody } from '@threlte/rapier';
 	import type { RigidBody as RapierRigidBody } from '@dimforge/rapier3d-compat';
-	import {getContext} from 'svelte'
+	import { getContext } from 'svelte';
 
 	const t = new Vector3();
 	let controls: PointerLockControls;
 	export let position: [x: number, y: number, z: number] = [0, 0, 40];
 
-	let highlightedObjects: { mesh: THREE.Mesh; originalMaterial: THREE.Material | THREE.Material[]; outlineMesh: THREE.Mesh }[] = [];
+	let highlightedObjects: {
+		mesh: THREE.Mesh;
+		originalMaterial: THREE.Material | THREE.Material[];
+		outlineMesh: THREE.Mesh;
+	}[] = [];
 
 	let isLightOn = false;
-	let lightToggleInProgress = false; 
+	let lightToggleInProgress = false;
 
 	let radius = 0.3;
 	let height = 1.8;
@@ -27,7 +31,6 @@
 	let right = 0;
 
 	let selectStage = getContext('selectStage') as () => void;
-	let stagePicked = getContext('stagePicked') as boolean;
 
 	let rigidBody: RapierRigidBody;
 	let torchLight: THREE.SpotLight;
@@ -73,8 +76,6 @@
 				break;
 		}
 	}
-	
-
 
 	function onKeyUp(e: KeyboardEvent) {
 		switch (e.key) {
@@ -107,7 +108,7 @@
 		// Initializing the Torch
 		torchLight = new THREE.SpotLight(0xffffff, 60, 0, Math.PI / 8, 0.2);
 		torchLight.visible = lightOn;
-		torchLight.castShadow = true; 
+		torchLight.castShadow = true;
 		scene.add(torchLight);
 	});
 
@@ -116,15 +117,14 @@
 		window.removeEventListener('keyup', onKeyUp);
 		window.removeEventListener('mousemove', onMouseMove);
 
-	 // Removing the Torch from the Scene
-	if (torchLight) {
-		scene.remove(torchLight);
-		torchLight.dispose();
-	}
+		// Removing the Torch from the Scene
+		if (torchLight) {
+			scene.remove(torchLight);
+			torchLight.dispose();
+		}
 
-	// Unhighlight the object if one is currently highlighted
-	unhighlightObject();
-
+		// Unhighlight the object if one is currently highlighted
+		unhighlightObject();
 	});
 
 	function highlightObject() {
@@ -132,10 +132,15 @@
 		const intersects = raycaster.intersectObjects(scene.children, true);
 
 		if (intersects.length > 0) {
-			const firstObject = intersects.find((intersect) => intersect.object instanceof THREE.Mesh)?.object as THREE.Mesh;
+			const firstObject = intersects.find((intersect) => intersect.object instanceof THREE.Mesh)
+				?.object as THREE.Mesh;
 
 			// Ensure the object doesn't have BoxGeometry and hasn't been highlighted already
-			if (firstObject && !(firstObject.geometry instanceof THREE.BoxGeometry) && !highlightedObjects.find((h) => h.mesh === firstObject)) {
+			if (
+				firstObject &&
+				!(firstObject.geometry instanceof THREE.BoxGeometry) &&
+				!highlightedObjects.find((h) => h.mesh === firstObject)
+			) {
 				const originalMaterial = firstObject.material;
 
 				// Create outline geometry
@@ -158,38 +163,38 @@
 				});
 			}
 		}
-}
+	}
 
 	function unhighlightObject() {
 		for (const { mesh, originalMaterial, outlineMesh } of highlightedObjects) {
-		if (mesh && outlineMesh) {
-			// Restore the original material
-			mesh.material = originalMaterial;
+			if (mesh && outlineMesh) {
+				// Restore the original material
+				mesh.material = originalMaterial;
 
-			// Remove the outline mesh from the parent mesh
-			if (outlineMesh.parent) {
-				outlineMesh.parent.remove(outlineMesh);
-			}
+				// Remove the outline mesh from the parent mesh
+				if (outlineMesh.parent) {
+					outlineMesh.parent.remove(outlineMesh);
+				}
 
-			// Dispose of the outline mesh's geometry
-			if (outlineMesh.geometry) {
-				outlineMesh.geometry.dispose();
-			}
+				// Dispose of the outline mesh's geometry
+				if (outlineMesh.geometry) {
+					outlineMesh.geometry.dispose();
+				}
 
-			// Dispose of the outline mesh's material(s)
-			if (Array.isArray(outlineMesh.material)) {
-				outlineMesh.material.forEach((material) => {
-					if (material) material.dispose();
-				});
-			} else if (outlineMesh.material) {
-				outlineMesh.material.dispose();
+				// Dispose of the outline mesh's material(s)
+				if (Array.isArray(outlineMesh.material)) {
+					outlineMesh.material.forEach((material) => {
+						if (material) material.dispose();
+					});
+				} else if (outlineMesh.material) {
+					outlineMesh.material.dispose();
+				}
 			}
 		}
-	}
 
-	// Clear the highlightedObjects array once all objects are unhighlighted
-	highlightedObjects = [];
-}
+		// Clear the highlightedObjects array once all objects are unhighlighted
+		highlightedObjects = [];
+	}
 
 	function toggleLight() {
 		if (!lightToggleInProgress) {
@@ -207,27 +212,26 @@
 			pointer.x = 0;
 			pointer.y = 0;
 
-
 			if (torchLight) {
 				const direction = cam.getWorldDirection(new Vector3()).normalize();
 
-// Copy camera position for the spotlight
-torchLight.position.copy(cam.position);
+				// Copy camera position for the spotlight
+				torchLight.position.copy(cam.position);
 
-// Adjust the spotlight target to be slightly higher
-const spotTarget = cam.position.clone().add(direction.multiplyScalar(5));
+				// Adjust the spotlight target to be slightly higher
+				const spotTarget = cam.position.clone().add(direction.multiplyScalar(5));
 
-// Move the target slightly up on the Y-axis to point above the player's view
-spotTarget.y += 1.0; // Adjust this value to move it higher
+				// Move the target slightly up on the Y-axis to point above the player's view
+				spotTarget.y += 1.0; // Adjust this value to move it higher
 
-torchLight.target.position.copy(spotTarget);
-torchLight.target.updateMatrixWorld();
+				torchLight.target.position.copy(spotTarget);
+				torchLight.target.updateMatrixWorld();
 			}
 		}
 	});
 
 	let cam: PerspectiveCamera;
-// Required for movemnt in Scene
+	// Required for movemnt in Scene
 	useTask(() => {
 		if (!rigidBody) return;
 		const velVec = t.fromArray([right - left, 0, backward - forward]);

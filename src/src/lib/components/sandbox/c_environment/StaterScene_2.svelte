@@ -1,11 +1,8 @@
 <script lang="ts">
-	import { T, useThrelte } from '@threlte/core';
+	import { T } from '@threlte/core';
 	import { Align, Environment, Float, Stars, Text3DGeometry } from '@threlte/extras';
 
-
 	import Menu from '$lib/components/sandbox/c_environment/Scene_Assets/Menu_2.svelte';
-
-
 </script>
 
 <Float rotationIntensity={[0, 3, 0]} rotationSpeed={1} floatingRange={[-5, 5]} speed={1}>

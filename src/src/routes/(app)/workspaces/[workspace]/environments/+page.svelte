@@ -50,14 +50,15 @@
 			imgClass="h-48 object-cover rounded-lg"
 			class="m-2 max-w-[45%] flex-grow p-4"
 		>
-			<h5 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">3D Simulation</h5>
+			<h5 class="mb-2 text-2xl font-bold text-gray-900 dark:text-white">3D Simulator</h5>
 
 			<p class="mb-3 font-normal leading-tight text-gray-700 dark:text-gray-400">
-				Be part of a curated scenario where you can immerse yourself in a realistic simulation and enhance your learning experience through interactive exploration.
+				Be part of a curated scenario where you can immerse yourself in a realistic simulation and
+				enhance your learning experience through interactive exploration.
 			</p>
 
 			<Button on:click={() => goto($page.url + '/simulation')}>
-				Enter Simulation
+				Enter 3D Simulator
 				<ArrowRightOutline />
 			</Button>
 		</Card>
