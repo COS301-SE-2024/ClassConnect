@@ -3,7 +3,14 @@ import { error, fail } from '@sveltejs/kit';
 
 import User from '$db/schemas/User';
 import Workspace from '$db/schemas/Workspace';
-import { addUser, getUsers, editUser, deleteUser, validateUser } from '$src/lib/server/utils/users';
+import {
+	addUser,
+	getUsers,
+	addUsers,
+	editUser,
+	deleteUser,
+	validateUser
+} from '$src/lib/server/utils/users';
 
 function formatWorkspace(workspace: any) {
 	return {
@@ -45,6 +52,19 @@ export const actions: Actions = {
 		} catch (error) {
 			console.error('Error adding student:', error);
 			return fail(500, { error: 'Failed to add student' });
+		}
+	},
+
+	addMulti: async ({ request, locals }) => {
+		validateUser(locals, 'admin');
+
+		try {
+			const data = await request.formData();
+			const file = data.get('csv') as File;
+			return await addUsers(file, locals.user?.organisation, 'student');
+		} catch (error) {
+			console.error('Error adding student:', error);
+			return fail(500, { error: 'Failed to add students' });
 		}
 	},
 
