@@ -1,0 +1,6 @@
+ignore:
+  - '**/*.svelte'
+  - '**/*.config.js'
+  - '**/*.config.ts'
+  - '**/*.d.ts'
+  - '**/database/schemas/*.ts'

@@ -12,8 +12,29 @@ export async function uploadFile(fileData: UploadData) {
 		return materialUpload(fileData, false);
 	} else if (folder === 'objects') {
 		return materialUpload(fileData, true);
+	} else if (folder === 'pictures') {
+		const file_path = await upload(fileData.file);
+
+		const workspace = await Workspace.findById(fileData.workspace);
+
+		if (!workspace) {
+			throw new Error('Workspace not found');
+		}
+
+		const newMaterial = new Material({
+			title: fileData.title,
+			description: fileData.description,
+			file_path: file_path,
+			thumbnail: file_path,
+			type: false,
+			workspace_id: workspace._id
+		});
+
+		await newMaterial.save();
+
+		return newMaterial;
 	} else {
-		throw new Error('file not suported');
+		throw new Error('file not supported');
 	}
 }
 
@@ -22,12 +43,31 @@ export async function multipartUploadFile(fileData: UploadInfo, folder: string) 
 		return materialUploadFromLink(fileData, false);
 	} else if (folder === 'objects') {
 		return materialUploadFromLink(fileData, true);
+	} else if (folder === 'pictures') {
+		const workspace = await Workspace.findById(fileData.workspace);
+
+		if (!workspace) {
+			throw new Error('Workspace not found');
+		}
+
+		const newMaterial = new Material({
+			title: fileData.title,
+			description: fileData.description,
+			file_path: fileData.link,
+			thumbnail: fileData.link,
+			type: false,
+			workspace_id: workspace._id
+		});
+
+		await newMaterial.save();
+
+		return newMaterial;
 	} else {
-		throw new Error('file not suported');
+		throw new Error('file not supported');
 	}
 }
 
-async function materialUpload(fileData: UploadData, file_type: boolean) {
+export async function materialUpload(fileData: UploadData, file_type: boolean) {
 	const file_path = await upload(fileData.file);
 
 	let thumbnail_path =
@@ -73,7 +113,7 @@ async function materialUpload(fileData: UploadData, file_type: boolean) {
 	return newMaterial;
 }
 
-async function materialUploadFromLink(fileData: UploadInfo, file_type: boolean) {
+export async function materialUploadFromLink(fileData: UploadInfo, file_type: boolean) {
 	const file_path = fileData.link;
 
 	let thumbnail_path =
