@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import Workspace from '$db/schemas/Workspace';
 import * as simulationModule from '$src/routes/(app)/workspaces/[workspace]/environments/simulation/+page.server';
-import { error, fail } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 
 vi.mock('$db/schemas/Workspace', () => {
 	const WorkspaceMock: any = vi.fn().mockImplementation(() => ({
@@ -20,7 +20,6 @@ vi.mock('@sveltejs/kit', async () => {
 	const actual = await vi.importActual('@sveltejs/kit');
 	return {
 		...actual,
-		fail: vi.fn(),
 		error: vi.fn(),
 		redirect: vi.fn()
 	};
@@ -42,7 +41,7 @@ describe('Simulation Module', () => {
 		});
 
 		it('should return success: true if workspace name matches acceptable names', async () => {
-			const locals = { user: { role: 'admin', organisation: 'org1' } };
+			const locals = { user: { role: 'lecturer', organisation: 'org1' } };
 			const params = { workspace: 'workspace-id' };
 
 			// Mocking the database response for a matching workspace
@@ -56,7 +55,7 @@ describe('Simulation Module', () => {
 		});
 
 		it('should return success: false if workspace name does not match acceptable names', async () => {
-			const locals = { user: { role: 'admin', organisation: 'org1' } };
+			const locals = { user: { role: 'lecturer', organisation: 'org1' } };
 			const params = { workspace: 'workspace-id' };
 
 			// Mocking the database response for a non-matching workspace name
@@ -70,7 +69,7 @@ describe('Simulation Module', () => {
 		});
 
 		it('should throw a 500 error if an exception occurs', async () => {
-			const locals = { user: { role: 'admin', organisation: 'Test Organisation' } };
+			const locals = { user: { role: 'lecturer', organisation: 'Test Organisation' } };
 			const params = { workspace: 'workspace-id' };
 
 			// Mocking the database to throw an error
