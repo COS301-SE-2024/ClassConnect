@@ -55,37 +55,36 @@
 		renderer.setClearColor(0xffffff);
 
 		// Add lighting
-		const ambientLight = new THREE.AmbientLight(0x404040, 0.9);
+		const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
 		scene.add(ambientLight);
 
-		const directionalLight = new THREE.DirectionalLight(0xffffff, 0.9);
-		directionalLight.position.set(5, 5, 5); 
+		const directionalLight = new THREE.DirectionalLight(0xffffff, 1.9);
 		directionalLight.castShadow = true;
 		directionalLight.shadow.radius = 4; 
 		scene.add(directionalLight);
 
-		// Add point lights at various positions
-		const pointLight1 = new THREE.PointLight(0xffffff, 0.9);
+		// Add point lights
+		const pointLight1 = new THREE.PointLight(0xffffff, 1.9);
 		pointLight1.position.set(0, 5, 5);
 		pointLight1.castShadow = true;
 		scene.add(pointLight1);
 
-		const pointLight2 = new THREE.PointLight(0xffffff, 0.9);
+		const pointLight2 = new THREE.PointLight(0xffffff, 1.9);
 		pointLight2.position.set(0, -5, 5); 
 		pointLight2.castShadow = true;
 		scene.add(pointLight2);
 
-		const pointLight3 = new THREE.PointLight(0xffffff, 0.9);
+		const pointLight3 = new THREE.PointLight(0xffffff, 1.9);
 		pointLight3.position.set(5, 5, 0); 
 		pointLight3.castShadow = true;  
 		scene.add(pointLight3);
 
-		const pointLight4 = new THREE.PointLight(0xffffff, 0.9);
+		const pointLight4 = new THREE.PointLight(0xffffff, 1.9);
 		pointLight4.position.set(-5, -5, 0); 
 		pointLight3.castShadow = true;
 		scene.add(pointLight4);
 
-		const pointLight5 = new THREE.PointLight(0xffffff, 0.9);
+		const pointLight5 = new THREE.PointLight(0xffffff, 1.9);
 		pointLight5.position.set(0, 0, -5);  
 		pointLight5.castShadow = true;
 		scene.add(pointLight5);
