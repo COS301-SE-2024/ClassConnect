@@ -8,6 +8,7 @@
 	export let currentModel: string;
 
 	let ref: any;
+	// eslint-disable-next-line
 	let isPointing = false;
 	let isSqueezed = false;
 	let offset = new Vector3();
