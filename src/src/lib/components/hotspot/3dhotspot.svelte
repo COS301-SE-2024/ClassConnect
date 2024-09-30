@@ -36,6 +36,7 @@
 	let transformControls: TransformControls;
 	let currentModel: THREE.Object3D | null = null;
 	let isLoading = false;
+	console.log(isLoading);
 
 	onMount(() => {
 		initScene();
