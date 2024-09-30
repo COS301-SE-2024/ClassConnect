@@ -60,7 +60,7 @@ describe('Signup Process', () => {
 			const locals = { user: { id: '123' } };
 			await signupModule.load({ locals });
 
-			expect(redirect).toHaveBeenCalledWith(302, '/dashboard');
+			expect(redirect).toHaveBeenCalledWith(302, '/workspaces');
 		});
 
 		it('should not redirect if in signed in', async () => {
