@@ -10,6 +10,7 @@
 	let modelPath: string;
 
 	modelPath = $selectedModel;
+	console.log('Model Path in close', modelPath);
 
 	function close() {
 		return async ({ result, update }: any) => {
