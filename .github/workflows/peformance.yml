@@ -13,4 +13,4 @@ jobs:
     - name: Lighthouse
       uses: foo-software/lighthouse-check-action@master
       with:
-        urls: 'www.class-connect.online'
+        urls: 'https://www.class-connect.online/'
