@@ -9,11 +9,7 @@
 	let { id, name, image, description } = workspace;
 
 	function openWorkspace() {
-		if (role === 'lecturer') {
-			goto(`/workspaces/${id}/dashboard`);
-		} else {
-			goto(`/workspaces/${id}/announcements`);
-		}
+		goto(`/workspaces/${id}/announcements`);
 	}
 </script>
 
