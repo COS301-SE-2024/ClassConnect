@@ -8,10 +8,7 @@
 	import { TransformControls } from 'three/addons/controls/TransformControls.js';
 	import Menu from './3dMenu.svelte';
 
-	import { selectedModel, modelSphereData, spherePosition } from '$lib/store/model';
-
-	
-	
+	import { selectedModel, spherePosition } from '$lib/store/model';
 
 	export let data: {
 		role: string;
@@ -28,7 +25,6 @@
 	};
 
 	let { role, models, questions } = data;
-	
 
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -36,9 +32,7 @@
 
 	let draggableSphere: THREE.Mesh;
 	let transformControls: TransformControls;
-	let currentModel: THREE.Object3D | null = null;	
-
-
+	let currentModel: THREE.Object3D | null = null;
 
 	onMount(() => {
 		initScene();
@@ -110,22 +104,18 @@
 			//sphere transform
 			transformControls.addEventListener('mouseDown', () => {
 				controls.enabled = false;
-				
 			});
 			transformControls.addEventListener('mouseUp', () => {
 				controls.enabled = true;
 				$spherePosition.copy(draggableSphere.position);
 			});
 		} else if (role === 'student') {
-
-
 			questions.forEach((question) => {
 				if (question.modelPath) {
 					loadModel(question.modelPath);
 				}
 			});
 
-			
 			const pinGeometry = new THREE.SphereGeometry(0.05);
 			const pinMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 			const pin = new THREE.Mesh(pinGeometry, pinMaterial);
@@ -159,11 +149,7 @@
 		window.addEventListener('resize', onWindowResize, false);
 	}
 
-	
-
-	
 	function loadModel(file_path: string) {
-		
 		const loader = new GLTFLoader();
 		loader.load(file_path, (gltf) => {
 			if (currentModel) {
@@ -171,7 +157,6 @@
 			}
 			currentModel = gltf.scene;
 			scene.add(currentModel);
-			
 		});
 	}
 
@@ -198,11 +183,12 @@
 		<div class="flex items-center space-x-4">
 			<Menu {models} onModelSelect={handleModelSelection} />
 			<P class=" font-semibold text-violet-700">
-				Note: Open the menu to select a model, then use the transform controls on the violet sphere to drag it to your desired point.
+				Note: Open the menu to select a model, then use the transform controls on the violet sphere
+				to drag it to your desired point.
 			</P>
 		</div>
 	{/if}
-	
+
 	<canvas bind:this={canvas}></canvas>
 </div>
 

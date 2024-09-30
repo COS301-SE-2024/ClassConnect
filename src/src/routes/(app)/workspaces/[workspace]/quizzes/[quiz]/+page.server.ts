@@ -14,7 +14,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		const workspaceID = params.workspace;
 		const quizId = params.quiz;
 		const questions = await Questions.find({ quiz: quizId });
-		const models = await getModels(params.workspace, true);6
+		const models = await getModels(params.workspace, true);
+		6;
 
 		const quiz = await Quizzes.findById(quizId);
 		if (!quiz) {
