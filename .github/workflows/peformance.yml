@@ -1,0 +1,16 @@
+name: Run Performance Check
+on:
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Lighthouse
+      uses: foo-software/lighthouse-check-action@master
+      with:
+        urls: 'www.class-connect.online'
