@@ -102,7 +102,6 @@ describe('actions.edit', () => {
 
 		expect(editLesson).toHaveBeenCalled();
 	});
-
 	it('should fail to edit a lesson and return error', async () => {
 		editLesson.mockRejectedValue(new Error('Edit error'));
 

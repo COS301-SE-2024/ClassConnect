@@ -9,7 +9,7 @@ import { retry_connection } from '$db/db';
 
 export async function load({ locals }) {
 	if (locals.user) {
-		locals.user.role === 'lecturer' ? redirect(302, '/workspaces') : redirect(302, '/dashboard');
+		locals.user.role === 'admin' ? redirect(302, '/organisation') : redirect(302, '/workspaces');
 	}
 }
 
@@ -78,6 +78,6 @@ export const actions: Actions = {
 			return fail(500, { error: 'Failed to sign in' });
 		}
 
-		role === 'lecturer' ? redirect(302, '/workspaces') : redirect(302, '/dashboard');
+		role === 'admin' ? redirect(302, '/organisation') : redirect(302, '/workspaces');
 	}
 };

@@ -11,6 +11,7 @@
 		return async ({ result, update }: any) => {
 			if (result.type === 'success') {
 				await update();
+
 				open = false;
 				dispatch('formSubmitted');
 			} else {

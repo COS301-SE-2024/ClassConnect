@@ -49,7 +49,7 @@ describe('Authentication Process', () => {
 			const locals = { user: { id: '123' } };
 			await signInModule.load({ locals });
 
-			expect(redirect).toHaveBeenCalledWith(302, '/dashboard');
+			expect(redirect).toHaveBeenCalledWith(302, '/workspaces');
 		});
 
 		it('should not redirect if not signed in', async () => {
@@ -106,7 +106,7 @@ describe('Authentication Process', () => {
 				'cookievalue',
 				expect.objectContaining({ path: '.' })
 			);
-			expect(redirect).toHaveBeenCalledWith(302, '/dashboard');
+			expect(redirect).toHaveBeenCalledWith(302, '/workspaces');
 		});
 
 		it('should handle invalid username', async () => {

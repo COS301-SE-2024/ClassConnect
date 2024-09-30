@@ -1,4 +1,5 @@
 import { hash } from '@node-rs/argon2';
+import { parse } from 'csv-parse/sync';
 import { fail, error } from '@sveltejs/kit';
 
 import type { User } from '$src/types';
@@ -106,4 +107,22 @@ export async function deleteUser(id: string) {
 	if (!deletedUser) return fail(404, { error: 'User not found' });
 
 	return { success: true };
+}
+
+export async function addUsers(csvFile: File, organisation: ObjectId | undefined, role: string) {
+	const fileContent = await csvFile.text();
+	const records = parse(fileContent, { columns: true, skip_empty_lines: true });
+
+	console.log(records);
+
+	for (const record of records) {
+		const { name, surname, email } = record;
+
+		const formData = new FormData();
+		formData.append('name', name);
+		formData.append('email', email);
+		formData.append('surname', surname);
+
+		await addUser(formData, organisation, role);
+	}
 }

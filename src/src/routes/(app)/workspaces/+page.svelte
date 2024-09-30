@@ -4,11 +4,10 @@
 	import NoAccess from '$src/lib/components/common/PageUnavailable.svelte';
 
 	export let data: any;
-	$: ({ organisation } = data);
 </script>
 
 {#if data.role === 'admin'}
-	{#if organisation === undefined}
+	{#if data.organisation === undefined}
 		<NoAccess />
 	{:else}
 		<AdminWorkspaces {data} />
