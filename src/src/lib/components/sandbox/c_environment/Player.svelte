@@ -222,7 +222,7 @@
 				const spotTarget = cam.position.clone().add(direction.multiplyScalar(5));
 
 				// Move the target slightly up on the Y-axis to point above the player's view
-				spotTarget.y += 1.0; // Adjust this value to move it higher
+				spotTarget.y += 1.0;
 
 				torchLight.target.position.copy(spotTarget);
 				torchLight.target.updateMatrixWorld();

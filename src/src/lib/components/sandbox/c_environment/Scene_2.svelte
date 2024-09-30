@@ -16,15 +16,17 @@
 	scene.backgroundIntensity = 0.02;
 </script>
 
-<Pane position="fixed" title="3D Environment Controls" x={1300} y={80}>
+<Pane position="fixed" title="3D Environment Controls" x={1160} y={30+20} scale ={1}
+width={256}>
 	<Text value="Use the 'WASD' keys to move around" disabled />
 	<Text value="Press escape 'Esc' to exit the scene" disabled />
 	<Text value="Use the mouse to look around" disabled />
 	<Text value="Press 'E' to interact with objects" disabled />
-	<Text value="Press to toggle the Torch" disabled />
+	<Text value="Press 'L' to toggle the Torch" disabled />
 </Pane>
 
-<Pane position="fixed" title="3D Environment Controls" x={1300} y={240}>
+<Pane position="fixed" title="3D Environment Controls" x={1160} y={210+20} scale ={1}
+width={256}>
 	<Text value="Press 'O' to exit stage" disabled />
 </Pane>
 
