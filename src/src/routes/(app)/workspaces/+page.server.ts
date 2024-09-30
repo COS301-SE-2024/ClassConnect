@@ -68,8 +68,10 @@ export async function load({ locals }) {
 				getWorkspaces(locals.user.organisation),
 				getLecturers(locals.user.organisation)
 			]);
-
-			const organisation = locals.user.organisation.toString() || null;
+			let organisation;
+			if (locals.user.organisation !== undefined) {
+				organisation = locals.user.organisation.toString() || null;
+			}
 
 			return { role: locals.user.role, lecturers, workspaces, organisation };
 		} else {

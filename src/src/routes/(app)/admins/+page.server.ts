@@ -1,7 +1,14 @@
 import type { Actions } from './$types';
 import { error, fail } from '@sveltejs/kit';
 
-import { addUser, getUsers, editUser, deleteUser, validateUser } from '$src/lib/server/utils/users';
+import {
+	addUser,
+	getUsers,
+	addUsers,
+	editUser,
+	deleteUser,
+	validateUser
+} from '$src/lib/server/utils/users';
 
 export async function load({ locals }) {
 	validateUser(locals, 'admin');
@@ -29,6 +36,19 @@ export const actions: Actions = {
 		} catch (error) {
 			console.error('Error adding admin:', error);
 			return fail(500, { error: 'Failed to add admin' });
+		}
+	},
+
+	addMulti: async ({ request, locals }) => {
+		validateUser(locals, 'admin');
+
+		try {
+			const data = await request.formData();
+			const file = data.get('csv') as File;
+			return await addUsers(file, locals.user?.organisation, 'admin');
+		} catch (error) {
+			console.error('Error adding student:', error);
+			return fail(500, { error: 'Failed to add admins' });
 		}
 	},
 

@@ -6,7 +6,6 @@
 
 	const navLinks = {
 		admin: [
-			{ name: 'Dashboard', href: '/dashboard' },
 			{ name: 'Announcements', href: '/announcements' },
 			{ name: 'Organisation', href: '/organisation' },
 			{ name: 'Workspaces', href: '/workspaces' },
@@ -19,7 +18,6 @@
 			{ name: 'Announcements', href: '/announcements' }
 		],
 		student: [
-			{ name: 'Dashboard', href: '/dashboard' },
 			{ name: 'Workspaces', href: '/workspaces' },
 			{ name: 'Announcements', href: '/announcements' },
 			{ name: 'Grades', href: '/grades' }

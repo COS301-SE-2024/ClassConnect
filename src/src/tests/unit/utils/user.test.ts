@@ -16,6 +16,8 @@ import {
 	deleteUser,
 	validateUser
 } from '$src/lib/server/utils/users';
+import * as UserUtils from '$src/lib/server/utils/users';
+import { parse } from 'csv-parse/sync';
 
 vi.mock('@node-rs/argon2', () => ({
 	hash: vi.fn()
@@ -56,6 +58,10 @@ vi.mock('$db/schemas/Organisation', () => {
 vi.mock('$lib/server/storage', () => ({
 	upload: vi.fn(),
 	deleteFile: vi.fn()
+}));
+
+vi.mock('csv-parse/sync', () => ({
+	parse: vi.fn()
 }));
 
 describe('userUtils', () => {
@@ -235,6 +241,70 @@ describe('userUtils', () => {
 
 			expect(result).toEqual({ success: true });
 			expect(Users.findByIdAndDelete).toHaveBeenCalledWith('123');
+		});
+	});
+
+	describe('addUsers', () => {
+		it('should process CSV and call addUser for each record', async () => {
+			const mockCsvContent = `name,surname,email
+John,Doe,john@example.com
+Jane,Smith,jane@example.com`;
+
+			// Mock csvFile
+			const mockCsvFile = {
+				text: vi.fn().mockResolvedValue(mockCsvContent)
+			};
+
+			// Mock parse function
+			(parse as any).mockReturnValue([
+				{ name: 'John', surname: 'Doe', email: 'john@example.com' },
+				{ name: 'Jane', surname: 'Smith', email: 'jane@example.com' }
+			]);
+
+			const orgId = new Schema.Types.ObjectId('org123');
+			const role = 'admin';
+
+			(Organisation.findById as any).mockReturnValue({
+				select: vi.fn().mockResolvedValue({ _id: orgId, name: 'Org Name' })
+			});
+
+			await UserUtils.addUsers(mockCsvFile as unknown as File, orgId, role);
+
+			expect(mockCsvFile.text).toHaveBeenCalled();
+			expect(parse).toHaveBeenCalledWith(mockCsvContent, { columns: true, skip_empty_lines: true });
+		});
+
+		it('should handle error if CSV parsing fails', async () => {
+			const mockCsvFile = {
+				text: vi.fn().mockResolvedValue('invalid csv content')
+			};
+
+			(parse as any).mockImplementation(() => {
+				throw new Error('CSV parsing error');
+			});
+
+			const orgId = new Schema.Types.ObjectId('org123');
+			const role = 'user';
+
+			await expect(UserUtils.addUsers(mockCsvFile as unknown as File, orgId, role)).rejects.toThrow(
+				'CSV parsing error'
+			);
+		});
+
+		it('should handle error if addUser fails for a record', async () => {
+			(parse as any).mockReturnValue([{ name: 'John', surname: 'Doe', email: 'john@example.com' }]);
+
+			const addUserSpy = vi
+				.spyOn(UserUtils, 'addUser')
+				.mockRejectedValue(new Error('addUser failed'));
+
+			const orgId = new Schema.Types.ObjectId('org123');
+
+			(Organisation.findById as any).mockReturnValue({
+				select: vi.fn().mockResolvedValue({ _id: orgId, name: 'Org Name' })
+			});
+
+			expect(addUserSpy).toHaveBeenCalledTimes(0);
 		});
 	});
 });
