@@ -7,7 +7,11 @@
 
 	import { TransformControls } from 'three/addons/controls/TransformControls.js';
 	import Menu from './3dMenu.svelte';
+
 	import { selectedModel, modelSphereData, spherePosition } from '$lib/store/model';
+
+	
+	
 
 	export let data: {
 		role: string;
@@ -24,9 +28,7 @@
 	};
 
 	let { role, models, questions } = data;
-	if (role === 'student') {
-		console.log('Questions', questions);
-	}
+	
 
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -34,9 +36,9 @@
 
 	let draggableSphere: THREE.Mesh;
 	let transformControls: TransformControls;
-	let currentModel: THREE.Object3D | null = null;
-	let isLoading = false;
-	console.log(isLoading);
+	let currentModel: THREE.Object3D | null = null;	
+
+
 
 	onMount(() => {
 		initScene();
@@ -108,25 +110,22 @@
 			//sphere transform
 			transformControls.addEventListener('mouseDown', () => {
 				controls.enabled = false;
-				$spherePosition.copy(draggableSphere.position);
-				modelSphereData.set({
-					file_path: $selectedModel,
-					position: draggableSphere.position.clone()
-				});
+				
 			});
 			transformControls.addEventListener('mouseUp', () => {
 				controls.enabled = true;
 				$spherePosition.copy(draggableSphere.position);
 			});
 		} else if (role === 'student') {
-			//loadModel
+
+
 			questions.forEach((question) => {
 				if (question.modelPath) {
 					loadModel(question.modelPath);
 				}
 			});
 
-			// Create and add the new pin
+			
 			const pinGeometry = new THREE.SphereGeometry(0.05);
 			const pinMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 			const pin = new THREE.Mesh(pinGeometry, pinMaterial);
@@ -160,30 +159,19 @@
 		window.addEventListener('resize', onWindowResize, false);
 	}
 
-	const loadingManager = new THREE.LoadingManager(
-		() => {
-			isLoading = false;
-		},
-		(itemUrl, itemsLoaded, itemsTotal) => {
-			// Update progress
-			console.log(`Loaded ${itemsLoaded} of ${itemsTotal}`);
-		},
-		(url) => {
-			// Handle loading error
-			console.error(`Error loading ${url}`);
-		}
-	);
+	
 
-	const loader = new GLTFLoader(loadingManager);
-
+	
 	function loadModel(file_path: string) {
-		isLoading = true;
+		
+		const loader = new GLTFLoader();
 		loader.load(file_path, (gltf) => {
 			if (currentModel) {
 				scene.remove(currentModel);
 			}
 			currentModel = gltf.scene;
 			scene.add(currentModel);
+			
 		});
 	}
 
@@ -210,10 +198,11 @@
 		<div class="flex items-center space-x-4">
 			<Menu {models} onModelSelect={handleModelSelection} />
 			<P class=" font-semibold text-violet-700">
-				Note: Use the transform controls on the violet sphere to drag it to your desired point.
+				Note: Open the menu to select a model, then use the transform controls on the violet sphere to drag it to your desired point.
 			</P>
 		</div>
 	{/if}
+	
 	<canvas bind:this={canvas}></canvas>
 </div>
 
