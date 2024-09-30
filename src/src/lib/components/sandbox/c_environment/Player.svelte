@@ -6,17 +6,20 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { CollisionGroups, Collider, RigidBody } from '@threlte/rapier';
 	import type { RigidBody as RapierRigidBody } from '@dimforge/rapier3d-compat';
+	import { getContext } from 'svelte';
 
 	const t = new Vector3();
 	let controls: PointerLockControls;
 	export let position: [x: number, y: number, z: number] = [0, 0, 40];
 
-	let highlightedMesh: THREE.Mesh | null = null;
-	let originalMaterial: THREE.Material | THREE.Material[] | null = null;
-	let outlineMesh: THREE.Mesh | null = null; // Track the outline mesh
+	let highlightedObjects: {
+		mesh: THREE.Mesh;
+		originalMaterial: THREE.Material | THREE.Material[];
+		outlineMesh: THREE.Mesh;
+	}[] = [];
 
-	let isLightOn = false; // Tracks the state of the light
-	let lightToggleInProgress = false; // Prevents multiple tog
+	let isLightOn = false;
+	let lightToggleInProgress = false;
 
 	let radius = 0.3;
 	let height = 1.8;
@@ -27,8 +30,10 @@
 	let left = 0;
 	let right = 0;
 
+	let selectStage = getContext('selectStage') as () => void;
+
 	let rigidBody: RapierRigidBody;
-	let pointLight: THREE.PointLight;
+	let torchLight: THREE.SpotLight;
 	let lightOn = false;
 
 	const { renderer, scene } = useThrelte();
@@ -57,13 +62,16 @@
 				break;
 			case 'e':
 				highlightObject();
-				break; // Add highlight on pressing 'E'
+				break;
 			case 'q':
 				unhighlightObject();
-				break; // Unhighlight on pressing 'Q'
+				break;
 			case 'l':
 				toggleLight();
-				break; // Toggle light on/off with 'L'
+				break;
+			case 'o':
+				selectStage();
+				break;
 			default:
 				break;
 		}
@@ -97,93 +105,133 @@
 		window.addEventListener('keyup', onKeyUp);
 		window.addEventListener('mousemove', onMouseMove);
 
-		// Initialize the point light
-		pointLight = new THREE.PointLight(0xffffff, 10, 10);
-		pointLight.visible = lightOn;
-		scene.add(pointLight);
+		// Initializing the Torch
+		torchLight = new THREE.SpotLight(0xffffff, 60, 0, Math.PI / 8, 0.2);
+		torchLight.visible = lightOn;
+		torchLight.castShadow = true;
+		scene.add(torchLight);
 	});
 
 	onDestroy(() => {
 		window.removeEventListener('keydown', onKeyDown);
 		window.removeEventListener('keyup', onKeyUp);
 		window.removeEventListener('mousemove', onMouseMove);
+
+		// Removing the Torch from the Scene
+		if (torchLight) {
+			scene.remove(torchLight);
+			torchLight.dispose();
+		}
+
+		// Unhighlight the object if one is currently highlighted
+		unhighlightObject();
 	});
 
 	function highlightObject() {
 		raycaster.setFromCamera(pointer, cam);
 		const intersects = raycaster.intersectObjects(scene.children, true);
 
-		// Unhighlight previous object
-		unhighlightObject();
-
-		// Highlight the first mesh found
 		if (intersects.length > 0) {
 			const firstObject = intersects.find((intersect) => intersect.object instanceof THREE.Mesh)
 				?.object as THREE.Mesh;
-			if (firstObject) {
-				highlightedMesh = firstObject;
-				originalMaterial = firstObject.material;
 
-				// Create an outline effect by scaling the object
+			// Ensure the object doesn't have BoxGeometry and hasn't been highlighted already
+			if (
+				firstObject &&
+				!(firstObject.geometry instanceof THREE.BoxGeometry) &&
+				!highlightedObjects.find((h) => h.mesh === firstObject)
+			) {
+				const originalMaterial = firstObject.material;
+
+				// Create outline geometry
 				const outlineGeometry = (firstObject.geometry as THREE.BufferGeometry).clone();
 				const outlineMaterial = new THREE.MeshBasicMaterial({
-					color: 0xffff00, // yellow outline
+					color: 0xffff00,
 					side: THREE.BackSide,
 					transparent: true,
 					opacity: 0.5
 				});
-				outlineMesh = new THREE.Mesh(outlineGeometry, outlineMaterial);
-				outlineMesh.scale.multiplyScalar(1.05); // Scale the outline slightly larger
+				const outlineMesh = new THREE.Mesh(outlineGeometry, outlineMaterial);
+				outlineMesh.scale.multiplyScalar(1.05);
 				firstObject.add(outlineMesh);
+
+				// Store the highlighted object
+				highlightedObjects.push({
+					mesh: firstObject,
+					originalMaterial,
+					outlineMesh
+				});
 			}
 		}
 	}
 
 	function unhighlightObject() {
-		if (highlightedMesh) {
-			// Restore original material
-			if (originalMaterial) {
-				highlightedMesh.material = originalMaterial;
+		for (const { mesh, originalMaterial, outlineMesh } of highlightedObjects) {
+			if (mesh && outlineMesh) {
+				// Restore the original material
+				mesh.material = originalMaterial;
+
+				// Remove the outline mesh from the parent mesh
+				if (outlineMesh.parent) {
+					outlineMesh.parent.remove(outlineMesh);
+				}
+
+				// Dispose of the outline mesh's geometry
+				if (outlineMesh.geometry) {
+					outlineMesh.geometry.dispose();
+				}
+
+				// Dispose of the outline mesh's material(s)
+				if (Array.isArray(outlineMesh.material)) {
+					outlineMesh.material.forEach((material) => {
+						if (material) material.dispose();
+					});
+				} else if (outlineMesh.material) {
+					outlineMesh.material.dispose();
+				}
 			}
-			// Remove the outline mesh
-			if (outlineMesh && highlightedMesh) {
-				highlightedMesh.remove(outlineMesh);
-			}
-			highlightedMesh = null;
-			outlineMesh = null;
 		}
+
+		// Clear the highlightedObjects array once all objects are unhighlighted
+		highlightedObjects = [];
 	}
 
 	function toggleLight() {
 		if (!lightToggleInProgress) {
-			lightToggleInProgress = true; // Prevent multiple toggles
-			isLightOn = !isLightOn; // Toggle the light state
-			pointLight.visible = isLightOn;
-			console.log(`Light ${isLightOn ? 'on' : 'off'}`);
-
-			// Set a small delay to allow the key to be released before it can toggle again
+			lightToggleInProgress = true;
+			isLightOn = !isLightOn;
+			torchLight.visible = isLightOn;
 			setTimeout(() => {
 				lightToggleInProgress = false;
-			}, 300); // 300ms delay (adjust as needed)
+			}, 300);
 		}
 	}
 
 	useTask(() => {
 		if (controls.isLocked) {
-			// Center the raycaster
 			pointer.x = 0;
 			pointer.y = 0;
 
-			// Update the point light's position to follow the camera
-			if (pointLight) {
-				pointLight.position.copy(cam.position);
-				pointLight.position.add(cam.getWorldDirection(new Vector3()).multiplyScalar(1.5)); // Place it slightly ahead of the player
+			if (torchLight) {
+				const direction = cam.getWorldDirection(new Vector3()).normalize();
+
+				// Copy camera position for the spotlight
+				torchLight.position.copy(cam.position);
+
+				// Adjust the spotlight target to be slightly higher
+				const spotTarget = cam.position.clone().add(direction.multiplyScalar(5));
+
+				// Move the target slightly up on the Y-axis to point above the player's view
+				spotTarget.y += 1.0; // Adjust this value to move it higher
+
+				torchLight.target.position.copy(spotTarget);
+				torchLight.target.updateMatrixWorld();
 			}
 		}
 	});
 
 	let cam: PerspectiveCamera;
-
+	// Required for movemnt in Scene
 	useTask(() => {
 		if (!rigidBody) return;
 		const velVec = t.fromArray([right - left, 0, backward - forward]);
