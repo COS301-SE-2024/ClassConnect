@@ -16,6 +16,9 @@
 
 	let { id, title, content, date, createdBy } = announcement;
 
+
+
+
 	let DATE = new Date(date);
 	let isEditModalOpen = false;
 	let isRemoveModalOpen = false;
@@ -79,5 +82,5 @@
 	</div>
 </div>
 
-<EditModal bind:open={isEditModalOpen} {id} />
-<RemoveModal bind:open={isRemoveModalOpen} {id} item={'announcement'} />
+<EditModal bind:open={isEditModalOpen} {title} {content} {id} />
+<RemoveModal bind:open={isRemoveModalOpen} {id}  item={'announcement'} />

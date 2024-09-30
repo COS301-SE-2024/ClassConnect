@@ -6,6 +6,9 @@
 	export let id: string;
 	export let open: boolean;
 
+	export let title: string;
+	export let content: string;
+
 	let error: string;
 
 	function close() {
@@ -38,14 +41,14 @@
 		<Input type="hidden" id="id" name="id" value={id} size="md" readonly />
 
 		<Label for="title" class="mb-2 mt-2 text-left">New Title</Label>
-		<Input type="text" id="title" name="title" placeholder="Fire Drill" size="md" />
+		<Input type="text" id="title" name="title" value={title} size="md" />
 
 		<Label for="content" class="mb-2 mt-2 text-left">New Content</Label>
 		<Textarea
 			type="text"
 			id="content"
 			name="content"
-			placeholder="The fire drill is as follows..."
+			value={content}
 			size="md"
 		/>
 
