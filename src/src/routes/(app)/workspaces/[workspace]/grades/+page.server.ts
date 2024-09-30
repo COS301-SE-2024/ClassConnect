@@ -13,7 +13,7 @@ export async function load({ locals, params }) {
 
 		const workspaceGrades = grades.map((grade) => ({
 			average: 0,
-			score: grade.mark * 10,
+			score: grade.mark,
 			assessment: grade.quizID.title,
 			quizID: grade.quizID._id.toString(),
 			date: grade.quizID.date.toDateString()
@@ -23,7 +23,7 @@ export async function load({ locals, params }) {
 			const allGrades = await Grades.find({ quizID: assessment.quizID });
 			const average = allGrades.reduce((sum, g) => sum + g.mark, 0) / allGrades.length;
 
-			assessment.average = Math.round(average) * 10;
+			assessment.average = Math.round(average);
 		}
 
 		console.log(workspaceGrades);
