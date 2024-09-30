@@ -162,7 +162,9 @@
 		const toastId = toast.loading('Saving recording...');
 		const mimeType = mediaRecorder?.mimeType || 'video/webm';
 		const blob: Blob = new Blob(recordedChunks, { type: mimeType });
-		const file = new File([blob], `screen-recording.${mimeType.split('/')[1]}`, { type: mimeType });
+		const extention = mimeType.split('/')[1].split(';')[0];
+		const file = new File([blob], `screen-recording.${extention}`, { type: mimeType });
+		console.log('Recording file:', file);
 
 		let response: Response;
 		const formData = new FormData();
@@ -172,6 +174,8 @@
 			formData.append('video', file);
 			response = await fetch('?/SaveRecording', { method: 'POST', body: formData });
 		} else {
+			toast.dismiss(toastId);
+			toast.loading('Uploading large file this will take some time...');
 			const data = await multipartUploadFile(file);
 			formData.append('videolink', data.url);
 			response = await fetch('?/SaveRecordingLink', { method: 'POST', body: formData });
