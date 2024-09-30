@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import Grades from '$lib/server/database/schemas/Grades';
+import Grades from '$db/schemas/Grades';
 
 export async function load({ locals, params }) {
 	if (!locals.user || locals.user.role !== 'student') throw error(401, 'Unauthorised');
@@ -13,7 +13,7 @@ export async function load({ locals, params }) {
 
 		const workspaceGrades = grades.map((grade) => ({
 			average: 0,
-			score: grade.mark,
+			score: grade.mark * 10,
 			assessment: grade.quizID.title,
 			quizID: grade.quizID._id.toString(),
 			date: grade.quizID.date.toDateString()
@@ -23,8 +23,10 @@ export async function load({ locals, params }) {
 			const allGrades = await Grades.find({ quizID: assessment.quizID });
 			const average = allGrades.reduce((sum, g) => sum + g.mark, 0) / allGrades.length;
 
-			assessment.average = Math.round(average);
+			assessment.average = Math.round(average) * 10;
 		}
+
+		console.log(workspaceGrades);
 
 		return { grades: workspaceGrades };
 	} catch (e) {
