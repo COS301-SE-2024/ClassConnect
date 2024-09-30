@@ -42,21 +42,19 @@
 	</div>
 {/if}
 
-
-	{#if stagePicked}
+{#if stagePicked}
 	<div class="webgl h-screen w-screen bg-black">
-		<Canvas >
+		<Canvas>
 			<!-- <Menu/> -->
 			<World>
 				<MiningStage />
 			</World>
 		</Canvas>
 	</div>
-	{:else}
+{:else}
 	<div class="webgl h-screen bg-black">
 		<Canvas>
 			<StarterScene />
 		</Canvas>
 	</div>
-	{/if}
-
+{/if}
