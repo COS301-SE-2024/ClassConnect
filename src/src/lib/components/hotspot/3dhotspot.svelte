@@ -7,15 +7,26 @@
 
 	import { TransformControls } from 'three/addons/controls/TransformControls.js';
 	import Menu from './3dMenu.svelte';
-
-	import { spherePosition } from '$lib/store/position';
+	import { selectedModel, modelSphereData, spherePosition } from '$lib/store/model';
 
 	export let data: {
 		role: string;
 		models: { title: string; file_path: string; description: string }[];
+		questions: {
+			id: string;
+			questionNumber: number;
+			questionContent: string;
+			questionPoints: number;
+			questionType: string;
+			modelPath: string;
+			options: { content: string; points: number }[] | null;
+		}[];
 	};
 
-	let { models } = data;
+	let { role, models, questions } = data;
+	if (role === 'student') {
+		console.log('Questions', questions);
+	}
 
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -24,16 +35,12 @@
 	let draggableSphere: THREE.Mesh;
 	let transformControls: TransformControls;
 	let currentModel: THREE.Object3D | null = null;
+	let isLoading = false;
+	console.log(isLoading);
 
 	onMount(() => {
 		initScene();
 		animate();
-		const urlParams = new URLSearchParams(window.location.search);
-		const modelPath = urlParams.get('model');
-
-		if (modelPath) {
-			loadModel(modelPath);
-		}
 	});
 
 	function initScene() {
@@ -46,13 +53,41 @@
 		renderer.setClearColor(0xffffff);
 
 		// Add lighting
-		const ambientLight = new THREE.AmbientLight(0x404040);
+		const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
 		scene.add(ambientLight);
-		const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-		directionalLight.position.set(1, 1, 1).normalize();
+
+		const directionalLight = new THREE.DirectionalLight(0xffffff, 1.9);
+		directionalLight.castShadow = true;
+		directionalLight.shadow.radius = 4;
 		scene.add(directionalLight);
 
-		if (data.role === 'lecturer') {
+		// Add point lights
+		const pointLight1 = new THREE.PointLight(0xffffff, 1.9);
+		pointLight1.position.set(0, 5, 5);
+		pointLight1.castShadow = true;
+		scene.add(pointLight1);
+
+		const pointLight2 = new THREE.PointLight(0xffffff, 1.9);
+		pointLight2.position.set(0, -5, 5);
+		pointLight2.castShadow = true;
+		scene.add(pointLight2);
+
+		const pointLight3 = new THREE.PointLight(0xffffff, 1.9);
+		pointLight3.position.set(5, 5, 0);
+		pointLight3.castShadow = true;
+		scene.add(pointLight3);
+
+		const pointLight4 = new THREE.PointLight(0xffffff, 1.9);
+		pointLight4.position.set(-5, -5, 0);
+		pointLight3.castShadow = true;
+		scene.add(pointLight4);
+
+		const pointLight5 = new THREE.PointLight(0xffffff, 1.9);
+		pointLight5.position.set(0, 0, -5);
+		pointLight5.castShadow = true;
+		scene.add(pointLight5);
+
+		if (role === 'lecturer') {
 			// Create a draggable sphere
 			const sphereGeometry = new THREE.SphereGeometry(0.1);
 			const sphereMaterial = new THREE.MeshBasicMaterial({
@@ -73,12 +108,24 @@
 			//sphere transform
 			transformControls.addEventListener('mouseDown', () => {
 				controls.enabled = false;
+				$spherePosition.copy(draggableSphere.position);
+				modelSphereData.set({
+					file_path: $selectedModel,
+					position: draggableSphere.position.clone()
+				});
 			});
 			transformControls.addEventListener('mouseUp', () => {
 				controls.enabled = true;
 				$spherePosition.copy(draggableSphere.position);
 			});
-		} else if (data.role === 'student') {
+		} else if (role === 'student') {
+			//loadModel
+			questions.forEach((question) => {
+				if (question.modelPath) {
+					loadModel(question.modelPath);
+				}
+			});
+
 			// Create and add the new pin
 			const pinGeometry = new THREE.SphereGeometry(0.05);
 			const pinMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
@@ -113,8 +160,24 @@
 		window.addEventListener('resize', onWindowResize, false);
 	}
 
+	const loadingManager = new THREE.LoadingManager(
+		() => {
+			isLoading = false;
+		},
+		(itemUrl, itemsLoaded, itemsTotal) => {
+			// Update progress
+			console.log(`Loaded ${itemsLoaded} of ${itemsTotal}`);
+		},
+		(url) => {
+			// Handle loading error
+			console.error(`Error loading ${url}`);
+		}
+	);
+
+	const loader = new GLTFLoader(loadingManager);
+
 	function loadModel(file_path: string) {
-		const loader = new GLTFLoader();
+		isLoading = true;
 		loader.load(file_path, (gltf) => {
 			if (currentModel) {
 				scene.remove(currentModel);
@@ -130,21 +193,6 @@
 		renderer.render(scene, camera);
 	}
 
-	// function getSavedSpherePosition(): THREE.Vector3 {
-	// 	const savedPosition = localStorage.getItem('spherePosition');
-	// 	if (savedPosition) {
-	// 		const [x, y, z] = JSON.parse(savedPosition);
-	// 		return new THREE.Vector3(x, y, z);
-	// 	}
-	// 	return new THREE.Vector3();
-	// }
-
-	// function checkProximity(pin: THREE.Mesh) {
-	// 	const distance = pin.position.distanceTo(savedSpherePosition);
-	// 	const isCorrect = distance <= 0.2;
-	// 	return isCorrect;
-	// }
-
 	function onWindowResize() {
 		camera.aspect = window.innerWidth / window.innerHeight;
 		camera.updateProjectionMatrix();
@@ -153,14 +201,12 @@
 
 	function handleModelSelection(file_path: string) {
 		loadModel(file_path);
-		const url = new URL(window.location.href);
-		url.searchParams.set('model', file_path);
-		window.history.pushState({}, '', url);
+		selectedModel.set(file_path);
 	}
 </script>
 
 <div class="scene-wrapper">
-	{#if data.role === 'lecturer'}
+	{#if role === 'lecturer'}
 		<div class="flex items-center space-x-4">
 			<Menu {models} onModelSelect={handleModelSelection} />
 			<P class=" font-semibold text-violet-700">

@@ -3,7 +3,7 @@
 	import { Box3, Vector3 } from 'three';
 	import type { Object3D } from 'three';
 	import { writable } from 'svelte/store';
-	import { XR } from '@threlte/xr';
+	import { XR, useXR } from '@threlte/xr';
 	import { Checkbox, Pane, ThemeUtils, Slider, List } from 'svelte-tweakpane-ui';
 	import { GLTF, OrbitControls, Sky, TransformControls, useGltfAnimations } from '@threlte/extras';
 
@@ -25,6 +25,7 @@
 
 	const animationNames = writable<string[]>([]);
 	const { gltf, actions } = useGltfAnimations();
+	const { isPresenting } = useXR();
 
 	const normalizeModel = (object: Object3D) => {
 		const box = new Box3().setFromObject(object);
@@ -68,48 +69,43 @@
 	}
 </script>
 
-<VR {currentModel} />
-
 <XR>
+	<VR {currentModel} />
+</XR>
+
+{#if !$isPresenting}
 	<T.PerspectiveCamera
 		fov={25}
 		makeDefault
 		position={[0, 0, 5]}
 		on:create={({ ref }) => ref.lookAt(0, 0, 0)}
-	/>
-</XR>
+	>
+		<Menu />
 
-<T.PerspectiveCamera
-	fov={25}
-	makeDefault
-	position={[0, 0, 5]}
-	on:create={({ ref }) => ref.lookAt(0, 0, 0)}
->
-	<Menu />
+		<OrbitControls
+			{zoomSpeed}
+			{rotateSpeed}
+			{autoRotate}
+			{enableZoom}
+			{zoomToCursor}
+			{enableDamping}
+		/>
+	</T.PerspectiveCamera>
 
-	<OrbitControls
-		{zoomSpeed}
-		{rotateSpeed}
-		{autoRotate}
-		{enableZoom}
-		{zoomToCursor}
-		{enableDamping}
-	/>
-</T.PerspectiveCamera>
+	{#if showTransformControls}
+		<GLTF bind:gltf={$gltf} url={currentModel} on:create={handleModelCreate} />
+
+		{#if model}
+			<TransformControls bind:object={model} />
+		{/if}
+	{:else}
+		<GLTF bind:gltf={$gltf} url={currentModel} on:create={handleModelCreate} />
+	{/if}
+{/if}
 
 <Sky />
 
 <T.AmbientLight intensity={1} />
-
-{#if showTransformControls}
-	<GLTF bind:gltf={$gltf} url={currentModel} on:create={handleModelCreate} />
-
-	{#if model}
-		<TransformControls bind:object={model} />
-	{/if}
-{:else}
-	<GLTF bind:gltf={$gltf} url={currentModel} on:create={handleModelCreate} />
-{/if}
 
 <Pane position="fixed" theme={ThemeUtils.presets.translucent} title="Object Settings">
 	<Checkbox bind:value={autoRotate} label="autoRotate" />

@@ -173,4 +173,5 @@ export interface Question {
 	questionPoints: number | null;
 	correctAnswer: string | null;
 	options: Option[] | null;
+	modelPath: string | null;
 }

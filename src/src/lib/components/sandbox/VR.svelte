@@ -1,82 +1,115 @@
 <script lang="ts">
-	import { Vector3 } from 'three';
-	import { onDestroy } from 'svelte';
-	import { spring } from 'svelte/motion';
-	import { useTask } from '@threlte/core';
 	import { GLTF } from '@threlte/extras';
-	import { pointerControls, Controller, Hand } from '@threlte/xr';
+	import { T, useFrame } from '@threlte/core';
+	import { Vector3, Quaternion, Euler } from 'three';
+	import type { XRControllerEvent } from '@threlte/xr';
+	import { pointerControls, Controller } from '@threlte/xr';
 
 	export let currentModel: string;
 
-	const scale = spring(1);
-
 	let ref: any;
-	let point = new Vector3();
-	let lookAt = new Vector3();
+	// eslint-disable-next-line
+	let isPointing = false;
+	let isSqueezed = false;
+	let offset = new Vector3();
+	let isTriggerPressed = false;
+	let activeController: any = null;
+	let squeezedController: any = null;
+	let originalRotation = new Euler();
+	let originalScale = new Vector3(1, 1, 1);
+	let initialObjectPosition = new Vector3();
+	let controllerQuaternion = new Quaternion();
+	let initialControllerPosition = new Vector3();
 
-	const handleEvent =
-		(type: string) =>
-		(event: any): any => {
-			switch (type) {
-				case 'click': {
-					scale.set(1.5);
-					return;
-				}
-				case 'pointermove': {
-					point.copy(event.point);
-					return;
-				}
-				case 'pointerenter': {
-					scale.set(1.1);
-					return;
-				}
-				case 'pointerleave': {
-					scale.set(1);
-					return;
-				}
-				case 'pointermissed': {
-					scale.set(0.5);
-					return;
-				}
-			}
-		};
+	$: if (ref) {
+		originalScale.copy(ref.scale);
+		originalRotation.copy(ref.rotation);
+	}
 
-	const lookForCursor = () => {
-		point.set(Math.random() - 0.5, 1.5 + Math.random() - 0.5, 1);
+	export const handlePointerEnter = () => {
+		isPointing = true;
+		if (ref) ref.scale.multiplyScalar(1.1);
 	};
 
-	useTask(() => {
-		lookAt.lerp(point, 0.1);
-		if (ref) ref.lookAt(lookAt.x, lookAt.y, 1);
+	export const handlePointerLeave = () => {
+		isPointing = false;
+		if (ref) ref.scale.copy(originalScale);
+	};
+
+	const handleTriggerStart = (event: XRControllerEvent) => {
+		isSqueezed = true;
+		squeezedController = event.target;
+
+		if (ref) {
+			squeezedController.getWorldPosition(initialControllerPosition);
+			ref.getWorldPosition(initialObjectPosition);
+			offset.copy(initialObjectPosition).sub(initialControllerPosition);
+		}
+	};
+
+	const handleTriggerEnd = () => {
+		isSqueezed = false;
+		squeezedController = null;
+	};
+
+	const handleSqueezeStart = (event: XRControllerEvent) => {
+		isTriggerPressed = true;
+		activeController = event.target;
+		if (ref) controllerQuaternion.copy(activeController.quaternion);
+	};
+
+	const handleSqueezeEnd = () => {
+		isTriggerPressed = false;
+		activeController = null;
+	};
+
+	useFrame(() => {
+		if (isTriggerPressed && ref && activeController) {
+			const currentControllerQuaternion = activeController.quaternion;
+
+			const rotationDiff = new Quaternion().multiplyQuaternions(
+				controllerQuaternion.clone().invert(),
+				currentControllerQuaternion
+			);
+
+			ref.quaternion.premultiply(rotationDiff);
+			controllerQuaternion.copy(currentControllerQuaternion);
+		}
+
+		if (isSqueezed && ref && squeezedController) {
+			const currentControllerPosition = new Vector3();
+			squeezedController.getWorldPosition(currentControllerPosition);
+
+			const newObjectPosition = new Vector3().copy(currentControllerPosition).add(offset);
+			ref.position.copy(newObjectPosition);
+		}
 	});
 
 	pointerControls('left');
 	pointerControls('right');
-
-	$: lookIntervalId = window.setInterval(lookForCursor, 1000);
-
-	onDestroy(() => {
-		clearInterval(lookIntervalId);
-	});
 </script>
 
-<Controller left />
-<Controller right />
-
-<Hand left />
-<Hand right />
-
-<GLTF
-	bind:ref
-	scale={$scale}
-	url={currentModel}
-	on:click={handleEvent('click')}
-	on:pointerdown={handleEvent('pointerdown')}
-	on:pointerup={handleEvent('pointerup')}
-	on:pointerover={handleEvent('pointerover')}
-	on:pointerout={handleEvent('pointerout')}
-	on:pointerenter={handleEvent('pointerenter')}
-	on:pointerleave={handleEvent('pointerleave')}
-	on:pointermove={handleEvent('pointermove')}
-	on:pointermissed={handleEvent('pointermissed')}
+<Controller
+	left
+	on:selectstart={handleTriggerStart}
+	on:selectend={handleTriggerEnd}
+	on:squeezestart={handleSqueezeStart}
+	on:squeezeend={handleSqueezeEnd}
 />
+
+<Controller
+	right
+	on:selectstart={handleTriggerStart}
+	on:selectend={handleTriggerEnd}
+	on:squeezestart={handleSqueezeStart}
+	on:squeezeend={handleSqueezeEnd}
+/>
+
+<T.Mesh
+	bind:ref
+	position={[0, 1, -1]}
+	on:pointerenter={handlePointerEnter}
+	on:pointerleave={handlePointerLeave}
+>
+	<GLTF url={currentModel} />
+</T.Mesh>

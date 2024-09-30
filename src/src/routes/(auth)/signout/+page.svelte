@@ -80,7 +80,7 @@
 					</Button>
 					<Button
 						class="mt-2 w-full transform bg-red-600 transition duration-300 ease-in-out hover:-translate-y-1 hover:bg-red-700 hover:shadow-lg dark:bg-red-700 dark:hover:bg-red-800"
-						on:click={() => goto(data.role === 'lecturer' ? '/workspaces' : '/dashboard')}
+						on:click={() => goto(data.role === 'admin' ? '/organisation' : '/workspaces')}
 					>
 						No, cancel
 					</Button>

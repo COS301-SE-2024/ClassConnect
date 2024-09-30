@@ -64,7 +64,7 @@
 
 <Toaster />
 
-<main class="container mx-auto p-4">
+<main class="container mx-auto p-4 dark:bg-gray-700">
 	<div class="p-2 md:px-5 md:py-2">
 		<form method="POST" action="?/editContent" use:enhance={save}>
 			<div class="grid grid-cols-12 gap-6">
