@@ -2,6 +2,8 @@
 	import { enhance } from '$app/forms';
 	import { Button, Input, Textarea, NumberInput, Label, Radio } from 'flowbite-svelte';
 	import { createEventDispatcher } from 'svelte';
+	
+
 
 	export let open: boolean;
 	const dispatch = createEventDispatcher();
@@ -11,6 +13,7 @@
 		return async ({ result, update }: any) => {
 			if (result.type === 'success') {
 				await update();
+				
 				open = false;
 				dispatch('formSubmitted');
 			} else {

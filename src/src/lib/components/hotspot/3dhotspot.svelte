@@ -7,9 +7,8 @@
 
 	import { TransformControls } from 'three/addons/controls/TransformControls.js';
 	import Menu from './3dMenu.svelte';
-	import { selectedModel } from '$lib/store/model';
+	import { selectedModel,modelSphereData, spherePosition } from '$lib/store/model';
 
-	import { spherePosition } from '$lib/store/position';
 	
 
 	export let data: {
@@ -38,6 +37,7 @@
 	let draggableSphere: THREE.Mesh;
 	let transformControls: TransformControls;
 	let currentModel: THREE.Object3D | null = null;
+	let isLoading=false;
 
 	onMount(() => {
 		initScene();
@@ -89,10 +89,6 @@
 		pointLight5.castShadow = true;
 		scene.add(pointLight5);
 
-		
-
-		console.log('Lighting setup:', ambientLight, pointLight1, pointLight2, directionalLight);
-
 
 		if (role === 'lecturer') {
 			// Create a draggable sphere
@@ -115,16 +111,21 @@
 			//sphere transform
 			transformControls.addEventListener('mouseDown', () => {
 				controls.enabled = false;
+				$spherePosition.copy(draggableSphere.position);
+				modelSphereData.set({
+					file_path: $selectedModel,
+					position: draggableSphere.position.clone()
+				});
 			});
 			transformControls.addEventListener('mouseUp', () => {
 				controls.enabled = true;
 				$spherePosition.copy(draggableSphere.position);
 			});
+
 		} else if (role === 'student') {
 			//loadModel
 			questions.forEach(question => {
 				if (question.modelPath) {
-					console.log('Question Model', question.modelPath);
 					loadModel(question.modelPath);
 				}
 			});
@@ -159,14 +160,30 @@
 		controls.enableRotate = true;
 		controls.autoRotate = false;
 		controls.autoRotateSpeed = 2.0;
-
 		
+
 
 		window.addEventListener('resize', onWindowResize, false);
 	}
 
+	const loadingManager = new THREE.LoadingManager(
+		() => {
+			isLoading = false;
+		},
+		(itemUrl, itemsLoaded, itemsTotal) => {
+			// Update progress
+			console.log(`Loaded ${itemsLoaded} of ${itemsTotal}`);
+		},
+		(url) => {
+			// Handle loading error
+			console.error(`Error loading ${url}`);
+		}
+	);
+
+	const loader = new GLTFLoader(loadingManager);
+
 	function loadModel(file_path: string) {
-		const loader = new GLTFLoader();
+		isLoading=true;
 		loader.load(file_path, (gltf) => {
 			if (currentModel) {
 				scene.remove(currentModel);
@@ -181,21 +198,6 @@
 		controls.update();
 		renderer.render(scene, camera);
 	}
-
-	// function getSavedSpherePosition(): THREE.Vector3 {
-	// 	const savedPosition = localStorage.getItem('spherePosition');
-	// 	if (savedPosition) {
-	// 		const [x, y, z] = JSON.parse(savedPosition);
-	// 		return new THREE.Vector3(x, y, z);
-	// 	}
-	// 	return new THREE.Vector3();
-	// }
-
-	// function checkProximity(pin: THREE.Mesh) {
-	// 	const distance = pin.position.distanceTo(savedSpherePosition);
-	// 	const isCorrect = distance <= 0.2;
-	// 	return isCorrect;
-	// }
 
 	function onWindowResize() {
 		camera.aspect = window.innerWidth / window.innerHeight;

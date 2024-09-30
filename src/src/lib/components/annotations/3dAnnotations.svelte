@@ -85,10 +85,12 @@
 		annotations[text] = { position, text, labelDiv, sprite };
 	}
 
-	export function removeAnnotation(text: string) {
+	function removeAnnotation(text: string) {
 		const annotation = annotations[text];
-		if (annotation) {
-			document.body.removeChild(annotation.labelDiv);
+		console.log('Removing annotation', annotation.labelDiv);
+		if (annotation && annotation.labelDiv.parentNode) {
+			console.log('Removing annotation', annotation.labelDiv);
+			annotation.labelDiv.remove();
 			scene.remove(annotation.sprite);
 			delete annotations[text];
 		}
@@ -135,6 +137,12 @@
 		}
 		window.addEventListener('click', onMouseClick);
 		window.addEventListener('beforeunload', handleBeforeUnload);
+
+		document.addEventListener('removeAllAnnotations', () => {
+			Object.keys(annotations).forEach((text) => {
+				removeAnnotation(text);
+			});
+		});
 		return () => {
 			window.removeEventListener('beforeunload', handleBeforeUnload);
 			window.removeEventListener('click', onMouseClick);
@@ -153,7 +161,7 @@
 		raycaster = new THREE.Raycaster();
 		mouse = new THREE.Vector2();
 
-		const ambientLight = new THREE.AmbientLight(0x404040);
+		const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
 		scene.add(ambientLight);
 		const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
 		directionalLight.position.set(1, 1, 1).normalize();
@@ -179,17 +187,15 @@
 	}
 
 	function removeAllAnnotations() {
-		Object.keys(annotations).forEach((text) => {
-			removeAnnotation(text);
-		});
-	}
+        console.log("removeAllAnnotations called");
+        Object.keys(annotations).forEach((text) => {
+            removeAnnotation(text); 
+        });
+    }
 
 	function handleModelSelection(file_path: string) {
 		removeAllAnnotations();
 		loadModel(file_path);
-		const url = new URL(window.location.href);
-		url.searchParams.set('model', file_path);
-		window.history.pushState({}, '', url);
 	}
 
 	function animate() {
@@ -233,6 +239,7 @@
 		renderer.setSize(window.innerWidth, window.innerHeight);
 	}
 </script>
+
 
 <div class="scene-wrapper">
 	<div class="flex items-center space-x-4">
