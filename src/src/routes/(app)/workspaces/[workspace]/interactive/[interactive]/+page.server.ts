@@ -128,10 +128,11 @@ export const actions: Actions = {
 			return fail(500, { message: 'Failed to save question' });
 		}
 	},
-	deleteContent: async ({ request, locals }) => {
+	deleteContent: async ({ request, locals, params }) => {
 		try {
 			validateLecturer(locals);
 			const data = await request.formData();
+			data.append('lesson', params.interactive as string);
 			await deleteContent(data);
 		} catch (e) {
 			console.error('Error deleting content:', e);
