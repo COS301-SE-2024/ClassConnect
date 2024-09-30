@@ -7,6 +7,7 @@ import Questions from '$db/schemas/Question';
 import Grade from '$db/schemas/Grades';
 import Materials from '$db/schemas/Material';
 import type { Material } from '$src/types';
+import { getThreeDMaterials } from '$src/lib/server/utils/material';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	try {
@@ -16,6 +17,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 		const questions = await Questions.find({ quiz: quizId });
 		const models = await getModels(params.workspace, true);
 		6;
+		const threeDMaterials = await getThreeDMaterials(params.workspace);
 
 		const quiz = await Quizzes.findById(quizId);
 		if (!quiz) {
@@ -41,7 +43,8 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 					: null
 			})),
 			workspaceID,
-			models
+			models,
+			threeDMaterials
 		};
 	} catch (e) {
 		console.error('Failed to load Questions: ', e);

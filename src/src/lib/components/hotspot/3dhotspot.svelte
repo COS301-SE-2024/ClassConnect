@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import * as THREE from 'three';
-	import { P } from 'flowbite-svelte';
+	//import { P } from 'flowbite-svelte';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
+	import { Label, Select } from 'flowbite-svelte';
 	import { TransformControls } from 'three/addons/controls/TransformControls.js';
-	import Menu from './3dMenu.svelte';
+	//import Menu from './3dMenu.svelte';
 
 	import { selectedModel, spherePosition } from '$lib/store/model';
 
@@ -23,8 +23,10 @@
 			options: { content: string; points: number }[] | null;
 		}[];
 	};
+	let selected: string;
+	export let materials: any[];
 
-	let { role, models, questions } = data;
+	let { role, questions } = data;
 
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -172,25 +174,33 @@
 		renderer.setSize(window.innerWidth, window.innerHeight);
 	}
 
-	function handleModelSelection(file_path: string) {
-		loadModel(file_path);
-		selectedModel.set(file_path);
+	function handleModelSelection() {
+		loadModel(selected);
+		selectedModel.set(selected);
 	}
 </script>
 
 <div class="scene-wrapper">
-	{#if role === 'lecturer'}
-		<div class="flex items-center space-x-4">
-			<Menu {models} onModelSelect={handleModelSelection} />
-			<P class=" font-semibold text-violet-700">
-				Note: Open the menu to select a model, then use the transform controls on the violet sphere
-				to drag it to your desired point.
-			</P>
-		</div>
-	{/if}
-
 	<canvas bind:this={canvas}></canvas>
 </div>
+
+{#if role === 'lecturer'}
+	<!-- <div class="flex items-center space-x-4">
+		<Menu {models} onModelSelect={handleModelSelection} />
+		<P class=" font-semibold text-violet-700">
+			Note: Open the menu to select a model, then use the transform controls on the violet sphere
+			to drag it to your desired point.
+		</P>
+	</div> -->
+	<Label>
+		Select a 3D object:
+		<Select class="my-2" bind:value={selected} on:change={handleModelSelection}>
+			{#each materials as option}
+				<option value={option.file_path}>{option.title}</option>
+			{/each}
+		</Select>
+	</Label>
+{/if}
 
 <style>
 	.scene-wrapper {

@@ -236,8 +236,12 @@
 		{#if selectedQuestionType === 'multiple-choice'}
 			<Form bind:open={isFormOpen} on:formSubmitted={handleFormSubmit} />
 		{:else if selectedQuestionType === '3d-hotspot'}
-			<ThreeDForm bind:open={isFormOpen} on:formSubmitted={handleFormSubmit}>
-				<ThreeDScene {data} slot="scene" />
+			<ThreeDForm
+				materials={data.threeDMaterials}
+				bind:open={isFormOpen}
+				on:formSubmitted={handleFormSubmit}
+			>
+				<ThreeDScene materials={data.threeDMaterials} {data} slot="scene" />
 			</ThreeDForm>
 		{:else if selectedQuestionType === 'true-false'}
 			<TrueFalse bind:open={isFormOpen} on:formSubmitted={handleFormSubmit}>
