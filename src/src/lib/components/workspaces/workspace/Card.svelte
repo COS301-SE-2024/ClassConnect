@@ -5,7 +5,6 @@
 	import { ArrowRightOutline } from 'flowbite-svelte-icons';
 
 	export let workspace;
-	export let role: string;
 	let { id, name, image, description } = workspace;
 
 	function openWorkspace() {
