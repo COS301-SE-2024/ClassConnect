@@ -220,7 +220,7 @@
 					}}
 					class="mt-8 flex justify-center"
 				>
-					<input type="hidden" name="mark" value={totalPoints} />
+					<input type="hidden" name="mark" value={percentageScore} />
 					<Button
 						type="submit"
 						color="green"
