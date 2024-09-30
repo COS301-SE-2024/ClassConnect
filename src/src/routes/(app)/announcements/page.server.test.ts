@@ -25,19 +25,19 @@ vi.mock('@sveltejs/kit', () => ({
 
 describe('load function', () => {
 	it('should load announcements and organisation data', async () => {
-        const mockAnnouncements = [{ title: 'Announcement 1' }];
-        getAnnouncements.mockResolvedValue(mockAnnouncements);
-    
-        const locals = { user: { organisation: { name: 'Org1' } } };
-    
-        const result = await load({ locals });
-    
-        expect(result).toEqual({
-            announcements: mockAnnouncements,
-            organisation: { name: 'Org1' }
-        });
-        expect(getAnnouncements).toHaveBeenCalledWith({ name: 'Org1' });
-    });
+		const mockAnnouncements = [{ title: 'Announcement 1' }];
+		getAnnouncements.mockResolvedValue(mockAnnouncements);
+
+		const locals = { user: { organisation: { name: 'Org1' } } };
+
+		const result = await load({ locals });
+
+		expect(result).toEqual({
+			announcements: mockAnnouncements,
+			organisation: { name: 'Org1' }
+		});
+		expect(getAnnouncements).toHaveBeenCalledWith({ name: 'Org1' });
+	});
 
 	it('should handle load error', async () => {
 		getAnnouncements.mockRejectedValue(new Error('Failed to fetch'));

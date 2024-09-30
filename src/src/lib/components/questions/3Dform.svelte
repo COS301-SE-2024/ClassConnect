@@ -2,18 +2,16 @@
 	import { enhance } from '$app/forms';
 	import { Button, Input, Textarea, NumberInput, Label } from 'flowbite-svelte';
 	import { createEventDispatcher } from 'svelte';
-	import {selectedModel} from '$lib/store/model';
+	import { selectedModel } from '$lib/store/model';
 
 	export let open: boolean;
 	const dispatch = createEventDispatcher();
 	let error: string;
-	let modelPath: string ;
-	
-	modelPath= $selectedModel;
-	
-	
+	let modelPath: string;
+
+	modelPath = $selectedModel;
+
 	function close() {
-		
 		return async ({ result, update }: any) => {
 			if (result.type === 'success') {
 				await update();

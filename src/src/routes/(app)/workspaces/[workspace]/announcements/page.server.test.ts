@@ -15,7 +15,7 @@ vi.mock('$lib/server/utils/announcements', () => ({
 	addAnnouncement: vi.fn(),
 	getAnnouncements: vi.fn(),
 	editAnnouncement: vi.fn(),
-	deleteAnnouncement: vi.fn(),
+	deleteAnnouncement: vi.fn()
 }));
 
 vi.mock('@sveltejs/kit', () => ({
@@ -47,7 +47,9 @@ describe('load function', () => {
 		const locals = { user: { id: 1, role: 'lecturer' } };
 		const params = { workspace: 'workspace1' };
 
-		await expect(load({ locals, params })).rejects.toThrow(error(500, 'Error occurred while fetching announcements'));
+		await expect(load({ locals, params })).rejects.toThrow(
+			error(500, 'Error occurred while fetching announcements')
+		);
 		expect(getAnnouncements).toHaveBeenCalledWith('workspace1');
 	});
 });

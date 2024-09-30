@@ -7,9 +7,7 @@
 
 	import { TransformControls } from 'three/addons/controls/TransformControls.js';
 	import Menu from './3dMenu.svelte';
-	import { selectedModel,modelSphereData, spherePosition } from '$lib/store/model';
-
-	
+	import { selectedModel, modelSphereData, spherePosition } from '$lib/store/model';
 
 	export let data: {
 		role: string;
@@ -25,9 +23,9 @@
 		}[];
 	};
 
-	let { role,models,questions } = data;
-	if(role==='student'){
-		console.log('Questions', questions)
+	let { role, models, questions } = data;
+	if (role === 'student') {
+		console.log('Questions', questions);
 	}
 
 	let canvas: HTMLCanvasElement;
@@ -37,12 +35,11 @@
 	let draggableSphere: THREE.Mesh;
 	let transformControls: TransformControls;
 	let currentModel: THREE.Object3D | null = null;
-	let isLoading=false;
+	let isLoading = false;
 
 	onMount(() => {
 		initScene();
 		animate();
-		
 	});
 
 	function initScene() {
@@ -60,7 +57,7 @@
 
 		const directionalLight = new THREE.DirectionalLight(0xffffff, 1.9);
 		directionalLight.castShadow = true;
-		directionalLight.shadow.radius = 4; 
+		directionalLight.shadow.radius = 4;
 		scene.add(directionalLight);
 
 		// Add point lights
@@ -70,25 +67,24 @@
 		scene.add(pointLight1);
 
 		const pointLight2 = new THREE.PointLight(0xffffff, 1.9);
-		pointLight2.position.set(0, -5, 5); 
+		pointLight2.position.set(0, -5, 5);
 		pointLight2.castShadow = true;
 		scene.add(pointLight2);
 
 		const pointLight3 = new THREE.PointLight(0xffffff, 1.9);
-		pointLight3.position.set(5, 5, 0); 
-		pointLight3.castShadow = true;  
+		pointLight3.position.set(5, 5, 0);
+		pointLight3.castShadow = true;
 		scene.add(pointLight3);
 
 		const pointLight4 = new THREE.PointLight(0xffffff, 1.9);
-		pointLight4.position.set(-5, -5, 0); 
+		pointLight4.position.set(-5, -5, 0);
 		pointLight3.castShadow = true;
 		scene.add(pointLight4);
 
 		const pointLight5 = new THREE.PointLight(0xffffff, 1.9);
-		pointLight5.position.set(0, 0, -5);  
+		pointLight5.position.set(0, 0, -5);
 		pointLight5.castShadow = true;
 		scene.add(pointLight5);
-
 
 		if (role === 'lecturer') {
 			// Create a draggable sphere
@@ -121,10 +117,9 @@
 				controls.enabled = true;
 				$spherePosition.copy(draggableSphere.position);
 			});
-
 		} else if (role === 'student') {
 			//loadModel
-			questions.forEach(question => {
+			questions.forEach((question) => {
 				if (question.modelPath) {
 					loadModel(question.modelPath);
 				}
@@ -160,8 +155,6 @@
 		controls.enableRotate = true;
 		controls.autoRotate = false;
 		controls.autoRotateSpeed = 2.0;
-		
-
 
 		window.addEventListener('resize', onWindowResize, false);
 	}
@@ -183,7 +176,7 @@
 	const loader = new GLTFLoader(loadingManager);
 
 	function loadModel(file_path: string) {
-		isLoading=true;
+		isLoading = true;
 		loader.load(file_path, (gltf) => {
 			if (currentModel) {
 				scene.remove(currentModel);
@@ -209,7 +202,6 @@
 		loadModel(file_path);
 		selectedModel.set(file_path);
 	}
-
 </script>
 
 <div class="scene-wrapper">

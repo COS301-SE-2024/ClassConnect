@@ -187,11 +187,11 @@
 	}
 
 	function removeAllAnnotations() {
-        console.log("removeAllAnnotations called");
-        Object.keys(annotations).forEach((text) => {
-            removeAnnotation(text); 
-        });
-    }
+		console.log('removeAllAnnotations called');
+		Object.keys(annotations).forEach((text) => {
+			removeAnnotation(text);
+		});
+	}
 
 	function handleModelSelection(file_path: string) {
 		removeAllAnnotations();
@@ -239,7 +239,6 @@
 		renderer.setSize(window.innerWidth, window.innerHeight);
 	}
 </script>
-
 
 <div class="scene-wrapper">
 	<div class="flex items-center space-x-4">

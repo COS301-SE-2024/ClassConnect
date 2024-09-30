@@ -23,6 +23,4 @@ describe('load function', () => {
 		await expect(load({ locals })).rejects.toThrow(error(401, 'Unauthorized'));
 		expect(error).toHaveBeenCalledWith(401, 'Unauthorized');
 	});
-
-	
 });

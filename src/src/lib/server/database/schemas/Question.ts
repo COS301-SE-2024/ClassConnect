@@ -32,7 +32,7 @@ const questionSchema = new mongoose.Schema({
 		required: false
 	},
 
-	modelPath:{
+	modelPath: {
 		type: String,
 		required: false
 	},
