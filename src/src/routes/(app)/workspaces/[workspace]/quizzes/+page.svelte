@@ -49,16 +49,6 @@
 		isRemoveModalOpen = true;
 	}
 
-	function handlePreview(quizId: string) {
-		id = quizId;
-		const workspaceId = data.workspaceID;
-		if (workspaceId) {
-			goto(`/workspaces/${workspaceId}/quizzes/${quizId}?preview=true`);
-		} else {
-			console.error('Workspace ID is missing or undefined');
-		}
-	}
-
 	function handleQuestionTypeSelect(event: CustomEvent<{ type: string }>) {
 		// isQuizFormOpen = true;
 		console.log('Type selected in event:', event.detail.type);
@@ -67,7 +57,7 @@
 	}
 
 	function formatDuration(duration: number): string {
-		const totalMinutes = Math.floor(duration / (60 * 1000)); 
+		const totalMinutes = Math.floor(duration / (60 * 1000));
 		const hours = Math.floor(totalMinutes / 60);
 		const minutes = totalMinutes % 60;
 		return `${hours}h${minutes}m`;
@@ -126,7 +116,7 @@
 										{#if quiz.graded === 'No'}
 											<Button o on:click={() => handleEditModalOpen(quiz.id)}>Edit</Button>
 										{/if}
-										
+
 										<Button color="red" on:click={() => handleRemoveModalOpen(quiz.id)}>
 											Delete
 										</Button>

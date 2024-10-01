@@ -53,23 +53,22 @@
 				<NumberInput name="points" />
 			</Label>
 		</div>
-		
-		
+
 		<div class="mb-4">
 			<Label for="questionContent">Question Content</Label>
 			<Textarea
-			id="questionContent"
-			name="questionContent"
-			rows="8"
-			placeholder="Write the question content"
-			required
+				id="questionContent"
+				name="questionContent"
+				rows="8"
+				placeholder="Write the question content"
+				required
 			/>
 		</div>
-		
+
 		<div class="mb-4">
 			<slot name="scene" />
 		</div>
-		
+
 		<Label>
 			Select a 3D object:
 			<Select class="my-2" bind:value={selected}>
@@ -78,7 +77,7 @@
 				{/each}
 			</Select>
 		</Label>
-		
+
 		<input type="hidden" name="modelPath" value={selected} />
 		<Button type="submit" class="mt-10 w-full">Submit Question</Button>
 	</form>

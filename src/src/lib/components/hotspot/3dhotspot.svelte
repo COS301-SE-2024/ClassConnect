@@ -227,9 +227,6 @@
 	<canvas bind:this={canvas}></canvas>
 </div>
 
-
-
-
 <style>
 	.scene-wrapper {
 		position: relative;
