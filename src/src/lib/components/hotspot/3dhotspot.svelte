@@ -8,7 +8,6 @@
 	import { Label, Select } from 'flowbite-svelte';
 	import { TransformControls } from 'three/addons/controls/TransformControls.js';
 	//import Menu from './3dMenu.svelte';
-	import { useProgress } from '@threlte/extras';
 
 	import { selectedModel, spherePosition } from '$lib/store/model';
 
@@ -40,7 +39,6 @@
 
 	let loadingProgress = tweened(0, { duration: 500 });
 	let isLoading = false;
-	let { progress } = useProgress();
 
 	onMount(() => {
 		initScene();
