@@ -2,11 +2,13 @@
 	import { onMount } from 'svelte';
 	import * as THREE from 'three';
 	//import { P } from 'flowbite-svelte';
+	import { tweened } from 'svelte/motion';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 	import { Label, Select } from 'flowbite-svelte';
 	import { TransformControls } from 'three/addons/controls/TransformControls.js';
 	//import Menu from './3dMenu.svelte';
+	import { useProgress } from '@threlte/extras';
 
 	import { selectedModel, spherePosition } from '$lib/store/model';
 
@@ -35,6 +37,10 @@
 	let draggableSphere: THREE.Mesh;
 	let transformControls: TransformControls;
 	let currentModel: THREE.Object3D | null = null;
+
+	let loadingProgress = tweened(0, { duration: 500 });
+	let isLoading = false;
+	let { progress } = useProgress();
 
 	onMount(() => {
 		initScene();
@@ -152,14 +158,26 @@
 	}
 
 	function loadModel(file_path: string) {
+		isLoading = true;
 		const loader = new GLTFLoader();
-		loader.load(file_path, (gltf) => {
-			if (currentModel) {
-				scene.remove(currentModel);
+		loader.load(
+			file_path,
+			(gltf) => {
+				if (currentModel) {
+					scene.remove(currentModel);
+				}
+				currentModel = gltf.scene;
+				scene.add(currentModel);
+				isLoading = false;
+			},
+			(xhr) => {
+				loadingProgress.set((xhr.loaded / xhr.total) * 100);
+			},
+			() => {
+				console.error('An error occurred loading the model');
+				isLoading = false;
 			}
-			currentModel = gltf.scene;
-			scene.add(currentModel);
-		});
+		);
 	}
 
 	function animate() {
@@ -180,6 +198,13 @@
 	}
 </script>
 
+{#if isLoading}
+	<div class="loading-container">
+		<div class="loading-bar" style="width: {progress}%"></div>
+		<p>Loading model: {progress}%</p>
+	</div>
+{/if}
+
 {#if role === 'lecturer'}
 	<!-- <div class="flex items-center space-x-4">
 		<Menu {models} onModelSelect={handleModelSelection} />
@@ -198,10 +223,11 @@
 	</Label>
 {/if}
 
-
 <div class="scene-wrapper">
 	<canvas bind:this={canvas}></canvas>
 </div>
+
+
 
 
 <style>
@@ -216,5 +242,23 @@
 		height: calc(100vh / 4);
 		max-width: 100%;
 		object-fit: contain;
+	}
+
+	.loading-container {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		text-align: center;
+		background-color: rgba(255, 255, 255, 0.8);
+		padding: 20px;
+		border-radius: 10px;
+	}
+
+	.loading-bar {
+		height: 10px;
+		background-color: #4caf50;
+		border-radius: 5px;
+		margin-bottom: 10px;
 	}
 </style>
