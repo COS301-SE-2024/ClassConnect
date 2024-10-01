@@ -198,7 +198,7 @@
 			{/if}
 
 			<ListQuestions {questions} {selectedAnswers} {handleSelection}>
-				<ThreeDScene {data} slot="scene" />
+				<ThreeDScene materials={data.materials} {data} slot="scene" />
 			</ListQuestions>
 
 			{#if role === 'student' && !isPreview}
@@ -243,10 +243,6 @@
 			>
 				<ThreeDScene materials={data.threeDMaterials} {data} slot="scene" />
 			</ThreeDForm>
-		{:else if selectedQuestionType === 'true-false'}
-			<TrueFalse bind:open={isFormOpen} on:formSubmitted={handleFormSubmit}>
-				<ThreeAnnotations {data} slot="scene" />
-			</TrueFalse>
 		{/if}
 	{:else}
 		<P class="text-lg text-gray-700 dark:text-gray-300"

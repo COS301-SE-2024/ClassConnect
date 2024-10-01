@@ -119,7 +119,7 @@
 										{#if quiz.graded === 'No'}
 											<Button o on:click={() => handleEditModalOpen(quiz.id)}>Edit</Button>
 										{/if}
-										<Button color="yellow" on:click={() => handlePreview(quiz.id)}>Preview</Button>
+										
 										<Button color="red" on:click={() => handleRemoveModalOpen(quiz.id)}>
 											Delete
 										</Button>

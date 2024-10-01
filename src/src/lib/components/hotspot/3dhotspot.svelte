@@ -180,10 +180,6 @@
 	}
 </script>
 
-<div class="scene-wrapper">
-	<canvas bind:this={canvas}></canvas>
-</div>
-
 {#if role === 'lecturer'}
 	<!-- <div class="flex items-center space-x-4">
 		<Menu {models} onModelSelect={handleModelSelection} />
@@ -201,6 +197,12 @@
 		</Select>
 	</Label>
 {/if}
+
+
+<div class="scene-wrapper">
+	<canvas bind:this={canvas}></canvas>
+</div>
+
 
 <style>
 	.scene-wrapper {

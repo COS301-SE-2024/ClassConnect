@@ -53,7 +53,16 @@
 				<NumberInput name="points" />
 			</Label>
 		</div>
-
+		
+		<Label>
+			Select a 3D object:
+			<Select class="my-2" bind:value={selected}>
+				{#each materials as option}
+					<option value={option.file_path}>{option.title}</option>
+				{/each}
+			</Select>
+		</Label>
+		
 		<div class="mb-4">
 			<Label for="questionContent">Question Content</Label>
 			<Textarea
@@ -69,14 +78,6 @@
 			<slot name="scene" />
 		</div>
 
-		<Label>
-			Select a 3D object:
-			<Select class="my-2" bind:value={selected}>
-				{#each materials as option}
-					<option value={option.file_path}>{option.title}</option>
-				{/each}
-			</Select>
-		</Label>
 		<input type="hidden" name="modelPath" value={selected} />
 		<Button type="submit" class="mt-10 w-full">Submit Question</Button>
 	</form>
