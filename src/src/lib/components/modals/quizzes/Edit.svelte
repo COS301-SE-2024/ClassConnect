@@ -9,8 +9,7 @@
 
 	const questionTypes = [
 		{ value: 'multiple-choice', name: 'Multiple Choice' },
-		{ value: '3d-hotspot', name: '3D Hot Spot' },
-		{ value: 'true-false', name: '3D True/False' }
+		{ value: '3d-hotspot', name: '3D Hot Spot' }
 	];
 
 	function confirmSelection() {

@@ -15,7 +15,12 @@ async function AddContentToLesson(lesson: any, content: any) {
 }
 
 async function RemoveContentFromLesson(lesson: any, content: any) {
-	lesson.content = lesson.content.filter((id: any) => id !== content._id.toString());
+	const contentArray = lesson.content;
+	const index = contentArray.indexOf(content._id);
+	if (index > -1) {
+		contentArray.splice(index, 1);
+	}
+	lesson.content = contentArray;
 	await lesson.save();
 }
 
@@ -361,8 +366,11 @@ export async function deleteContent(data: FormData) {
 	if (content.type === 'MCQ') {
 		await MCQs.findByIdAndDelete(id);
 	}
+	if (content.type === 'ThreeDMaterial') {
+		await ThreeDMaterial.findByIdAndDelete(id);
+	}
 
-	await RemoveContentFromLesson(lessonData, content);
+	await RemoveContentFromLesson(lessonData, content.data);
 }
 
 export async function editContent(data: FormData) {

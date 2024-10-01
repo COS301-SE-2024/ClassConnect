@@ -3,7 +3,7 @@
 	import { Progressbar, Button, Heading, P } from 'flowbite-svelte';
 	import Form from '$lib/components/questions/Form.svelte';
 	import ThreeDForm from '$lib/components/questions/3Dform.svelte';
-	import TrueFalse from '$lib/components/questions/trueFalseForm.svelte';
+
 	import { enhance } from '$app/forms';
 	import Submission from '$lib/components/modals/quizzes/Submission.svelte';
 	import { browser } from '$app/environment';
@@ -13,7 +13,6 @@
 	import { goto } from '$app/navigation';
 	import ListQuestions from '$src/lib/components/questions/listQuestions.svelte';
 	import ThreeDScene from '$lib/components/hotspot/3dhotspot.svelte';
-	import ThreeAnnotations from '$lib/components/annotations/3dAnnotations.svelte';
 
 	import { selectedQuestionTypeStore } from '$lib/store/questions';
 
@@ -198,7 +197,7 @@
 			{/if}
 
 			<ListQuestions {questions} {selectedAnswers} {handleSelection}>
-				<ThreeDScene {data} slot="scene" />
+				<ThreeDScene materials={data.materials} {data} slot="scene" />
 			</ListQuestions>
 
 			{#if role === 'student' && !isPreview}
@@ -220,7 +219,7 @@
 					}}
 					class="mt-8 flex justify-center"
 				>
-					<input type="hidden" name="mark" value={totalPoints} />
+					<input type="hidden" name="mark" value={percentageScore} />
 					<Button
 						type="submit"
 						color="green"
@@ -236,13 +235,13 @@
 		{#if selectedQuestionType === 'multiple-choice'}
 			<Form bind:open={isFormOpen} on:formSubmitted={handleFormSubmit} />
 		{:else if selectedQuestionType === '3d-hotspot'}
-			<ThreeDForm bind:open={isFormOpen} on:formSubmitted={handleFormSubmit}>
-				<ThreeDScene {data} slot="scene" />
+			<ThreeDForm
+				materials={data.threeDMaterials}
+				bind:open={isFormOpen}
+				on:formSubmitted={handleFormSubmit}
+			>
+				<ThreeDScene materials={data.threeDMaterials} {data} slot="scene" />
 			</ThreeDForm>
-		{:else if selectedQuestionType === 'true-false'}
-			<TrueFalse bind:open={isFormOpen} on:formSubmitted={handleFormSubmit}>
-				<ThreeAnnotations {data} slot="scene" />
-			</TrueFalse>
 		{/if}
 	{:else}
 		<P class="text-lg text-gray-700 dark:text-gray-300"

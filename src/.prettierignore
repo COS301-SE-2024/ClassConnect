@@ -9,3 +9,4 @@ static
 coverage
 .svelte-kit
 node_modules
+.unlighthouse

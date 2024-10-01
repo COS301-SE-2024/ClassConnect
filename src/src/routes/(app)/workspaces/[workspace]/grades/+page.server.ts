@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import Grades from '$lib/server/database/schemas/Grades';
+import Grades from '$db/schemas/Grades';
 
 export async function load({ locals, params }) {
 	if (!locals.user || locals.user.role !== 'student') throw error(401, 'Unauthorised');
@@ -25,6 +25,8 @@ export async function load({ locals, params }) {
 
 			assessment.average = Math.round(average);
 		}
+
+		console.log(workspaceGrades);
 
 		return { grades: workspaceGrades };
 	} catch (e) {

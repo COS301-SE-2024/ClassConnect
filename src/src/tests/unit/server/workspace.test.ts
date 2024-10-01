@@ -5,6 +5,14 @@ import User from '$db/schemas/User';
 import Workspace from '$db/schemas/Workspace';
 import * as workspaceModule from '$src/routes/(app)/workspaces/+page.server';
 
+vi.mock('$db/schemas/Grades', () => {
+	const GradesMock: any = vi.fn().mockImplementation(() => ({
+		save: vi.fn()
+	}));
+	GradesMock.find = vi.fn();
+	return { default: GradesMock };
+});
+
 vi.mock('$db/schemas/User', () => {
 	const UserMock: any = vi.fn().mockImplementation(() => ({
 		save: vi.fn()

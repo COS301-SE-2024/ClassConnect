@@ -1,13 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import * as THREE from 'three';
-	import { P } from 'flowbite-svelte';
+	//import { P } from 'flowbite-svelte';
+	import { tweened } from 'svelte/motion';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 	import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
+	import { Label, Select } from 'flowbite-svelte';
 	import { TransformControls } from 'three/addons/controls/TransformControls.js';
-	import Menu from './3dMenu.svelte';
-	import { selectedModel, modelSphereData, spherePosition } from '$lib/store/model';
+	//import Menu from './3dMenu.svelte';
+
+	import { selectedModel, spherePosition } from '$lib/store/model';
 
 	export let data: {
 		role: string;
@@ -22,11 +24,10 @@
 			options: { content: string; points: number }[] | null;
 		}[];
 	};
+	let selected: string;
+	export let materials: any[];
 
-	let { role, models, questions } = data;
-	if (role === 'student') {
-		console.log('Questions', questions);
-	}
+	let { role, questions } = data;
 
 	let canvas: HTMLCanvasElement;
 	let camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.WebGLRenderer;
@@ -35,8 +36,9 @@
 	let draggableSphere: THREE.Mesh;
 	let transformControls: TransformControls;
 	let currentModel: THREE.Object3D | null = null;
+
+	let loadingProgress = tweened(0, { duration: 500 });
 	let isLoading = false;
-	console.log(isLoading);
 
 	onMount(() => {
 		initScene();
@@ -108,25 +110,18 @@
 			//sphere transform
 			transformControls.addEventListener('mouseDown', () => {
 				controls.enabled = false;
-				$spherePosition.copy(draggableSphere.position);
-				modelSphereData.set({
-					file_path: $selectedModel,
-					position: draggableSphere.position.clone()
-				});
 			});
 			transformControls.addEventListener('mouseUp', () => {
 				controls.enabled = true;
 				$spherePosition.copy(draggableSphere.position);
 			});
 		} else if (role === 'student') {
-			//loadModel
 			questions.forEach((question) => {
 				if (question.modelPath) {
 					loadModel(question.modelPath);
 				}
 			});
 
-			// Create and add the new pin
 			const pinGeometry = new THREE.SphereGeometry(0.05);
 			const pinMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 			const pin = new THREE.Mesh(pinGeometry, pinMaterial);
@@ -160,31 +155,27 @@
 		window.addEventListener('resize', onWindowResize, false);
 	}
 
-	const loadingManager = new THREE.LoadingManager(
-		() => {
-			isLoading = false;
-		},
-		(itemUrl, itemsLoaded, itemsTotal) => {
-			// Update progress
-			console.log(`Loaded ${itemsLoaded} of ${itemsTotal}`);
-		},
-		(url) => {
-			// Handle loading error
-			console.error(`Error loading ${url}`);
-		}
-	);
-
-	const loader = new GLTFLoader(loadingManager);
-
 	function loadModel(file_path: string) {
 		isLoading = true;
-		loader.load(file_path, (gltf) => {
-			if (currentModel) {
-				scene.remove(currentModel);
+		const loader = new GLTFLoader();
+		loader.load(
+			file_path,
+			(gltf) => {
+				if (currentModel) {
+					scene.remove(currentModel);
+				}
+				currentModel = gltf.scene;
+				scene.add(currentModel);
+				isLoading = false;
+			},
+			(xhr) => {
+				loadingProgress.set((xhr.loaded / xhr.total) * 100);
+			},
+			() => {
+				console.error('An error occurred loading the model');
+				isLoading = false;
 			}
-			currentModel = gltf.scene;
-			scene.add(currentModel);
-		});
+		);
 	}
 
 	function animate() {
@@ -199,21 +190,38 @@
 		renderer.setSize(window.innerWidth, window.innerHeight);
 	}
 
-	function handleModelSelection(file_path: string) {
-		loadModel(file_path);
-		selectedModel.set(file_path);
+	function handleModelSelection() {
+		loadModel(selected);
+		selectedModel.set(selected);
 	}
 </script>
 
+{#if isLoading}
+	<div class="loading-container">
+		<div class="loading-bar" style="width: {loadingProgress}%"></div>
+		<p>Loading model...</p>
+	</div>
+{/if}
+
+{#if role === 'lecturer'}
+	<!-- <div class="flex items-center space-x-4">
+		<Menu {models} onModelSelect={handleModelSelection} />
+		<P class=" font-semibold text-violet-700">
+			Note: Open the menu to select a model, then use the transform controls on the violet sphere
+			to drag it to your desired point.
+		</P>
+	</div> -->
+	<Label>
+		Load model to scene:
+		<Select class="my-2" bind:value={selected} on:change={handleModelSelection}>
+			{#each materials as option}
+				<option value={option.file_path}>{option.title}</option>
+			{/each}
+		</Select>
+	</Label>
+{/if}
+
 <div class="scene-wrapper">
-	{#if role === 'lecturer'}
-		<div class="flex items-center space-x-4">
-			<Menu {models} onModelSelect={handleModelSelection} />
-			<P class=" font-semibold text-violet-700">
-				Note: Use the transform controls on the violet sphere to drag it to your desired point.
-			</P>
-		</div>
-	{/if}
 	<canvas bind:this={canvas}></canvas>
 </div>
 
@@ -229,5 +237,23 @@
 		height: calc(100vh / 4);
 		max-width: 100%;
 		object-fit: contain;
+	}
+
+	.loading-container {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		text-align: center;
+		background-color: rgba(255, 255, 255, 0.8);
+		padding: 20px;
+		border-radius: 10px;
+	}
+
+	.loading-bar {
+		height: 10px;
+		background-color: #4caf50;
+		border-radius: 5px;
+		margin-bottom: 10px;
 	}
 </style>

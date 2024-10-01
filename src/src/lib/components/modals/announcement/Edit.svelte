@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { Button, Modal, Label, Input } from 'flowbite-svelte';
+	import { Button, Modal, Label, Input, Textarea } from 'flowbite-svelte';
 	import toast, { Toaster } from 'svelte-french-toast';
 
 	export let id: string;
@@ -41,7 +41,7 @@
 		<Input type="text" id="title" name="title" placeholder="Fire Drill" size="md" />
 
 		<Label for="content" class="mb-2 mt-2 text-left">New Content</Label>
-		<Input
+		<Textarea
 			type="text"
 			id="content"
 			name="content"
