@@ -10,7 +10,7 @@
 		TableBodyCell
 	} from 'flowbite-svelte';
 	import { goto } from '$app/navigation';
-
+	import { formatDate } from '$utils/date';
 	import AddModal from '$lib/components/modals/quizzes/Add.svelte';
 	import EditModal from '$lib/components/modals/quizzes/Edit.svelte';
 	import RemoveModal from '$lib/components/modals/Delete.svelte';
@@ -36,7 +36,7 @@
 		}
 	}
 
-	const headers = ['Title', 'Graded', 'Date Modified', 'Duration (in minutes)', 'Actions'];
+	const headers = ['Title', 'Graded', 'Date Modified', 'Duration', 'Actions'];
 	$: ({ quizzes } = data);
 
 	function handleEditModalOpen(quizID: string) {
@@ -64,6 +64,13 @@
 		console.log('Type selected in event:', event.detail.type);
 		selectedQuestionTypeStore.set(event.detail.type);
 		openQuiz(id);
+	}
+
+	function formatDuration(duration: number): string {
+		const totalMinutes = Math.floor(duration / (60 * 1000)); 
+		const hours = Math.floor(totalMinutes / 60);
+		const minutes = totalMinutes % 60;
+		return `${hours}h${minutes}m`;
 	}
 </script>
 
@@ -110,8 +117,8 @@
 						<TableBodyRow>
 							<TableBodyCell>{quiz.title}</TableBodyCell>
 							<TableBodyCell>{quiz.graded}</TableBodyCell>
-							<TableBodyCell>{quiz.date}</TableBodyCell>
-							<TableBodyCell>{quiz.duration / (60 * 1000)}</TableBodyCell>
+							<TableBodyCell>{formatDate(new Date(quiz.date))}</TableBodyCell>
+							<TableBodyCell>{formatDuration(quiz.duration)}</TableBodyCell>
 
 							<TableBodyCell>
 								<div class="flex items-center gap-x-6">
