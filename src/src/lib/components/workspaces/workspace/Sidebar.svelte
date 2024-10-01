@@ -19,12 +19,13 @@
 	type NavLink = { name: string; href: string };
 
 	interface LecturerLinks {
-		dashboard: NavLink[];
+		announcements: NavLink[];
 		management: NavLink[];
 		resources: NavLink[];
 	}
 
 	interface StudentLinks {
+		announcements: NavLink[];
 		courseWork: NavLink[];
 		additional: NavLink[];
 	}
@@ -36,25 +37,24 @@
 
 	const navLinks: NavLinks = {
 		lecturer: {
-			dashboard: [{ name: 'Dashboard', href: workspaceURL + '/dashboard' }],
+			announcements: [{ name: 'Announcements', href: workspaceURL + '/announcements' }],
 			management: [
 				{ name: 'Grade Center', href: workspaceURL + '/gradecenter' },
-				{ name: 'Announcements', href: workspaceURL + '/announcements' },
 				{ name: 'Materials', href: workspaceURL + '/materials' },
-				{ name: 'Lessons', href: workspaceURL + '/lessons' },
+				{ name: 'Live Sessions', href: workspaceURL + '/lessons' },
 				{ name: 'Quizzes', href: workspaceURL + '/quizzes' },
-				{ name: 'Interactive Lessons', href: workspaceURL + '/interactive' }
+				{ name: 'Practices', href: workspaceURL + '/interactive' }
 			],
 			resources: [{ name: 'Environments', href: workspaceURL + '/environments' }]
 		},
 		student: {
+			announcements: [{ name: 'Announcements', href: workspaceURL + '/announcements' }],
 			courseWork: [
-				{ name: 'Announcements', href: workspaceURL + '/announcements' },
 				{ name: 'Activities', href: workspaceURL + '/activities' },
 				{ name: 'Materials', href: workspaceURL + '/materials' },
-				{ name: 'Lessons', href: workspaceURL + '/lessons' },
+				{ name: 'Live Sessions', href: workspaceURL + '/lessons' },
 				{ name: 'Quizzes', href: workspaceURL + '/quizzes' },
-				{ name: 'Interactive Lessons', href: workspaceURL + '/interactive' }
+				{ name: 'Practices', href: workspaceURL + '/interactive' }
 			],
 			additional: [
 				{ name: 'Environments', href: workspaceURL + '/environments' },
@@ -66,7 +66,7 @@
 	$: currentLinks = navLinks[role];
 
 	function isLecturerLinks(links: LecturerLinks | StudentLinks): links is LecturerLinks {
-		return 'dashboard' in links;
+		return 'management' in links;
 	}
 
 	function isStudentLinks(links: LecturerLinks | StudentLinks): links is StudentLinks {
@@ -94,28 +94,15 @@
 		</NavBrand>
 		<NavHamburger />
 		<NavUl>
-			{#if isLecturerLinks(currentLinks)}
-				{#if currentLinks.dashboard.length > 1}
-					<NavLi class="nav-link cursor-pointer">
-						Dashboard<ChevronDownOutline
-							class="ms-2 inline h-6 w-6 text-primary-800 dark:text-white"
-						/>
-					</NavLi>
-					<Dropdown class="z-20 w-44">
-						{#each currentLinks.dashboard as { name, href }}
-							<DropdownItem {href}>{name}</DropdownItem>
-						{/each}
-					</Dropdown>
-				{:else}
-					<NavLi
-						class="nav-link"
-						href={currentLinks.dashboard[0].href}
-						active={activeUrl === currentLinks.dashboard[0].href}
-					>
-						{currentLinks.dashboard[0].name}
-					</NavLi>
-				{/if}
+			<NavLi
+				class="nav-link"
+				href={currentLinks.announcements[0].href}
+				active={activeUrl === currentLinks.announcements[0].href}
+			>
+				{currentLinks.announcements[0].name}
+			</NavLi>
 
+			{#if isLecturerLinks(currentLinks)}
 				{#if currentLinks.management.length > 1}
 					<NavLi class="nav-link cursor-pointer">
 						Management<ChevronDownOutline

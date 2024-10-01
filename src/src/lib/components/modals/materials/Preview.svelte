@@ -64,10 +64,10 @@
 					class="flex h-[500px] w-[500px] flex-col space-y-4 rounded-lg bg-gray-200 p-2 shadow-md ring dark:bg-gray-700"
 				>
 					<div class="flex-1">
-						<object
+						<iframe
 							id="pdf-file"
 							class="h-full w-full flex-grow"
-							data={url}
+							src={url}
 							title="Study Material"
 						/>
 					</div>

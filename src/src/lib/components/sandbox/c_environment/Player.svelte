@@ -1,12 +1,13 @@
 <script lang="ts">
 	import { T, useThrelte, useTask } from '@threlte/core';
 	import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
-	import { PerspectiveCamera, Vector3 } from 'three';
+	import { PerspectiveCamera, Vector3, Euler } from 'three';
 	import * as THREE from 'three';
 	import { onDestroy, onMount } from 'svelte';
 	import { CollisionGroups, Collider, RigidBody } from '@threlte/rapier';
 	import type { RigidBody as RapierRigidBody } from '@dimforge/rapier3d-compat';
 	import { getContext } from 'svelte';
+	import { useGamepad } from '@threlte/extras';
 
 	const t = new Vector3();
 	let controls: PointerLockControls;
@@ -24,11 +25,13 @@
 	let radius = 0.3;
 	let height = 1.8;
 	let speed: number = 6;
+	let jumpForce: number = 3.5;
 
 	let forward = 0;
 	let backward = 0;
 	let left = 0;
 	let right = 0;
+	let isJumping = false;
 
 	let selectStage = getContext('selectStage') as () => void;
 
@@ -40,6 +43,9 @@
 	const raycaster = new THREE.Raycaster();
 	const pointer = new THREE.Vector2();
 
+	// Initialize gamepad
+	const gamepad = useGamepad();
+
 	function onMouseMove(event: MouseEvent) {
 		pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
 		pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -49,16 +55,16 @@
 		if (!controls.isLocked) return;
 		switch (e.key) {
 			case 's':
-				backward = 2;
+				backward = 1;
 				break;
 			case 'w':
-				forward = 2;
+				forward = 1;
 				break;
 			case 'a':
-				left = 2;
+				left = 1;
 				break;
 			case 'd':
-				right = 2;
+				right = 1;
 				break;
 			case 'e':
 				highlightObject();
@@ -71,6 +77,9 @@
 				break;
 			case 'o':
 				selectStage();
+				break;
+			case ' ':
+				jump();
 				break;
 			default:
 				break;
@@ -96,6 +105,17 @@
 		}
 	}
 
+	function jump() {
+		if (!isJumping && rigidBody) {
+			isJumping = true;
+			const currentVel = rigidBody.linvel();
+			rigidBody.setLinvel({ x: currentVel.x, y: jumpForce, z: currentVel.z }, true);
+			setTimeout(() => {
+				isJumping = false;
+			}, 500);
+		}
+	}
+
 	onMount(() => {
 		controls = new PointerLockControls(cam, renderer.domElement);
 		renderer.domElement.addEventListener('click', () => {
@@ -106,10 +126,16 @@
 		window.addEventListener('mousemove', onMouseMove);
 
 		// Initializing the Torch
-		torchLight = new THREE.SpotLight(0xffffff, 60, 0, Math.PI / 8, 0.2);
+		torchLight = new THREE.SpotLight(0xf8c377, 60, 0, Math.PI / 8, 0.2);
 		torchLight.visible = lightOn;
 		torchLight.castShadow = true;
 		scene.add(torchLight);
+
+		gamepad.clusterBottom.on('down', jump);
+		gamepad.leftBumper.on('down', toggleLight);
+		gamepad.rightBumper.on('down', selectStage);
+		gamepad.clusterLeft.on('down', highlightObject);
+		gamepad.clusterTop.on('down', unhighlightObject);
 	});
 
 	onDestroy(() => {
@@ -125,6 +151,13 @@
 
 		// Unhighlight the object if one is currently highlighted
 		unhighlightObject();
+
+		// Remove gamepad event listeners
+		gamepad.clusterLeft.off('down', highlightObject);
+		gamepad.clusterTop.off('down', unhighlightObject);
+		gamepad.leftBumper.off('down', toggleLight);
+		gamepad.rightBumper.off('down', selectStage);
+		gamepad.clusterBottom.off('down', jump);
 	});
 
 	function highlightObject() {
@@ -151,6 +184,7 @@
 					transparent: true,
 					opacity: 0.5
 				});
+
 				const outlineMesh = new THREE.Mesh(outlineGeometry, outlineMaterial);
 				outlineMesh.scale.multiplyScalar(1.05);
 				firstObject.add(outlineMesh);
@@ -201,6 +235,7 @@
 			lightToggleInProgress = true;
 			isLightOn = !isLightOn;
 			torchLight.visible = isLightOn;
+
 			setTimeout(() => {
 				lightToggleInProgress = false;
 			}, 300);
@@ -231,15 +266,80 @@
 	});
 
 	let cam: PerspectiveCamera;
-	// Required for movemnt in Scene
+	// Required for movement in Scene
+	const _euler = new Euler(0, 0, 0, 'YXZ');
+	const _PI_2 = Math.PI / 2;
+
 	useTask(() => {
 		if (!rigidBody) return;
-		const velVec = t.fromArray([right - left, 0, backward - forward]);
-		velVec.applyEuler(cam.rotation).multiplyScalar(speed);
+
+		// Keyboard input
+		const keyboardMoveX = right - left; // right and left are 0 or 1
+		const keyboardMoveY = -(forward - backward);
+
+		// Gamepad input
+		const gamepadLeftStick = gamepad.leftStick;
+
+		// Apply dead zone to gamepad input
+		const deadZone = 0.1;
+		let moveX = Math.abs(gamepadLeftStick.x) > deadZone ? gamepadLeftStick.x : 0;
+		let moveY = Math.abs(gamepadLeftStick.y) > deadZone ? gamepadLeftStick.y : 0;
+
+		// Combine keyboard and gamepad input
+		const totalMoveX = moveX + keyboardMoveX;
+		const totalMoveY = moveY + keyboardMoveY;
+
+		// Get the camera's forward and right vectors
+		const forwardVector = new Vector3(0, 0, -1).applyQuaternion(cam.quaternion);
+		const rightVector = new Vector3(1, 0, 0).applyQuaternion(cam.quaternion);
+
+		// Ignore y component to keep movement on the XZ plane
+		forwardVector.y = 0;
+		forwardVector.normalize();
+		rightVector.y = 0;
+		rightVector.normalize();
+
+		// Compute movement direction
+		const moveDir = new Vector3();
+		moveDir.addScaledVector(forwardVector, -totalMoveY);
+		moveDir.addScaledVector(rightVector, totalMoveX);
+
+		// Normalize and apply speed
+		if (moveDir.length() > 1) {
+			moveDir.normalize();
+		}
+		moveDir.multiplyScalar(speed);
+
+		// Set the rigid body linear velocity
 		const linVel = rigidBody.linvel();
-		t.y = linVel.y;
+		t.set(moveDir.x, linVel.y, moveDir.z);
 		rigidBody.setLinvel(t, true);
 
+		// Right stick controls camera rotation
+		const gamepadRightStick = gamepad.rightStick;
+		const rotationSpeed = 0.05; // Adjust as needed
+		const rotationDeadZone = 0.1;
+
+		if (
+			Math.abs(gamepadRightStick.x) > rotationDeadZone ||
+			Math.abs(gamepadRightStick.y) > rotationDeadZone
+		) {
+			// Update Euler angles based on gamepad input
+			_euler.setFromQuaternion(cam.quaternion);
+
+			_euler.y -= gamepadRightStick.x * rotationSpeed;
+			_euler.x -= gamepadRightStick.y * rotationSpeed;
+
+			// Constrain the pitch (vertical) rotation
+			const minPolarAngle = 0; // radians
+			const maxPolarAngle = Math.PI; // radians
+			_euler.x = Math.max(_PI_2 - maxPolarAngle, Math.min(_PI_2 - minPolarAngle, _euler.x));
+
+			// Update the camera's quaternion
+			cam.quaternion.setFromEuler(_euler);
+		}
+
+		// Update position
 		const pos = rigidBody.translation();
 		position = [pos.x, pos.y, pos.z];
 	});

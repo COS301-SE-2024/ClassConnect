@@ -7,6 +7,7 @@
 	}
 </script>
 
-<main class="flex h-full flex-col">
-	<object class="w-full flex-grow" data={pdf_data} title="Study Material" />
+<main class="flex h-full items-center justify-center">
+	<iframe class="h-[100vh] w-full flex-grow" src={pdf_data} frameborder="0" title="Study Material"
+	></iframe>
 </main>
