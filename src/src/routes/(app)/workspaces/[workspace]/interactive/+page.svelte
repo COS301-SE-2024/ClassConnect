@@ -23,7 +23,8 @@
 			</div>
 		</div>
 		{#if role === 'lecturer'}
-			<Button size="sm" on:click={() => (isCreateModalOpen = true)}>Create Practice Material</Button>
+			<Button size="sm" on:click={() => (isCreateModalOpen = true)}>Create Practice Material</Button
+			>
 		{/if}
 	</div>
 	<br />

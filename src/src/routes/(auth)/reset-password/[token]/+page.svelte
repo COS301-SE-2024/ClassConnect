@@ -116,7 +116,9 @@
 				<input type="hidden" name="token" value={token} />
 
 				<div>
-					<label for="password" class="mb-2 block text-sm font-medium text-gray-100 dark:text-gray-300"
+					<label
+						for="password"
+						class="mb-2 block text-sm font-medium text-gray-100 dark:text-gray-300"
 						>New Password</label
 					>
 					<div class="relative">
