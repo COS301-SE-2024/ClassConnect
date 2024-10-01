@@ -200,8 +200,8 @@
 
 {#if isLoading}
 	<div class="loading-container">
-		<div class="loading-bar" style="width: {progress}%"></div>
-		<p>Loading model: {progress}%</p>
+		<div class="loading-bar" style="width: {loadingProgress}%"></div>
+		<p>Loading model...</p>
 	</div>
 {/if}
 
@@ -214,7 +214,7 @@
 		</P>
 	</div> -->
 	<Label>
-		Select a 3D object:
+		Load model to scene:
 		<Select class="my-2" bind:value={selected} on:change={handleModelSelection}>
 			{#each materials as option}
 				<option value={option.file_path}>{option.title}</option>

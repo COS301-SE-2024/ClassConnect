@@ -70,7 +70,7 @@
 		</div>
 
 		<Label>
-			Select a 3D object:
+			Choose model for students:
 			<Select class="my-2" bind:value={selected}>
 				{#each materials as option}
 					<option value={option.file_path}>{option.title}</option>
