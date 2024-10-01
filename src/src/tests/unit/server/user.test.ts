@@ -1,10 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { hash } from '@node-rs/argon2';
-import { parse } from 'csv-parse/sync';
-import { fail, error } from '@sveltejs/kit';
+import { fail } from '@sveltejs/kit';
 import Users from '$db/schemas/User';
-import Organisation from '$db/schemas/Organisation';
-import { generateUsername } from '$src/lib/server/utils/auth';
 // import { sendWelcomeEmail } from './email';
 // import { upload, deleteFile } from '../storage';
 import {
@@ -13,8 +9,7 @@ import {
 	validateUser,
 	addUser,
 	editUser,
-	deleteUser,
-	addUsers
+	deleteUser
 } from '$lib/server/utils/users';
 // import { HASH_OPTIONS } from '$src/constants';
 
