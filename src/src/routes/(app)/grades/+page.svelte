@@ -19,28 +19,36 @@
 	<h1 class="mb-4 text-3xl font-bold dark:text-white">Student Grades</h1>
 
 	<Tabs style="underline">
-		{#each workspaces as workspace}
-			<TabItem open title={workspace.name}>
-				<Table striped={true}>
-					<TableHead>
-						<TableHeadCell>Assessment</TableHeadCell>
-						<TableHeadCell>Date & Time</TableHeadCell>
-						<TableHeadCell>Your Score (%)</TableHeadCell>
-						<TableHeadCell>Class Average (%)</TableHeadCell>
-					</TableHead>
+		{#if workspaces.length === 0}
+			<p class="text-lg dark:text-white">No grades available</p>
+		{:else}
+			{#each workspaces as workspace}
+				<TabItem open title={workspace.name}>
+					{#if workspace.grades.length === 0}
+						<p class="text-lg dark:text-white">No grades available</p>
+					{:else}
+						<Table striped={true}>
+							<TableHead>
+								<TableHeadCell>Assessment</TableHeadCell>
+								<TableHeadCell>Date & Time</TableHeadCell>
+								<TableHeadCell>Your Score (%)</TableHeadCell>
+								<TableHeadCell>Class Average (%)</TableHeadCell>
+							</TableHead>
 
-					<TableBody>
-						{#each workspace.grades as grade}
-							<TableBodyRow>
-								<TableBodyCell>{grade.assessment}</TableBodyCell>
-								<TableBodyCell>{grade.date}</TableBodyCell>
-								<TableBodyCell>{grade.score}</TableBodyCell>
-								<TableBodyCell>{grade.average}</TableBodyCell>
-							</TableBodyRow>
-						{/each}
-					</TableBody>
-				</Table>
-			</TabItem>
-		{/each}
+							<TableBody>
+								{#each workspace.grades as grade}
+									<TableBodyRow>
+										<TableBodyCell>{grade.assessment}</TableBodyCell>
+										<TableBodyCell>{grade.date}</TableBodyCell>
+										<TableBodyCell>{grade.score}</TableBodyCell>
+										<TableBodyCell>{grade.average}</TableBodyCell>
+									</TableBodyRow>
+								{/each}
+							</TableBody>
+						</Table>
+					{/if}
+				</TabItem>
+			{/each}
+		{/if}
 	</Tabs>
 </main>

@@ -4,6 +4,8 @@ import { fail, error, redirect } from '@sveltejs/kit';
 import { upload, deleteFile } from '$lib/server/storage';
 
 import Users from '$db/schemas/User';
+// eslint-disable-next-line
+import Grades from '$db/schemas/Grades';
 import Workspaces from '$db/schemas/Workspace';
 import type { Workspace, User } from '$src/types';
 
