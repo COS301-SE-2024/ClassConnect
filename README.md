@@ -19,8 +19,7 @@ ClassConnect is an innovative educational platform that blends the traditional l
     Services Requirement Specification (SRS)
   </summary>
 
-  - [SRS Document V1](https://drive.google.com/file/d/1_EG2l7GWTb_-C0pbum3-EAEQ1Ve1242p/view?usp=sharing)
-  - [SRS Document V2](https://drive.google.com/file/d/1EZuMLH_4-fGVMaonVHUkiSljRxUDW1Yo/view?usp=sharing)
+  - [SRS Document-Final Version](https://github.com/COS301-SE-2024/ClassConnect/wiki/Software-Requirements-Specification-%E2%80%90-Final-Version)
 </details>
 
 <details>
