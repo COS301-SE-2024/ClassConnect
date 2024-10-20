@@ -33,6 +33,14 @@ ClassConnect is an innovative educational platform that blends the traditional l
 
 <details>
   <summary>
+    Coding Standards
+  </summary>
+
+  - [Coding Standards Final Version]([https://github.com/COS301-SE-2024/ClassConnect/wiki/Technical-Install-Manual](https://github.com/COS301-SE-2024/ClassConnect/wiki/Coding-Standards))
+</details>
+
+<details>
+  <summary>
     Technical Installation manual
   </summary>
 
