@@ -27,7 +27,7 @@ ClassConnect is an innovative educational platform that blends the traditional l
     Architecture Requirements
   </summary>
 
-  - [Architecture Requirements V1]([https://drive.google.com/file/d/1U9p_uGadIggmrLtXrF3WIuLZL7QBzgXq/view?usp=drive_link](https://github.com/COS301-SE-2024/ClassConnect/wiki/Architectural-Requirements-%E2%80%90-Final-Version))
+  - [Architecture Requirements V1](https://github.com/COS301-SE-2024/ClassConnect/wiki/Architectural-Requirements)
 </details>
 
 <details>
