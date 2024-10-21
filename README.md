@@ -4,7 +4,6 @@
   
   [![Issue Tracking](https://img.shields.io/badge/Issue_Tracking-GitHub_Issues-yellow)](https://github.com/COS301-SE-2024/ClassConnect/issues)
   [![Build Status](https://img.shields.io/badge/Build_Status-GitHub_Actions-brightgreen)](https://github.com/COS301-SE-2024/ClassConnect/actions/workflows/linter.yml)
-  [![codecov](https://codecov.io/github/COS301-SE-2024/ClassConnect/graph/badge.svg?token=W2cOxCJT1g)](https://codecov.io/github/COS301-SE-2024/ClassConnect)
   ![Uptime Robot status](https://img.shields.io/uptimerobot/status/m797015486-75c486778a8f87b141372bd7)
 
   <hr>
@@ -67,7 +66,7 @@ For any additional documentation please have look at our [Wiki](https://github.c
   - [Demo 1 Video](https://drive.google.com/file/d/1AJAgftIAKCBaGVa4KQGHvoX01R3dvBUb/view?usp=sharing)
   - [Demo 2 Video](https://drive.google.com/file/d/1ghBQ9XuCCzSb2AlCx-fG7FqwTJvoJDyO/view?usp=sharing)
   - [Demo 3 Video](https://drive.google.com/file/d/1oFY1ZnJQr0eJqLPSz5RA8juzSl_HmWHp/view?usp=sharing)
-  - [Demo 4 Video](https://drive.google.com/file/d/1OHWNZ-jwvSCVzl0_FuvWA58UyS0-93Es/view?usp=drive_link)
+  - [Demo 4 Video](https://drive.google.com/file/d/1OHWNZ-jwvSCVzl0_FuvWA58UyS0-93Es/view?usp=sharing)
 </details>
 
 <h2>💽 Demo Drives</h2>
