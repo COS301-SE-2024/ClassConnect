@@ -51,7 +51,7 @@ ClassConnect is an innovative educational platform that blends the traditional l
     User Manual
   </summary>
 
-  - [User Manual](https://github.com/COS301-SE-2024/ClassConnect/wiki/Technical-Install-Manual)
+  - [User Manual](https://github.com/COS301-SE-2024/ClassConnect/wiki/User-Manual-V4)
 </details>
 
 For any additional documentation please have look at our [Wiki](https://github.com/COS301-SE-2024/ClassConnect/wiki)
